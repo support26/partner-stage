@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
-// react-router-dom components
 import { Navigate, useNavigate } from 'react-router-dom'
 
 // @mui material components
