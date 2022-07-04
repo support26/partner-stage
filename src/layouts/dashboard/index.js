@@ -1,150 +1,165 @@
-
-
 // @mui material components
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Modal from '@mui/material/Modal'
+import Fade from '@mui/material/Fade'
+import Backdrop from '@mui/material/Backdrop'
 
 //  React components
-import MDBox from "components/MDBox";
+import { Navigate } from 'react-router-dom'
+import { useState } from 'react'
+
+import MDBox from 'components/MDBox'
 
 //  React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
+import Footer from 'examples/Footer'
+import ReportsBarChart from 'examples/Charts/BarCharts/ReportsBarChart'
+import ReportsLineChart from 'examples/Charts/LineCharts/ReportsLineChart'
+import ComplexStatisticsCard from 'examples/Cards/StatisticsCards/ComplexStatisticsCard'
+import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart'
+import PieChart from 'examples/Charts/PieChart'
 
 // Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
+import reportsBarChartData from 'layouts/dashboard/data/reportsBarChartData'
+import reportsLineChartData from 'layouts/dashboard/data/reportsLineChartData'
+import verticalBarChartData from 'layouts/dashboard/data/verticalBarChartData'
 
 // Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import Projects from 'layouts/dashboard/components/Projects'
+import OrdersOverview from 'layouts/dashboard/components/OrdersOverview'
+import pieChartData from './data/pieChartData'
 
-function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+// mui custom style
+const style = {
+  position: 'absolute',
+  top: '40%',
+  left: '60%',
+  transform: 'translate(-50%, -50%)',
+  width: '340px',
+  padding: '35px',
+  height: '450px',
+  borderRadius: '15px',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4
+}
 
+function Dashboard () {
+  // const { sales, tasks } = reportsLineChartData
+  const [openkr, setOpenkr] = useState(true)
+  const closekr = () => {
+    setOpenkr(false)
+  }
+  const login_count = sessionStorage.getItem('login_count')
+
+  const session_token = sessionStorage.getItem('session_token')
+  if (!session_token) {
+    return <Navigate to='/' />
+  } 
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+      <MDBox py={3} mx={5}>
+        <Grid container spacing={10} pl={2.5} pr={3}>
+          <Grid item xs={6} md={4} lg={4} mt={4} pt={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
+                sx={{ height: '10%' }}
+                color='dark'
+                icon='weekend'
+                title='Bookings'
                 count={281}
                 percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
+                  color: 'success',
+                  amount: '+55%',
+                  label: 'than lask week'
                 }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={6} md={4} lg={4} mt={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                icon="leaderboard"
+                icon='leaderboard'
                 title="Today's Users"
-                count="2,300"
+                count='2,300'
                 percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
+                  color: 'success',
+                  amount: '+3%',
+                  label: 'than last month'
                 }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={6} md={4} lg={4} mt={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
+                color='success'
+                icon='store'
+                title='Revenue'
+                count='34k'
                 percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
+                  color: 'success',
+                  amount: '+1%',
+                  label: 'than yesterday'
                 }}
               />
             </MDBox>
           </Grid>
         </Grid>
-        {/* <MDBox mt={4.5}>
+        <MDBox mt={5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
+                <VerticalBarChart
+                  icon={{ color: 'info', component: 'leaderboard' }}
+                  title='Vertical Bar Chart'
+                  description='Sales related to age average'
+                  chart={verticalBarChartData}
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
+                <PieChart
+                  icon={{ color: 'info', component: 'leaderboard' }}
+                  title='Pie Chart'
+                  description='Analytics Insights'
+                  chart={pieChartData}
                 />
               </MDBox>
             </Grid>
           </Grid>
         </MDBox>
         <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox> */}
+          <Modal
+            aria-labelledby='transition-modal-title'
+            aria-describedby='transition-modal-description'
+            open={openkr}
+            onClose={closekr}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500
+            }}
+          >
+            <Fade in={openkr}>
+              <Box sx={style}>
+                <h2>hi</h2>
+                <h2>hi</h2>
+                <h2>hi</h2>
+                <h2>hi</h2>
+                <h2>hi</h2>
+              </Box>
+            </Fade>
+          </Modal>
+        </MDBox>
       </MDBox>
-      {/* <Footer /> */}
     </DashboardLayout>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard

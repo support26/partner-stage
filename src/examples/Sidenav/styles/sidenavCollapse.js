@@ -9,13 +9,13 @@ function collapseItem(theme, ownerState) {
   const { pxToRem, rgba, linearGradient } = functions;
 
   return {
-    background: active
-      ? linearGradient(gradients[sidenavColor].main, gradients[sidenavColor].state)
-      : transparent.main,
-    color:
-      (transparentSidenav && !darkMode && !active) || (whiteSidenav && !active)
-        ? dark.main
-        : white.main,
+    background: transparent.main,
+      // ? linearGradient(gradients[sidenavColor].main, gradients[sidenavColor].state)
+      // : transparent.main,
+    color: active ? white.main : dark.main,
+      // (transparentSidenav && !darkMode && !active) || (whiteSidenav && !active)
+      //   ? dark.main
+      //   : white.main,
     display: "flex",
     alignItems: "center",
     width: "100%",
@@ -25,22 +25,40 @@ function collapseItem(theme, ownerState) {
     cursor: "pointer",
     userSelect: "none",
     whiteSpace: "nowrap",
-    boxShadow: active && !whiteSidenav && !darkMode && !transparentSidenav ? md : "none",
+    boxShadow: "none",
+    // boxShadow: active && !whiteSidenav && !darkMode && !transparentSidenav ? md : "none",
     [breakpoints.up("xl")]: {
       transition: transitions.create(["box-shadow", "background-color"], {
         easing: transitions.easing.easeInOut,
         duration: transitions.duration.shorter,
       }),
     },
-
-    "&:hover, &:focus": {
+    "&:focus":{
+ color: white.main,
+      boxShadow: "none",
       backgroundColor: () => {
         let backgroundValue;
 
         if (!active) {
           backgroundValue =
             transparentSidenav && !darkMode
-              ? grey[300]
+              ? grey[400]
+              : rgba(whiteSidenav ? grey[400] : white.main, 0.2);
+        }
+
+        return backgroundValue;
+      },
+    },
+    "&:hover": {
+      // color: dark.main,
+      boxShadow: "none",
+      backgroundColor: () => {
+        let backgroundValue;
+
+        if (!active) {
+          backgroundValue =
+            transparentSidenav && !darkMode
+              ? grey[400]
               : rgba(whiteSidenav ? grey[400] : white.main, 0.2);
         }
 
@@ -61,10 +79,10 @@ function collapseIconBox(theme, ownerState) {
   return {
     minWidth: pxToRem(32),
     minHeight: pxToRem(32),
-    color:
-      (transparentSidenav && !darkMode && !active) || (whiteSidenav && !active)
-        ? dark.main
-        : white.main,
+    color: active ? white.main : dark.main,
+      // (transparentSidenav && !darkMode && !active) || (whiteSidenav && !active)
+      //   ? dark.main
+      //   : white.main,
     borderRadius: borderRadius.md,
     display: "grid",
     placeItems: "center",
@@ -104,9 +122,9 @@ function collapseText(theme, ownerState) {
     },
 
     "& span": {
-      fontWeight: active ? fontWeightRegular : fontWeightLight,
-      fontSize: size.sm,
-      lineHeight: 0,
+      fontWeight: active ? "800" : "500",
+      fontSize: "18px",
+      lineHeight: 2,
     },
   };
 }

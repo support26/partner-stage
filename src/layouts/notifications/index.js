@@ -12,6 +12,7 @@ import MDTypography from "components/MDTypography";
 import MDAlert from "components/MDAlert";
 import MDButton from "components/MDButton";
 import MDSnackbar from "components/MDSnackbar";
+import {Navigate} from 'react-router-dom';
 
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -96,7 +97,10 @@ function Notifications() {
       bgWhite
     />
   );
-
+  const session_token = sessionStorage.getItem('session_token')
+  if (!session_token) {
+    return <Navigate to='/' />
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />

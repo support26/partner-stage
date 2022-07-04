@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import {Navigate} from 'react-router-dom';
 
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -20,7 +21,10 @@ import projectsTableData from "layouts/tables/data/projectsTableData";
 function Tables() {
   const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
-
+  const session_token = sessionStorage.getItem('session_token')
+  if (!session_token) {
+    return <Navigate to='/' />
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />

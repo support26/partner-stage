@@ -6,7 +6,7 @@
 
 const colors = {
   background: {
-    default: "#f0f2f5",
+    default: "#F5F5F5",
   },
 
   text: {
@@ -85,6 +85,7 @@ const colors = {
     primary: {
       main: "#EC407A",
       state: "#D81B60",
+      tblColor: '#33a2b5',
     },
 
     secondary: {
