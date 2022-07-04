@@ -43,6 +43,11 @@ const colors = {
     main: "#1A73E8",
     focus: "#1662C4",
   },
+  ravi:{
+main: '#33A2B5',
+focus:'#33A2B5',
+
+  },
 
   success: {
     main: "#4CAF50",
