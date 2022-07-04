@@ -89,8 +89,8 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team2, "Romina Hadid"],
-              [team4, "Jessica Doe"],
+              [team2, "Jessica Doe"],
+              [team4, "Romina Hadid"],
             ])}
           </MDBox>
         ),

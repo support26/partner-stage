@@ -133,6 +133,8 @@ export default function App() {
   //     </Icon>
   //   </MDBox>
   // );
+   
+  const sessionToken = localStorage.getItem("sessionToken");  // get session token from local storage 
 
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
@@ -155,7 +157,9 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          
+          <Route path="/" element={<Navigate to="/sign-in" />} />
+          <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -166,7 +170,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brand={brandDark}
             brandName=""
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
@@ -176,10 +180,13 @@ export default function App() {
           {/* {configsButton} */}
         </>
       )}
+      
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/sign-in" />} />
+        <Route path="*" element={<Navigate to="/sign-in" />} /> {/* change later it to 404 page */}
+        
       </Routes>
     </ThemeProvider>
   );

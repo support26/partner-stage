@@ -1,0 +1,153 @@
+.AddUsers {
+    width: 80%;
+}
+/* .addUsers .form form  input[type='text'] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+} */
+.modalInput {
+    width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+/* .addUsers .form form input[type='email'] {
+    width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+} */
+.modalSubmit:hover {
+  background-color: #2a90a2; 
+}
+.modalSubmit {
+  width: 100%;
+  background-color: #33a2b5;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modalOpenBtn {
+    background-color: #33a2b5;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-style: italic;
+    font-weight: 700;
+    font-size: medium;
+    position: absolute;
+    right: 8%;
+    margin-top: 15px;
+    cursor: pointer;
+    
+    
+}
+
+
+.modalOpenBtn:hover {
+    background-color: #2a90a2;
+}
+
+.addUsers {
+    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  flex-direction: column;
+  margin: auto;
+ 
+}
+.form {
+  top: 135px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  padding: 35px;
+  width: 340px;
+  position: absolute;
+  border-radius: 15px;
+  height: 370px;
+}
+.addUserHeading {
+  text-align: center;
+  margin-bottom: 25px;
+  background-color: #33a2b5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 5%);
+  color: white;
+  font-size: 25px;
+  font-style: italic;
+}
+
+.css-gt9i7n-MuiPaper-root-MuiAlert-root .MuiAlert-icon{
+    color: #fff !important;
+
+}
+
+/* .form {
+    position: relative;
+  padding: 20px;
+  width: 50%;
+  border-radius: 20px;
+  padding-bottom: 20px;
+} */
+/* h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.AddUsers {
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 20px;
+    width: 2%;
+    
+      padding-bottom: 20px;
+  
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
+  
+    margin: auto;
+} */
+ @media screen and (min-width: 1200px){
+    /* .AddUsers {
+        position: absolute;
+        display: flex;
+         flex-direction: column; 
+        align-items: center;
+        justify-content: center;
+         text-align: center; 
+         margin-top: 50px; 
+         left: 50%;
+         
+    } */
+    .form{
+        left: 46%;
+    }
+    .css-1wnsr1i {
+        left: 60% !important;
+    }
+    .css-1xlcwcm {
+        left: 60% !important;
+
+    }
+    .MuiBox-root .css-a6nvm0 {
+        left: 60% !important;
+    }
+} 

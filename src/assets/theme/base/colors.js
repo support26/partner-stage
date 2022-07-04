@@ -6,7 +6,7 @@
 
 const colors = {
   background: {
-    default: "#f0f2f5",
+    default: "#F5F5F5",
   },
 
   text: {
@@ -42,6 +42,11 @@ const colors = {
   info: {
     main: "#1A73E8",
     focus: "#1662C4",
+  },
+  ravi:{
+main: '#33A2B5',
+focus:'#33A2B5',
+
   },
 
   success: {
@@ -85,6 +90,7 @@ const colors = {
     primary: {
       main: "#EC407A",
       state: "#D81B60",
+      tblColor: '#33a2b5',
     },
 
     secondary: {
