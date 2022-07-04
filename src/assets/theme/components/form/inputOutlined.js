@@ -23,8 +23,8 @@ const inputOutlined = {
         borderColor: inputBorderColor,
       },
 
-      "&.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
+       "&.Mui-focused": {
+       "& .MuiOutlinedInput-notchedOutline": {
           borderColor: info.main,
         },
       },

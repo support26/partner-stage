@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -21,6 +21,7 @@ import MDInput from "components/MDInput";
 //  React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import Basic from 'layouts/authentication/sign-in/index';
 
 // Custom styles for DashboardNavbar
 import {
@@ -38,7 +39,12 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
-
+import EmailIcon from '@mui/icons-material/Email';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { responsiveFontSizes } from "@material-ui/core";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+//import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -76,9 +82,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const nav= useNavigate();
 
+  const logOut=()=>{
+    sessionStorage.removeItem('session_token')
+    nav('/sign-in')
+      //  sessionStorage.removeItem('session_token')
+     
+
+    }
   // Render the notifications menu
-  const renderMenu = () => (
+  const renderMenu = () => ( 
+
+   
     <Menu
       anchorEl={openMenu}
       anchorReference={null}
@@ -90,12 +106,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={users_name} />
+  
+      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={role_id}/>
+      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={user_email}/>
+
+      <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick= {logOut} title="Log Out " />
     </Menu>
   );
 
+  const username = sessionStorage.getItem('username')
+  const role_id = sessionStorage.getItem('role_id')
+  const user_email = sessionStorage.getItem('user_email')
+  const users_name = sessionStorage.getItem('users_name')
+      
+       // alert(login_id);l
+  
   // Styles for the navbar icons
   const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
     color: () => {
@@ -125,31 +151,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
+              {/* <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
+                  
                 </IconButton>
-              </Link>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
+              </Link> */}
+
               <IconButton
                 size="small"
                 disableRipple
@@ -160,8 +168,40 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon sx={iconsStyle}>notifications</Icon>
+               <Icon sx={iconsStyle} className= "fontSizess">account_circle</Icon>
               </IconButton>
+              {/* <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarMobileMenu}
+                onClick={handleMiniSidenav}
+              >
+                <Icon sx={iconsStyle} fontSize="medium">
+                  {miniSidenav ? "menu_open" : "menu"}
+                </Icon>
+              </IconButton> */}
+              {/* <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleConfiguratorOpen}
+              >
+                <Icon sx={iconsStyle}>settings</Icon>
+              </IconButton> */}
+              {/* <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="notification-menu"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={handleOpenMenu}
+              >
+                <Icon sx={iconsStyle}>notifications</Icon>
+              </IconButton> */}
               {renderMenu()}
             </MDBox>
           </MDBox>
