@@ -1,9 +1,6 @@
 // @mui material components
 import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
-import Fade from '@mui/material/Fade'
-import Backdrop from '@mui/material/Backdrop'
+
 
 //  React components
 import { Navigate } from 'react-router-dom'
@@ -134,29 +131,7 @@ function Dashboard () {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox>
-          <Modal
-            aria-labelledby='transition-modal-title'
-            aria-describedby='transition-modal-description'
-            open={openkr}
-            onClose={closekr}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500
-            }}
-          >
-            <Fade in={openkr}>
-              <Box sx={style}>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-              </Box>
-            </Fade>
-          </Modal>
-        </MDBox>
+        
       </MDBox>
     </DashboardLayout>
   )
