@@ -34,6 +34,8 @@ const style = {
 
 
 function AddUsers () {
+  const [employee_name, setEmployee_name] = useState('')
+  const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
@@ -118,8 +120,14 @@ function AddUsers () {
         )
       }
     },
-
+    { field: 's_no', headerName: 'S No.', width: 70 ,
+  renderCell: function (params) {
+    return params.value
+  }
+},
     { field: 'id', headerName: 'ID', width: 70 },
+    {field: 'employee_name', headerName: 'Employee Name', width: 140, sortable: true},
+
     { field: 'users_name', headerName: 'users_name', width: 130 },
     { field: 'users_email', headerName: 'users_email', width: 130 },
 

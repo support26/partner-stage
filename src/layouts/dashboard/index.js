@@ -48,11 +48,6 @@ const style = {
 
 function Dashboard () {
   // const { sales, tasks } = reportsLineChartData
-  const [openkr, setOpenkr] = useState(true)
-  const closekr = () => {
-    setOpenkr(false)
-  }
-  const login_count = sessionStorage.getItem('login_count')
 
   const session_token = sessionStorage.getItem('session_token')
   if (!session_token) {
@@ -133,29 +128,6 @@ function Dashboard () {
               </MDBox>
             </Grid>
           </Grid>
-        </MDBox>
-        <MDBox>
-          <Modal
-            aria-labelledby='transition-modal-title'
-            aria-describedby='transition-modal-description'
-            open={openkr}
-            onClose={closekr}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500
-            }}
-          >
-            <Fade in={openkr}>
-              <Box sx={style}>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-              </Box>
-            </Fade>
-          </Modal>
         </MDBox>
       </MDBox>
     </DashboardLayout>

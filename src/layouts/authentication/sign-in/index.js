@@ -33,7 +33,7 @@ function Basic () {
     axios
       .post('http://localhost:8001/admin/login', { admin_name, password })
       .then(response => {
-        if (response.data.error === false) {
+        
           nav('/dashboard')
           sessionStorage.setItem(
             'session_token',
@@ -49,7 +49,7 @@ function Basic () {
           } else {
             sessionStorage.setItem('role_id', 'Admin')
           }
-        }
+        
       })
       .catch(e => {
         // console.log(e.response.data.data)
