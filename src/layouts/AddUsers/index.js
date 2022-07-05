@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react'
 import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
-import {Navigate} from 'react-router-dom'
- 
+import { Navigate } from 'react-router-dom'
+
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -33,7 +33,7 @@ const style = {
 
 
 
-function AddUsers () {
+function AddUsers() {
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
@@ -67,23 +67,23 @@ function AddUsers () {
     }
     setOpen(false)
   }
-//useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
+  //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
     GetUsers()
   }, [])
-  const session_token = sessionStorage.getItem('session_token') ;
+  const session_token = sessionStorage.getItem('session_token');
 
-  if (!session_token) { 
-    return <Navigate to='/' />  
+  if (!session_token) {
+    return <Navigate to='/' />
   }
 
   const GetUsers = () => {
-    axios.get('http://localhost:8001/admin/allUsers/0', {headers: { "Authorization": `Bearer ${session_token}` }}).then(response => {
+    axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
       console.log(response)
       setUsers(response.data.data)
-    }).catch(e => { 
-      console.log(e)   
-    }) 
+    }).catch(e => {
+      console.log(e)
+    })
   }
 
   const columns = [
@@ -94,7 +94,7 @@ function AddUsers () {
       sortable: false,
       renderCell: function (params) {
         const onClick = function (e) {
-          
+
           e.stopPropagation() // don't select this row after clicking
           const api = params.api
           const thisRow = {}
@@ -112,7 +112,7 @@ function AddUsers () {
           return console.log(params)
         }
         return (
-          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33a2b5', '&:hover': {backgroundColor: '#2a90a2'} }}>
+          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33a2b5', '&:hover': { backgroundColor: '#2a90a2' } }}>
             Edit
           </Button>
         )
@@ -136,25 +136,25 @@ function AddUsers () {
       }
     }
   ]
-  
-    const data = {
-      users_name: users_name,
-      users_email: users_email,
-      user_type: user_type
-    }
+
+  const data = {
+    users_name: users_name,
+    users_email: users_email,
+    user_type: user_type
+  }
   const handleSubmit = event => {
     event.preventDefault()
     axios
-      .post('http://localhost:8001/admin/create', {headers: { "Authorization": `Bearer ${session_token}` }, data})
+      .post('http://localhost:8001/admin/create', { headers: { "Authorization": `Bearer ${session_token}` }, data })
       .then(response => {
         console.log(response)
         handleOpen('Added ')
         GetUsers()
         closeModal()
-      }).catch(e => { 
-        console.log(e)  
-        handleOpen(e.message) 
-      }) 
+      }).catch(e => {
+        console.log(e)
+        handleOpen(e.message)
+      })
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
@@ -181,13 +181,13 @@ function AddUsers () {
     setUsers_name('')
     setUsers_email('')
   }
-  
- 
+
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <Snackbar
-      
+
         anchorOrigin={{ vertical, horizontal }}
         key={vertical + horizontal}
         open={open}
@@ -274,7 +274,7 @@ function AddUsers () {
                 className='modalSubmit'
                 type='submit'
                 value='Submit'
-                // onClick={createPost}
+              // onClick={createPost}
               ></input>
             </form>
           </Box>
@@ -360,14 +360,14 @@ function AddUsers () {
 
       <div style={{ height: 550, width: '100%', marginTop: '70px' }}>
         <DataGrid
-        sx={{
-          boxShadow: 2,
-          border: 2,
-          borderColor: '#33a2b5',
-          '& .MuiDataGrid-cell:hover': {
-            color: '#33a2b5',
-          },
-        }}
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: '#33a2b5',
+            '& .MuiDataGrid-cell:hover': {
+              color: '#33a2b5',
+            },
+          }}
           rows={users}
           columns={columns}
           pageSize={pageSize}
