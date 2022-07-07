@@ -1,6 +1,7 @@
 import Api, { baseUrl } from "./config";
 import cookies from "js-cookie";
 import axios from "axios";
+
 var token = cookies.get("token");
 Api.defaults.headers.common["Authorization"] = "Bearer " + token;
 class AuthRepository {

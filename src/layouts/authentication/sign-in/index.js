@@ -22,6 +22,10 @@ import bgImage from "assets/images/Ellipse 1 (1).svg";
 //sign css
 import "./sign.css";
 
+//import {useSelector} from 'react-redux';
+import {UserLogin} from 'api/AuthRepository'
+
+
 function Basic() {
   const nav = useNavigate();
   const [admin_name, setadmin_name] = useState("");
@@ -42,10 +46,10 @@ function Basic() {
             );
           } else {
             nav("/dashboard");
-            // sessionStorage.setItem(
-            //   "session_token",
-            //   response.data.data.session_token
-            // );
+            sessionStorage.setItem(
+              "session_token",
+              response.data.data.session_token
+            ); 
             sessionStorage.setItem("login_id", response.data.data.id);
             // sessionStorage.setItem(
             //   "login_count",

@@ -31,10 +31,10 @@ function Cover () {
 
 
 
-  // const session_token = sessionStorage.getItem("session_token");
-  // if (session_token) {
-  //   return <Navigate to="/" />;
-  // }
+  const session_token = sessionStorage.getItem("session_token");
+  if (!session_token) {
+    return <Navigate to="/sign-in" />;
+  }
 
  
   return (
