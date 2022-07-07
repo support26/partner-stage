@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { login, logout, updateUserProfile } from "../store/auth/action";
 import { useCookies } from "react-cookie";
 
-export default function useUser() {
+export default function useAdmin() {
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies();
   return {
