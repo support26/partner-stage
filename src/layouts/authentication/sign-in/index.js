@@ -22,11 +22,16 @@ import bgImage from 'assets/images/Ellipse 1 (1).svg'
 //sign css
 import './sign.css'
 
+import useAdmin from '../../../hooks/useAdmin'
+
 function Basic () {
   const nav = useNavigate()
   const [admin_name, setadmin_name] = useState('')
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState()
+
+  const {login} = useAdmin()
+  
 
   const handleSubmit = event => {
     event.preventDefault()
