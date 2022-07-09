@@ -11,6 +11,8 @@ export default function useAdmin() {
   const nav = useNavigate()
 
 
+
+
   return {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
@@ -29,6 +31,7 @@ export default function useAdmin() {
         dispatch(errorMessage(responseData.data.data))
 
       }
+      // console.log(responseData);
       return responseData.data;
     },
     isLogin: async () => {
@@ -40,7 +43,7 @@ export default function useAdmin() {
         return responseData;
       }
     },
-    
+
     logout: async () => {
       var responseData = await AuthRepository.logout();
       removeCookie("token");
@@ -63,28 +66,28 @@ export default function useAdmin() {
       }
       return false;
     },
-    GetUserProfile:async(username)=>{
-        var responseData =await AuthRepository.getUserPrifile(username)
-        if(responseData.status === 200){  
-            dispatch(updateUserProfile(responseData.data.data))
-            return responseData.data.data;
-        }
-        return false;            
+    GetUserProfile: async (username) => {
+      var responseData = await AuthRepository.getUserPrifile(username)
+      if (responseData.status === 200) {
+        dispatch(updateUserProfile(responseData.data.data))
+        return responseData.data.data;
+      }
+      return false;
     },
-    subscriberCount:async()=>{
-        var responseData = await AuthRepository.subscriberCount();
-        if(responseData.status === 200){               
-            return responseData.data.data
-        }
-        return false;
+    subscriberCount: async () => {
+      var responseData = await AuthRepository.subscriberCount();
+      if (responseData.status === 200) {
+        return responseData.data.data
+      }
+      return false;
     },
-        
-    updateFollowerStatus:async(id,data)=>{
-        var responseData = await AuthRepository.updateFollowerStatus(id,data);
-        if(responseData.status === 200){               
-            return responseData.data.data
-        }
-        return false;
-    },    
+
+    updateFollowerStatus: async (id, data) => {
+      var responseData = await AuthRepository.updateFollowerStatus(id, data);
+      if (responseData.status === 200) {
+        return responseData.data.data
+      }
+      return false;
+    },
   }
 };
