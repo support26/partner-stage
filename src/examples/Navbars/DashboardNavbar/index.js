@@ -86,7 +86,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const nav= useNavigate();
-
+        
   const logOut=()=>{
     sessionStorage.removeItem('session_token')
     nav('/sign-in')

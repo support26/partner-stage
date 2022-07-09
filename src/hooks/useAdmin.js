@@ -85,6 +85,26 @@ export default function useAdmin() {
             return responseData.data.data
         }
         return false;
-    },    
+    },  
+    
+    
+    // reset_password: async (data) => {
+    //   var responseData = await AuthRepository.reset_password(data);
+    //   if (responseData.status === 200) {
+    //     setCookie(responseData.data.data.session_token, 'token');
+    //  //    dispatch(reset_password(responseData.data));
+    //      nav('/sign-in');
+    //   // console.log(responseData.data.data.login_count)
+    
+    
+    //   }  else{
+    //     // alert(responseData.data.data)
+    //     dispatch(errorMessage(responseData.data.data))
+
+    //   }
+    //   return responseData.data;
+    // },
+
+
   }
 };

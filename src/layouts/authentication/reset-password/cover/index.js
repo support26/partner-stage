@@ -21,6 +21,7 @@ import bgImage from 'assets/images/Ellipse 1 (1).svg'
 
 //sign css
 import 'layouts/authentication/sign-in/sign.css'
+import useAdmin from '../../../../hooks/useAdmin'
 
 function Cover () {
   const nav = useNavigate()
@@ -28,12 +29,22 @@ function Cover () {
   const [newPassword, setnewPassword] = useState('')
   const [confirmpassword, setconfirmpassword] = useState('')
   const [msg, setMsg] = useState()
+  const {GetUserProfile} = useAdmin()
 
-
-
+  //console.log(GetUserProfile);
+  
+  const handleSubmit = event => {
+    event.preventDefault()
+  const password=(newPassword===confirmpassword)  
+    if(password){
+      console.log(password)
+      nav('/sign-in')
+    }else{
+      console.log('does not match')
+    }
   
 
- 
+  };
   return (
     <>
       <BasicLayout className='banner-sign '>
@@ -60,7 +71,7 @@ function Cover () {
             </MDTypography>
           </MDBox>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <MDBox mb={2} px={4}>
               <MDInput
                 className='sign-input'
@@ -71,6 +82,7 @@ function Cover () {
                 type='text'
                 name='Old-Password'
                 placeholder='Old Password'
+                onChange={(e) => setoldPassword(e.target.value)}
                 required
                 fullWidth
               />
@@ -82,7 +94,7 @@ function Cover () {
                 name='newpassword'
                 value={newPassword}
                 placeholder='New Password'
-               
+                onChange={(e) => setnewPassword(e.target.value)}
                 fullWidth
               />
               <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
@@ -94,7 +106,7 @@ function Cover () {
                 name='Confirm-password'
                 value={confirmpassword}
                 placeholder='Confirm Password'
-               
+                onChange={(e) => setconfirmpassword(e.target.value)}
                 fullWidth
               />
               <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
