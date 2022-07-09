@@ -12,6 +12,7 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import Alert from "@mui/material/Alert";
+import { useDispatch, useSelector } from "react-redux";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -22,66 +23,76 @@ import bgImage from "assets/images/Ellipse 1 (1).svg";
 //sign css
 import "./sign.css";
 
-//import {useSelector} from 'react-redux';
-import {UserLogin} from 'api/AuthRepository'
+import useAdmin from '../../../hooks/useAdmin'
+import { Redirect } from "react-router-dom";
+import  {error} from 'api/AuthRepository';
+ 
+function Basic () {
+  const nav = useNavigate()
+  const [admin_name, setadmin_name] = useState('')
+  const [password, setPassword] = useState('')
+  // const [msg, setMsg] = useState()
+  const {login} = useAdmin()
+ 
+    const {msg}= useSelector((state)=>state.auth)
+     const dispatch = useDispatch();
+  const handleSubmit = event => {
+    event.preventDefault()
+    
+    login({admin_name,password})
+    // console.log(msg)
+    
+    
+    
+    // axios
 
+    //   .post("http://localhost:8001/admin/login", { admin_name, password })
+    //   .then((response) => {
+    //     if (response.data.data.is_active === "Y") {
+    //       if (response.data.data.login_count == 0) {
+    //         nav("/reset");
+    //         sessionStorage.setItem(
+    //           "session_token",
+    //           response.data.data.session_token
+    //         );
+    //       } else {
+    //         nav("/dashboard");
+    //         sessionStorage.setItem(
+    //           "session_token",
+    //           response.data.data.session_token
+    //         ); 
+    //         sessionStorage.setItem("login_id", response.data.data.id);
+    //         // sessionStorage.setItem(
+    //         //   "login_count",
+    //         //   response.data.data.login_count
+    //         // );
+    //         sessionStorage.setItem("user_email", response.data.data.user_email);
+    //         sessionStorage.setItem("users_name", response.data.data.users_name);
 
-function Basic() {
-  const nav = useNavigate();
-  const [admin_name, setadmin_name] = useState("");
-  const [password, setPassword] = useState("");
-  const [msg, setMsg] = useState();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .post("http://localhost:8001/admin/login", { admin_name, password })
-      .then((response) => {
-        if (response.data.data.is_active === "Y") {
-          if (response.data.data.login_count == 0) {
-            nav("/reset");
-            sessionStorage.setItem(
-              "session_token",
-              response.data.data.session_token
-            );
-          } else {
-            nav("/dashboard");
-            sessionStorage.setItem(
-              "session_token",
-              response.data.data.session_token
-            ); 
-            sessionStorage.setItem("login_id", response.data.data.id);
-            // sessionStorage.setItem(
-            //   "login_count",
-            //   response.data.data.login_count
-            // );
-            sessionStorage.setItem("user_email", response.data.data.user_email);
-            sessionStorage.setItem("users_name", response.data.data.users_name);
-
-            console.log(response);
-            if (response.data.data.roleId === 1) {
-              sessionStorage.setItem("role_id", "Support");
-            } else {
-              sessionStorage.setItem("role_id", "Admin");
-            }
-          }
-        }
-        else{
-          alert('pls contact Admin')
-        }
-      })
-      .catch((e) => {
-        // console.log(e.response.data.data)
-        if(e.response.data.data==='User not active!'){
-         const hell= setMsg("You are inactive user, Please contact your Admin")
-         // alert(setMsg("You are inactive user, Please contact your Admin"));
-        }
-        else{
-        setMsg(e.response.data.data);
-        }
-      });
-    setadmin_name("");
-    setPassword("");
+    //         console.log(response);
+    //         if (response.data.data.roleId === 1) {
+    //           sessionStorage.setItem("role_id", "Support");
+    //         } else {
+    //           sessionStorage.setItem("role_id", "Admin");
+    //         }
+    //       }
+    //     }
+    //     else{
+    //       alert('pls contact Admin')
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     // console.log(e.response.data.data)
+    //     if(e.response.data.data==='User not active!'){
+    //      const hell= setMsg("You are inactive user, Please contact your Admin")
+    //      // alert(setMsg("You are inactive user, Please contact your Admin"));
+    //     }
+    //     else{
+    //     setMsg(e.response.data.data);
+    //     }
+    //   });
+    // setadmin_name("");
+    // setPassword("");
   };
   const session_token = sessionStorage.getItem("session_token");
   if (session_token) {

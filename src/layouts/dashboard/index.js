@@ -27,34 +27,35 @@ import verticalBarChartData from 'layouts/dashboard/data/verticalBarChartData'
 import Projects from 'layouts/dashboard/components/Projects'
 import OrdersOverview from 'layouts/dashboard/components/OrdersOverview'
 import pieChartData from './data/pieChartData'
-
+// import { useSelector } from 'react-redux'
 // mui custom style
-const style = {
-  position: 'absolute',
-  top: '40%',
-  left: '60%',
-  transform: 'translate(-50%, -50%)',
-  width: '340px',
-  padding: '35px',
-  height: '450px',
-  borderRadius: '15px',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4
-}
+// const style = {
+//   position: 'absolute',
+//   top: '40%',
+//   left: '60%',
+//   transform: 'translate(-50%, -50%)',
+//   width: '340px',
+//   padding: '35px',
+//   height: '450px',
+//   borderRadius: '15px',
+//   bgcolor: 'background.paper',
+//   boxShadow: 24,
+//   p: 4
+// }
 
 function Dashboard () {
-  // const { sales, tasks } = reportsLineChartData
-  const [openkr, setOpenkr] = useState(true)
-  const closekr = () => {
-    setOpenkr(false)
-  }
-  const login_count = sessionStorage.getItem('login_count')
-
-  const session_token = sessionStorage.getItem('session_token')
-  if (!session_token) {
-    return <Navigate to='/' />
-  } 
+//   // const { sales, tasks } = reportsLineChartData
+//   const [openkr, setOpenkr] = useState(true)
+//   const closekr = () => {
+//     setOpenkr(false)
+//   }
+//   const login_count = sessionStorage.getItem('login_count')
+//   const {auth}= useSelector((state)=>state.auth)
+//  // const session_token = sessionStorage.getItem('session_token')
+//   // if (!session_token) {
+//   //   return <Navigate to='/' />
+//   // } 
+//   console.log(auth)
   
   return (
     <DashboardLayout>

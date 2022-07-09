@@ -1,17 +1,33 @@
 import AuthRepository from "../api/AuthRepository";
 import { useDispatch } from "react-redux";
-import { login, logout, updateUserProfile } from "../store/auth/action";
+import { errorMessage, login, logout, updateUserProfile } from "../store/auth/action";
 import { useCookies } from "react-cookie";
+import { Navigate, useNavigate } from "react-router-dom";
 
-export default function useUser() {
+
+export default function useAdmin() {
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies();
+  const nav = useNavigate()
+
+
   return {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
-      if (responseData.data.status === 200) {
-        setCookie("token", responseData.data.token);
+      if (responseData.status === 200) {
+        setCookie(responseData.data.data.session_token, 'token');
         dispatch(login(responseData.data));
+      // console.log(responseData.data.data.login_count)
+      if(responseData.data.data.login_count == 0 ){
+        nav('/reset');
+      }else{
+        nav('/dashboard');
+      }
+    
+      }  else{
+        // alert(responseData.data.data)
+        dispatch(errorMessage(responseData.data.data))
+
       }
       return responseData.data;
     },
