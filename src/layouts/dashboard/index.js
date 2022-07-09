@@ -1,9 +1,6 @@
 // @mui material components
 import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
-import Fade from '@mui/material/Fade'
-import Backdrop from '@mui/material/Backdrop'
+
 
 //  React components
 import { Navigate } from 'react-router-dom'
@@ -30,34 +27,35 @@ import verticalBarChartData from 'layouts/dashboard/data/verticalBarChartData'
 import Projects from 'layouts/dashboard/components/Projects'
 import OrdersOverview from 'layouts/dashboard/components/OrdersOverview'
 import pieChartData from './data/pieChartData'
-
+// import { useSelector } from 'react-redux'
 // mui custom style
-const style = {
-  position: 'absolute',
-  top: '40%',
-  left: '60%',
-  transform: 'translate(-50%, -50%)',
-  width: '340px',
-  padding: '35px',
-  height: '450px',
-  borderRadius: '15px',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4
-}
+// const style = {
+//   position: 'absolute',
+//   top: '40%',
+//   left: '60%',
+//   transform: 'translate(-50%, -50%)',
+//   width: '340px',
+//   padding: '35px',
+//   height: '450px',
+//   borderRadius: '15px',
+//   bgcolor: 'background.paper',
+//   boxShadow: 24,
+//   p: 4
+// }
 
 function Dashboard () {
-  // const { sales, tasks } = reportsLineChartData
-  const [openkr, setOpenkr] = useState(true)
-  const closekr = () => {
-    setOpenkr(false)
-  }
-  const login_count = sessionStorage.getItem('login_count')
-
-  const session_token = sessionStorage.getItem('session_token')
-  if (!session_token) {
-    return <Navigate to='/' />
-  } 
+//   // const { sales, tasks } = reportsLineChartData
+//   const [openkr, setOpenkr] = useState(true)
+//   const closekr = () => {
+//     setOpenkr(false)
+//   }
+//   const login_count = sessionStorage.getItem('login_count')
+//   const {auth}= useSelector((state)=>state.auth)
+//  // const session_token = sessionStorage.getItem('session_token')
+//   // if (!session_token) {
+//   //   return <Navigate to='/' />
+//   // } 
+//   console.log(auth)
   
   return (
     <DashboardLayout>
@@ -134,29 +132,7 @@ function Dashboard () {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox>
-          <Modal
-            aria-labelledby='transition-modal-title'
-            aria-describedby='transition-modal-description'
-            open={openkr}
-            onClose={closekr}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500
-            }}
-          >
-            <Fade in={openkr}>
-              <Box sx={style}>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-                <h2>hi</h2>
-              </Box>
-            </Fade>
-          </Modal>
-        </MDBox>
+        
       </MDBox>
     </DashboardLayout>
   )

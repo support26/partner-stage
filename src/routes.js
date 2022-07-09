@@ -2,7 +2,9 @@ import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Notifications from "layouts/notifications";
 import SignIn from "layouts/authentication/sign-in";
-import AddUsers from 'layouts/AddUsers'
+import AddUsers from 'layouts/AddUsers';
+import ResetPassword from "layouts/authentication/reset-password/cover/index"
+
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -48,7 +50,14 @@ const routes = [
     route: "/sign-in",
     component: <SignIn />,
   },
-  
+  {
+    // type: "collapse",
+    // name: "reset ",
+    // key: "reset-password",
+    // icon: <Icon fontSize="medium">ResetPassword</Icon>,
+    route: "/reset",
+    component: <ResetPassword />,
+  }
 
 ];
 

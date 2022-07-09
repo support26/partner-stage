@@ -1,7 +1,7 @@
 import { actionTypes } from './action';
 
 const saveToken = (data) =>{
-    var {token} = data
+    var token = data
     if(typeof window !== 'undefined' && localStorage && token) {
         localStorage.removeItem('token')
         const now = new Date()
@@ -15,13 +15,14 @@ const saveToken = (data) =>{
 
 export const initState = {
     isLogin: false,
-    auth:{}
+    auth:{},
+    msg:null
 };
 
 function reducer(state = initState, action) {
     switch (action.type) {
         case actionTypes.LOGIN:
-            saveToken(action.payload)
+            saveToken(action.payload.data)
             return {
                 ...state,
                 ...{ auth: action.payload.data,isLogin:true },
@@ -37,7 +38,12 @@ function reducer(state = initState, action) {
                 ...state,
                 ...{ auth: action.profile },
             };    
-
+            case actionTypes.error_Message:
+                return {
+                    ...state,
+                    ...{ msg: action.payload },
+                };    
+    
         default:
             return state;
     }

@@ -4,7 +4,7 @@ class AdminRepository {
   async GetAlladminUser() {
     const reponse = await Api.post(`${baseUrl}admin/allUsers/${0}`)
       .then((response) => {
-        return response;
+        return response;  
       })
       .catch((error) => {
         console.log(error.response);
