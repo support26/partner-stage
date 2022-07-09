@@ -28,6 +28,7 @@
     "@progress/kendo-licensing": "^1.2.2",
     "@progress/kendo-react-excel-export": "^5.4.0",
     "@progress/kendo-react-treeview": "^5.4.0",
+    "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "5.16.2",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.5.0",

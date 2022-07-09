@@ -34,32 +34,34 @@ function Basic () {
   
 
   const handleSubmit = event => {
-    event.preventDefault()
-    axios
-      .post('http://localhost:8001/admin/login', { admin_name, password })
-      .then(response => {
+    event.preventDefault();
+
+    login({admin_name, password})
+    // axios
+    //   .post('http://localhost:8001/admin/login', { admin_name, password })
+    //   .then(response => {
         
-          nav('/dashboard')
-          sessionStorage.setItem(
-            'session_token',
-            response.data.data.session_token
-          )
-          sessionStorage.setItem('login_id', response.data.data.id)
-          sessionStorage.setItem('login_count', response.data.data.login_count)
-          sessionStorage.setItem('user_email', response.data.data.user_email)
-          sessionStorage.setItem('users_name', response.data.data.users_name)
-          console.log(response)
-          if (response.data.data.roleId === 1) {
-            sessionStorage.setItem('role_id', 'Support')
-          } else {
-            sessionStorage.setItem('role_id', 'Admin')
-          }
+    //       nav('/dashboard')
+    //       sessionStorage.setItem(
+    //         'session_token',
+    //         response.data.data.session_token
+    //       )
+    //       sessionStorage.setItem('login_id', response.data.data.id)
+    //       sessionStorage.setItem('login_count', response.data.data.login_count)
+    //       sessionStorage.setItem('user_email', response.data.data.user_email)
+    //       sessionStorage.setItem('users_name', response.data.data.users_name)
+    //       console.log(response)
+    //       if (response.data.data.roleId === 1) {
+    //         sessionStorage.setItem('role_id', 'Support')
+    //       } else {
+    //         sessionStorage.setItem('role_id', 'Admin')
+    //       }
         
-      })
-      .catch(e => {
-        // console.log(e.response.data.data)
-        setMsg(e.response.data.data)
-      })
+    //   })
+    //   .catch(e => {
+    //     // console.log(e.response.data.data)
+    //     setMsg(e.response.data.data)
+    //   })
     setadmin_name('')
     setPassword('')
   }

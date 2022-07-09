@@ -35,7 +35,7 @@ const style = {
 
 
 function AddUsers () {
-  const [employee_name, setEmployee_name] = useState('')
+  const [employee_name, setEmployee_name] = useState('vishal')
   const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
@@ -74,11 +74,11 @@ function AddUsers () {
   useEffect(() => {
     GetUsers()
   }, [])
-  const session_token = sessionStorage.getItem('session_token');
+  // const session_token = sessionStorage.getItem('session_token');
 
-  if (!session_token) {
-    return <Navigate to='/' />
-  }
+  // if (!session_token) {
+  //   return <Navigate to='/sign-in' />
+  // }
 
   const GetUsers = () => {
     axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
@@ -149,7 +149,8 @@ function AddUsers () {
   const data = {
     users_name: users_name,
     users_email: users_email,
-    user_type: user_type
+    user_type: user_type,
+    employee_name: employee_name
   }
   const handleSubmit = event => {
     event.preventDefault()

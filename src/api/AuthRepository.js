@@ -6,7 +6,7 @@ Api.defaults.headers.common["Authorization"] = "Bearer " + token;
 class AuthRepository {
 
   async UserLogin(params) {
-    const reponse = await Api.post(`${baseUrl}/admin/login/`, params)
+    const reponse = await Api.post(`${baseUrl}admin/login/`, params)
       .then((response) => {
         return response;
       })

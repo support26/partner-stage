@@ -8,6 +8,8 @@ import Backdrop from '@mui/material/Backdrop'
 //  React components
 import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
+import cookies from "js-cookie";
+
 
 import MDBox from 'components/MDBox'
 
@@ -49,10 +51,12 @@ const style = {
 function Dashboard () {
   // const { sales, tasks } = reportsLineChartData
 
-  const session_token = sessionStorage.getItem('session_token')
-  if (!session_token) {
-    return <Navigate to='/' />
-  } 
+  // const session_token = sessionStorage.getItem('session_token')
+  // var token = cookies.get("token");
+  // console.log(token);
+  // if (!token) {
+  //   return <Navigate to='/' />
+  // } 
   
   return (
     <DashboardLayout>

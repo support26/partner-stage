@@ -2,17 +2,26 @@ import AuthRepository from "../api/AuthRepository";
 import { useDispatch } from "react-redux";
 import { login, logout, updateUserProfile } from "../store/auth/action";
 import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom'
+
 
 export default function useAdmin() {
   const dispatch = useDispatch();
+  const nav = useNavigate()
+
   const [cookies, setCookie, removeCookie] = useCookies();
   return {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
-      if (responseData.data.status === 200) {
-        setCookie("token", responseData.data.token);
+      if (responseData.status === 200) {
         dispatch(login(responseData.data));
+        setCookie(responseData.data.data.session_token, "token");
+        nav('/dashboard')
       }
+      else{
+        alert(responseData.data.data);
+      }
+      // console.log(responseData);
       return responseData.data;
     },
     isLogin: async () => {
@@ -24,7 +33,7 @@ export default function useAdmin() {
         return responseData;
       }
     },
-    
+
     logout: async () => {
       var responseData = await AuthRepository.logout();
       removeCookie("token");
@@ -47,28 +56,28 @@ export default function useAdmin() {
       }
       return false;
     },
-    GetUserProfile:async(username)=>{
-        var responseData =await AuthRepository.getUserPrifile(username)
-        if(responseData.status === 200){  
-            dispatch(updateUserProfile(responseData.data.data))
-            return responseData.data.data;
-        }
-        return false;            
+    GetUserProfile: async (username) => {
+      var responseData = await AuthRepository.getUserPrifile(username)
+      if (responseData.status === 200) {
+        dispatch(updateUserProfile(responseData.data.data))
+        return responseData.data.data;
+      }
+      return false;
     },
-    subscriberCount:async()=>{
-        var responseData = await AuthRepository.subscriberCount();
-        if(responseData.status === 200){               
-            return responseData.data.data
-        }
-        return false;
+    subscriberCount: async () => {
+      var responseData = await AuthRepository.subscriberCount();
+      if (responseData.status === 200) {
+        return responseData.data.data
+      }
+      return false;
     },
-        
-    updateFollowerStatus:async(id,data)=>{
-        var responseData = await AuthRepository.updateFollowerStatus(id,data);
-        if(responseData.status === 200){               
-            return responseData.data.data
-        }
-        return false;
-    },    
+
+    updateFollowerStatus: async (id, data) => {
+      var responseData = await AuthRepository.updateFollowerStatus(id, data);
+      if (responseData.status === 200) {
+        return responseData.data.data
+      }
+      return false;
+    },
   }
 };
