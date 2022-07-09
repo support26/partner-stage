@@ -15,7 +15,8 @@ const saveToken = (data) =>{
 
 export const initState = {
     isLogin: false,
-    auth:{}
+    auth:{},
+    msg:null
 };
 
 function reducer(state = initState, action) {
@@ -37,7 +38,12 @@ function reducer(state = initState, action) {
                 ...state,
                 ...{ auth: action.profile },
             };    
-
+            case actionTypes.error_Message:
+                return {
+                    ...state,
+                    ...{ msg: action.payload },
+                };    
+    
         default:
             return state;
     }

@@ -1,55 +1,127 @@
+import React, { useState, useEffect } from 'react'
+import ReactDOM from 'react-dom'
+import axios from 'axios'
+import { Navigate, useNavigate } from 'react-router-dom'
 
+// @mui material components
+import Card from '@mui/material/Card'
 
-import Card from "@mui/material/Card";
-
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+//  React components
+import MDBox from 'components/MDBox'
+import MDTypography from 'components/MDTypography'
+import MDInput from 'components/MDInput'
+import MDButton from 'components/MDButton'
+import Alert from '@mui/material/Alert'
 
 // Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
+import BasicLayout from 'layouts/authentication/components/BasicLayout'
 
 // Images
-import bgImage from "assets/images/bg-reset-cover.jpeg";
+import bgImage from 'assets/images/Ellipse 1 (1).svg'
 
-function Cover() {
+//sign css
+import 'layouts/authentication/sign-in/sign.css'
+
+function Cover () {
+  const nav = useNavigate()
+  const [oldPassword, setoldPassword] = useState('')
+  const [newPassword, setnewPassword] = useState('')
+  const [confirmpassword, setconfirmpassword] = useState('')
+  const [msg, setMsg] = useState()
+
+
+
+  
+
+ 
   return (
-    <CoverLayout coverHeight="50vh" image={bgImage}>
-      <Card>
-        <MDBox
-          variant="gradient"
-          bgColor="info"
-          borderRadius="lg"
-          coloredShadow="success"
-          mx={2}
-          mt={-3}
-          py={2}
-          mb={1}
-          textAlign="center"
-        >
-          <MDTypography variant="h3" fontWeight="medium" color="white" mt={1}>
-            Reset Password
-          </MDTypography>
-          <MDTypography display="block" variant="button" color="white" my={1}>
-            You will receive an e-mail in maximum 60 seconds
-          </MDTypography>
-        </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
-            <MDBox mb={4}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
-            </MDBox>
-            <MDBox mt={6} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                reset
-              </MDButton>
-            </MDBox>
+    <>
+      <BasicLayout className='banner-sign '>
+        <div className='logo-img'>
+          <img
+            src={bgImage}
+            width='100px'
+            height='100px'
+            className='sign-img '
+          />
+        </div>
+
+        <Card className='cardName' rounded>
+          <MDBox
+            className='cardName'
+            variant='gradient'
+            p={2}
+            pt={5}
+            mb={1}
+            textAlign='center'
+          >
+            <MDTypography variant='h4' fontWeight='medium' color='black' mt={1}>
+              Reset Password
+            </MDTypography>
           </MDBox>
-        </MDBox>
-      </Card>
-    </CoverLayout>
-  );
+
+          <form>
+            <MDBox mb={2} px={4}>
+              <MDInput
+                className='sign-input'
+                autoFocus
+                id='name'
+                value={oldPassword}
+               
+                type='text'
+                name='Old-Password'
+                placeholder='Old Password'
+                required
+                fullWidth
+              />
+            </MDBox>
+            <MDBox mb={2} px={4}>
+              <MDInput
+                className='sign-input'
+                type='newpassword'
+                name='newpassword'
+                value={newPassword}
+                placeholder='New Password'
+               
+                fullWidth
+              />
+              <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
+            </MDBox>
+            <MDBox mb={5} px={4}>
+              <MDInput
+                className='sign-input'
+                type='password'
+                name='Confirm-password'
+                value={confirmpassword}
+                placeholder='Confirm Password'
+               
+                fullWidth
+              />
+              <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
+            </MDBox>
+            <MDBox mb={0} px={3}>
+              <MDButton
+                className='sign-button'
+                type='submit'
+                value='Submit'
+                // onClick={createPost}
+              >
+                Submit
+              </MDButton>{' '}
+              <MDTypography
+                my={2}
+                fontSize='small'
+                fontWeight='medium'
+                textAlign='center'
+              >
+             
+              </MDTypography>
+            </MDBox>
+          </form>
+        </Card>
+      </BasicLayout>
+    </>
+  )
 }
 
-export default Cover;
+export default Cover

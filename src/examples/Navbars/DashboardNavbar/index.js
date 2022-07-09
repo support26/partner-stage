@@ -42,6 +42,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { responsiveFontSizes } from "@material-ui/core";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import {useSelector} from 'react-redux'
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -49,7 +50,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-
+  const {auth}= useSelector((state)=>state.auth)
+    //  console.log(auth)
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -89,10 +91,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
     sessionStorage.removeItem('session_token')
     nav('/sign-in')
       //  sessionStorage.removeItem('session_token')
-     
-
     }
   // Render the notifications menu
+
   const renderMenu = () => ( 
 
    
@@ -108,23 +109,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
       sx={{ mt: 2 }}
     >
     
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={users_name} />
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={auth.users_name} />
   
-      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={role_id}/>
-      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={user_email}/>
+      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(auth.roleId==0)? 'Admin':'Support'}/>
+      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={auth.user_email}/>
 
       <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick= {logOut} title="Log Out " />
     </Menu>
   )
 
-  const username = sessionStorage.getItem('username')
-  const role_id = sessionStorage.getItem('role_id')
-  const user_email = sessionStorage.getItem('user_email')
-  const users_name = sessionStorage.getItem('users_name')
-      
-       // alert(login_id);l
-  
-  // Styles for the navbar icons
   const iconsStyle = ({
     palette: { dark, white, text },
     functions: { rgba }

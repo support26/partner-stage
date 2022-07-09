@@ -11,7 +11,7 @@ class AuthRepository {
         return response;
       })
       .catch((error) => {
-        console.log(error.response);
+       
         return error.response;
       });
     return reponse;
@@ -52,6 +52,7 @@ class AuthRepository {
         console.log(error.response);
         return error.response;
       });
+      
     return reponse;
   }
 
