@@ -4,7 +4,7 @@ import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
-import {token} from '../../api/config'
+import { token } from '../../api/config'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -16,26 +16,41 @@ import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
+
 const style = {
   position: 'absolute',
-  top: '40%',
+  top: '42%',
   left: '60%',
   transform: 'translate(-50%, -50%)',
-  width: '340px',
+  width: '350px',
   padding: '35px',
-  height: '450px',
+  height: '488px',
   borderRadius: '15px',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4
+  p: 3
+}
+const style_1 = {
+  position: 'absolute',
+  top: '44%',
+  left: '60%',
+  transform: 'translate(-50%, -50%)',
+  width: '350px',
+  padding: '35px',
+  height: '560px',
+  borderRadius: '15px',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 3
 }
 function AddUsers() {
-  const [employee_name, setEmployee_name] = useState('vishal')
+  const [employee_name, setEmployee_name] = useState('')
   const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
   const [user_id, setUser_id] = useState('')
+  const [is_active, setIs_active] = useState('')
   const [users, setUsers] = useState([])
   const [pageSize, setPageSize] = useState(10)
   const [open, setOpen] = useState(false)
@@ -45,7 +60,7 @@ function AddUsers() {
     setOpenModal(true)
   }
   const closeModal = () => setOpenModal(false)
-  const [editUserModal, setEditUserModal] = useState(false)
+  const [editUserModal, setEditUserModal] = useState(true)
   // const openEditUserModal = () => setEditUserModal(true)
   const closeEditUserModal = () => {
     setEditUserModal(false)
@@ -69,7 +84,7 @@ function AddUsers() {
   useEffect(() => {
     GetUsers()
   }, [])
-  const session_token = sessionStorage.getItem('session_token');
+  const session_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsInVzZXJzX25hbWUiOiJzdXBwb3J0NCIsImlhdCI6MTY1NzUyMDg3NiwiZXhwIjoxNjU3NjA3Mjc2fQ.fu3gmPB9M3SX4FvysSwEty5wq6FajPTzY1m1q-OF2F4';
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
@@ -102,6 +117,7 @@ function AddUsers() {
           setUser_id(params.id)
           setUsers_name(thisRow.users_name)
           setUsers_email(thisRow.users_email)
+          setIs_active(thisRow.is_active)
           setEditUserModal(true)
           return console.log(params)
         }
@@ -112,11 +128,12 @@ function AddUsers() {
         )
       }
     },
-    { field: 's_no', headerName: 'S No.', width: 70 ,
-  renderCell: function (params) {
-    return params.value
-  }
-},
+    {
+      field: 's_no', headerName: 'S No.', width: 70,
+      renderCell: function (params) {
+        return params.value
+      }
+    },
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'users_name', headerName: 'users_name', width: 130 },
     { field: 'users_email', headerName: 'users_email', width: 130 },
@@ -177,6 +194,7 @@ function AddUsers() {
     console.log(users_email)
     setUsers_name('')
     setUsers_email('')
+    setEmployee_name('')
   }
   return (
     <DashboardLayout>
@@ -218,6 +236,17 @@ function AddUsers() {
           <Box sx={style}>
             <form onSubmit={handleSubmit}>
               <h2 className='addUserHeading'>Add Users</h2>
+              <label>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
               <label>Username</label>
               <input
                 className='modalInput'
@@ -286,10 +315,21 @@ function AddUsers() {
         }}
       >
         <Fade in={editUserModal}>
-          <Box sx={style}>
+          <Box sx={style_1}>
             <form onSubmit={updateUser}>
               <h2 className='addUserHeading'>Edit Users</h2>
-              <label>Username</label>
+              <label style={{ fontSize: "16px" }}>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
+              <label style={{ fontSize: "16px" }}>Username</label>
               <input
                 className='modalInput'
                 required
@@ -300,7 +340,7 @@ function AddUsers() {
                 value={users_name}
                 onChange={e => setUsers_name(e.target.value)}
               ></input>
-              <label>Email</label>
+              <label style={{ fontSize: "16px" }}>Email</label>
               <input
                 className='modalInput'
                 required
@@ -311,7 +351,7 @@ function AddUsers() {
                 value={users_email}
                 onChange={e => setUsers_email(e.target.value)}
               ></input>
-              <label>User type</label>
+              <label style={{ fontSize: "16px" }}>User type</label>
               <select
                 required
                 className='modalInput'
@@ -333,7 +373,28 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              {/* </FormControl> */}
+              <label style={{ fontSize: "16px" }}>Active User</label>
+              <select
+                required
+                className='modalInput'
+                type='text'
+                name='user_type'
+                value={is_active}
+                onChange={e => setIs_active(e.target.value)}
+              >
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'Y'}
+                >
+                  Enable
+                </option>
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'N'}
+                >
+                  Disable
+                </option>
+              </select>
               <input
                 className='modalSubmit'
                 type='submit'
