@@ -70,9 +70,11 @@ function AddUsers() {
     GetUsers()
   }, [])
   const session_token = sessionStorage.getItem('session_token');
+
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
+
   const GetUsers = () => {
     axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
       console.log(response)
