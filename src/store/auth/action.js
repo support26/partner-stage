@@ -2,7 +2,8 @@ export const actionTypes = {
     LOGIN: 'LOGIN',   
     LOGOUT: 'LOGOUT',   
     UPDATE_PROFILE:'UPDATE_PROFILE',
-    error_Message:'error_Message'
+    error_Message:'error_Message',
+    Reset:'Reset'
 };
 
 export function login(payload) {
@@ -20,4 +21,7 @@ export function updateUserProfile(profile) {
 
 export function errorMessage(payload) {
    return { type: actionTypes.error_Message,payload };
+}
+export function Reset(payload) {
+   return { type: actionTypes.Reset,payload};
 }
