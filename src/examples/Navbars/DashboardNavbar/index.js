@@ -108,6 +108,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={'employ name'} />
     
       <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={auth.users_name} />
   
@@ -179,7 +180,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                <Icon sx={iconsStyle} className= "fontSizess">account_circle</Icon>
               </IconButton>
-              {/* <IconButton
+              <IconButton
                 size="small"
                 disableRipple
                 color="inherit"
@@ -189,7 +190,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon sx={iconsStyle} fontSize='medium'>
                   {miniSidenav ? 'menu_open' : 'menu'}
                 </Icon>
-              </IconButton> */}
+              </IconButton>
               {/* <IconButton
                 size="small"
                 disableRipple

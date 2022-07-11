@@ -30,18 +30,21 @@ function Cover () {
   const [confirmpassword, setconfirmpassword] = useState('')
   const [msg, setMsg] = useState()
   const {GetUserProfile} = useAdmin()
-
+  const {Reset} = useAdmin()
   //console.log(GetUserProfile);
-  
-  const handleSubmit = event => {
+  console.log(document.cookie);
+  const handleReset = event => {
     event.preventDefault()
-  const password=(newPassword===confirmpassword)  
-    if(password){
-      console.log(password)
-      nav('/sign-in')
-    }else{
-      console.log('does not match')
-    }
+    Reset({oldPassword,newPassword})
+ // console.log(Reset);
+    // const password=(newPassword===confirmpassword)  
+    // if(password){
+    //   console.log(password)
+      
+    //   nav('/sign-in')
+    // }else{
+    //   console.log('does not match')
+    // }
   
 
   };
@@ -71,7 +74,7 @@ function Cover () {
             </MDTypography>
           </MDBox>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleReset}>
             <MDBox mb={2} px={4}>
               <MDInput
                 className='sign-input'
@@ -129,6 +132,7 @@ function Cover () {
              
               </MDTypography>
             </MDBox>
+            
           </form>
         </Card>
       </BasicLayout>

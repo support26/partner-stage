@@ -4,7 +4,7 @@ import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
-
+import {token} from '../../api/config'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -15,7 +15,6 @@ import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import { hover } from '@testing-library/user-event/dist/hover'
-
 // mui custom style
 const style = {
   position: 'absolute',
@@ -30,10 +29,9 @@ const style = {
   boxShadow: 24,
   p: 4
 }
-
-
-
 function AddUsers() {
+  const [employee_name, setEmployee_name] = useState('vishal')
+  const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
@@ -85,7 +83,6 @@ function AddUsers() {
       console.log(e)
     })
   }
-
   const columns = [
     {
       field: 'action',
@@ -94,7 +91,6 @@ function AddUsers() {
       sortable: false,
       renderCell: function (params) {
         const onClick = function (e) {
-
           e.stopPropagation() // don't select this row after clicking
           const api = params.api
           const thisRow = {}
@@ -112,17 +108,20 @@ function AddUsers() {
           return console.log(params)
         }
         return (
-          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33a2b5', '&:hover': { backgroundColor: '#2a90a2' } }}>
+          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33A2B5', '&:hover': { backgroundColor: '#2A90A2' } }}>
             Edit
           </Button>
         )
       }
     },
-
+    { field: 's_no', headerName: 'S No.', width: 70 ,
+  renderCell: function (params) {
+    return params.value
+  }
+},
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'users_name', headerName: 'users_name', width: 130 },
     { field: 'users_email', headerName: 'users_email', width: 130 },
-
     {
       field: 'roleId',
       headerName: 'User Type',
@@ -136,11 +135,11 @@ function AddUsers() {
       }
     }
   ]
-
   const data = {
     users_name: users_name,
     users_email: users_email,
-    user_type: user_type
+    user_type: user_type,
+    employee_name: employee_name
   }
   const handleSubmit = event => {
     event.preventDefault()
@@ -181,13 +180,10 @@ function AddUsers() {
     setUsers_name('')
     setUsers_email('')
   }
-
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <Snackbar
-
         anchorOrigin={{ vertical, horizontal }}
         key={vertical + horizontal}
         open={open}
@@ -209,7 +205,6 @@ function AddUsers() {
           User {snackType} Successfully!
         </Alert>
       </Snackbar>
-
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -280,7 +275,6 @@ function AddUsers() {
           </Box>
         </Fade>
       </Modal>
-
       {/* edit user modal  */}
       <Modal
         aria-labelledby='transition-modal-title'
@@ -351,21 +345,19 @@ function AddUsers() {
           </Box>
         </Fade>
       </Modal>
-
       <div>
         <button className='modalOpenBtn' onClick={handleModal}>
           Add Users
         </button>
       </div>
-
       <div style={{ height: 550, width: '100%', marginTop: '70px' }}>
         <DataGrid
           sx={{
             boxShadow: 2,
             border: 2,
-            borderColor: '#33a2b5',
+            borderColor: '#33A2B5',
             '& .MuiDataGrid-cell:hover': {
-              color: '#33a2b5',
+              color: '#33A2B5',
             },
           }}
           rows={users}

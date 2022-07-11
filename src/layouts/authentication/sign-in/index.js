@@ -37,67 +37,41 @@ function Basic () {
     const {msg}= useSelector((state)=>state.auth)
      const dispatch = useDispatch();
   const handleSubmit = event => {
-    event.preventDefault()
-    
-    login({admin_name,password})
-    // console.log(msg)
-    
-    
-    
+    event.preventDefault();
+  
+    login({admin_name, password})
     // axios
-
-    //   .post("http://localhost:8001/admin/login", { admin_name, password })
-    //   .then((response) => {
-    //     if (response.data.data.is_active === "Y") {
-    //       if (response.data.data.login_count == 0) {
-    //         nav("/reset");
-    //         sessionStorage.setItem(
-    //           "session_token",
-    //           response.data.data.session_token
-    //         );
+    //   .post('http://localhost:8001/admin/login', { admin_name, password })
+    //   .then(response => {
+        
+    //       nav('/dashboard')
+    //       sessionStorage.setItem(
+    //         'session_token',
+    //         response.data.data.session_token
+    //       )
+    //       sessionStorage.setItem('login_id', response.data.data.id)
+    //       sessionStorage.setItem('login_count', response.data.data.login_count)
+    //       sessionStorage.setItem('user_email', response.data.data.user_email)
+    //       sessionStorage.setItem('users_name', response.data.data.users_name)
+    //       console.log(response)
+    //       if (response.data.data.roleId === 1) {
+    //         sessionStorage.setItem('role_id', 'Support')
     //       } else {
-    //         nav("/dashboard");
-    //         sessionStorage.setItem(
-    //           "session_token",
-    //           response.data.data.session_token
-    //         ); 
-    //         sessionStorage.setItem("login_id", response.data.data.id);
-    //         // sessionStorage.setItem(
-    //         //   "login_count",
-    //         //   response.data.data.login_count
-    //         // );
-    //         sessionStorage.setItem("user_email", response.data.data.user_email);
-    //         sessionStorage.setItem("users_name", response.data.data.users_name);
-
-    //         console.log(response);
-    //         if (response.data.data.roleId === 1) {
-    //           sessionStorage.setItem("role_id", "Support");
-    //         } else {
-    //           sessionStorage.setItem("role_id", "Admin");
-    //         }
+    //         sessionStorage.setItem('role_id', 'Admin')
     //       }
-    //     }
-    //     else{
-    //       alert('pls contact Admin')
-    //     }
+        
     //   })
-    //   .catch((e) => {
+    //   .catch(e => {
     //     // console.log(e.response.data.data)
-    //     if(e.response.data.data==='User not active!'){
-    //      const hell= setMsg("You are inactive user, Please contact your Admin")
-    //      // alert(setMsg("You are inactive user, Please contact your Admin"));
-    //     }
-    //     else{
-    //     setMsg(e.response.data.data);
-    //     }
-    //   });
-    // setadmin_name("");
-    // setPassword("");
-  };
-  const session_token = sessionStorage.getItem("session_token");
-  if (session_token) {
-    return <Navigate to="/dashboard" />;
+    //     setMsg(e.response.data.data)
+    //   })
+    setadmin_name('')
+    setPassword('')
   }
+  // const session_token = sessionStorage.getItem('session_token') ;
+  // if (session_token) {
+  //   return <Navigate to="/dashboard" />;
+  // }
   return (
     <>
       <BasicLayout className="banner-sign ">
