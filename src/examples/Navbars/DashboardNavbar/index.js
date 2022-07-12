@@ -43,6 +43,8 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { responsiveFontSizes } from "@material-ui/core";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {useSelector} from 'react-redux'
+import useAdmin from '../../../hooks/useAdmin'
+
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -51,6 +53,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const {auth}= useSelector((state)=>state.auth)
+  
+  const Ravi=auth;
+
+  const {logout} = useAdmin()
+
+
     //  console.log(auth)
   useEffect(() => {
     // Setting the navbar type
@@ -88,7 +96,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const nav= useNavigate();
         
   const logOut=()=>{
-    localStorage.removeItem('session_token')
+   // sessionStorage.removeItem('session_token')
+   logout();
+   //console.log(logout);
     nav('/sign-in')
       //  localStorage.removeItem('session_token')
     }
@@ -110,10 +120,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={'employ name'} />
     
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={auth.users_name} />
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={Ravi.users_name} />
   
-      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(auth.roleId==0)? 'Admin':'Support'}/>
-      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={auth.user_email}/>
+      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(Ravi.roleId==0)? 'Admin':'Support'}/>
+      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={Ravi.user_email}/>
 
       <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick= {logOut} title="Log Out " />
     </Menu>

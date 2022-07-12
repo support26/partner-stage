@@ -1,10 +1,10 @@
 import Api, { baseUrl } from "./config";
-const session_token = localStorage.getItem("session_token");
+const token = localStorage.getItem('token');
 class AdminRepository {
   async GetAlladminUser() {
     const reponse = await Api.get(`${baseUrl}admin/allUsers/${0}`, {
       headers: {
-        'Authorization': 'Bearer ' + session_token
+        'Authorization': 'Bearer ' + token
       }
     })
       .then((response) => {
@@ -19,7 +19,7 @@ class AdminRepository {
   async addAdminUser(data) {
     const reponse = await Api.post(`${baseUrl}admin/create`, data, {
       headers: {
-        'Authorization': 'Bearer ' + session_token
+        'Authorization': 'Bearer ' + token
       }
     })
       .then((response) => {

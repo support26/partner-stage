@@ -6,7 +6,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
 import { token } from '../../api/config'
 import useAdmin from '../../hooks/useAdmin'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -46,9 +46,9 @@ const style_1 = {
   p: 3
 }
 function AddUsers() {
-const {getAlladminUser} = useAdmin()
-const {GetAlladminUser} = useSelector((state)=>state.auth)
-  const session_token = localStorage.getItem('session_token');
+  const { getAlladminUser } = useAdmin()
+  const { GetAlladminUser } = useSelector((state) => state.auth)
+  const token = localStorage.getItem('token');
   const [employee_name, setEmployee_name] = useState('')
   const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
@@ -95,7 +95,9 @@ const {GetAlladminUser} = useSelector((state)=>state.auth)
   //   return <Navigate to='/' />
   // }
   const GetUsers = () => {
-    console.log("session_token", session_token);
+    getAlladminUser();
+    setUsers(GetAlladminUser)
+    // console.log("session_token", session_token);
     // axios.get('http://localhost:8001/admin/allUsers/10', {
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -175,7 +177,7 @@ const {GetAlladminUser} = useSelector((state)=>state.auth)
       .post('http://localhost:8001/admin/create', data, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + session_token
+          'Authorization': 'Bearer ' + token
         }
       })
       .then(response => {
@@ -206,14 +208,13 @@ const {GetAlladminUser} = useSelector((state)=>state.auth)
       .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + session_token
+          'Authorization': 'Bearer ' + token
         }
       })
       .then(response => {
         console.log(response.data)
         handleOpen('Updated ')
-        getAlladminUser();
-        // setUsers(GetAlladminUser)
+
         GetUsers()
         closeEditUserModal()
       })

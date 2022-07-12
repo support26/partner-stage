@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export default function useAdmin() {
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie,getCookie, removeCookie] = useCookies();
   const nav = useNavigate()
 
 
@@ -18,15 +18,23 @@ export default function useAdmin() {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
       if (responseData.status === 200) {
-        localStorage.setItem("session_token", responseData.data.data.session_token);
+        // console.log(responseData.data.data.session_token)
         setCookie(responseData.data.data.session_token, 'token');
-        if (responseData.data.data.login_count == 0) {
+        // console.log(responseData.data.data.login_count)
+        if(responseData.data.data.login_count == 0 ){
+          localStorage.setItem('token',responseData.data.data.session_token);
+          dispatch(errorMessage(''))
           nav('/reset');
-        } else {
+
+        }else{
           dispatch(login(responseData.data));
-          nav('/dashboard');
-        }
-      } else {
+          localStorage.setItem('token',responseData.data.data.session_token);
+        
+        nav('/dashboard');
+      }
+    
+      }  else{
+        // alert(responseData.data.data)
         dispatch(errorMessage(responseData.data.data))
       }
       return responseData.data;
@@ -55,9 +63,17 @@ export default function useAdmin() {
     Reset: async (data) => {
       var responseData = await AuthRepository.userReset(data);
       if (responseData.status === 200) {
-        setCookie(responseData.data.data.session_token, 'token');
-        dispatch(Reset(responseData.data));
-      } else {
+        // localStorage.getItem('token');
+        // console.log(localStorage.getItem('token'))
+        // dispatch(Reset(responseData.data));
+       
+        // console.log(responseData.data.data.login_count)
+      
+        localStorage.removeItem('token')
+        nav('/sign-in' )
+     dispatch(errorMessage(''))
+      }  else{
+        // alert(responseData.data.data)
         dispatch(errorMessage(responseData.data.data))
       }
       return responseData.data;
@@ -76,7 +92,7 @@ export default function useAdmin() {
     // },
 
     logout: async () => {
-      // var responseData = await AuthRepository.logout();
+    //  var responseData = await AuthRepository.logout();
       removeCookie("token");
       dispatch(logout());
       return true;
@@ -120,17 +136,41 @@ export default function useAdmin() {
       }
       return false;
     },
-
-    updateFollowerStatus: async (id, data) => {
-      var responseData = await AuthRepository.updateFollowerStatus(id, data);
+        
+    updateFollowerStatus:async(id,data)=>{
+        var responseData = await AuthRepository.updateFollowerStatus(id,data);
+        if(responseData.status === 200){               
+            return responseData.data.data
+        }
+        return false;
+    },  
+    GetUserProfile: async (username) => {
+      var responseData = await AuthRepository.getUserPrifile(username)
       if (responseData.status === 200) {
-        return responseData.data.data
+        dispatch(updateUserProfile(responseData.data.data))
+        return responseData.data.data;
       }
       return false;
     },
+    
+    //reset api 
+    // Runner: async (data) => {
+    //   var responseData = await AuthRepository.runnerTable(data);
+    //   if (responseData.status === 200) {
+    //      console.log(responseData.data);
+   
 
+  
+    //   }  else{
+    //     // alert(responseData.data.data)
+    //     dispatch(errorMessage(responseData.data.data))
 
+    //   }
+    //   // console.log(responseData);
+    //   return responseData.data;
+    // },
 
+  
 
   }
 };
