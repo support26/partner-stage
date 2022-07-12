@@ -5,6 +5,8 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
 import { token } from '../../api/config'
+import useAdmin from '../../hooks/useAdmin'
+import {useSelector} from 'react-redux'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -44,13 +46,16 @@ const style_1 = {
   p: 3
 }
 function AddUsers() {
+const {getAlladminUser} = useAdmin()
+const {GetAlladminUser} = useSelector((state)=>state.auth)
+  const session_token = localStorage.getItem('session_token');
   const [employee_name, setEmployee_name] = useState('')
   const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
   const [user_id, setUser_id] = useState('')
-  const [is_active, setIs_active] = useState('')
+  const [is_active, setIs_active] = useState('Y')
   const [users, setUsers] = useState([])
   const [pageSize, setPageSize] = useState(10)
   const [open, setOpen] = useState(false)
@@ -60,7 +65,7 @@ function AddUsers() {
     setOpenModal(true)
   }
   const closeModal = () => setOpenModal(false)
-  const [editUserModal, setEditUserModal] = useState(true)
+  const [editUserModal, setEditUserModal] = useState(false)
   // const openEditUserModal = () => setEditUserModal(true)
   const closeEditUserModal = () => {
     setEditUserModal(false)
@@ -82,19 +87,26 @@ function AddUsers() {
   }
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
-    GetUsers()
+    getAlladminUser();
+    setUsers(GetAlladminUser)
+
   }, [])
-  const session_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsInVzZXJzX25hbWUiOiJzdXBwb3J0NCIsImlhdCI6MTY1NzUyMDg3NiwiZXhwIjoxNjU3NjA3Mjc2fQ.fu3gmPB9M3SX4FvysSwEty5wq6FajPTzY1m1q-OF2F4';
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
   const GetUsers = () => {
-    axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
-      console.log(response)
-      setUsers(response.data.data)
-    }).catch(e => {
-      console.log(e)
-    })
+    console.log("session_token", session_token);
+    // axios.get('http://localhost:8001/admin/allUsers/10', {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer ' + session_token
+    //   }
+    // }).then(response => {
+    //   console.log(response)
+    //   setUsers(response.data.data)
+    // }).catch(e => {
+    //   console.log(e)
+    // })
   }
   const columns = [
     {
@@ -117,7 +129,8 @@ function AddUsers() {
           setUser_id(params.id)
           setUsers_name(thisRow.users_name)
           setUsers_email(thisRow.users_email)
-          setIs_active(thisRow.is_active)
+          setIs_active(params.row.is_active)
+          setEmployee_name(params.row.employee_name)
           setEditUserModal(true)
           return console.log(params)
         }
@@ -159,7 +172,12 @@ function AddUsers() {
   const handleSubmit = event => {
     event.preventDefault()
     axios
-      .post('http://localhost:8001/admin/create', { headers: { "Authorization": `Bearer ${session_token}` }, data })
+      .post('http://localhost:8001/admin/create', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session_token
+        }
+      })
       .then(response => {
         console.log(response)
         handleOpen('Added ')
@@ -167,7 +185,7 @@ function AddUsers() {
         closeModal()
       }).catch(e => {
         console.log(e)
-        handleOpen(e.message)
+        // handleOpen(e.message)
       })
     console.log(user_type)
     console.log(users_name)
@@ -175,23 +193,35 @@ function AddUsers() {
     setUsers_name('')
     setUsers_email('')
   }
+  const data_1 = {
+    users_name: users_name,
+    users_email: users_email,
+    user_type: user_type,
+    employee_name: employee_name,
+    is_active: is_active
+  }
   const updateUser = event => {
     event.preventDefault()
     axios
-      .put(`http://localhost:3000/user/${user_id}`, {
-        users_name,
-        users_email,
-        user_type
+      .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session_token
+        }
       })
       .then(response => {
         console.log(response.data)
         handleOpen('Updated ')
+        getAlladminUser();
+        // setUsers(GetAlladminUser)
         GetUsers()
         closeEditUserModal()
       })
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
+    console.log(is_active)
+    console.log(employee_name)
     setUsers_name('')
     setUsers_email('')
     setEmployee_name('')

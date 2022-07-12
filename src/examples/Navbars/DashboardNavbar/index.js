@@ -86,11 +86,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const nav= useNavigate();
-
+        
   const logOut=()=>{
-    sessionStorage.removeItem('session_token')
+    localStorage.removeItem('session_token')
     nav('/sign-in')
-      //  sessionStorage.removeItem('session_token')
+      //  localStorage.removeItem('session_token')
     }
   // Render the notifications menu
 
@@ -108,6 +108,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={'employ name'} />
     
       <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={auth.users_name} />
   

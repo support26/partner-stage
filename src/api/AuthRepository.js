@@ -6,6 +6,7 @@ Api.defaults.headers.common["Authorization"] = "Bearer " + token;
 class AuthRepository {
 
   async UserLogin(params) {
+    // console.log("token", token);
     const reponse = await Api.post(`${baseUrl}admin/login/`, params)
       .then((response) => {
         return response;
@@ -53,6 +54,24 @@ class AuthRepository {
         return error.response;
       });
       
+    return reponse;
+  }
+  
+
+  async userReset() {
+     var token = cookies.get("token");
+    console.log(token);
+    Api.defaults.headers.common["Authorization"] = "Bearer " + token;
+    const reponse = await Api.post(`${baseUrl}admin/login/passwordreset/`)
+      .then((response) => { 
+        console.log(response)
+        return response;
+       
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
     return reponse;
   }
 
