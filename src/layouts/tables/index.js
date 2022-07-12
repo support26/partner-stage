@@ -1,3 +1,4 @@
+import useAdmin from '../../hooks/useAdmin'
 
 // export default Tables;
 import { useHistory } from 'react-router';
@@ -48,6 +49,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function Tables(props) {
+  const {Runner} = useAdmin()
+
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
 
@@ -110,14 +113,14 @@ export default function Tables(props) {
       },
     },
     { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "Name", width: 130 },
+    { field: "name", headerName: "Name", width: 130 },
     {
       field: "lastName",
       headerName: "Last Name ",
       width: 130,
      
     },  {
-      field: "number_user",
+      field: "phone_number",
       headerName: "Number(Prefilled from Sign In)  ",
       type: "number",
       width: 90,
@@ -159,7 +162,7 @@ export default function Tables(props) {
      
     },
     {
-      field: "address",
+      field: "latlong_address",
       headerName: "Address",
       type: "text",
       width: 130,
@@ -274,15 +277,15 @@ export default function Tables(props) {
 
   //runner set data
    const [id, setID] = useState(null);
-  const [firstName, setFirstName] = useState("");
+  const [name, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [number_user, setNumber_user] = useState("");
+  const [phone_number, setNumber_user] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [education, setEducation] = useState("");
-  const [address, setAddress] = useState("");
+  const [latlong_address, setAddress] = useState("");
   const [state, setState] = useState("");
   const [district, setDistrict] = useState("");
   const [tehsil, setTehsil] = useState("");
@@ -311,15 +314,15 @@ export default function Tables(props) {
     axios
       .put(`http://localhost:3000/users/${id}`, {
        
-        firstName,
+        name,
         lastName,
-        number_user,
+        phone_number,
         email,
         age,
         dob,
         gender,
         education,
-        address,
+        latlong_address,
         state,
         district,
         tehsil,
@@ -343,12 +346,14 @@ export default function Tables(props) {
   };
   
 const GetRunner=()=>{
-   axios.get(`http://localhost:3000/users`).then((response) => {
+   axios.get(`http://localhost:8001/users`).then((response) => {
       setAPIData(response.data);
      
     });
 }
 
+
+//Runner({name,email,phone_number,latlong_address})
   useEffect(() => {
     GetRunner();
   }, []);
@@ -425,7 +430,7 @@ const GetRunner=()=>{
                     required
                     id="outlined-required"
                     label="First Name "
-                    value={firstName}
+                    value={name}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
                   <TextField
@@ -438,7 +443,7 @@ const GetRunner=()=>{
                   <TextField
                     id="outlined-disabled"
                     label="Number(Prefilled from Sign In)"
-                    value={number_user}
+                    value={phone_number}
                     onChange={(e) => setNumber_user(e.target.value)}
                   />{" "}
                   <TextField
@@ -485,7 +490,7 @@ const GetRunner=()=>{
                     
                       label="Address"
                       
-                      value={address}
+                      value={latlong_address}
                       onChange={(e) => setAddress(e.target.value)}
 
                     />
