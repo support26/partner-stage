@@ -100,7 +100,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
    logout();
    //console.log(logout);
     nav('/sign-in')
-      //  sessionStorage.removeItem('session_token')
+      //  localStorage.removeItem('session_token')
     }
   // Render the notifications menu
 

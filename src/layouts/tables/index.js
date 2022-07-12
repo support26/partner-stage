@@ -1,4 +1,5 @@
 import useAdmin from "../../hooks/useAdmin";
+import { useSelector } from 'react-redux'
 
 // export default Tables;
 import { useHistory } from "react-router";
@@ -44,14 +45,45 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import UploadImages from "./upload_image";
 
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function Tables(props) {
-  const { Runner } = useAdmin();
+
+  const {Runner} = useAdmin()
+  const { GetAllUser } = useSelector((state) => state.auth)
 
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
+ //runner set data
+  const [id, setID] = useState(null);
+  const [name, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone_number, setNumber_user] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [education, setEducation] = useState("");
+  const [latlong_address, setAddress] = useState("");
+  const [state, setState] = useState("");
+  const [district, setDistrict] = useState("");
+  const [tehsil, setTehsil] = useState("");
+  const [village, setVillage] = useState("");
+  const [location, setLocation] = useState("");
+  const [beneficiaryname, setBeneficiaryname] = useState("");
+  const [accountno, setAccountno] = useState("");
+  const [ifsc, setifsc] = useState("");
+
+  const [idproofPhoto, setIdproofPhoto] = useState("");
+  const [passbook, setPassbook] = useState("");
+  const [pancard, setPancard] = useState("");
+  const [idnumber, setIdnumber] = useState("");
+  const [pancardno, setPancardno] = useState("");
+  const [runnerphoto, setRunnerphoto] = useState("");
+
+  const [APIData, setAPIData] = useState([]);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -60,6 +92,10 @@ export default function Tables(props) {
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
+
+
+//console.log(name)
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -82,15 +118,15 @@ export default function Tables(props) {
               return (thisRow[c.field] = params.getValue(params.id, c.field));
             });
           setID(params.id);
-          setFirstName(params.row.firstName);
+          setFirstName(thisRow.name);
           setLastName(params.row.lastName);
-          setNumber_user(params.row.number_user);
-          setEmail(params.row.email);
+          setNumber_user(thisRow.phone_number);
+          setEmail(thisRow.email);
           setAge(params.row.age);
           setDob(params.row.dob);
           setGender(params.row.gender);
           setEducation(params.row.education);
-          setAddress(params.row.address);
+          setAddress(params.row.latlong_address);
           setState(params.row.state);
           setDistrict(params.row.district);
           setTehsil(params.row.tehsil);
@@ -257,82 +293,64 @@ export default function Tables(props) {
     },
   ];
 
-  //runner set data
-  const [id, setID] = useState(null);
-  const [name, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone_number, setNumber_user] = useState("");
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
-  const [education, setEducation] = useState("");
-  const [latlong_address, setAddress] = useState("");
-  const [state, setState] = useState("");
-  const [district, setDistrict] = useState("");
-  const [tehsil, setTehsil] = useState("");
-  const [village, setVillage] = useState("");
-  const [location, setLocation] = useState("");
-  const [beneficiaryname, setBeneficiaryname] = useState("");
-  const [accountno, setAccountno] = useState("");
-  const [ifsc, setifsc] = useState("");
+ 
+   const updateAPIData = (event) => {
+ setOpen(false);
+   }
+  //   event.preventDefault();
+  //   axios
+  //     .put(`http://localhost:3000/users/${id}`, {
+  //       name,
+  //       lastName,
+  //       phone_number,
+  //       email,
+  //       age,
+  //       dob,
+  //       gender,
+  //       education,
+  //       latlong_address,
+  //       state,
+  //       district,
+  //       tehsil,
+  //       village,
+  //       location,
+  //       beneficiaryname,
+  //       accountno,
+  //       ifsc,
+  //       idproofPhoto,
+  //       passbook,
+  //       pancard,
+  //       idnumber,
+  //       pancardno,
+  //       runnerphoto,
+  //       // lastName,
+  //     })
+  //     .then(() => {
+  //       GetRunner();
+  //       // history.push('/Tables')
+  //     });
+  // };
 
-  const [idproofPhoto, setIdproofPhoto] = useState("");
-  const [passbook, setPassbook] = useState("");
-  const [pancard, setPancard] = useState("");
-  const [idnumber, setIdnumber] = useState("");
-  const [pancardno, setPancardno] = useState("");
-  const [runnerphoto, setRunnerphoto] = useState("");
+  // const GetRunner = () => {
+  //   axios.get(`http://localhost:8001/users/10`).then((response) => {
+  //     setAPIData(response.data);
+  //   });
+  // };
 
-  const [APIData, setAPIData] = useState([]);
+  ////Runner({name,email,phone_number,latlong_address})
 
-  const updateAPIData = (event) => {
-    setOpen(false);
-
-    event.preventDefault();
-    axios
-      .put(`http://localhost:3000/users/${id}`, {
-        name,
-        lastName,
-        phone_number,
-        email,
-        age,
-        dob,
-        gender,
-        education,
-        latlong_address,
-        state,
-        district,
-        tehsil,
-        village,
-        location,
-        beneficiaryname,
-        accountno,
-        ifsc,
-        idproofPhoto,
-        passbook,
-        pancard,
-        idnumber,
-        pancardno,
-        runnerphoto,
-        // lastName,
-      })
-      .then(() => {
-        GetRunner();
-        // history.push('/Tables')
-      });
-  };
-
-  const GetRunner = () => {
-    axios.get(`http://localhost:8001/users/10`).then((response) => {
-      setAPIData(response.data);
-    });
-  };
-
-  //Runner({name,email,phone_number,latlong_address})
   useEffect(() => {
-    GetRunner();
-  }, []);
+    Runner(GetAllUser);
+    //setAPIData()
+   //console.log(setAPIData())
+
+  }, [])
+  const session_token = sessionStorage.getItem('session_token');
+  
+  //Runner({name,email,phone_number,latlong_address})
+  // useEffect(() => {
+  //   GetRunner();
+  // }, []);
   //session token
   // const session_token = sessionStorage.getItem('session_token')
   // if (!session_token) {

@@ -3,7 +3,9 @@ export const actionTypes = {
     LOGOUT: 'LOGOUT',   
     UPDATE_PROFILE:'UPDATE_PROFILE',
     error_Message:'error_Message',
-    Reset:'Reset'
+    Reset:'Reset',
+    AdminUser:'AdminUser',
+    Runner:'Runner'
 };
 
 export function login(payload) {
@@ -25,3 +27,9 @@ export function errorMessage(payload) {
 // export function Reset(payload) {
 //    return { type: actionTypes.Reset,payload};
 // }
+export function AlladminUser(payload) {
+   return { type: actionTypes.AdminUser,payload};
+}
+export function Runner(payload) {
+   return { type: actionTypes.Runner,payload};
+}
