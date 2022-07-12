@@ -11,25 +11,26 @@ class AuthRepository {
         return response;
       })
       .catch((error) => {
-       
+
         return error.response;
       });
     return reponse;
   }
 
-  // async isLogin() {
-  //   var token = cookies.get("token");
-  //   Api.defaults.headers.common["Authorization"] = "Bearer " + token;
-  //   const reponse = await Api.get(`${baseUrl}admin/is-login/`)
-  //     .then((response) => {
-  //       return response;
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response);
-  //       return error.response;
-  //     });
-  //   return reponse;
-  // }
+  async isLogin() {
+    var token = cookies.get("token");
+    Api.defaults.headers.common["Authorization"] = "Bearer " + token;
+    const reponse = await Api.get(`${baseUrl}admin/is-login/`)
+      .then((response) => {
+        console.log("@@@ check login user", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
 
   async logout() {
     const reponse = await Api.post(`${baseUrl}admin/logout/`)
@@ -52,20 +53,20 @@ class AuthRepository {
         console.log(error.response);
         return error.response;
       });
-      
+
     return reponse;
   }
-  
+
 
   async userReset() {
-     var token = cookies.get("token");
+    var token = cookies.get("token");
     console.log(token);
     Api.defaults.headers.common["Authorization"] = "Bearer " + token;
     const reponse = await Api.post(`${baseUrl}admin/login/passwordreset/`)
-      .then((response) => { 
+      .then((response) => {
         console.log(response)
         return response;
-       
+
       })
       .catch((error) => {
         console.log(error.response);

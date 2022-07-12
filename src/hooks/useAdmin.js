@@ -1,6 +1,6 @@
 import AuthRepository from "../api/AuthRepository";
 import { useDispatch } from "react-redux";
-import { errorMessage, login, logout, updateUserProfile,Reset } from "../store/auth/action";
+import { errorMessage, login, logout, updateUserProfile, Reset } from "../store/auth/action";
 import { useCookies } from "react-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -10,33 +10,26 @@ export default function useAdmin() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const nav = useNavigate()
 
-
-
-
   return {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
       if (responseData.status === 200) {
-        console.log(responseData.data.data.session_token)
+        console.log("@@", responseData.data.data.session_token)
         setCookie(responseData.data.data.session_token, 'token');
         // console.log(responseData.data.data.login_count)
-        if(responseData.data.data.login_count == 0 ){
+        if (responseData.data.data.login_count == 0) {
           nav('/reset');
-        }else{
-        dispatch(login(responseData.data));
-        nav('/dashboard');
-      }
-    
-      }  else{
+        } else {
+          dispatch(login(responseData.data));
+          nav('/dashboard');
+        }
+      } else {
         // alert(responseData.data.data)
         dispatch(errorMessage(responseData.data.data))
-
       }
       // console.log(responseData);
       return responseData.data;
     },
-
-
 
 
     //reset api 
@@ -45,10 +38,8 @@ export default function useAdmin() {
       if (responseData.status === 200) {
         setCookie(responseData.data.data.session_token, 'token');
         dispatch(Reset(responseData.data));
-      // console.log(responseData.data.data.login_count)
-      
-    
-      }  else{
+        // console.log(responseData.data.data.login_count)
+      } else {
         // alert(responseData.data.data)
         dispatch(errorMessage(responseData.data.data))
 
@@ -56,8 +47,6 @@ export default function useAdmin() {
       // console.log(responseData);
       return responseData.data;
     },
-
-
 
     isLogin: async () => {
       var responseData = await AuthRepository.isLogin();
@@ -114,17 +103,13 @@ export default function useAdmin() {
       }
       return false;
     },
-        
-    updateFollowerStatus:async(id,data)=>{
-        var responseData = await AuthRepository.updateFollowerStatus(id,data);
-        if(responseData.status === 200){               
-            return responseData.data.data
-        }
-        return false;
-    },  
-    
-    
-  
 
+    updateFollowerStatus: async (id, data) => {
+      var responseData = await AuthRepository.updateFollowerStatus(id, data);
+      if (responseData.status === 200) {
+        return responseData.data.data
+      }
+      return false;
+    },
   }
 };

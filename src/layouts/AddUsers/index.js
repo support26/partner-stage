@@ -76,12 +76,14 @@ function AddUsers() {
   // }
 
   const GetUsers = () => {
-    axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
-      console.log(response)
-      setUsers(response.data.data)
-    }).catch(e => {
-      console.log(e)
-    })
+
+
+    // axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
+    //   console.log(response)
+    //   setUsers(response.data.data)
+    // }).catch(e => {
+    //   console.log(e)
+    // })
   }
   const columns = [
     {
