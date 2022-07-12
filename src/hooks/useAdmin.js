@@ -27,7 +27,7 @@ export default function useAdmin() {
 
         }else{
         dispatch(login(responseData.data));
-        
+        localStorage.setItem('token',responseData.data.data.session_token);
         nav('/dashboard');
       }
     
