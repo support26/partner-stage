@@ -18,7 +18,9 @@ export const initState = {
     isLogin: false,
     auth: {},
     msg: null,
-    GetAlladminUser: []
+    GetAlladminUser: [],
+    GetAllUser:[]
+
 };
 
 function reducer(state = initState, action) {
@@ -45,11 +47,17 @@ function reducer(state = initState, action) {
                 ...state,
                 ...{ msg: action.payload },
             };
-            case actionTypes.AdminUser:
+         case actionTypes.AdminUser:
             return {
                 ...state,
                 ...{ GetAlladminUser: action.payload },
             };
+        case actionTypes.Runner:
+                return {
+                    ...state,
+                    ...{ GetAllUser: action.payload },
+                };
+
 
         default:
             return state;

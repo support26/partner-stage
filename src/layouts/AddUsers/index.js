@@ -4,7 +4,9 @@ import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
-import {token} from '../../api/config'
+import { token } from '../../api/config'
+import useAdmin from '../../hooks/useAdmin'
+import { useSelector } from 'react-redux'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -18,24 +20,41 @@ import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
 const style = {
   position: 'absolute',
-  top: '40%',
+  top: '42%',
   left: '60%',
   transform: 'translate(-50%, -50%)',
-  width: '340px',
+  width: '350px',
   padding: '35px',
-  height: '450px',
+  height: '488px',
   borderRadius: '15px',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4
+  p: 3
+}
+const style_1 = {
+  position: 'absolute',
+  top: '44%',
+  left: '60%',
+  transform: 'translate(-50%, -50%)',
+  width: '350px',
+  padding: '35px',
+  height: '560px',
+  borderRadius: '15px',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 3
 }
 function AddUsers() {
-  const [employee_name, setEmployee_name] = useState('vishal')
+  const { getAlladminUser } = useAdmin()
+  const { GetAlladminUser } = useSelector((state) => state.auth)
+  const token = localStorage.getItem('token');
+  const [employee_name, setEmployee_name] = useState('')
   const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
   const [user_id, setUser_id] = useState('')
+  const [is_active, setIs_active] = useState('Y')
   const [users, setUsers] = useState([])
   const [pageSize, setPageSize] = useState(10)
   const [open, setOpen] = useState(false)
@@ -67,21 +86,29 @@ function AddUsers() {
   }
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
-    GetUsers()
+    const admin = getAlladminUser();
+    // setUsers(admin);
+    console.log(admin)
+    setUsers(GetAlladminUser)
   }, [])
-  const session_token = sessionStorage.getItem('session_token');
-
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
-
   const GetUsers = () => {
-    axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
-      console.log(response)
-      setUsers(response.data.data)
-    }).catch(e => {
-      console.log(e)
-    })
+    getAlladminUser();
+    setUsers(GetAlladminUser)
+    // console.log("session_token", session_token);
+    // axios.get('http://localhost:8001/admin/allUsers/10', {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer ' + session_token
+    //   }
+    // }).then(response => {
+    //   console.log(response)
+    //   setUsers(response.data.data)
+    // }).catch(e => {
+    //   console.log(e)
+    // })
   }
   const columns = [
     {
@@ -104,6 +131,8 @@ function AddUsers() {
           setUser_id(params.id)
           setUsers_name(thisRow.users_name)
           setUsers_email(thisRow.users_email)
+          setIs_active(params.row.is_active)
+          setEmployee_name(params.row.employee_name)
           setEditUserModal(true)
           return console.log(params)
         }
@@ -114,11 +143,12 @@ function AddUsers() {
         )
       }
     },
-    { field: 's_no', headerName: 'S No.', width: 70 ,
-  renderCell: function (params) {
-    return params.value
-  }
-},
+    {
+      field: 's_no', headerName: 'S No.', width: 70,
+      renderCell: function (params) {
+        return params.value
+      }
+    },
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'users_name', headerName: 'users_name', width: 130 },
     { field: 'users_email', headerName: 'users_email', width: 130 },
@@ -144,7 +174,12 @@ function AddUsers() {
   const handleSubmit = event => {
     event.preventDefault()
     axios
-      .post('http://localhost:8001/admin/create', { headers: { "Authorization": `Bearer ${session_token}` }, data })
+      .post('http://localhost:8001/admin/create', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
       .then(response => {
         console.log(response)
         handleOpen('Added ')
@@ -152,7 +187,7 @@ function AddUsers() {
         closeModal()
       }).catch(e => {
         console.log(e)
-        handleOpen(e.message)
+        // handleOpen(e.message)
       })
     console.log(user_type)
     console.log(users_name)
@@ -160,13 +195,21 @@ function AddUsers() {
     setUsers_name('')
     setUsers_email('')
   }
+  const data_1 = {
+    users_name: users_name,
+    users_email: users_email,
+    user_type: user_type,
+    employee_name: employee_name,
+    is_active: is_active
+  }
   const updateUser = event => {
     event.preventDefault()
     axios
-      .put(`http://localhost:3000/user/${user_id}`, {
-        users_name,
-        users_email,
-        user_type
+      .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
       })
       .then(response => {
         console.log(response.data)
@@ -177,10 +220,14 @@ function AddUsers() {
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
+    console.log(is_active)
+    console.log(employee_name)
     setUsers_name('')
     setUsers_email('')
+    setEmployee_name('')
   }
-  return (
+
+return (
     <DashboardLayout>
       <DashboardNavbar />
       <Snackbar
@@ -220,6 +267,17 @@ function AddUsers() {
           <Box sx={style}>
             <form onSubmit={handleSubmit}>
               <h2 className='addUserHeading'>Add Users</h2>
+              <label>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
               <label>Username</label>
               <input
                 className='modalInput'
@@ -288,10 +346,21 @@ function AddUsers() {
         }}
       >
         <Fade in={editUserModal}>
-          <Box sx={style}>
+          <Box sx={style_1}>
             <form onSubmit={updateUser}>
               <h2 className='addUserHeading'>Edit Users</h2>
-              <label>Username</label>
+              <label style={{ fontSize: "16px" }}>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
+              <label style={{ fontSize: "16px" }}>Username</label>
               <input
                 className='modalInput'
                 required
@@ -302,7 +371,7 @@ function AddUsers() {
                 value={users_name}
                 onChange={e => setUsers_name(e.target.value)}
               ></input>
-              <label>Email</label>
+              <label style={{ fontSize: "16px" }}>Email</label>
               <input
                 className='modalInput'
                 required
@@ -313,7 +382,7 @@ function AddUsers() {
                 value={users_email}
                 onChange={e => setUsers_email(e.target.value)}
               ></input>
-              <label>User type</label>
+              <label style={{ fontSize: "16px" }}>User type</label>
               <select
                 required
                 className='modalInput'
@@ -335,7 +404,28 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              {/* </FormControl> */}
+              <label style={{ fontSize: "16px" }}>Active User</label>
+              <select
+                required
+                className='modalInput'
+                type='text'
+                name='user_type'
+                value={is_active}
+                onChange={e => setIs_active(e.target.value)}
+              >
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'Y'}
+                >
+                  Enable
+                </option>
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'N'}
+                >
+                  Disable
+                </option>
+              </select>
               <input
                 className='modalSubmit'
                 type='submit'

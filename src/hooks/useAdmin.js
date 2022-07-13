@@ -71,14 +71,14 @@ export default function useAdmin() {
         // console.log(responseData.data.data.login_count)
       
         localStorage.removeItem('token')
-        nav('/sign-in' )
-     dispatch(errorMessage(''))
-      }  else{
-        // alert(responseData.data.data)
-        dispatch(errorMessage(responseData.data.data))
-      }
-      return responseData.data;
-    },
+          nav('/sign-in' )
+          dispatch(errorMessage(''))
+            }  else{
+              // alert(responseData.data.data)
+              dispatch(errorMessage(responseData.data.data))
+            }
+            return responseData.data;
+      },
 
 
 
@@ -154,24 +154,39 @@ export default function useAdmin() {
       return false;
     },
     
-    
-    Runner: async (data) => {
-      var responseData = await UsersRepository.GetAllUser(data);
+
+    getAlladminUser: async () => {
+      var responseData = await AdminRepository.GetAlladminUser();
       if (responseData.status === 200) {
-         console.log(responseData.data);
-   
-
-  
-      }  else{
-        // alert(responseData.data.data)
-        dispatch(errorMessage(responseData.data.data))
-
+        console.log(responseData.data);
+      dispatch(AlladminUser(responseData.data.data));
       }
-      // console.log(responseData);
-      return responseData.data;
     },
 
-  
+    
+    // Runner: async () => {
+    //   var responseData = await UsersRepository.GetAllUser();
+    //   if (responseData.status === 200) {
+    //      console.log(responseData.data);
+    //   }  else{
+    //     // alert(responseData.data.data)
+    //     dispatch(errorMessage(responseData.data.data))
+
+    //   }
+    //   // console.log(responseData);
+    //   return responseData.data;
+    // },
+
+  // //add admin user
+  //     AddAdminUser: async (data) => {
+  //       var responseData = await AdminRepository.addAdminUser(data);
+  //       if (responseData.status === 200) {
+  //         console.log(responseData.data);
+  //       }
+  //       else {
+  //         console.log(responseData.data);
+  //       }
+  //     },
 
   }
 };

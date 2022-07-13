@@ -1,5 +1,6 @@
 import useAdmin from "../../hooks/useAdmin";
 import { useSelector } from 'react-redux'
+import UsersRepository from "../../api/UsersRepository";
 
 // export default Tables;
 import { useHistory } from "react-router";
@@ -50,10 +51,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function Tables(props) {
+  const [pageSize, setPageSize] = useState(10)
 
   const {Runner} = useAdmin()
   const { GetAllUser } = useSelector((state) => state.auth)
-
+  const token = localStorage.getItem('token');
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
  //runner set data
@@ -81,8 +83,8 @@ export default function Tables(props) {
   const [pancard, setPancard] = useState("");
   const [idnumber, setIdnumber] = useState("");
   const [pancardno, setPancardno] = useState("");
-  const [runnerphoto, setRunnerphoto] = useState("");
-
+  const [runnerphoto, setRunnerphoto] = useState("")
+  const [allRunner, setAllRunner] = useState([])
   const [APIData, setAPIData] = useState([]);
 
   // const handleClickOpen = () => {
@@ -99,27 +101,41 @@ export default function Tables(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const columns = [
-    {
-      field: "action",
-      headerName: "Action",
-      sortable: false,
-      renderCell: function (params) {
-        var handleClickOpen = function (e) {
-          e.stopPropagation(); // don't select this row after clicking
-          var api = params.api;
-          var thisRow = {};
-          api
-            .getAllColumns()
-            .filter(function (c) {
-              return c.field !== "__check__" && !!c;
-            })
-            .forEach(function (c) {
-              return (thisRow[c.field] = params.getValue(params.id, c.field));
-            });
+
+  useEffect(() => {
+    GetRunner();
+  }, [])
+
+  const GetRunner = () => {
+    UsersRepository.GetAllRunner() 
+     .then(response=>{
+     console.log(response.data.data[1])
+  setAllRunner(response.data.data[1])
+     }).catch(e=>{
+      console.log(e)
+     })
+  }
+ 
+const columns = [
+  {
+    field: 'action',
+    type: 'actions',
+    headerName: 'Action',
+    sortable: false,
+    renderCell: function (params) {
+      const handleClickOpen = function (e) {
+        e.stopPropagation() // don't select this row after clicking
+        const api = params.api
+        const thisRow = {}
+        api
+          .getAllColumns()
+          .filter(c => c.field !== '__check__' && !!c)
+          .forEach(
+            c => (thisRow[c.field] = params.getValue(params.id, c.field))
+          )
           setID(params.id);
-          setFirstName(thisRow.name);
-          setLastName(params.row.lastName);
+          setFirstName(thisRow.name)
+          setLastName(params.row.lastName)
           setNumber_user(thisRow.phone_number);
           setEmail(thisRow.email);
           setAge(params.row.age);
@@ -144,15 +160,21 @@ export default function Tables(props) {
 
           setOpen(true);
 
-          return console.log(id);
+          return console.log(params);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
 
-        return <Button onClick={handleClickOpen}>Click</Button>;
+        return( <Button onClick={handleClickOpen}>Click</Button>
+        )
       },
     },
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Name", width: 130 },
+   
+
+    { field: "id", headerName: "id", width: 70 ,
+    renderCell: function (params) {
+      return params.value}
+  },
+    { field: "name", headerName: "name", width: 130 },
     {
       field: "lastName",
       headerName: "Last Name ",
@@ -160,7 +182,7 @@ export default function Tables(props) {
     },
     {
       field: "phone_number",
-      headerName: "Number(Prefilled from Sign In)  ",
+      headerName: "phone_number",
       type: "number",
       width: 90,
     },
@@ -172,7 +194,7 @@ export default function Tables(props) {
     },
     {
       field: "email",
-      headerName: "Email(Prefilled from Sign In)",
+      headerName: "email",
       type: "text",
       width: 130,
     },
@@ -295,8 +317,8 @@ export default function Tables(props) {
 
  
    const updateAPIData = (event) => {
- setOpen(false);
-   }
+        setOpen(false);
+          }
   //   event.preventDefault();
   //   axios
   //     .put(`http://localhost:3000/users/${id}`, {
@@ -339,13 +361,8 @@ export default function Tables(props) {
 
   ////Runner({name,email,phone_number,latlong_address})
 
-  useEffect(() => {
-    Runner(GetAllUser);
-    //setAPIData()
-   //console.log(setAPIData())
 
-  }, [])
-  const session_token = sessionStorage.getItem('session_token');
+ // const session_token = sessionStorage.getItem('session_token');
   
   //Runner({name,email,phone_number,latlong_address})
   // useEffect(() => {
@@ -374,9 +391,11 @@ export default function Tables(props) {
                   </div>  */}
               <div style={{ height: 500, width: "100%" }}>
                 <DataGrid
-                  rows={APIData}
+                  rows={allRunner}
                   columns={columns}
-                  pageSize={20}
+                  pageSize={pageSize}
+                  onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20, 50]}
                   // checkboxSelection
                   disableSelectionOnClick
                 />
