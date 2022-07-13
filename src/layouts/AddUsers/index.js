@@ -4,7 +4,9 @@ import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
-import { token } from '../../api/config'
+// import { token } from '../../api/config'
+import AdminRepository from "../../api/AdminRepository";
+
 import useAdmin from '../../hooks/useAdmin'
 import { useSelector } from 'react-redux'
 //material UI
@@ -16,6 +18,7 @@ import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
+import Switch from '@mui/material/Switch';
 import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
 
@@ -46,8 +49,9 @@ const style_1 = {
   p: 3
 }
 function AddUsers() {
-  const { getAlladminUser } = useAdmin()
-  const { GetAlladminUser } = useSelector((state) => state.auth)
+  const { AddAdminUser, UpdateAdminUser } = useAdmin()
+  const { successMessage } = useSelector((state) => state.auth)
+  const { msg } = useSelector((state) => state.auth)
   const token = localStorage.getItem('token');
   const [employee_name, setEmployee_name] = useState('')
   const [sNo, setSNo] = useState(0)
@@ -66,7 +70,6 @@ function AddUsers() {
   }
   const closeModal = () => setOpenModal(false)
   const [editUserModal, setEditUserModal] = useState(false)
-  // const openEditUserModal = () => setEditUserModal(true)
   const closeEditUserModal = () => {
     setEditUserModal(false)
     setUsers_name('')
@@ -87,28 +90,16 @@ function AddUsers() {
   }
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
-    getAlladminUser();
-    setUsers(GetAlladminUser)
-
+    GetUsers();
   }, [])
-  // if (!session_token) {
-  //   return <Navigate to='/' />
-  // }
   const GetUsers = () => {
-    getAlladminUser();
-    setUsers(GetAlladminUser)
-    // console.log("session_token", session_token);
-    // axios.get('http://localhost:8001/admin/allUsers/10', {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'Bearer ' + session_token
-    //   }
-    // }).then(response => {
-    //   console.log(response)
-    //   setUsers(response.data.data)
-    // }).catch(e => {
-    //   console.log(e)
-    // })
+    AdminRepository.GetAlladminUser()
+      .then(response => {
+        console.log(response)
+        setUsers(response.data.data)
+      }).catch(e => {
+        console.log(e)
+      })
   }
   const columns = [
     {
@@ -134,7 +125,7 @@ function AddUsers() {
           setIs_active(params.row.is_active)
           setEmployee_name(params.row.employee_name)
           setEditUserModal(true)
-          return console.log(params)
+          return console.log(thisRow)
         }
         return (
           <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33A2B5', '&:hover': { backgroundColor: '#2A90A2' } }}>
@@ -143,15 +134,10 @@ function AddUsers() {
         )
       }
     },
-    {
-      field: 's_no', headerName: 'S No.', width: 70,
-      renderCell: function (params) {
-        return params.value
-      }
-    },
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'users_name', headerName: 'users_name', width: 130 },
-    { field: 'users_email', headerName: 'users_email', width: 130 },
+    { field: 'employee_name', headerName: 'Employee Name', width: 150 },
+    { field: 'users_name', headerName: 'User Name', width: 140 },
+    { field: 'users_email', headerName: 'Email', width: 200 },
     {
       field: 'roleId',
       headerName: 'User Type',
@@ -171,53 +157,54 @@ function AddUsers() {
     user_type: user_type,
     employee_name: employee_name
   }
+
   const handleSubmit = event => {
     event.preventDefault()
-    axios
-      .post('http://localhost:8001/admin/create', data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .then(response => {
-        console.log(response)
-        handleOpen('Added ')
-        GetUsers()
-        closeModal()
-      }).catch(e => {
-        console.log(e)
-        // handleOpen(e.message)
-      })
+    AddAdminUser(data)
+    // .then(response => {
+    //   console.log("response")
+    handleOpen()
+    GetUsers()
+    closeModal()
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
     setUsers_name('')
     setUsers_email('')
+    setEmployee_name('')
+
   }
+
   const data_1 = {
     users_name: users_name,
     users_email: users_email,
     user_type: user_type,
     employee_name: employee_name,
-    is_active: is_active
+    is_active: is_active,
   }
   const updateUser = event => {
     event.preventDefault()
-    axios
-      .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .then(response => {
-        console.log(response.data)
-        handleOpen('Updated ')
+    // console.log(user_id, data_1)
+    UpdateAdminUser(data_1, user_id)
+    handleOpen()
+    GetUsers()
+    // GetUsers()
+    closeEditUserModal()
+    // axios
+    //   .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': 'Bearer ' + token
+    //     }
+    //   })
+    //   .then(response => {
+    //     console.log(response.data)
+    //     handleOpen('Updated ')
 
-        GetUsers()
-        closeEditUserModal()
-      })
+    //     GetUsers()
+    //     closeEditUserModal()
+    //   })
+    console.log(user_id)
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
@@ -230,6 +217,7 @@ function AddUsers() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         key={vertical + horizontal}
@@ -237,20 +225,31 @@ function AddUsers() {
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert
-          sx={{
-            backgroundColor: 'rgb(17 200 25 / 50%)',
-            color: '#fff',
-            fontWeight: 'bold',
-            width: '100%',
-            position: 'relative',
-            left: '118px'
-          }}
-          onClose={handleClose}
-          severity='success'
-        >
-          User {snackType} Successfully!
-        </Alert>
+        {
+          (successMessage !== '') ? (
+            <Alert severity='success' sx={{
+              backgroundColor: 'rgb(17 200 25 / 60%)',
+              color: '#fff',
+              fontWeight: 'bold',
+              width: '100%',
+              position: 'relative',
+              left: '118px'
+            }}>
+              {successMessage}
+            </Alert>
+          ) : (
+            <Alert severity='error' sx={{
+              backgroundColor: 'rgb(255 0 0 / 50%)',
+              color: '#fff',
+              fontWeight: 'bold',
+              width: '100%',
+              position: 'relative',
+              left: '118px'
+            }}>
+              {msg}
+            </Alert>
+          )
+        }
       </Snackbar>
       <Modal
         aria-labelledby='transition-modal-title'

@@ -1,8 +1,16 @@
 import Api, { baseUrl } from "./config";
 const token = localStorage.getItem('token');
 class AdminRepository {
-  async GetAlladminUser() {
-    const reponse = await Api.get(`${baseUrl}admin/allUsers/${0}`, {
+
+   GetAlladminUser = () => {
+    return Api.get(`${baseUrl}admin/allUsers/${40}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+  }
+  async addAdminUser(data) {
+    const reponse = await Api.post(`${baseUrl}admin/create`, data, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -16,8 +24,8 @@ class AdminRepository {
       });
     return reponse;
   }
-  async addAdminUser(data) {
-    const reponse = await Api.post(`${baseUrl}admin/create`, data, {
+  async updateAdminUser(data, userId) {
+    const reponse = await Api.put(`${baseUrl}admin/update/${userId}`, data, {
       headers: {
         'Authorization': 'Bearer ' + token
       }

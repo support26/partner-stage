@@ -4,13 +4,13 @@ const saveToken = (data) => {
     var token = data
     if (typeof window !== 'undefined' && localStorage && token) {
         localStorage.removeItem('token')
-        
+
         const now = new Date()
         const item = {
             token: token,
             expiry: now.getTime() + 3600000,
         }
-        localStorage.setItem('token', JSON.stringify(item))
+        localStorage.setItem('tokens', JSON.stringify(item))
     }
 }
 
@@ -18,7 +18,8 @@ export const initState = {
     isLogin: false,
     auth: {},
     msg: null,
-    GetAlladminUser: []
+    GetAlladminUser: [],
+    successMessage: null
 };
 
 function reducer(state = initState, action) {
@@ -45,10 +46,15 @@ function reducer(state = initState, action) {
                 ...state,
                 ...{ msg: action.payload },
             };
-            case actionTypes.AdminUser:
+        case actionTypes.AdminUser:
             return {
                 ...state,
                 ...{ GetAlladminUser: action.payload },
+            };
+        case actionTypes.success_msg:
+            return {
+                ...state,
+                ...{ successMessage: action.payload },
             };
 
         default:
