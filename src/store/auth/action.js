@@ -4,7 +4,9 @@ export const actionTypes = {
     UPDATE_PROFILE:'UPDATE_PROFILE',
     error_Message:'error_Message',
     Reset:'Reset',
-    success_msg:'success_msg'
+    success_msg:'success_msg',
+    AdminUser:'AdminUser',
+    Runner:'Runner'
 };
 
 export function login(payload) {
@@ -28,4 +30,7 @@ export function errorMessage(payload) {
 // }
 export function successMsg(payload) {
    return { type: actionTypes.success_msg,payload};
+}
+export function Runner(payload) {
+   return { type: actionTypes.Runner,payload};
 }

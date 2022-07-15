@@ -23,7 +23,6 @@ import { alpha, styled } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
-
 const style = {
   position: 'absolute',
   top: '42%',
@@ -226,7 +225,11 @@ function AddUsers() {
     setUsers_email('')
     setEmployee_name('')
   }
-  return (
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
+
+return (
     <DashboardLayout>
       <DashboardNavbar />
 

@@ -45,6 +45,7 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {useSelector} from 'react-redux'
 import useAdmin from '../../../hooks/useAdmin'
 
+
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -99,7 +100,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
    // sessionStorage.removeItem('session_token')
    logout();
    //console.log(logout);
-    nav('/sign-in')
+  //  nav('/sign-in')
       //  localStorage.removeItem('session_token')
     }
   // Render the notifications menu
@@ -118,16 +119,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={'employ name'} />
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={employee_name} />
     
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={Ravi.users_name} />
+      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={users_Name} />
   
-      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(Ravi.roleId==0)? 'Admin':'Support'}/>
-      <NotificationItem icon={<EmailIcon>Email</EmailIcon>}  title={Ravi.user_email}/>
+      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(RoleId==0)? 'Admin':'Support'}/>
+      <NotificationItem icon={<EmailIcon>Email</EmailIcon>} title={user_Email}/>
 
       <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick= {logOut} title="Log Out " />
     </Menu>
   )
+
+ const users_Name =localStorage.getItem('users_name')
+ const user_Email =localStorage.getItem('user_email')
+ const RoleId =localStorage.getItem('roleId')
+ const employee_name =localStorage.getItem('employee_name')
+
 
   const iconsStyle = ({
     palette: { dark, white, text },

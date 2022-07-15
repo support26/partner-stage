@@ -54,6 +54,10 @@ function Dashboard () {
   // if (!token) {
   //   return <Navigate to='/' />
   // } 
+
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
   
   return (
     <DashboardLayout>

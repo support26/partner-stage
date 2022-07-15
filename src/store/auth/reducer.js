@@ -3,14 +3,14 @@ import { actionTypes } from './action';
 const saveToken = (data) => {
     var token = data
     if (typeof window !== 'undefined' && localStorage && token) {
-        localStorage.removeItem('token')
-
+        localStorage.removeItem('userData')
+        
         const now = new Date()
         const item = {
             token: token,
             expiry: now.getTime() + 3600000,
         }
-        localStorage.setItem('tokens', JSON.stringify(item))
+        localStorage.setItem('userData', JSON.stringify(item))
     }
 }
 
