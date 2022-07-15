@@ -226,6 +226,9 @@ function AddUsers() {
     setUsers_email('')
     setEmployee_name('')
   }
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
 
 return (
     <DashboardLayout>

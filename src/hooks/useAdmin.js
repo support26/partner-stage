@@ -9,7 +9,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export default function useAdmin() {
   const dispatch = useDispatch();
-  const [cookies, setCookie,getCookie, removeCookie] = useCookies();
+  const [cookies, setCookie,getCookie] = useCookies();
   const nav = useNavigate()
 
 
@@ -22,14 +22,22 @@ export default function useAdmin() {
         // console.log(responseData.data.data.session_token)
         setCookie(responseData.data.data.session_token, 'token');
         // console.log(responseData.data.data.login_count)
-        if(responseData.data.data.login_count == 0 ){
+       
+       
+        if(responseData.data.data.login_count == 0  ){
           localStorage.setItem('token',responseData.data.data.session_token);
+          
           dispatch(errorMessage(''))
           nav('/reset');
 
-        }else{
+        }else {
           dispatch(login(responseData.data));
           localStorage.setItem('token',responseData.data.data.session_token);
+          localStorage.setItem('user_email',responseData.data.data.user_email);
+          localStorage.setItem('users_name',responseData.data.data.users_name);
+          localStorage.setItem('roleId',responseData.data.data.roleId);
+          localStorage.setItem('employee_name',responseData.data.data.employee_name);
+          console.log(responseData.data)
         
         nav('/dashboard');
       }
@@ -94,7 +102,12 @@ export default function useAdmin() {
 
     logout: async () => {
     //  var responseData = await AuthRepository.logout();
-      removeCookie("token");
+       localStorage.clear() ; 
+      // localStorage.removeItem('userData') ; 
+
+        nav('/sign-in');
+        //removeCookie("token");
+   ///  Response.Cookies.Clear();
       dispatch(logout());
       return true;
     },

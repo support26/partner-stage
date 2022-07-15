@@ -53,9 +53,12 @@ function Cover () {
    setMessage('Does Not Match password')
 
     }
-  
+    if(!localStorage.getItem('token')){
+      return <Navigate to='/' />
+    }
 
   };
+  
   return (
     <>
       <BasicLayout className='banner-sign '>

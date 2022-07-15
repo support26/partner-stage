@@ -85,7 +85,7 @@ export default function Tables(props) {
   const [pancardno, setPancardno] = useState("");
   const [runnerphoto, setRunnerphoto] = useState("")
   const [allRunner, setAllRunner] = useState([])
-  const [APIData, setAPIData] = useState([]);
+  const [APIData, setAPIData] = useState();
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -373,6 +373,9 @@ const columns = [
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />

@@ -101,6 +101,11 @@ function Notifications() {
   // if (!session_token) {
   //   return <Navigate to='/' />
   // }
+
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
