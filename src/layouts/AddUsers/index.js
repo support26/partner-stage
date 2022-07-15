@@ -19,6 +19,8 @@ import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import Switch from '@mui/material/Switch';
+import { alpha, styled } from '@mui/material/styles';
+import { green } from '@mui/material/colors';
 import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
 
@@ -49,12 +51,10 @@ const style_1 = {
   p: 3
 }
 function AddUsers() {
-  const { AddAdminUser, UpdateAdminUser } = useAdmin()
+  const { AddAdminUser, UpdateAdminUser, ChangeAdminUserStatus } = useAdmin()
   const { successMessage } = useSelector((state) => state.auth)
   const { msg } = useSelector((state) => state.auth)
-  const token = localStorage.getItem('token');
   const [employee_name, setEmployee_name] = useState('')
-  const [sNo, setSNo] = useState(0)
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
@@ -101,6 +101,7 @@ function AddUsers() {
         console.log(e)
       })
   }
+
   const columns = [
     {
       field: 'action',
@@ -143,10 +144,39 @@ function AddUsers() {
       headerName: 'User Type',
       width: 100,
       renderCell: function (params) {
+
         return params.row.roleId === 0 ? (
           <p style={{ textAlign: 'center' }}>Admin</p>
         ) : (
           <p style={{ textAlign: 'center' }}>Support</p>
+        )
+      }
+    },
+    {
+      field: 'is_active',
+      headerName: 'Status',
+      width: 100,
+      sortable: false,
+      renderCell: function (params) {
+        const handleActiveStatus = (event) => {
+          event.preventDefault()
+          const id = params.row.id
+          if (params.row.is_active === 'Y') {
+            const is_active = 'N'
+            ChangeAdminUserStatus(id, is_active)
+          }
+          else {
+            const is_active = 'Y'
+            ChangeAdminUserStatus(id, is_active)
+          }
+          GetUsers()
+          console.log(id, is_active)
+        }
+        return params.row.is_active === 'Y' ? (
+          <Switch onChange={handleActiveStatus} defaultChecked color="success" />
+        ) : (
+          <Switch onChange={handleActiveStatus} color="success" />
+
         )
       }
     }
@@ -158,11 +188,9 @@ function AddUsers() {
     employee_name: employee_name
   }
 
-  const handleSubmit = event => {
+  const addAdminUsers = event => {
     event.preventDefault()
     AddAdminUser(data)
-    // .then(response => {
-    //   console.log("response")
     handleOpen()
     GetUsers()
     closeModal()
@@ -184,26 +212,10 @@ function AddUsers() {
   }
   const updateUser = event => {
     event.preventDefault()
-    // console.log(user_id, data_1)
     UpdateAdminUser(data_1, user_id)
     handleOpen()
     GetUsers()
-    // GetUsers()
     closeEditUserModal()
-    // axios
-    //   .put(`http://localhost:8001/admin/update/${user_id}`, data_1, {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ' + token
-    //     }
-    //   })
-    //   .then(response => {
-    //     console.log(response.data)
-    //     handleOpen('Updated ')
-
-    //     GetUsers()
-    //     closeEditUserModal()
-    //   })
     console.log(user_id)
     console.log(user_type)
     console.log(users_name)
@@ -264,7 +276,7 @@ function AddUsers() {
       >
         <Fade in={openModal}>
           <Box sx={style}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={addAdminUsers}>
               <h2 className='addUserHeading'>Add Users</h2>
               <label>Employee Name</label>
               <input
@@ -321,18 +333,15 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              {/* </FormControl> */}
               <input
                 className='modalSubmit'
                 type='submit'
                 value='Submit'
-              // onClick={createPost}
               ></input>
             </form>
           </Box>
         </Fade>
       </Modal>
-      {/* edit user modal  */}
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -403,7 +412,7 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              <label style={{ fontSize: "16px" }}>Active User</label>
+              <label style={{ fontSize: "16px" }}>Active Status</label>
               <select
                 required
                 className='modalInput'
@@ -416,13 +425,13 @@ function AddUsers() {
                   style={{ margin: '20px', fontSize: '16px' }}
                   value={'Y'}
                 >
-                  Enable
+                  Active
                 </option>
                 <option
                   style={{ margin: '20px', fontSize: '16px' }}
                   value={'N'}
                 >
-                  Disable
+                  Inactive
                 </option>
               </select>
               <input

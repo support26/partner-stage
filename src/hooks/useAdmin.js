@@ -88,6 +88,22 @@ export default function useAdmin() {
         dispatch(errorMessage(responseData.data.message))
       }
     },
+//change admin_user active status
+    ChangeAdminUserStatus: async (userId, is_active) => {
+      var responseData = await AdminRepository.changeAdminUserStatus(userId, is_active);
+      if (responseData.status === 200) {
+        // AdminRepository.GetAlladminUser()
+        console.log(responseData.data);
+        dispatch(errorMessage(''))
+        dispatch(successMsg(responseData.data.data));
+      }
+      else {
+        console.log(responseData.data);
+        dispatch(successMsg(''))
+        dispatch(errorMessage(responseData.data.message))
+      }
+
+    },
 
     //reset api 
     Reset: async (data) => {
