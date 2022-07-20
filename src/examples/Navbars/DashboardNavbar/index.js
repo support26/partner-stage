@@ -44,7 +44,7 @@ import { responsiveFontSizes } from "@material-ui/core";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {useSelector} from 'react-redux'
 import useAdmin from '../../../hooks/useAdmin'
-
+import BadgeIcon from '@mui/icons-material/Badge';
 
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -119,7 +119,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={employee_name} />
+      <NotificationItem  icon={<BadgeIcon>username</BadgeIcon>}  title={employee_name} />
     
       <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={users_Name} />
   
