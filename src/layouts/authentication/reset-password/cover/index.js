@@ -41,13 +41,19 @@ function Cover () {
     // if(password){
     //   console.log(password)
       
-    //   nav('/sign-in')
-    // }else{
-    //   console.log('does not match')
-    // }
-  
+  //     Reset({oldPassword,newPassword,login_count})
+    
+  //   }else{
+  //     // console.log('does not match');
+  //  setMessage('Does Not Match password')
+
+  //   }
+    if(!localStorage.getItem('token')){
+      return <Navigate to='/' />
+    }
 
   };
+  
   return (
     <>
       <BasicLayout className='banner-sign '>

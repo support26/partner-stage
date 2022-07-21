@@ -1,21 +1,49 @@
 {
   "user": [
     {
-      "username": "john",
-      "email": "john@email.com",
-      "user_type": "1",
-      "id": 3
+      "firstName": "Jonveeef",
+      "lastName": "Jon",
+      "number_user": "9893443132",
+      "email": "ravi@1234",
+      "age": "33",
+      "dob": "18/08/20",
+      "gender": "male",
+      "education": "B.tech",
+      "address": "qwdef",
+      "state": "eevwwv",
+      "district": "rgvwrvrrwv",
+      "tehsil": "wvwefwf",
+      "village": "efwefwf",
+      "location": "wefeweff",
+      "beneficiaryname": "wefwef",
+      "accountno": "wefwefwf",
+      "ifsc": "fwwefwf",
+      "idproofPhoto": "C:\\fakepath\\falcon-7104041_960_720.webp",
+      "passbook": "C:\\fakepath\\falcon-7104041_960_720.webp",
+      "pancard": "C:\\fakepath\\falcon-7104041_960_720.webp",
+      "idnumber": "ewrvvwr",
+      "pancardno": "gwrvwegwreg",
+      "runnerphoto": "C:\\fakepath\\falcon-7104041_960_720.webp",
+      "id": 1
     },
     {
-      "username": "peter",
-      "email": "peter@email.com",
-      "user_type": "2",
       "id": 4
     },
     {
-      "username": "ravi",
-      "email": "ravi@gmail.com",
-      "user_type": "1",
+      "firstName": "Ravi verma",
+      "lastName": "wff",
+      "number_user": "wfqefefwf",
+      "email": "ravi@123",
+      "age": "4",
+      "dob": "18/08/20",
+      "gender": "efwe",
+      "education": "fesfrgerg",
+      "address": "grgergg",
+      "state": "egerggergeg",
+      "district": "rgrg",
+      "tehsil": "rrgergrgrg",
+      "village": "rgrgrgrg",
+      "location": "rgreggrgerg",
       "id": 5
     },
     {
@@ -25,9 +53,8 @@
       "id": 6
     },
     {
-      "username": "adam",
-      "email": "adam@email.com",
-      "user_type": "2",
+      "name": "Ravi",
+      "email": "ravi@123",
       "id": 7
     },
     {
@@ -958,6 +985,78 @@
       "email": "ravi@gmail.com",
       "user_type": "2",
       "id": 186
+    },
+    {
+      "id": 187
+    },
+    {
+      "id": 188
+    },
+    {
+      "id": 189
+    },
+    {
+      "id": 190
+    },
+    {
+      "id": 191
+    },
+    {
+      "id": 192
+    },
+    {
+      "blob:http://localhost:3001/d3caf70c-8e81-48a3-9902-c6f8f0597b77": "",
+      "id": 193
+    },
+    {
+      "blob:http://localhost:3001/d3caf70c-8e81-48a3-9902-c6f8f0597b77": "",
+      "id": 194
+    },
+    {
+      "blob:http://localhost:3001/d3caf70c-8e81-48a3-9902-c6f8f0597b77": "",
+      "id": 195
+    },
+    {
+      "blob:http://localhost:3001/d288466b-4e88-492c-8140-707c57d048f1": "",
+      "id": 196
+    },
+    {
+      "blob:http://localhost:3001/9cd72397-6674-4b31-b059-1e2e0652fcf2": "",
+      "id": 197
+    },
+    {
+      "blob:http://localhost:3001/23a469ad-45a8-42f9-9ae2-474b0529f151": "",
+      "id": 198
+    },
+    {
+      "blob:http://localhost:3001/23a469ad-45a8-42f9-9ae2-474b0529f151": "",
+      "id": 199
+    },
+    {
+      "blob:http://localhost:3001/a4f0138f-9a20-41d1-a11f-0bb6e342a7f6": "",
+      "id": 200
+    },
+    {
+      "blob:http://localhost:3001/a8b11532-e31e-4a7a-94f3-615ca2912502": "",
+      "id": 201
+    },
+    {
+      "blob:http://localhost:3001/a8b11532-e31e-4a7a-94f3-615ca2912502": "",
+      "id": 202
+    },
+    {
+      "blob:http://localhost:3001/a8b11532-e31e-4a7a-94f3-615ca2912502": "",
+      "id": 203
+    },
+    {
+      "blob:http://localhost:3001/0ec09723-7add-470c-bbe5-79d488625f8e": "",
+      "id": 204
+    },
+    {
+      "id": 205
+    },
+    {
+      "id": 206
     }
   ]
 }

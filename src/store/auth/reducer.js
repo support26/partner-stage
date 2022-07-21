@@ -2,23 +2,24 @@ import { actionTypes } from './action';
 
 const saveToken = (data) => {
     var token = data
-    console.log("reducer section", data);
     if (typeof window !== 'undefined' && localStorage && token) {
-        localStorage.removeItem('token')
+        localStorage.removeItem('userData')
+
         const now = new Date()
         const item = {
             token: token,
             expiry: now.getTime() + 3600000,
         }
-        console.log("@@@ in item", item);
-        localStorage.setItem('token', JSON.stringify(item))
+        localStorage.setItem('userData', JSON.stringify(item))
     }
 }
 
 export const initState = {
     isLogin: false,
     auth: {},
-    msg: null
+    msg: null,
+    GetAlladminUser: [],
+    successMessage: null
 };
 
 function reducer(state = initState, action) {
@@ -44,6 +45,16 @@ function reducer(state = initState, action) {
             return {
                 ...state,
                 ...{ msg: action.payload },
+            };
+        case actionTypes.AdminUser:
+            return {
+                ...state,
+                ...{ GetAlladminUser: action.payload },
+            };
+        case actionTypes.success_msg:
+            return {
+                ...state,
+                ...{ successMessage: action.payload },
             };
 
         default:

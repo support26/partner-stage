@@ -9,6 +9,9 @@ import ResetPassword from "./layouts/authentication/reset-password/cover/index"
 // @mui icons
 import Icon from "@mui/material/Icon";
 
+
+const temp = localStorage.getItem('roleId')
+
 const routes = [
   {
     type: "collapse",
@@ -16,7 +19,7 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="medium">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: < Dashboard />,
   },
   {
     type: "collapse",
