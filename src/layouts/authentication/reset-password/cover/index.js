@@ -22,40 +22,38 @@ import bgImage from 'assets/images/Ellipse 1 (1).svg'
 //sign css
 import 'layouts/authentication/sign-in/sign.css'
 import useAdmin from '../../../../hooks/useAdmin'
-import { useDispatch, useSelector } from "react-redux";
-
 
 function Cover () {
   const nav = useNavigate()
   const [oldPassword, setoldPassword] = useState('')
   const [newPassword, setnewPassword] = useState('')
   const [confirmpassword, setconfirmpassword] = useState('')
- // const [msg, setMsg] = useState()
- const [message, setMessage] = useState('')
+  const [msg, setMsg] = useState()
   const {GetUserProfile} = useAdmin()
   const {Reset} = useAdmin()
-
-  const {msg}= useSelector((state)=>state.auth)
-  const login_count='1';
- //var message;
   //console.log(GetUserProfile);
- // console.log(document.cookie);
- 
+  console.log(document.cookie);
   const handleReset = event => {
-    event.preventDefault() 
-    if(newPassword === confirmpassword){
-    //  console.log(password)
+    event.preventDefault()
+    Reset({oldPassword,newPassword})
+ // console.log(Reset);
+    // const password=(newPassword===confirmpassword)  
+    // if(password){
+    //   console.log(password)
       
-      Reset({oldPassword,newPassword,login_count})
+  //     Reset({oldPassword,newPassword,login_count})
     
-    }else{
-      // console.log('does not match');
-   setMessage('Does Not Match password')
+  //   }else{
+  //     // console.log('does not match');
+  //  setMessage('Does Not Match password')
 
+  //   }
+    if(!localStorage.getItem('token')){
+      return <Navigate to='/' />
     }
-  
 
   };
+  
   return (
     <>
       <BasicLayout className='banner-sign '>
@@ -107,9 +105,8 @@ function Cover () {
                 placeholder='New Password'
                 onChange={(e) => setnewPassword(e.target.value)}
                 fullWidth
-                required
               />
-          
+              <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
             </MDBox>
             <MDBox mb={5} px={4}>
               <MDInput
@@ -120,10 +117,8 @@ function Cover () {
                 placeholder='Confirm Password'
                 onChange={(e) => setconfirmpassword(e.target.value)}
                 fullWidth
-                required
               />
               <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
-              <small style={{ color: 'red', fontSize: '15px' }}>{message}</small>
             </MDBox>
             <MDBox mb={0} px={3}>
               <MDButton
@@ -143,8 +138,6 @@ function Cover () {
              
               </MDTypography>
             </MDBox>
-         
-          
             
           </form>
         </Card>

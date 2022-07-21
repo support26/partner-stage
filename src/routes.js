@@ -1,13 +1,16 @@
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Notifications from "layouts/notifications";
-import SignIn from "layouts/authentication/sign-in";
-import AddUsers from 'layouts/AddUsers';
-import ResetPassword from "layouts/authentication/reset-password/cover/index"
+import Dashboard from "./layouts/dashboard";
+import Tables from "./layouts/tables";
+import Notifications from "./layouts/notifications";
+import SignIn from "./layouts/authentication/sign-in";
+import AddUsers from './layouts/AddUsers';
+import ResetPassword from "./layouts/authentication/reset-password/cover/index"
 
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+
+
+const temp = localStorage.getItem('roleId')
 
 const routes = [
   {
@@ -16,7 +19,7 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="medium">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: < Dashboard />,
   },
   {
     type: "collapse",

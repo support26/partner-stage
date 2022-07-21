@@ -1,16 +1,15 @@
 import Api, { baseUrl } from "./config";
+const token = localStorage.getItem('token');
 
 class UsersRepository {
-    async GetAllUser() {
-        const reponse = await Api.get(`${baseUrl}users/${20}`)
-            .then((response) => {
-                return response;
-            })
-            .catch((error) => {
-                console.log(error.response);
-                return error.response;
-            });
-        return reponse;
+     GetAllRunner = () => {
+   return Api.get(`${baseUrl}users/${10}`, {
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+          })
+        
+           
     }
 }
 

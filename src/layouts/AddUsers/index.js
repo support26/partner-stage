@@ -4,7 +4,11 @@ import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
-import {token} from '../../api/config'
+// import { token } from '../../api/config'
+import AdminRepository from "../../api/AdminRepository";
+
+import useAdmin from '../../hooks/useAdmin'
+import { useSelector } from 'react-redux'
 //material UI
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
@@ -14,28 +18,47 @@ import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
+import Switch from '@mui/material/Switch';
+import { alpha, styled } from '@mui/material/styles';
+import { green } from '@mui/material/colors';
 import { hover } from '@testing-library/user-event/dist/hover'
 // mui custom style
 const style = {
   position: 'absolute',
-  top: '40%',
+  top: '42%',
   left: '60%',
   transform: 'translate(-50%, -50%)',
-  width: '340px',
+  width: '350px',
   padding: '35px',
-  height: '450px',
+  height: '488px',
   borderRadius: '15px',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4
+  p: 3
+}
+const style_1 = {
+  position: 'absolute',
+  top: '44%',
+  left: '60%',
+  transform: 'translate(-50%, -50%)',
+  width: '350px',
+  padding: '35px',
+  height: '560px',
+  borderRadius: '15px',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 3
 }
 function AddUsers() {
-  const [employee_name, setEmployee_name] = useState('vishal')
-  const [sNo, setSNo] = useState(0)
+  const { AddAdminUser, UpdateAdminUser, ChangeAdminUserStatus } = useAdmin()
+  const { successMessage } = useSelector((state) => state.auth)
+  const { msg } = useSelector((state) => state.auth)
+  const [employee_name, setEmployee_name] = useState('')
   const [users_name, setUsers_name] = useState('')
   const [users_email, setUsers_email] = useState('')
   const [user_type, setUser_type] = useState('0')
   const [user_id, setUser_id] = useState('')
+  const [is_active, setIs_active] = useState('Y')
   const [users, setUsers] = useState([])
   const [pageSize, setPageSize] = useState(10)
   const [open, setOpen] = useState(false)
@@ -46,7 +69,6 @@ function AddUsers() {
   }
   const closeModal = () => setOpenModal(false)
   const [editUserModal, setEditUserModal] = useState(false)
-  // const openEditUserModal = () => setEditUserModal(true)
   const closeEditUserModal = () => {
     setEditUserModal(false)
     setUsers_name('')
@@ -67,22 +89,18 @@ function AddUsers() {
   }
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
-    GetUsers()
+    GetUsers();
   }, [])
-  const session_token = sessionStorage.getItem('session_token');
-
-  // if (!session_token) {
-  //   return <Navigate to='/' />
-  // }
-
   const GetUsers = () => {
-    axios.get('http://localhost:8001/admin/allUsers/0', { headers: { "Authorization": `Bearer +${session_token}` } }).then(response => {
-      console.log(response)
-      setUsers(response.data.data)
-    }).catch(e => {
-      console.log(e)
-    })
+    AdminRepository.GetAlladminUser()
+      .then(response => {
+        console.log(response)
+        setUsers(response.data.data)
+      }).catch(e => {
+        console.log(e)
+      })
   }
+
   const columns = [
     {
       field: 'action',
@@ -104,8 +122,10 @@ function AddUsers() {
           setUser_id(params.id)
           setUsers_name(thisRow.users_name)
           setUsers_email(thisRow.users_email)
+          setIs_active(params.row.is_active)
+          setEmployee_name(params.row.employee_name)
           setEditUserModal(true)
-          return console.log(params)
+          return console.log(thisRow)
         }
         return (
           <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33A2B5', '&:hover': { backgroundColor: '#2A90A2' } }}>
@@ -114,23 +134,48 @@ function AddUsers() {
         )
       }
     },
-    { field: 's_no', headerName: 'S No.', width: 70 ,
-  renderCell: function (params) {
-    return params.value
-  }
-},
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'users_name', headerName: 'users_name', width: 130 },
-    { field: 'users_email', headerName: 'users_email', width: 130 },
+    { field: 'employee_name', headerName: 'Employee Name', width: 150 },
+    { field: 'users_name', headerName: 'User Name', width: 140 },
+    { field: 'users_email', headerName: 'Email', width: 200 },
     {
       field: 'roleId',
       headerName: 'User Type',
       width: 100,
       renderCell: function (params) {
+
         return params.row.roleId === 0 ? (
           <p style={{ textAlign: 'center' }}>Admin</p>
         ) : (
           <p style={{ textAlign: 'center' }}>Support</p>
+        )
+      }
+    },
+    {
+      field: 'is_active',
+      headerName: 'Status',
+      width: 100,
+      sortable: false,
+      renderCell: function (params) {
+        const handleActiveStatus = (event) => {
+          event.preventDefault()
+          const id = params.row.id
+          if (params.row.is_active === 'Y') {
+            const is_active = 'N'
+            ChangeAdminUserStatus(id, is_active)
+          }
+          else {
+            const is_active = 'Y'
+            ChangeAdminUserStatus(id, is_active)
+          }
+          GetUsers()
+          console.log(id, is_active)
+        }
+        return params.row.is_active === 'Y' ? (
+          <Switch onChange={handleActiveStatus} defaultChecked color="success" />
+        ) : (
+          <Switch onChange={handleActiveStatus} color="success" />
+
         )
       }
     }
@@ -141,48 +186,53 @@ function AddUsers() {
     user_type: user_type,
     employee_name: employee_name
   }
-  const handleSubmit = event => {
+
+  const addAdminUsers = event => {
     event.preventDefault()
-    axios
-      .post('http://localhost:8001/admin/create', { headers: { "Authorization": `Bearer ${session_token}` }, data })
-      .then(response => {
-        console.log(response)
-        handleOpen('Added ')
-        GetUsers()
-        closeModal()
-      }).catch(e => {
-        console.log(e)
-        handleOpen(e.message)
-      })
+    AddAdminUser(data)
+    handleOpen()
+    GetUsers()
+    closeModal()
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
     setUsers_name('')
     setUsers_email('')
+    setEmployee_name('')
+
+  }
+
+  const data_1 = {
+    users_name: users_name,
+    users_email: users_email,
+    user_type: user_type,
+    employee_name: employee_name,
+    is_active: is_active,
   }
   const updateUser = event => {
     event.preventDefault()
-    axios
-      .put(`http://localhost:3000/user/${user_id}`, {
-        users_name,
-        users_email,
-        user_type
-      })
-      .then(response => {
-        console.log(response.data)
-        handleOpen('Updated ')
-        GetUsers()
-        closeEditUserModal()
-      })
+    UpdateAdminUser(data_1, user_id)
+    handleOpen()
+    GetUsers()
+    closeEditUserModal()
+    console.log(user_id)
     console.log(user_type)
     console.log(users_name)
     console.log(users_email)
+    console.log(is_active)
+    console.log(employee_name)
     setUsers_name('')
     setUsers_email('')
+    setEmployee_name('')
   }
-  return (
+  if(!localStorage.getItem('token')){
+    return <Navigate to='/' />
+  }
+
+return (
     <DashboardLayout>
       <DashboardNavbar />
+
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         key={vertical + horizontal}
@@ -190,20 +240,31 @@ function AddUsers() {
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert
-          sx={{
-            backgroundColor: 'rgb(17 200 25 / 50%)',
-            color: '#fff',
-            fontWeight: 'bold',
-            width: '100%',
-            position: 'relative',
-            left: '118px'
-          }}
-          onClose={handleClose}
-          severity='success'
-        >
-          User {snackType} Successfully!
-        </Alert>
+        {
+          (successMessage !== '') ? (
+            <Alert severity='success' sx={{
+              backgroundColor: 'rgb(17 200 25 / 60%)',
+              color: '#fff',
+              fontWeight: 'bold',
+              width: '100%',
+              position: 'relative',
+              left: '118px'
+            }}>
+              {successMessage}
+            </Alert>
+          ) : (
+            <Alert severity='error' sx={{
+              backgroundColor: 'rgb(255 0 0 / 50%)',
+              color: '#fff',
+              fontWeight: 'bold',
+              width: '100%',
+              position: 'relative',
+              left: '118px'
+            }}>
+              {msg}
+            </Alert>
+          )
+        }
       </Snackbar>
       <Modal
         aria-labelledby='transition-modal-title'
@@ -218,8 +279,19 @@ function AddUsers() {
       >
         <Fade in={openModal}>
           <Box sx={style}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={addAdminUsers}>
               <h2 className='addUserHeading'>Add Users</h2>
+              <label>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
               <label>Username</label>
               <input
                 className='modalInput'
@@ -264,18 +336,15 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              {/* </FormControl> */}
               <input
                 className='modalSubmit'
                 type='submit'
                 value='Submit'
-              // onClick={createPost}
               ></input>
             </form>
           </Box>
         </Fade>
       </Modal>
-      {/* edit user modal  */}
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -288,10 +357,21 @@ function AddUsers() {
         }}
       >
         <Fade in={editUserModal}>
-          <Box sx={style}>
+          <Box sx={style_1}>
             <form onSubmit={updateUser}>
               <h2 className='addUserHeading'>Edit Users</h2>
-              <label>Username</label>
+              <label style={{ fontSize: "16px" }}>Employee Name</label>
+              <input
+                className='modalInput'
+                required
+                type='text'
+                id='employee_name'
+                name='employee_name'
+                placeholder='Enter employee name...'
+                value={employee_name}
+                onChange={e => setEmployee_name(e.target.value)}
+              ></input>
+              <label style={{ fontSize: "16px" }}>Username</label>
               <input
                 className='modalInput'
                 required
@@ -302,7 +382,7 @@ function AddUsers() {
                 value={users_name}
                 onChange={e => setUsers_name(e.target.value)}
               ></input>
-              <label>Email</label>
+              <label style={{ fontSize: "16px" }}>Email</label>
               <input
                 className='modalInput'
                 required
@@ -313,7 +393,7 @@ function AddUsers() {
                 value={users_email}
                 onChange={e => setUsers_email(e.target.value)}
               ></input>
-              <label>User type</label>
+              <label style={{ fontSize: "16px" }}>User type</label>
               <select
                 required
                 className='modalInput'
@@ -335,7 +415,28 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              {/* </FormControl> */}
+              <label style={{ fontSize: "16px" }}>Active Status</label>
+              <select
+                required
+                className='modalInput'
+                type='text'
+                name='user_type'
+                value={is_active}
+                onChange={e => setIs_active(e.target.value)}
+              >
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'Y'}
+                >
+                  Active
+                </option>
+                <option
+                  style={{ margin: '20px', fontSize: '16px' }}
+                  value={'N'}
+                >
+                  Inactive
+                </option>
+              </select>
               <input
                 className='modalSubmit'
                 type='submit'
@@ -350,7 +451,7 @@ function AddUsers() {
           Add Users
         </button>
       </div>
-      <div style={{ height: 550, width: '100%', marginTop: '70px' }}>
+      <div style={{ height: 500, width: '100%', marginTop: '55px' }}>
         <DataGrid
           sx={{
             boxShadow: 2,

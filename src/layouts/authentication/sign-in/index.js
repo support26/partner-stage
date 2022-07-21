@@ -32,7 +32,7 @@ function Basic () {
   const [admin_name, setadmin_name] = useState('')
   const [password, setPassword] = useState('')
   // const [msg, setMsg] = useState()
-  const {login} = useAdmin()
+  const {login, isLogin} = useAdmin()
  
     const {msg}= useSelector((state)=>state.auth)
      const dispatch = useDispatch();

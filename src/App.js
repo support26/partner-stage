@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -32,9 +30,16 @@ import createCache from "@emotion/cache";
 
 //  React routes
 import routes from "routes";
+import SignIn from "layouts/authentication/sign-in";
+import ResetPassword from "layouts/authentication/reset-password/cover/index";
+import AddUsers from "layouts/AddUsers";
 
 //  React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
@@ -83,7 +88,8 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -103,39 +109,21 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
     });
 
-  // setting button
-  // const configsButton = (
-  //   <MDBox
-  //     display="flex"
-  //     justifyContent="center"
-  //     alignItems="center"
-  //     width="3.25rem"
-  //     height="3.25rem"
-  //     bgColor="white"
-  //     shadow="sm"
-  //     borderRadius="50%"
-  //     position="fixed"
-  //     right="2rem"
-  //     bottom="2rem"
-  //     zIndex={99}
-  //     color="dark"
-  //     sx={{ cursor: "pointer" }}
-  //     onClick={handleConfiguratorOpen}
-  //   >
-  //     <Icon fontSize="small" color="inherit">
-  //       settings
-  //     </Icon>
-  //   </MDBox>
-  // );
-   
-  const sessionToken = localStorage.getItem("sessionToken");  // get session token from local storage 
-
+  const sessionToken = localStorage.getItem("sessionToken"); // get session token from local storage
+  const roleId = localStorage.getItem("roleId"); // get role id from local storage
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -144,7 +132,11 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              brand={
+                (transparentSidenav && !darkMode) || whiteSidenav
+                  ? brandDark
+                  : brandWhite
+              }
               brandName=""
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
@@ -157,8 +149,9 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          
           <Route path="/" element={<Navigate to="/sign-in" />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/reset" element={<ResetPassword />} />
           <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
         </Routes>
       </ThemeProvider>
@@ -180,13 +173,14 @@ export default function App() {
           {/* {configsButton} */}
         </>
       )}
-      
+
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
         <Route path="/" element={<Navigate to="/sign-in" />} />
-        <Route path="*" element={<Navigate to="/sign-in" />} /> {/* change later it to 404 page */}
-        
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
       </Routes>
     </ThemeProvider>
   );
