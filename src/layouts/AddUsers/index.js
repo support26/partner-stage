@@ -451,7 +451,7 @@ return (
           Add Users
         </button>
       </div>
-      <div style={{ height: 550, width: '100%', marginTop: '70px' }}>
+      <div style={{ height: 500, width: '100%', marginTop: '55px' }}>
         <DataGrid
           sx={{
             boxShadow: 2,

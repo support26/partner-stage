@@ -56,24 +56,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 export default function Tables(props) {
   const [runnerdata, setrunnerdata] = useState([]);
-  const [open, setOpen] = React.useState(false);
-
-  // const changeHandler = (event) => {
-  //   setrunnerdata(File.createObjectURL(event.target.files[0]));
-  //   //setIsSelected(true);
-  // };
-
+  const [open, setOpen] = React.useState(true);
   const [imgopens, setimgOpen] = React.useState([]);
-  // const imageshandleOpen = () => setimgOpen(true);
-  // const imageshandleClose = () => setimgOpen(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // }; function (params) {
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
   const handleClose = () => {
     setOpen(false);
   };

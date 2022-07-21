@@ -3,7 +3,7 @@ const token = localStorage.getItem('token');
 class AdminRepository {
 // get all admin users
    GetAlladminUser = () => {
-    return Api.get(`${baseUrl}admin/allUsers/${40}`, {
+    return Api.get(`${baseUrl}admin/allUsers`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
