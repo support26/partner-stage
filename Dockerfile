@@ -1,13 +1,27 @@
-FROM node:14
+FROM node:14-alpine as build
 
-WORKDIR : /src/App.js
+ARG env_name
+
+ENV REACT_APP_ENV=${env_name}
+
+ENV INLINE_RUNTIME_CHUNK=false
+
+WORKDIR /src/App.js
 
 COPY package.json .
 
-RUN npm install
+RUN npm i --quiet
 
 COPY . .
 
-EXPOSE 8080
+RUN npm run build
 
-CMD ["npm", "start"]
+# ---
+FROM fholzer/nginx-brotli:v1.12.2
+
+WORKDIR /etc/nginx
+ADD nginx.conf /etc/nginx/nginx.conf
+
+COPY --from=build /usr/app/build /usr/share/nginx/html
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
