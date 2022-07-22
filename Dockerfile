@@ -1,13 +1,17 @@
-FROM node:14
+FROM node:14 as build 
 
-WORKDIR: /src
+WORKDIR : /src/App.js
 
-COPY package.json .
+COPY package*.json .
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD["npm", "start"]
+FROM fholzer/nginx-brotli:v1.12.2
+
+COPY /nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/build /usr/share/nginx/html 
+
