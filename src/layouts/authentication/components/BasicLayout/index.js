@@ -51,7 +51,7 @@ function BasicLayout ({ image, children }) {
 
 // Typechecking props for the BasicLayout
 BasicLayout.propTypes = {
-  image: PropTypes.string.isRequired,
+  // image: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired
 }
 

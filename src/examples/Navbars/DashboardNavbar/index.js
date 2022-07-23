@@ -48,6 +48,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
+  const {logOut} = useAdmin();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -90,9 +91,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleCloseMenu = () => setOpenMenu(false);
   const nav = useNavigate();
 
-  const logOut = () => {
+  const logout = () => {
     sessionStorage.removeItem('session_token')
-    nav('/sign-in')
+    // nav('/sign-in')
     //  sessionStorage.removeItem('session_token')
     // sessionStorage.removeItem('session_token')
     logOut();
@@ -123,7 +124,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       <NotificationItem icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>} title={(RoleId == 0) ? 'Admin' : 'Support'} />
       <NotificationItem icon={<EmailIcon>Email</EmailIcon>} title={user_Email} />
 
-      <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick={logOut} title="Log Out " />
+      <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick={logout} title="Log Out " />
     </Menu>
   )
 

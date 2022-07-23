@@ -1,12 +1,10 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
-import { Navigate } from 'react-router-dom'
-// import { token } from '../../api/config'
+// import { Navigate } from 'react-router-dom'
 import AdminRepository from "../../api/AdminRepository";
-
+//Hooks
 import useAdmin from '../../hooks/useAdmin'
 import { useSelector } from 'react-redux'
 //material UI
@@ -19,9 +17,8 @@ import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import Switch from '@mui/material/Switch';
-import { alpha, styled } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
-import { hover } from '@testing-library/user-event/dist/hover'
+
+
 // mui custom style
 const style = {
   position: 'absolute',
@@ -81,7 +78,7 @@ function AddUsers() {
     setSnackType(snack)
     setOpen(true)
   }
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === 'clickaway') {
       return
     }
@@ -106,7 +103,6 @@ function AddUsers() {
       field: 'action',
       type: 'actions',
       headerName: 'Action',
-      sortable: false,
       renderCell: function (params) {
         const onClick = function (e) {
           e.stopPropagation() // don't select this row after clicking
@@ -225,9 +221,9 @@ function AddUsers() {
     setUsers_email('')
     setEmployee_name('')
   }
-  if(!localStorage.getItem('token')){
-    return <Navigate to='/' />
-  }
+  // if(!localStorage.getItem('token')){
+  //   return <Navigate to='/' />
+  // }
 
 return (
     <DashboardLayout>

@@ -66,7 +66,7 @@ function Cover () {
           />
         </div>
 
-        <Card className='cardName' rounded>
+        <Card className='cardName' >
           <MDBox
             className='cardName'
             variant='gradient'
