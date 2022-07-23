@@ -4,7 +4,7 @@ const saveToken = (data) => {
     var token = data
     if (typeof window !== 'undefined' && localStorage && token) {
         localStorage.removeItem('userData')
-        
+
         const now = new Date()
         const item = {
             token: token,

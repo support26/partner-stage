@@ -42,25 +42,20 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { responsiveFontSizes } from "@material-ui/core";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import useAdmin from '../../../hooks/useAdmin'
 import BadgeIcon from '@mui/icons-material/Badge';
 
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
+  const {logOut} = useAdmin();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const {auth}= useSelector((state)=>state.auth)
-  
-  const Ravi=auth;
-
-  const {logout} = useAdmin()
-
-
-    //  console.log(auth)
+  const { auth } = useSelector((state) => state.auth)
+  //  console.log(auth)
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -70,7 +65,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     }
 
     // A function that sets the transparent state of the navbar.
-    function handleTransparentNavbar () {
+    function handleTransparentNavbar() {
       setTransparentNavbar(
         dispatch,
         (fixedNavbar && window.scrollY === 0) || !fixedNavbar
@@ -94,20 +89,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  const nav= useNavigate();
-        
-  const logOut=()=>{
-   // sessionStorage.removeItem('session_token')
-   logout();
-   //console.log(logout);
-  //  nav('/sign-in')
-      //  localStorage.removeItem('session_token')
-    }
+  const nav = useNavigate();
+
+  const logout = () => {
+    sessionStorage.removeItem('session_token')
+    // nav('/sign-in')
+    //  sessionStorage.removeItem('session_token')
+    // sessionStorage.removeItem('session_token')
+    logOut();
+    //console.log(logout);
+    //  nav('/sign-in')
+    //  localStorage.removeItem('session_token')
+  }
   // Render the notifications menu
 
-  const renderMenu = () => ( 
+  const renderMenu = () => (
 
-   
+
     <Menu
       anchorEl={openMenu}
       anchorReference={null}
@@ -119,21 +117,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem  icon={<BadgeIcon>username</BadgeIcon>}  title={employee_name} />
-    
-      <NotificationItem  icon={<PersonOutlineIcon>username</PersonOutlineIcon>}  title={users_Name} />
-  
-      <NotificationItem   icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>}   title={(RoleId==0)? 'Admin':'Support'}/>
-      <NotificationItem icon={<EmailIcon>Email</EmailIcon>} title={user_Email}/>
+      <NotificationItem icon={<BadgeIcon>username</BadgeIcon>} title={employee_name} />
 
-      <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick= {logOut} title="Log Out " />
+      <NotificationItem icon={<PersonOutlineIcon>username</PersonOutlineIcon>} title={users_Name} />
+
+      <NotificationItem icon={<SupervisorAccountIcon>role id</SupervisorAccountIcon>} title={(RoleId == 0) ? 'Admin' : 'Support'} />
+      <NotificationItem icon={<EmailIcon>Email</EmailIcon>} title={user_Email} />
+
+      <NotificationItem icon={<LogoutIcon>Log out</LogoutIcon>} onClick={logout} title="Log Out " />
     </Menu>
   )
 
- const users_Name =localStorage.getItem('users_name')
- const user_Email =localStorage.getItem('user_email')
- const RoleId =localStorage.getItem('roleId')
- const employee_name =localStorage.getItem('employee_name')
+  const users_Name = localStorage.getItem('users_name')
+  const user_Email = localStorage.getItem('user_email')
+  const RoleId = localStorage.getItem('roleId')
+  const employee_name = localStorage.getItem('employee_name')
 
 
   const iconsStyle = ({
@@ -195,7 +193,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-               <Icon sx={iconsStyle} className= "fontSizess">account_circle</Icon>
+                <Icon sx={iconsStyle} className="fontSizess">account_circle</Icon>
               </IconButton>
               <IconButton
                 size="small"
