@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
-import { Navigate } from 'react-router-dom'
+// import { Navigate } from 'react-router-dom'
 import AdminRepository from "../../api/AdminRepository";
 //Hooks
 import useAdmin from '../../hooks/useAdmin'
@@ -78,7 +78,7 @@ function AddUsers() {
     setSnackType(snack)
     setOpen(true)
   }
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === 'clickaway') {
       return
     }
