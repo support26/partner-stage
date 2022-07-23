@@ -102,15 +102,15 @@ export default function useAdmin() {
       },
 
 
-    logout: async () => {
+    logOut: async () => {
     //  var responseData = await AuthRepository.logout();
-       localStorage.clear() ; 
-      // localStorage.removeItem('userData') ; 
-      
-        nav('/sign-in');
+    // localStorage.removeItem('userData') ; 
+    
+    nav('/sign-in');
+    localStorage.clear() ; 
         //removeCookie("token");
    ///  Response.Cookies.Clear();
-      dispatch(logout());
+      // dispatch(logout());
       return true;
     },
 
