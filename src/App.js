@@ -122,12 +122,13 @@ export default function App() {
       return null;
     });
 
-  const sessionToken = localStorage.getItem("sessionToken"); // get session token from local storage
   const roleId = localStorage.getItem("roleId"); // get role id from local storage
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
+
         {layout === "dashboard" && (
           <>
             <Sidenav
@@ -147,12 +148,15 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
+
         <Routes>
-          {getRoutes(routes)}
           <Route path="/" element={<Navigate to="/sign-in" />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
+          <Route path="*" element={<Navigate to="/sign-in" />} />
+          {/* change later it to 404 page */}
+          {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+          {localStorage.getItem("token") && getRoutes(routes)}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -176,11 +180,13 @@ export default function App() {
 
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
         <Route path="/" element={<Navigate to="/sign-in" />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/reset" element={<ResetPassword />} />
-        <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
+        {sessionStorage.getItem("token") && <Route path="/reset" element={<ResetPassword />} />}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
+        {/* change later it to 404 page */}
+        {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+        {localStorage.getItem("token") && getRoutes(routes)}
       </Routes>
     </ThemeProvider>
   );

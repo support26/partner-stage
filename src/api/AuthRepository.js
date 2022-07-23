@@ -47,8 +47,8 @@ class AuthRepository {
 
 
   async userReset(params) {
-    var token = localStorage.getItem('token')
-    console.log(token);
+    var token = sessionStorage.getItem('token')
+    // console.log(token);
     // Api.defaults.headers.common["Authorization"] = "Bearer " + token;
     const reponse = await Api.post(`${baseUrl}admin/login/passwordreset`, params, {
       headers: {

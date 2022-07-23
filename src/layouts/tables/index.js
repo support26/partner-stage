@@ -135,7 +135,7 @@ export default function Tables(props) {
     {
       field: "email",
       headerName: "Email(Prefilled from Sign In)",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
@@ -147,49 +147,49 @@ export default function Tables(props) {
     {
       field: "gender",
       headerName: "Gender",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "education",
       headerName: "Education",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "address",
       headerName: "Address",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "state",
       headerName: "State",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "district",
       headerName: "District",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "tehsil",
       headerName: "Tehsil",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "village",
       headerName: "Village",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "location",
       headerName: "GPS Location",
-      type: "text",
+      type: "string",
       width: 130,
     },
 
@@ -197,7 +197,7 @@ export default function Tables(props) {
     {
       field: "beneficiaryname",
       headerName: "Beneficiary Name",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
@@ -210,7 +210,7 @@ export default function Tables(props) {
     {
       field: "ifsc",
       headerName: "Bank IFSC Code",
-      type: "text",
+      type: "string",
       width: 150,
     },
 
@@ -218,39 +218,39 @@ export default function Tables(props) {
     {
       field: "idproofPhoto",
       headerName: "ID Proof Photo",
-      type: "file",
+      type: "string",
       width: 150,
     },
     {
       field: "passbook",
       headerName: "Bank Passbook Photo",
-      type: "file",
+      type: "string",
       width: 150,
     },
     {
       field: "pancard",
       headerName: "Pan Card Photo",
-      type: "file",
+      type: "string",
       width: 150,
     },
     {
       field: "idnumber",
       headerName: "ID Proof Photo",
-      type: "file",
+      type: "string",
       width: 150,
     },
 
     {
       field: "pancardno",
       headerName: "Pan Card No",
-      type: "file",
+      type: "string",
       width: 150,
     },
 
     {
       field: "runnerphoto",
       headerName: "runnerphoto",
-      type: "file",
+      type: "string",
       width: 150,
       renderCell: function (params) {
         setRunnerphoto(params.row.runnerphoto);
@@ -279,7 +279,7 @@ export default function Tables(props) {
   const [accountno, setAccountno] = useState("");
   const [ifsc, setifsc] = useState("");
   const token = localStorage.getItem("token");
-
+  const [pageSize, setPageSize] = useState(10)
   const [idproofPhoto, setIdproofPhoto] = useState("");
   const [passbook, setPassbook] = useState(null);
   const [pancard, setPancard] = useState("");
@@ -294,8 +294,11 @@ export default function Tables(props) {
     //setIsSelected(true);
   };
   const bank_passbook_photo = passbook;
+  const acct_holder_name = accountno;
   let form_data = new FormData();
   form_data.append("bank_passbook_photo", bank_passbook_photo);
+  form_data.append("acct_holder_name", acct_holder_name);
+  
   const updateAPIData = (event) => {
     setOpen(false);
     // console.log(bank_passbook_photo);
@@ -303,7 +306,7 @@ export default function Tables(props) {
     axios
       .post(
         `http://localhost:8001/users/bankDetails/8878031674`,
-        form_data,
+        form_data, 
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -367,7 +370,9 @@ export default function Tables(props) {
                 <DataGrid
                   rows={APIData}
                   columns={columns}
-                  pageSize={20}
+                  pageSize={pageSize}
+          onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 20, 50]}
                   // checkboxSelection
                   disableSelectionOnClick
                 />
@@ -538,7 +543,7 @@ export default function Tables(props) {
             <TextField
               id="standard-helperText"
               label="ID number"
-              defaultValue="Default Value"
+              // defaultValue="Default Value"
               helperText="Some important text"
               value={idnumber}
               onChange={(e) => setIdnumber(e.target.value)}
