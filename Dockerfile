@@ -1,27 +1,17 @@
-FROM node:14-alpine as build
+# build environment
+FROM node:14-alpine as react-build
+WORKDIR /app
+COPY . ./
+RUN yarn
+RUN yarn build
 
-ARG env_name
+# server environment
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
 
-ENV REACT_APP_ENV=${env_name}
+COPY --from=react-build /app/build /usr/share/nginx/html
 
-ENV INLINE_RUNTIME_CHUNK=false
-
-WORKDIR /src/App.js
-
-COPY package*.json .
-
-RUN npm i --quiet
-
-COPY . .
-
-RUN npm run build
-
-# ---
-FROM fholzer/nginx-brotli:v1.12.2
-
-WORKDIR /etc/nginx
-ADD nginx.conf /etc/nginx/nginx.conf
-
-COPY --from=build /src/build /usr/share/nginx/html
+ENV PORT 8080
+ENV HOST 0.0.0.0
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
