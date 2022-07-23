@@ -18,7 +18,7 @@ export default function useAdmin() {
       if (responseData.status === 200) {
         setCookie(responseData.data.data.session_token, 'token');    
         if(responseData.data.data.login_count == 0  ){
-          localStorage.setItem('token',responseData.data.data.session_token);
+          sessionStorage.setItem('token',responseData.data.data.session_token);
           
           dispatch(errorMessage(''))
           nav('/reset');
@@ -91,7 +91,7 @@ export default function useAdmin() {
     Reset: async (data) => {
       var responseData = await AuthRepository.userReset(data);
       if (responseData.status === 200) {
-        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
           nav('/sign-in' )
           dispatch(errorMessage(''))
             }  else{

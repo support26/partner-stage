@@ -63,6 +63,7 @@ MDTypography.propTypes = {
     "dark",
     "text",
     "white",
+    "black",
   ]),
   fontWeight: PropTypes.oneOf([false, "light", "regular", "medium", "bold"]),
   textTransform: PropTypes.oneOf(["none", "capitalize", "uppercase", "lowercase"]),
@@ -78,7 +79,7 @@ MDTypography.propTypes = {
     "bottom",
   ]),
   textGradient: PropTypes.bool,
-  children: PropTypes.node.isRequired,
+  // children: PropTypes.node.isRequired,
   opacity: PropTypes.number,
 };
 

@@ -55,9 +55,9 @@ function Dashboard () {
   //   return <Navigate to='/' />
   // } 
 
-  if(!localStorage.getItem('token')){
-    return <Navigate to='/' />
-  }
+  // if(!localStorage.getItem('token')){
+  //   return <Navigate to='/' />
+  // }
   
   return (
     <DashboardLayout>

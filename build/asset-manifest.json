@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/static/css/main.e8eea881.css",
-    "main.js": "/static/js/main.740cc3bf.js",
-    "static/media/Ellipse 1 (1).svg": "/static/media/Ellipse 1 (1).0092c98dc01ab61566b7cc3867e1ed5a.svg",
+    "main.js": "/static/js/main.c94bbafc.js",
+    "static/media/Ellipse 1 (1).svg": "/static/media/Ellipse 1 (1).dc7d6a26b50ffa93022d4444460232c0.svg",
     "static/media/team-1.jpg": "/static/media/team-1.0fd36e0ee93dcfacdef8.jpg",
     "static/media/team-2.jpg": "/static/media/team-2.13ae2ce3e12f4cfed420.jpg",
     "static/media/team-3.jpg": "/static/media/team-3.0ef0be95e6850814c79e.jpg",
     "static/media/team-4.jpg": "/static/media/team-4.85c82b6e60178804017f.jpg",
-    "static/media/github.svg": "/static/media/github.d9d9125ad1670dda0a0f3abda2b9ed13.svg",
-    "static/media/logo-slack.svg": "/static/media/logo-slack.0352280e52f00ff89756f685164947cf.svg",
-    "static/media/logo-xd.svg": "/static/media/logo-xd.90cb89fccb9bc71eb8d2bd992f669e4a.svg",
-    "static/media/logo-invision.svg": "/static/media/logo-invision.3ac6e3b3420d23aa837bd8c57310f566.svg",
-    "static/media/logo-spotify.svg": "/static/media/logo-spotify.d8c6dc0ca29a99147d298dfbdae912f4.svg",
-    "static/media/logo-jira.svg": "/static/media/logo-jira.f5f51269aa0a938a428fd0fbe6fb1a7f.svg",
-    "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.ddb9a3ffc34cac1947b936f601bb09d9.svg",
-    "static/media/logo-asana.svg": "/static/media/logo-asana.361eeb526f6250ca4a5d752e05c7194f.svg",
+    "static/media/github.svg": "/static/media/github.a80d3660937471c2a667d3414a0b9ae7.svg",
+    "static/media/logo-slack.svg": "/static/media/logo-slack.2f49e4dab54ec63ac8b7bd097ed9d66b.svg",
+    "static/media/logo-xd.svg": "/static/media/logo-xd.faee0202028e5d06358d531a4c41b74d.svg",
+    "static/media/logo-invision.svg": "/static/media/logo-invision.3eb5f3c7133bc5f830fe3c8e071edc14.svg",
+    "static/media/logo-spotify.svg": "/static/media/logo-spotify.b4c2af506eb71cb468b3c07d1d511b22.svg",
+    "static/media/logo-jira.svg": "/static/media/logo-jira.cf9fc06bdaf6b4cced5de5379a081a82.svg",
+    "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.8daf2d3bcbdb6ed0beee07f75c1fa3eb.svg",
+    "static/media/logo-asana.svg": "/static/media/logo-asana.39545c326fb26522dfe12eecc4412f9d.svg",
     "index.html": "/index.html",
     "main.e8eea881.css.map": "/static/css/main.e8eea881.css.map",
-    "main.740cc3bf.js.map": "/static/js/main.740cc3bf.js.map"
+    "main.c94bbafc.js.map": "/static/js/main.c94bbafc.js.map"
   },
   "entrypoints": [
     "static/css/main.e8eea881.css",
-    "static/js/main.740cc3bf.js"
+    "static/js/main.c94bbafc.js"
   ]
 }

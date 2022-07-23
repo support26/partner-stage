@@ -84,7 +84,7 @@ function Basic () {
           />
         </div>
 
-        <Card className="cardName" rounded>
+        <Card className="cardName" >
           <MDBox
             className="cardName"
             variant="gradient"
