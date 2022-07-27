@@ -56,7 +56,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 export default function Tables(props) {
   const [runnerdata, setrunnerdata] = useState([]);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(false);
   const [imgopens, setimgOpen] = React.useState([]);
   const handleClose = () => {
     setOpen(false);
