@@ -1,6 +1,6 @@
 import UserRepository from "api/UsersRepository";
 import Modal from "@mui/material/Modal";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
@@ -76,7 +76,7 @@ export default function Tables(props) {
   };
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
-const [pageSize, setPageSize] =useState(10);
+  const [pageSize, setPageSize] = useState(10);
 
   const [imgopen, setimgOpen] = useState(false);
   const imageshandleOpen = () => setimgOpen(true);
@@ -267,7 +267,7 @@ const [pageSize, setPageSize] =useState(10);
   const [APIData, setAPIData] = useState([]);
 
   const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
-
+  const [tableLoading, setTableLoading] = useState(false);
   //get api
 
   const GetRunner = () => {
@@ -279,11 +279,13 @@ const [pageSize, setPageSize] =useState(10);
       })
       .then((response) => {
         setAPIData(response.data.data);
+        setTableLoading(false);
         console.log(response.data);
       });
   };
 
   useEffect(() => {
+    setTableLoading(true);
     GetRunner();
   }, []);
 
@@ -403,9 +405,10 @@ const [pageSize, setPageSize] =useState(10);
                   rows={APIData}
                   columns={columns}
                   pageSize={pageSize}
-          onPageSizeChange={newPageSize => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20, 50, 100]}
                   // checkboxSelection
+                  loading={tableLoading}
                   disableSelectionOnClick
                 />
               </div>
@@ -413,12 +416,11 @@ const [pageSize, setPageSize] =useState(10);
           </Grid>
         </Grid>
         <Dialog
-           
           open={open}
           onClose={handleClose}
           TransitionComponent={Transition}
         >
-          <AppBar sx={{ position: "relative" , }}>
+          <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -430,32 +432,36 @@ const [pageSize, setPageSize] =useState(10);
               </IconButton>
 
               <Typography
-                sx={{ ml: 2, flex: 1, fontSize: 20, color: "#33A2B5", textTransform:'capitalize'}}
+                sx={{
+                  ml: 2,
+                  flex: 1,
+                  fontSize: 20,
+                  color: "#33A2B5",
+                  textTransform: "capitalize",
+                }}
                 variant="h6"
                 component="div"
               >
                 {name}
               </Typography>
-              
-               
-                <Box
-                  component="img"
-                  sx={{
-                    height: 120,
-                    width: 120,
-                    borderRadius: "50%",
-                    //ml: 3,
-                    m: 2
-                  }}
-                  onClick={imageshandleOpen}
-                  alt="The upload image."
-                  src={profileImage}
-                  display="flex"
-                  // / src={URL.createObjectURL(profileImage)}
-                />
-              
-              <Stack direction="row" alignItems="center" spacing={2}>
 
+              <Box
+                component="img"
+                sx={{
+                  height: 120,
+                  width: 120,
+                  borderRadius: "50%",
+                  //ml: 3,
+                  m: 2,
+                }}
+                onClick={imageshandleOpen}
+                alt="The upload image."
+                src={profileImage}
+                display="flex"
+                // / src={URL.createObjectURL(profileImage)}
+              />
+
+              <Stack direction="row" alignItems="center" spacing={2}>
                 <IconButton
                   style={{
                     marginTop: "60px",
@@ -476,7 +482,6 @@ const [pageSize, setPageSize] =useState(10);
                   />
                   <PhotoCamera />
                 </IconButton>
-              
               </Stack>
 
               <Modal
@@ -496,7 +501,7 @@ const [pageSize, setPageSize] =useState(10);
 
           <Box
             sx={{
-              "& .MuiTextField-root": { mx: 3, my:2,width: "20ch" },
+              "& .MuiTextField-root": { mx: 3, my: 2, width: "20ch" },
             }}
             noValidate
             autoComplete="off"
@@ -559,7 +564,9 @@ const [pageSize, setPageSize] =useState(10);
 
             <br />
 
-            <h3 style={{ color: "#33A2B5", marginLeft:'25px'}}>Bank Details</h3>
+            <h3 style={{ color: "#33A2B5", marginLeft: "25px" }}>
+              Bank Details
+            </h3>
             <TextField
               required
               id="standard-required"
@@ -576,81 +583,78 @@ const [pageSize, setPageSize] =useState(10);
               onChange={(e) => setBankName(e.target.value)}
             />
 
-
-{/* bank_passbook_photo */}
- <div style ={{ }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-              }}
-              onClick={imagespasshandleOpen}
-              alt="The upload image."
-              src={bank_passbook_photo}
-              display="flex"
-              // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
-            <TextField
-            id="standard-disabled"
-            label="Bank Account no."
-            value={bank_acct_no}
-            onChange={(e) => setAccountno(e.target.value)}
-           
-          />
-          <br/>
-         
-           <TextField
-          id="standard-disabled"
-          label="ifsc Code  "
-          type="text"
-          value={bank_ifsc_code}
-          onChange={(e) => setbank_ifsc_code(e.target.value)}
-        
-        /></div>   
-            
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-            <IconButton
-              style={{
-                marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input //passbook image
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={handleBank_passbook_photo}
+            {/* bank_passbook_photo */}
+            <div style={{}}>
+              <Box
+                component="img"
+                sx={{
+                  height: 100,
+                  width: 219,
+                  ml: 3.5,
+                  mt: 2.5,
+                  display: "inline",
+                  borderRadius: "10px",
+                  boxShadow: 1,
+                }}
+                onClick={imagespasshandleOpen}
+                alt="The upload image."
+                src={bank_passbook_photo}
+                display="flex"
+                // / src={URL.createObjectURL(profileImage)}
               />
-              <FileUploadIcon />
-            </IconButton>
-          </Stack> 
-          <span style={{ fontSize: "12px", marginLeft: "80px",color:'hwb(0deg 0% 100% / 60%)'}}>
-              bank passbook Image
-            </span>
+              <div style={{ float: "right" }}>
+                <TextField
+                  id="standard-disabled"
+                  label="Bank Account no."
+                  value={bank_acct_no}
+                  onChange={(e) => setAccountno(e.target.value)}
+                />
+                <br />
 
-         
-          </div>
-            <div style={{position:'relative',
-                            left:'8px'}}> 
-           
-        </div>
-       
-           
-            
-        <Modal
+                <TextField
+                  id="standard-disabled"
+                  label="ifsc Code  "
+                  type="text"
+                  value={bank_ifsc_code}
+                  onChange={(e) => setbank_ifsc_code(e.target.value)}
+                />
+              </div>
+
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <IconButton
+                  style={{
+                    marginTop: "-110px",
+                    marginLeft: "228px",
+                    fontSize: "20px",
+                    color: "white",
+                    backgroundColor: "#33A2B5",
+                  }}
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input //passbook image
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={handleBank_passbook_photo}
+                  />
+                  <FileUploadIcon />
+                </IconButton>
+              </Stack>
+              <span
+                style={{
+                  fontSize: "12px",
+                  marginLeft: "80px",
+                  color: "hwb(0deg 0% 100% / 60%)",
+                }}
+              >
+                bank passbook Image
+              </span>
+            </div>
+            <div style={{ position: "relative", left: "8px" }}></div>
+
+            <Modal
               open={imgpassopen}
               onClose={imagespasshandleClose}
               aria-labelledby="modal-modal-title"
@@ -659,72 +663,70 @@ const [pageSize, setPageSize] =useState(10);
               <Box sx={style}>
                 <img src={bank_passbook_photo} width="500px" height="500px" />
               </Box>
-            </Modal>    
+            </Modal>
 
-   
-            
-  {/* pancard image  */}
+            {/* pancard image  */}
 
-
-
-<div style ={{ }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-              }}
-              onClick={imagespancardhandleOpen}
-              alt="The upload image."
-              src={pancard_image}
-              display="flex"
-              // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
-            <TextField
-            id="standard-disabled"
-            label="Pan card no."
-            value={pancard_no}
-            onChange={(e) => setPancardno(e.target.value)}
-           
-          />
-        
-        </div>   
-            
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-            <IconButton
-              style={{
-                marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input //passbook image
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={handlePancardImages}
+            <div style={{}}>
+              <Box
+                component="img"
+                sx={{
+                  height: 100,
+                  width: 219,
+                  ml: 3.5,
+                  mt: 2.5,
+                  display: "inline",
+                  borderRadius: "10px",
+                  boxShadow: 1,
+                }}
+                onClick={imagespancardhandleOpen}
+                alt="The upload image."
+                src={pancard_image}
+                display="flex"
+                // / src={URL.createObjectURL(profileImage)}
               />
-              <FileUploadIcon />
-            </IconButton>
-          </Stack> 
-          <span style={{ fontSize: "12px", marginLeft: "80px",color:'hwb(0deg 0% 100% / 60%)'}}>
-              Pancard Photo
-            </span>
+              <div style={{ float: "right" }}>
+                <TextField
+                  id="standard-disabled"
+                  label="Pan card no."
+                  value={pancard_no}
+                  onChange={(e) => setPancardno(e.target.value)}
+                />
+              </div>
 
-         
-          </div>
-          <Modal
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <IconButton
+                  style={{
+                    marginTop: "-110px",
+                    marginLeft: "228px",
+                    fontSize: "20px",
+                    color: "white",
+                    backgroundColor: "#33A2B5",
+                  }}
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input //passbook image
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={handlePancardImages}
+                  />
+                  <FileUploadIcon />
+                </IconButton>
+              </Stack>
+              <span
+                style={{
+                  fontSize: "12px",
+                  marginLeft: "80px",
+                  color: "hwb(0deg 0% 100% / 60%)",
+                }}
+              >
+                Pancard Photo
+              </span>
+            </div>
+            <Modal
               open={imgpancardopen}
               onClose={imagespancardhandleClose}
               aria-labelledby="modal-modal-title"
@@ -732,12 +734,11 @@ const [pageSize, setPageSize] =useState(10);
             >
               <Box sx={style}>
                 <img src={pancard_image} width="500px" height="500px" />
-               
               </Box>
             </Modal>
 
-  {/* pancard images */}
-{/* 
+            {/* pancard images */}
+            {/* 
   <div sx={{display: 'inline' }}>
             <Box
               component="img"
@@ -789,67 +790,66 @@ const [pageSize, setPageSize] =useState(10);
               </IconButton>
             </Stack>
              */}
-         
-<div style ={{ }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-              }}
-              onClick={otherhandleOpen}
-              alt="The upload image."
-              src={other_Id_proof_image}
-              display="flex"
-              // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
 
-
-          <TextField
-            
-             id="standard-helperText"
-             label="other_id_proof_no"
-             value={other_id_proof_no}
-             onChange={(e) => setother_id_proof_no(e.target.value)}
-           />
-          
-        
-        </div>   
-            
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-            <IconButton
-              style={{
-                marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input //passbook image
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={handelother_Id_proof_image}
+            <div style={{}}>
+              <Box
+                component="img"
+                sx={{
+                  height: 100,
+                  width: 219,
+                  ml: 3.5,
+                  mt: 2.5,
+                  display: "inline",
+                  borderRadius: "10px",
+                  boxShadow: 1,
+                }}
+                onClick={otherhandleOpen}
+                alt="The upload image."
+                src={other_Id_proof_image}
+                display="flex"
+                // / src={URL.createObjectURL(profileImage)}
               />
-              <FileUploadIcon />
-            </IconButton>
-          </Stack> 
-          <span style={{ fontSize: "12px", marginLeft: "40px", color:'hwb(0deg 0% 100% / 60%)'}}>
-              Any ID Proof Photo(Aadhar/Voter ID)
-            </span>
+              <div style={{ float: "right" }}>
+                <TextField
+                  id="standard-helperText"
+                  label="other_id_proof_no"
+                  value={other_id_proof_no}
+                  onChange={(e) => setother_id_proof_no(e.target.value)}
+                />
+              </div>
 
-         
-          </div>  
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <IconButton
+                  style={{
+                    marginTop: "-110px",
+                    marginLeft: "228px",
+                    fontSize: "20px",
+                    color: "white",
+                    backgroundColor: "#33A2B5",
+                  }}
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input //passbook image
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={handelother_Id_proof_image}
+                  />
+                  <FileUploadIcon />
+                </IconButton>
+              </Stack>
+              <span
+                style={{
+                  fontSize: "12px",
+                  marginLeft: "40px",
+                  color: "hwb(0deg 0% 100% / 60%)",
+                }}
+              >
+                Any ID Proof Photo(Aadhar/Voter ID)
+              </span>
+            </div>
 
             {/* Any ID Proof Photo(Aadhar/Voter ID)
             <Box
@@ -901,8 +901,6 @@ const [pageSize, setPageSize] =useState(10);
 
  */}
 
-
-
             <Modal
               open={otheropen}
               onClose={otherhandleClose}
@@ -911,20 +909,16 @@ const [pageSize, setPageSize] =useState(10);
             >
               <Box sx={style}>
                 <img src={other_Id_proof_image} width="500px" height="500px" />
-               
               </Box>
             </Modal>
-
-
-
 
             <Button
               sx={{
                 color: "#f0f2f5",
                 backgroundColor: "#33A2B5",
                 "&:hover": { backgroundColor: "#2A90A2" },
-                float:'right',
-                margin:2
+                float: "right",
+                margin: 2,
               }}
               type="submit"
               onClick={updateAPIData}
