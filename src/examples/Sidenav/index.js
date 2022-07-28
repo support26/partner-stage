@@ -164,7 +164,7 @@ const roleId = localStorage.getItem('roleId')
         {/* remove component={Navlink} from below MDBox to prevent unuseful click on brand image */}
         <MDBox  to="/dashboard" display="flex" alignItems="center">
           {brand && (
-            <MDBox component="img" src={brand} alt="Brand" width="2rem" />
+            <MDBox component="img" src={brand} alt="Brand" width="4rem"  />
           )}
           <MDBox
             width={!brandName && "100%"}
