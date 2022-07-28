@@ -43,7 +43,7 @@ import {
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import anaxee_logo from "assets/images/icons/Ellipse 1.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -135,7 +135,7 @@ export default function App() {
               color={sidenavColor}
               brand={
                 (transparentSidenav && !darkMode) || whiteSidenav
-                  ? brandDark
+                  ? anaxee_logo
                   : brandWhite
               }
               brandName=""
@@ -167,7 +167,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={brandDark}
+            brand={anaxee_logo}
             brandName=""
             routes={routes}
             onMouseEnter={handleOnMouseEnter}

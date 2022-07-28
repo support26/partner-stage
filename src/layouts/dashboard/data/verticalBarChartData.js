@@ -1,10 +1,10 @@
 export default {
-    labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'],
+    labels: ['MP', 'UP', 'CG', 'MH', 'UK', 'MP', 'MP','MP','MP','42+'],
     datasets: [
       {
-        label: 'Sales by age',
+        label: 'users in state',
         color: 'info',
-        data: [15, 20, 12, 60, 20, 15]
+        data: [60, 20, 26, 60, 20, 25, 30, 55, 45, 44],
       }
     ]
   }

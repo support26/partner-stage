@@ -25,12 +25,13 @@ function Breadcrumbs({ icon, title, route, light }) {
           },
         }}
       >
-        <Link to="/">
+        <Link to="/dashboard">
           <MDTypography
+          fontWeight="bold"
             component="span"
             variant="body2"
-            color={light ? "white" : "dark"}
-            opacity={light ? 0.8 : 0.5}
+            color={light ? "dark" : "dark"}
+            opacity={light ? 1 : 0.5}
             sx={{ lineHeight: 0 }}
           >
             <Icon>{icon}</Icon>
@@ -41,7 +42,7 @@ function Breadcrumbs({ icon, title, route, light }) {
             <MDTypography
               component="span"
               variant="button"
-              fontWeight="regular"
+              fontWeight="bold"
               textTransform="capitalize"
               color={light ? "white" : "dark"}
               opacity={light ? 0.8 : 0.5}
@@ -53,7 +54,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         ))}
         <MDTypography
           variant="button"
-          fontWeight="regular"
+          fontWeight="bold"
           textTransform="capitalize"
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
@@ -61,7 +62,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           {title.replace("-", " ")}
         </MDTypography>
       </MuiBreadcrumbs>
-      <MDTypography
+      {/* <MDTypography
         fontWeight="bold"
         textTransform="capitalize"
         variant="h6"
@@ -69,7 +70,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         noWrap
       >
         {title.replace("-", " ")}
-      </MDTypography>
+      </MDTypography> */}
     </MDBox>
   );
 }
