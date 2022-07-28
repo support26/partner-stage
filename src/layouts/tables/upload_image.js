@@ -19,32 +19,7 @@ const UploadImages = (props) => {
   const imageshandleClose = () => setimgOpen(false);
   const pancard_image = props.ravi.image;
 
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
-  const name = "Ravi";
-  const email = "ravi@123";
-  const image = selectedFile;
-  const changeHandler = (event) => {
-    setSelectedFile(URL.createObjectURL(event.target.files[0]));
-    //setIsSelected(true);
-  };
-  console.log(props.id);
-
-  const handleSubmission = () => {
-    console.log(selectedFile)
-
-    axios
-      .put(`http://localhost:3000/user/${props.id}`, { image, name, email })
-      .then((response) => {
-        console.log(response);
-        // console.log(response.data[0])
-      });
-    // console.log(setSelectedFile.type)
-  };
-  // const [runnerphoto, setrunnerphoto] = useState("");
-
-  // const file = URL.createObjectURL(e.target.files[0])
-
+  
   return (
     <>
       {/*Runner Photos  */}
@@ -84,8 +59,7 @@ const UploadImages = (props) => {
           <img src={pancard_image} width="500px" height="500px" />
         </Box>
       </Modal>
-      <input type="file" name="file" onChange={changeHandler} />
-      <button onClick={handleSubmission}>Submit</button>
+     
     </>
   );
 };

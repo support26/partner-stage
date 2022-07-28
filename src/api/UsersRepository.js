@@ -11,6 +11,15 @@ class UsersRepository {
         
            
     }
+    UploadImageFile = (id, ImageFile) =>{
+      return Api.put(`${baseUrl}users/uploadFile/${id}`, ImageFile,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          "content-type": "multipart/form-data",
+        }
+        })
+    }
 }
 
 

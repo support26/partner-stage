@@ -5,8 +5,9 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import { Navigate } from 'react-router-dom'
 // import { token } from '../../api/config'
-import AdminRepository from "../../api/AdminRepository";
 
+
+import AdminRepository from "../../api/AdminRepository";
 import useAdmin from '../../hooks/useAdmin'
 import { useSelector } from 'react-redux'
 //material UI
