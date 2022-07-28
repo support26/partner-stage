@@ -2,15 +2,6 @@
   width: 80%;
 }
 
-/* .addUsers .form form  input[type='text'] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-sizing: border-box;
-} */
 .modalInput {
   width: 100%;
   padding: 9px 20px;
@@ -22,15 +13,7 @@
   font-size: 14px;
 }
 
-/* .addUsers .form form input[type='email'] {
-    width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-sizing: border-box;
-} */
+
 .modalSubmit:hover {
   background-color: #2a90a2;
 }
@@ -92,7 +75,8 @@
 
 .addUserHeading {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   background-color: #33a2b5;
   border-radius: 8px;
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 5%);
@@ -106,64 +90,7 @@
 
 }
 
-/* .css-19fdyy-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track {
-  background-color: #17dd1d!important;
-  border-color: #17dd1d!important;
-  opacity: 1;
-} */
-.css-1jtflaz-MuiSwitch-track .Mui-checked.MuiSwitch-track {
-  background-color: #17dd1d!important;
-  border-color: #17dd1d!important;
-  opacity: 1;
-}
-
-.css-1jtflaz-MuiSwitch-track {
-  background-color: #e7240e !important;
-}
-/* .css-enm5wy-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track {
-  background-color: #17dd1d!important;
-  border-color: #17dd1d!important;
-  opacity: 1;
-} */
-
-
-/* .form {
-    position: relative;
-  padding: 20px;
-  width: 50%;
-  border-radius: 20px;
-  padding-bottom: 20px;
-} */
-/* h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.AddUsers {
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 20px;
-    width: 2%;
-    
-      padding-bottom: 20px;
-  
-     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  
-  
-    margin: auto;
-} */
 @media screen and (min-width: 1200px) {
-
-  /* .AddUsers {
-        position: absolute;
-        display: flex;
-         flex-direction: column; 
-        align-items: center;
-        justify-content: center;
-         text-align: center; 
-         margin-top: 50px; 
-         left: 50%;
-         
-    } */
   .form {
     left: 46%;
   }
@@ -181,3 +108,9 @@
     left: 60% !important;
   }
 }
+
+
+.css-16rnlj6-MuiButtonBase-root-MuiButton-root {
+  background-color: #33A2B5 !important;
+}
+

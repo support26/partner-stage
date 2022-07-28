@@ -46,83 +46,72 @@ import pieChartData from './data/pieChartData'
 // }
 
 function Dashboard () {
-  // const { sales, tasks } = reportsLineChartData
-
-  // const session_token = sessionStorage.getItem('session_token')
-  // var token = cookies.get("token");
-  // console.log(token);
-  // if (!token) {
-  //   return <Navigate to='/' />
-  // } 
-
-  if(!localStorage.getItem('token')){
-    return <Navigate to='/' />
-  }
+  
   
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox py={3} mx={5}>
-        <Grid container spacing={10} pl={2.5} pr={3}>
-          <Grid item xs={6} md={4} lg={4} mt={4} pt={3}>
-            <MDBox mb={1.5}>
+      <MDBox pt={5} mx={1}>
+        <Grid container spacing={5} >
+          <Grid item xs={12} md={6} lg={4} mt={0}  >
+            <MDBox mb={0}>
               <ComplexStatisticsCard
                 sx={{ height: '10%' }}
                 color='dark'
-                icon='weekend'
-                title='Bookings'
-                count={281}
-                percentage={{
-                  color: 'success',
-                  amount: '+55%',
-                  label: 'than lask week'
-                }}
+                icon='group'
+                title='Total Users'
+                count='50k+'
+                // percentage={{
+                //   color: 'success',
+                //   amount: '+55%',
+                //   label: 'than lask week'
+                // }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={6} md={4} lg={4} mt={4}>
-            <MDBox mb={1.5}>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
               <ComplexStatisticsCard
-                icon='leaderboard'
-                title="Today's Users"
-                count='2,300'
-                percentage={{
-                  color: 'success',
-                  amount: '+3%',
-                  label: 'than last month'
-                }}
+                icon='person_pin_rounded'
+                title="Active Users"
+                count='2,500'
+                // percentage={{
+                //   color: 'success',
+                //   amount: '+3%',
+                //   label: 'than last month'
+                // }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={6} md={4} lg={4} mt={4}>
-            <MDBox mb={1.5}>
+          <Grid item xs={12} md={6} lg={4} mt={0}>
+            <MDBox mb={0}>
               <ComplexStatisticsCard
                 color='success'
                 icon='store'
                 title='Revenue'
                 count='34k'
-                percentage={{
-                  color: 'success',
-                  amount: '+1%',
-                  label: 'than yesterday'
-                }}
+                // percentage={{
+                //   color: 'success',
+                //   amount: '+1%',
+                //   label: 'than yesterday'
+                // }}
               />
             </MDBox>
           </Grid>
         </Grid>
         <MDBox mt={5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={12} lg={12}>
               <MDBox mb={3}>
                 <VerticalBarChart
                   icon={{ color: 'info', component: 'leaderboard' }}
-                  title='Vertical Bar Chart'
-                  description='Sales related to age average'
+                  title='Users Data'
+                  description='users in different states'
                   chart={verticalBarChartData}
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
+            {/* <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
                 <PieChart
                   icon={{ color: 'info', component: 'leaderboard' }}
@@ -131,7 +120,7 @@ function Dashboard () {
                   chart={pieChartData}
                 />
               </MDBox>
-            </Grid>
+            </Grid> */}
           </Grid>
         </MDBox>
       </MDBox>

@@ -43,7 +43,7 @@ import {
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import anaxee_logo from "assets/images/icons/Ellipse 1.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -122,19 +122,20 @@ export default function App() {
       return null;
     });
 
-  const sessionToken = localStorage.getItem("sessionToken"); // get session token from local storage
   const roleId = localStorage.getItem("roleId"); // get role id from local storage
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
+
         {layout === "dashboard" && (
           <>
             <Sidenav
               color={sidenavColor}
               brand={
                 (transparentSidenav && !darkMode) || whiteSidenav
-                  ? brandDark
+                  ? anaxee_logo
                   : brandWhite
               }
               brandName=""
@@ -147,12 +148,15 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
+
         <Routes>
-          {getRoutes(routes)}
           <Route path="/" element={<Navigate to="/sign-in" />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
+          <Route path="*" element={<Navigate to="/sign-in" />} />
+          {/* change later it to 404 page */}
+          {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+          {localStorage.getItem("token") && getRoutes(routes)}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -163,7 +167,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={brandDark}
+            brand={anaxee_logo}
             brandName=""
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
@@ -176,11 +180,13 @@ export default function App() {
 
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
         <Route path="/" element={<Navigate to="/sign-in" />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/reset" element={<ResetPassword />} />
-        <Route path="*" element={<Navigate to="/sign-in" />} />{/* change later it to 404 page */}
+        {sessionStorage.getItem("token") && <Route path="/reset" element={<ResetPassword />} />}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
+        {/* change later it to 404 page */}
+        {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+        {localStorage.getItem("token") && getRoutes(routes)}
       </Routes>
     </ThemeProvider>
   );

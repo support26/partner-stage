@@ -1,16 +1,14 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import './style.css'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
-import { Navigate } from 'react-router-dom'
-// import { token } from '../../api/config'
-
-
+// import { Navigate } from 'react-router-dom'
 import AdminRepository from "../../api/AdminRepository";
+//Hooks
 import useAdmin from '../../hooks/useAdmin'
 import { useSelector } from 'react-redux'
 //material UI
+import Icon from "@mui/material/Icon";
 import { DataGrid } from '@mui/x-data-grid'
 import Alert from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
@@ -20,14 +18,13 @@ import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import Switch from '@mui/material/Switch';
-import { alpha, styled } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
-import { hover } from '@testing-library/user-event/dist/hover'
+
+
 // mui custom style
 const style = {
   position: 'absolute',
-  top: '42%',
-  left: '60%',
+  top: '50%',
+  left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '350px',
   padding: '35px',
@@ -38,17 +35,17 @@ const style = {
   p: 3
 }
 const style_1 = {
-  position: 'absolute',
-  top: '44%',
-  left: '60%',
-  transform: 'translate(-50%, -50%)',
-  width: '350px',
-  padding: '35px',
-  height: '560px',
-  borderRadius: '15px',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 3
+position: 'absolute',
+top: '50%',
+left: '50%',
+transform: 'translate(-50%, -50%)',
+width: '350px',
+padding: '35px',
+height: '570px',
+borderRadius: '15px',
+bgcolor: 'background.paper',
+boxShadow: 24,
+p: 3
 }
 function AddUsers() {
   const { AddAdminUser, UpdateAdminUser, ChangeAdminUserStatus } = useAdmin()
@@ -75,6 +72,7 @@ function AddUsers() {
     setUsers_name('')
     setUsers_email('')
   }
+
   const [vertical, setVertical] = useState('top')
   const [horizontal, setHorizontal] = useState('center')
   const [snackType, setSnackType] = useState('')
@@ -82,16 +80,15 @@ function AddUsers() {
     setSnackType(snack)
     setOpen(true)
   }
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === 'clickaway') {
       return
     }
     setOpen(false)
   }
-  //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
-  useEffect(() => {
-    GetUsers();
-  }, [])
+
+
+
   const GetUsers = () => {
     AdminRepository.GetAlladminUser()
       .then(response => {
@@ -102,12 +99,17 @@ function AddUsers() {
       })
   }
 
+  //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
+  useEffect(() => {
+    GetUsers();
+  }, [])
+
+
   const columns = [
     {
       field: 'action',
       type: 'actions',
       headerName: 'Action',
-      sortable: false,
       renderCell: function (params) {
         const onClick = function (e) {
           e.stopPropagation() // don't select this row after clicking
@@ -129,7 +131,7 @@ function AddUsers() {
           return console.log(thisRow)
         }
         return (
-          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33A2B5', '&:hover': { backgroundColor: '#2A90A2' } }}>
+          <Button onClick={onClick} variant='contained' sx={{ color: '#000', backgroundColor: '#33A2B5', '&:hover': { backgroundColor: '#378c9b', 'focus':{backgroundColor: 'red'} } }}>
             Edit
           </Button>
         )
@@ -215,6 +217,7 @@ function AddUsers() {
     UpdateAdminUser(data_1, user_id)
     handleOpen()
     GetUsers()
+
     closeEditUserModal()
     console.log(user_id)
     console.log(user_type)
@@ -226,9 +229,9 @@ function AddUsers() {
     setUsers_email('')
     setEmployee_name('')
   }
-  if(!localStorage.getItem('token')){
-    return <Navigate to='/' />
-  }
+  // if(!localStorage.getItem('token')){
+  //   return <Navigate to='/' />
+  // }
 
 return (
     <DashboardLayout>
@@ -280,9 +283,24 @@ return (
       >
         <Fade in={openModal}>
           <Box sx={style}>
+          <Icon
+              sx={{
+                float: 'right',
+                color: "black",
+                cursor: "pointer",
+                marginRight: -1.5,
+                marginTop: -2,
+                transform: "translateY(-1px)",
+              }}
+              onClick={closeModal}
+            >
+              close
+            </Icon>
             <form onSubmit={addAdminUsers}>
+           
               <h2 className='addUserHeading'>Add Users</h2>
-              <label>Employee Name</label>
+              
+              <label style={{ fontSize: "16px" }}>Employee Name</label>
               <input
                 className='modalInput'
                 required
@@ -293,7 +311,7 @@ return (
                 value={employee_name}
                 onChange={e => setEmployee_name(e.target.value)}
               ></input>
-              <label>Username</label>
+              <label style={{ fontSize: "16px" }}>Username</label>
               <input
                 className='modalInput'
                 required
@@ -304,7 +322,7 @@ return (
                 value={users_name}
                 onChange={e => setUsers_name(e.target.value)}
               ></input>
-              <label>Email</label>
+              <label style={{ fontSize: "16px" }}>Email</label>
               <input
                 className='modalInput'
                 required
@@ -315,7 +333,7 @@ return (
                 value={users_email}
                 onChange={e => setUsers_email(e.target.value)}
               ></input>
-              <label>User type</label>
+              <label style={{ fontSize: "16px" }}>User type</label>
               <select
                 required
                 className='modalInput'
@@ -359,6 +377,20 @@ return (
       >
         <Fade in={editUserModal}>
           <Box sx={style_1}>
+          <Icon
+              sx={{
+                float: 'right',
+                color: "black",
+                cursor: "pointer",
+                fontSize: "50px",
+                marginRight: -1.5,
+                marginTop: -1.5,
+               
+              }}
+              onClick={closeEditUserModal}
+            >
+              close
+            </Icon>
             <form onSubmit={updateUser}>
               <h2 className='addUserHeading'>Edit Users</h2>
               <label style={{ fontSize: "16px" }}>Employee Name</label>

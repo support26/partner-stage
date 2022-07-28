@@ -1,9 +1,9 @@
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Notifications from "layouts/notifications";
-import SignIn from "layouts/authentication/sign-in";
-import AddUsers from 'layouts/AddUsers';
-import ResetPassword from "layouts/authentication/reset-password/cover/index"
+import Dashboard from "./layouts/dashboard";
+import Tables from "./layouts/tables";
+import Notifications from "./layouts/notifications";
+import SignIn from "./layouts/authentication/sign-in";
+import AddUsers from './layouts/AddUsers';
+import ResetPassword from "./layouts/authentication/reset-password/cover/index"
 
 
 // @mui icons
@@ -23,10 +23,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
+    name: "Runners",
+    key: "runners",
     icon: <Icon fontSize="medium">table_view</Icon>,
-    route: "/tables",
+    route: "/runners",
     component: <Tables />,
   },
   {
@@ -37,30 +37,30 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
-  {
-    type: "collapse",
-    name: "All Users",
-    key: "users",
-    icon: <Icon fontSize="medium">account_circle</Icon>,
-    route: "/users",
-    component: <AddUsers />,
-  },
-  {
+  // {
+  //   type: "collapse",
+  //   name: "All Users",
+  //   key: "users",
+  // //   icon: <Icon fontSize="medium">account_circle</Icon>,
+  //   route: "/users",
+  //   component: <AddUsers />,
+  // },
+  // {
     // type: "collapse",
     // name: "Sign In",
     // key: "sign-in",
     // icon: <Icon fontSize="medium">login</Icon>,
-    route: "/sign-in",
-    component: <SignIn />,
-  },
-  {
+  //   route: "/sign-in",
+  //   component: <SignIn />,
+  // },
+  // {
     // type: "collapse",
     // name: "reset ",
     // key: "reset-password",
     // icon: <Icon fontSize="medium">ResetPassword</Icon>,
-    route: "/reset",
-    component: <ResetPassword />,
-  }
+  //   route: "/reset",
+  //   component: <ResetPassword />,
+  // }
 
 ];
 

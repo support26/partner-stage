@@ -76,7 +76,7 @@ export default function Tables(props) {
   };
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
-  //const [imgopens, setimgOpen] = React.useState([]);
+const [pageSize, setPageSize] =useState(10);
 
   const [imgopen, setimgOpen] = useState(false);
   const imageshandleOpen = () => setimgOpen(true);
@@ -402,7 +402,9 @@ export default function Tables(props) {
                   }}
                   rows={APIData}
                   columns={columns}
-                  pageSize={20}
+                  pageSize={pageSize}
+          onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 20, 50, 100]}
                   // checkboxSelection
                   disableSelectionOnClick
                 />
