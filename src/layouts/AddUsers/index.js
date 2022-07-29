@@ -493,6 +493,9 @@ return (
             '& .MuiDataGrid-cell:hover': {
               color: '#33A2B5',
             },
+            '& .MuiDataGrid-row:focus':{
+              backgroundColor: '#33A2B5'
+            }
           }}
           rows={users}
           columns={columns}

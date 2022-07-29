@@ -50,6 +50,7 @@ import borders from "assets/theme-dark/base/borders";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 import { textTransform } from "@mui/system";
+import '../AddUsers/style.css';
 // const style = {
 //   position: 'absolute',
 //   top: '50%',
@@ -126,7 +127,7 @@ const [pageSize, setPageSize] =useState(10);
           setAccountno(params.row.bank_acct_no);
           setbank_ifsc_code(params.row.bank_ifsc_code);
 
-          setbank_passbook_photo(params.row.bank_passbook_photo);
+          // setbank_passbook_photo(params.row.bank_passbook_photo);
           setPancardno(params.row.pancard_no);
           setother_id_proof_no(params.row.other_id_proof_no);
           setPancardno(params.row.pancard_no);
@@ -139,7 +140,13 @@ const [pageSize, setPageSize] =useState(10);
           setPancardImages(params.row.pancard_image);
           setother_Id_proof_image(params.row.other_Id_proof_image);
           // console.log(params.row.profileImage)
-
+          if (params.row.bank_passbook_photo == null) {
+            setbank_passbook_photo("https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg")
+            
+          }
+          else{
+            setbank_passbook_photo(params.row.bank_passbook_photo)
+          }
           setOpen(true);
 
           return console.log(id);
@@ -443,12 +450,12 @@ const [pageSize, setPageSize] =useState(10);
                   sx={{
                     height: 120,
                     width: 120,
-                    borderRadius: "50%",
+                    borderRadius: "50%", overflow: 'hidden',
                     //ml: 3,
-                    m: 2
+                    m: 2, border:'2px solid #0000005e'
                   }}
                   onClick={imageshandleOpen}
-                  alt="The upload image."
+                  alt="upload profile image"
                   src={profileImage}
                   display="flex"
                   // / src={URL.createObjectURL(profileImage)}
@@ -463,6 +470,7 @@ const [pageSize, setPageSize] =useState(10);
                     fontSize: "20px",
                     color: "white",
                     backgroundColor: "#33A2B5",
+                   
                   }}
                   color="primary"
                   aria-label="upload picture"
@@ -484,9 +492,10 @@ const [pageSize, setPageSize] =useState(10);
                 onClose={imageshandleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+               
               >
-                <Box sx={style}>
-                  <img src={profileImage} width="500px" height="500px" />
+                <Box sx={style}  >
+                  <img src={profileImage} width="500px" height="500px"  />
                 </Box>
               </Modal>
             </Toolbar>
@@ -578,7 +587,7 @@ const [pageSize, setPageSize] =useState(10);
 
 
 {/* bank_passbook_photo */}
- <div style ={{ }}>
+ <div style ={{ display:'inline'}}>
             <Box
               component="img"
               sx={{
@@ -586,7 +595,7 @@ const [pageSize, setPageSize] =useState(10);
                 width: 219,
                 ml: 3.5,
                 mt:2.5,
-                display:'inline',
+               
                 borderRadius :'10px',boxShadow: 1
               }}
               onClick={imagespasshandleOpen}
@@ -594,28 +603,7 @@ const [pageSize, setPageSize] =useState(10);
               src={bank_passbook_photo}
               display="flex"
               // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
-            <TextField
-            id="standard-disabled"
-            label="Bank Account no."
-            value={bank_acct_no}
-            onChange={(e) => setAccountno(e.target.value)}
-           
-          />
-          <br/>
-         
-           <TextField
-          id="standard-disabled"
-          label="ifsc Code  "
-          type="text"
-          value={bank_ifsc_code}
-          onChange={(e) => setbank_ifsc_code(e.target.value)}
-        
-        /></div>   
-            
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
+            /> <Stack direction="row" alignItems="center" spacing={2}>
             <IconButton
               style={{
                 marginTop: "-110px",
@@ -640,13 +628,31 @@ const [pageSize, setPageSize] =useState(10);
           <span style={{ fontSize: "12px", marginLeft: "80px",color:'hwb(0deg 0% 100% / 60%)'}}>
               bank passbook Image
             </span>
+          <div className="mediaText">
+            <TextField
+            id="standard-disabled"
+            label="Bank Account no."
+            value={bank_acct_no}
+            onChange={(e) => setAccountno(e.target.value)}
+           
+          />
+          <br/>
+         
+           <TextField
+          id="standard-disabled"
+          label="ifsc Code  "
+          type="text"
+          value={bank_ifsc_code}
+          onChange={(e) => setbank_ifsc_code(e.target.value)}
+        
+        /></div>   
+            
+            
+            
 
          
           </div>
-            <div style={{position:'relative',
-                            left:'8px'}}> 
-           
-        </div>
+          
        
            
             
@@ -675,7 +681,7 @@ const [pageSize, setPageSize] =useState(10);
                 width: 219,
                 ml: 3.5,
                 mt:2.5,
-                display:'inline',
+               
                 borderRadius :'10px',boxShadow: 1
               }}
               onClick={imagespancardhandleOpen}
@@ -683,19 +689,7 @@ const [pageSize, setPageSize] =useState(10);
               src={pancard_image}
               display="flex"
               // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
-            <TextField
-            id="standard-disabled"
-            label="Pan card no."
-            value={pancard_no}
-            onChange={(e) => setPancardno(e.target.value)}
-           
-          />
-        
-        </div>   
-            
-            
+            />     
             <Stack direction="row" alignItems="center" spacing={2}>
             <IconButton
               style={{
@@ -722,6 +716,19 @@ const [pageSize, setPageSize] =useState(10);
               Pancard Photo
             </span>
 
+        <div className="mediaText" >
+            <TextField
+            id="standard-disabled"
+            label="Pan card no."
+            value={pancard_no}
+            onChange={(e) => setPancardno(e.target.value)}
+           
+          />
+        
+        </div>   
+            
+        
+
          
           </div>
           <Modal
@@ -735,6 +742,96 @@ const [pageSize, setPageSize] =useState(10);
                
               </Box>
             </Modal>
+      
+            <div style ={{ }}>
+            <Box
+              component="img"
+              sx={{
+                height: 100,
+                width: 219,
+                ml: 3.5,
+                mt:2.5,backgroundSize: '300px' ,
+              
+                borderRadius :'10px',boxShadow: 1,
+            
+              }}
+              onClick={otherhandleOpen}
+              alt="upload Photos."
+              src={other_Id_proof_image }
+              display="flex"
+             // backgroundImage:URL('https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg')
+              // / src={URL.createObjectURL(profileImage)}
+            /> <Stack direction="row" alignItems="center" spacing={2}>
+            <IconButton
+              style={{
+                marginTop: "-110px",
+                marginLeft: "228px",
+                fontSize: "20px",
+                color: "white",
+                backgroundColor: "#33A2B5",
+              }}
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            >
+              <input //passbook image
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={handelother_Id_proof_image}
+              />
+              <FileUploadIcon />
+            </IconButton>
+          </Stack> 
+          <span style={{ fontSize: "12px", marginLeft: "40px", color:'hwb(0deg 0% 100% / 60%)'}}>
+              Any ID Proof Photo(Aadhar/Voter ID)
+         </span>
+
+          <div className="mediaText">
+
+
+          <TextField
+            
+             id="standard-helperText"
+             label="other_id_proof_no"
+             value={other_id_proof_no}
+             onChange={(e) => setother_id_proof_no(e.target.value)}
+           />
+          
+        
+        </div>   
+      
+      </div>  
+      <Modal
+              open={otheropen}
+              onClose={otherhandleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <img src={other_Id_proof_image} width="500px" height="500px" />
+               
+              </Box>
+            </Modal>
+
+
+
+
+            <Button
+              sx={{
+                color: "#f0f2f5",
+                backgroundColor: "#33A2B5",
+                "&:hover": { backgroundColor: "#2A90A2" , color:'white'},
+                float:'right',
+                margin:1,
+                mt:5
+               
+              }}
+              type="submit"
+              onClick={updateAPIData}
+            >
+              submit
+            </Button>
 
   {/* pancard images */}
 {/* 
@@ -789,68 +886,7 @@ const [pageSize, setPageSize] =useState(10);
               </IconButton>
             </Stack>
              */}
-         
-<div style ={{ }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-              }}
-              onClick={otherhandleOpen}
-              alt="The upload image."
-              src={other_Id_proof_image}
-              display="flex"
-              // / src={URL.createObjectURL(profileImage)}
-            /> 
-          <div style={{float:'right'}}>
-
-
-          <TextField
-            
-             id="standard-helperText"
-             label="other_id_proof_no"
-             value={other_id_proof_no}
-             onChange={(e) => setother_id_proof_no(e.target.value)}
-           />
-          
-        
-        </div>   
-            
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-            <IconButton
-              style={{
-                marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-              }}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <input //passbook image
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={handelother_Id_proof_image}
-              />
-              <FileUploadIcon />
-            </IconButton>
-          </Stack> 
-          <span style={{ fontSize: "12px", marginLeft: "40px", color:'hwb(0deg 0% 100% / 60%)'}}>
-              Any ID Proof Photo(Aadhar/Voter ID)
-            </span>
-
-         
-          </div>  
-
+   
             {/* Any ID Proof Photo(Aadhar/Voter ID)
             <Box
               component="img"
@@ -903,34 +939,7 @@ const [pageSize, setPageSize] =useState(10);
 
 
 
-            <Modal
-              open={otheropen}
-              onClose={otherhandleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <img src={other_Id_proof_image} width="500px" height="500px" />
-               
-              </Box>
-            </Modal>
-
-
-
-
-            <Button
-              sx={{
-                color: "#f0f2f5",
-                backgroundColor: "#33A2B5",
-                "&:hover": { backgroundColor: "#2A90A2" },
-                float:'right',
-                margin:2
-              }}
-              type="submit"
-              onClick={updateAPIData}
-            >
-              submit
-            </Button>
+         
             {/* <TextField
               type="file"
               accept="image/png, image/jpeg"
