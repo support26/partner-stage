@@ -87,12 +87,13 @@ function AddUsers() {
     setOpen(false)
   }
 
-
+  const [loading, setLoading] = useState(false);
 
   const GetUsers = () => {
     AdminRepository.GetAlladminUser()
       .then(response => {
         console.log(response)
+        setLoading(false)
         setUsers(response.data.data)
       }).catch(e => {
         console.log(e)
@@ -101,6 +102,7 @@ function AddUsers() {
 
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
+    setLoading(true)
     GetUsers();
   }, [])
 
@@ -489,9 +491,9 @@ return (
           sx={{
             boxShadow: 2,
             border: 2,
-            borderColor: '#33A2B5',
+            borderColor: 'ravi.main',
             '& .MuiDataGrid-cell:hover': {
-              color: '#33A2B5',
+              color: 'ravi.main',
             },
             '& .MuiDataGrid-row:focus':{
               backgroundColor: '#33A2B5'
@@ -502,6 +504,7 @@ return (
           pageSize={pageSize}
           onPageSizeChange={newPageSize => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 20, 50]}
+          loading={loading}
         />
       </div>
     </DashboardLayout>

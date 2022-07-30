@@ -90,6 +90,7 @@
 
 }
 
+
 @media screen and (min-width: 1200px) {
   .form {
     left: 46%;
@@ -114,6 +115,10 @@
   background-color: #33A2B5 !important;
 }
 
+.css-krf6xu-MuiButtonBase-root-MuiButton-root:hover {
+color: white !important;
+}
+
 @media screen and (max-width: 1100px) {
   .mediaText {
     float: left;
@@ -128,4 +133,3 @@
   top: -110px;
   }
 }
-
