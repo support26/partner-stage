@@ -41,6 +41,17 @@ export default function useAdmin() {
       }
       return responseData.data;
     },
+
+    //get all admin users
+    GetAlladminUser: async () => {
+      var responseData = await AdminRepository.getAlladminUser();
+      if (responseData.status === 200) {
+        return responseData;
+      } else {
+        console.log(responseData.data);
+      }
+      return responseData;
+    },
     //add admin user
     AddAdminUser: async (data) => {
       var responseData = await AdminRepository.addAdminUser(data);
@@ -48,6 +59,7 @@ export default function useAdmin() {
         console.log(responseData.data);
         dispatch(errorMessage(''))
         dispatch(successMsg(responseData.data.data));
+        return responseData;
 
       }
       else {
@@ -55,6 +67,7 @@ export default function useAdmin() {
         dispatch(successMsg(''))
         dispatch(errorMessage(responseData.data.message))
       }
+      return responseData;
     },
 
     //update admin user
@@ -64,12 +77,14 @@ export default function useAdmin() {
         console.log(responseData.data);
         dispatch(errorMessage(''))
         dispatch(successMsg(responseData.data.data));
+        return responseData;
       }
       else {
         console.log(responseData.data);
         dispatch(successMsg(''))
         dispatch(errorMessage(responseData.data.message))
       }
+      return responseData;
     },
 //change admin_user active status
     ChangeAdminUserStatus: async (userId, is_active) => {
