@@ -1,6 +1,8 @@
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
+import UserRepository from "api/UsersRepository";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -25,6 +27,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useEffect } from "react";
+import axios from "axios";
 
 // mui custom style
 
@@ -33,43 +37,113 @@ import Select from '@mui/material/Select';
 
 function Distric() {
   
+  const [state, setState] = useState([]);
+  const [districts,setDistricts] = useState([]);
+const [sId,setsId] =useState(null)
+const [name ,setName]=useState(null)
+const [districImages ,setDistricImages]=useState(null)
+const diastricName =e =>{
+  const demo2 =  e.target.value
+  console.log(demo2)
+}
+const getDistrict = e => {
+  //setsId(e.target.value)
+const demo =  e.target.value
+  console.log(demo)
+  
+  axios
+  .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${demo}`)
+  .then((response) => {
+    setDistricts(response.data.districts);
+    // setTableLoading(false);
+    console.log(response.data);
+  });
+}
+      useEffect(() => {
+        axios
+          .get("https://project-swarksha.uc.r.appspot.com/states")
+          .then((response) => {
+            setState(response.data.states);
+            // setTableLoading(false);
+            console.log(response.data);
+          });
+      }, []);
+
+      let file;
+      let form_data = new FormData();
+      const handelDistricImages = (event) => {
+        file = event.target.files[0];
+        form_data.append("file", file);
+        UserRepository.UploadImageFile(form_data)
+          .then((response) => {
+            console.log(response.data);
+            setDistricImages(response.data.data.fileUrl);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+
+      // useEffect(() => {
+      //   axios
+      //     .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${sId}`)
+      //     .then((response) => {
+      //       setDistricts(response.data.districts);
+      //       // setTableLoading(false);
+      //       console.log(response.data);
+      //     });
+      // }, []);
+
   return (
    
      
-            <Card  sx={{ px:5, py:2,width:'100%'}} >
+            <Card  sx={{ px:5,  py: 1, pb:4,width:'100%'}} >
             <MDTypography  align="center" variant="h3" sx={{ pb:"20px"}} >Distric Notification</MDTypography>    
 
-        <Box sx={{ pb:2, minWidth: 120 ,ml :5}}>
-            <FormControl maxWidth>
+        <Box sx={{ pb:2, minWidth: 120}}>
+            <FormControl sx={{ width: 160 }}>
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                state
+                State
               </InputLabel>
               <NativeSelect
-                defaultValue={30}
-                inputProps={{
-                  name: 'age',
-                  id: 'uncontrolled-native',
-                }}
+              
+                value ={sId}
+                onChange={getDistrict}
               >
-                <option value={10}>Ten</option>
-               
+                
+            <option >   None      </option>
+                {state.map(({ name,sid}) => {
+              return (
+                
+                <option key={name} value={sid} style={{color:'black'}}>
+                  {name}
+                  
+                </option>
+              
+              );
+            })}
+             
               </NativeSelect>
             </FormControl>
 
-            <FormControl maxWidth sx={{ml:5}}>
+            <FormControl  sx={{ width: 120 , ml:3}}
+              value = {name}
+              onChange={diastricName}
+           >
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                distric
+                Distric
               </InputLabel>
               <NativeSelect
-                defaultValue={30}
-                inputProps={{
-                  name: 'age',
-                  id: 'uncontrolled-native',
-                }}
-              >
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
+                
+              >   <option >   None      </option>
+                  {districts.map(({ name}) => {
+              return (
+                <option key={name} value={name} style={{color:'black'}}>
+                  {name}
+                  
+                </option>
+              );
+            })}
               </NativeSelect>
             </FormControl>
            
@@ -77,11 +151,18 @@ function Distric() {
 
               
               
- 
+          <TextField
+             
+              type="text"
+              label="Title..."
+            />
+            <br/>
               <MDInput  label="Type here..." multiline rows={5}  style={{minWidth: 'auto' ,maxWidth:'400px' }} /> <br/>
+               
                 <TextField
-              helperText="Any ID Proof Photo(Aadhar/Voter ID) "
+              helperText="image / upload"
               type="file"
+              onChange={handelDistricImages}
             /> <br/>
          <Button variant="contained" style={{background:'#33A2B5', color:'white'}} href="#contained-buttons">
           Send

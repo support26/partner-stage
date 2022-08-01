@@ -391,7 +391,7 @@ export default function Tables(props) {
   const handleProfileImage = (event) => {
     file = event.target.files[0];
     form_data.append("file", file);
-    UserRepository.UploadImageFile(id, form_data)
+    UserRepository.UploadImageFile(form_data)
       .then((response) => {
         console.log(response.data);
         setprofileImage(response.data.data.fileUrl);
@@ -404,7 +404,7 @@ export default function Tables(props) {
   const handlePancardImages = (event) => {
     file = event.target.files[0];
     form_data.append("file", file);
-    UserRepository.UploadImageFile(id, form_data)
+    UserRepository.UploadImageFile(form_data)
       .then((response) => {
         console.log(response.data);
         setPancardImages(response.data.data.fileUrl);
@@ -416,7 +416,7 @@ export default function Tables(props) {
   const handleBank_passbook_photo = (event) => {
     file = event.target.files[0];
     form_data.append("file", file);
-    UserRepository.UploadImageFile(id, form_data)
+    UserRepository.UploadImageFile(form_data)
       .then((response) => {
         console.log(response.data);
         setbank_passbook_photo(response.data.data.fileUrl);
@@ -428,7 +428,7 @@ export default function Tables(props) {
   const handelother_Id_proof_image = (event) => {
     file = event.target.files[0];
     form_data.append("file", file);
-    UserRepository.UploadImageFile(id, form_data)
+    UserRepository.UploadImageFile(form_data)
       .then((response) => {
         console.log(response.data);
         setother_Id_proof_image(response.data.data.fileUrl);

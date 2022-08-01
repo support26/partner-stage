@@ -19,18 +19,10 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
+
 import State from "./state";
 import Distric from "./distric";
+import Number from "./number";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import "../AddUsers/style.css";
@@ -38,6 +30,7 @@ import "../AddUsers/style.css";
 function Notifications() {
   const [open, setOpen] = useState(false);
   const [disopen, setdisOpen] = useState(false);
+  const [numopen, setnumOpen] = useState(false);
   const [maxWidth, setMaxWidth] =useState('sm');
 
 
@@ -56,7 +49,13 @@ function Notifications() {
       const handleDistricClose = () => {
         setdisOpen(false);
       };
-     
+      const handleNumberOpen = () => {
+        setnumOpen(true);
+      };
+
+      const handleNumberClose = () => {
+        setnumOpen(false);
+      };
 
   return (
     <DashboardLayout>
@@ -85,7 +84,13 @@ function Notifications() {
           >
               Send By Distric
           </Button>
-               
+          <br/>  <br/>
+          <Button
+            style={{ color: "#ffffff", backgroundColor: "#33A2B5",width:200 }}
+            onClick={handleNumberOpen}
+          >
+              Send By Number
+          </Button>
                 {/* <Button sx={{backgroundColor:'#33A2B5',color:'#ffffff'}} variant="contained" onClick={handlePersional} disableElevation>
                      Send By Persional
                 </Button> 
@@ -159,7 +164,42 @@ function Notifications() {
            maxWidth
          }}
        >
-        <Distric/>
+          <Distric/>
+        
+       </Box>
+    
+    
+   </Dialog>
+{/* for state wise  */}
+
+<Dialog
+     
+     maxWidth={maxWidth}
+     open={numopen}
+     onClose={handleNumberClose}
+   > 
+   
+      <div>
+     <IconButton
+   edge="start"
+   color="inherit"
+   onClick={handleNumberClose}
+   aria-label="close"
+   style={{float:'right'}}
+ >
+   <CloseIcon />
+ </IconButton>
+ </div>
+       <Box
+         noValidate
+         component="form"
+         sx={{
+          
+         
+           maxWidth
+         }}
+       >
+          <Number/>
         
        </Box>
     
@@ -168,7 +208,15 @@ function Notifications() {
 
      
    
+   
+     
+   
     </DashboardLayout>
+
+
+
+
+
   );
 }
 

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import UserRepository from "api/UsersRepository";
-
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 // @mui material components
@@ -8,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import NativeSelect from "@mui/material/NativeSelect";
+import UserRepository from "api/UsersRepository";
 
 //  React components
 import MDBox from "components/MDBox";
@@ -33,12 +32,11 @@ import Select from "@mui/material/Select";
 
 // mui custom style
 
-function State() {
+function Number() {
   const [state, setState] = useState([]);
   const [stateId,setStateId] = useState(null);
-  const [stateName,setStateName] = useState(null);
-  const [stateImages,setStateImages] = useState(null);
- 
+  const [nubmber,setNumberImages] = useState(null);
+
   // useEffect(() => {
   //     const res =  axios.get('https://project-swarksha.uc.r.appspot.com/states', {
   //          headers:{
@@ -49,11 +47,20 @@ function State() {
   //        })
   //        console.log(res);
   //    }, []);
-  const stateNamefun =e =>{
-      const state = e.target.value
-      console.log(state);
-  }
-
+  let file;
+  let form_data = new FormData();
+  const handelDistricImages = (event) => {
+    file = event.target.files[0];
+    form_data.append("file", file);
+    UserRepository.UploadImageFile(form_data)
+      .then((response) => {
+        console.log(response.data);
+        setNumberImages(response.data.data.fileUrl);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   useEffect(() => {
     axios
       .get("https://project-swarksha.uc.r.appspot.com/states")
@@ -64,46 +71,17 @@ function State() {
       });
   }, []);
 
-  let file;
-  let form_data = new FormData();
-  const handelstateImages = (event) => {
-    file = event.target.files[0];
-    form_data.append("file", file);
-    UserRepository.UploadImageFile(form_data)
-      .then((response) => {
-        console.log(response.data);
-        setStateImages(response.data.data.fileUrl);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   return (
-    <Card sx={{ px: 5, py: 1, pb:4, width: "100%" }}>
+    <Card sx={{ px: 5, py: 3, width: "100%" }}>
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-        State Notification
+       Number  Notification
       </MDTypography>
-      <Box sx={{ pb: 3, minWidth: 120, ml: 5 }}>
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel variant="standard" htmlFor="uncontrolled-native">
-            State
-          </InputLabel>
-          <NativeSelect
-             value = {stateName}
-             onChange={stateNamefun}
-          > <option >   None      </option>
-            {state.map(({name}) => {
-              return (
-                <option key={name} value={name} style={{color:'black'}}>
-                  {name}
-                  
-                </option>
-              );
-            })}
-          </NativeSelect>
-        </FormControl>
-      </Box>
+    
+        <TextField
+        helperText="Upload a excel sheet Number "
+        type="file"
+      />
+       
       <MDInput
         label="Type here..."
         multiline
@@ -114,8 +92,7 @@ function State() {
       <TextField
         helperText="Any ID Proof Photo(Aadhar/Voter ID) "
         type="file"
-        onChange={handelstateImages}
-       // src={stateImages}
+        onChange={handelDistricImages}
       />{" "}
       <br />
       <Button
@@ -129,4 +106,4 @@ function State() {
   );
 }
 
-export default State;
+export default Number;
