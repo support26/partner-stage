@@ -1,10 +1,7 @@
 import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
 import Notifications from "./layouts/notifications";
-import SignIn from "./layouts/authentication/sign-in";
-import AddUsers from './layouts/AddUsers';
-import ResetPassword from "./layouts/authentication/reset-password/cover/index"
-
+import Opportunities from "./layouts/opportunities";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -36,6 +33,14 @@ const routes = [
     icon: <Icon fontSize="medium">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
+  },
+  {
+    type: "collapse",
+    name: "Opportunities",
+    key: "opportunities",
+    icon: <Icon fontSize="medium">assignment</Icon>,
+    route: "/opportunities",
+    component: <Opportunities />,
   },
   // {
   //   type: "collapse",

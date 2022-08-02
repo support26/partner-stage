@@ -44,6 +44,7 @@ function Notifications() {
       const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
       // console.log("data",data);
       reqData = data.split("\n");
+      reqData.shift();
       console.log("reqData", reqData);
       axios
         .post("http://localhost:8001/users/notification", {"phone_number":reqData})
