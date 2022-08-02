@@ -10,7 +10,6 @@ import Box from '@mui/material/Box'
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -23,6 +22,7 @@ import Dialog from '@mui/material/Dialog';
 import State from "./state";
 import Distric from "./distric";
 import Number from "./number";
+import Allnotification from "./allnotification";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import "../AddUsers/style.css";
@@ -31,6 +31,7 @@ function Notifications() {
   const [open, setOpen] = useState(false);
   const [disopen, setdisOpen] = useState(false);
   const [numopen, setnumOpen] = useState(false);
+  const [allopen, setAllOpen] = useState(false);
   const [maxWidth, setMaxWidth] =useState('sm');
 
 
@@ -56,27 +57,42 @@ function Notifications() {
       const handleNumberClose = () => {
         setnumOpen(false);
       };
-
+      const handleAllOpen = () => { 
+        setAllOpen(true);
+      };
+      const handleAllClose = () => {
+        setAllOpen(false);
+      };
+       
   return (
     <DashboardLayout>
       <DashboardNavbar />
       
       <MDBox mt={1} mb={1}>
-        <Grid container spacing={0} justifyContent="center" >
-          <Grid item sx = {{padding:1}} >
-            <Card  sx={{ px:8, py:4,width:'100%'}} >
-            <MDTypography  align="center" variant="h3" sx={{ pb:"30px"}} >Notification</MDTypography>    
-
+        <Grid container spacing={0} justifyContent="center">
+          <Grid item sx={{ padding: 1 }}>
+            <Card sx={{ px: 8, py: 4, width: "100%" }}>
+              <MDTypography align="center" variant="h3" sx={{ pb: "30px" }}>
+                Notification
+              </MDTypography>
+        
                <Box sx={{ pb:3, minWidth: 120 }}>
       
-           <div style={{width:200}}>
+           <div style={{width:"100%" ,px:10}}>
            <Button
             style={{ color: "#ffffff", backgroundColor: "#33A2B5",width:200 }}
+            onClick={handleAllOpen}
+          >
+             All Notification
+          </Button>
+         
+           <Button
+            style={{    margin: '14px', color: "#ffffff", backgroundColor: "#33A2B5",width:200}}
             onClick={handleClickOpen}
           >
            Send By state
           </Button>
-          <br/>  <br/>
+          <br/> 
 
           <Button
             style={{ color: "#ffffff", backgroundColor: "#33A2B5",width:200 }}
@@ -84,17 +100,14 @@ function Notifications() {
           >
               Send By Distric
           </Button>
-          <br/>  <br/>
+       
           <Button
-            style={{ color: "#ffffff", backgroundColor: "#33A2B5",width:200 }}
+            style={{  margin: '14px', color: "#ffffff", backgroundColor: "#33A2B5",width:200 }}
             onClick={handleNumberOpen}
           >
               Send By Number
           </Button>
-                {/* <Button sx={{backgroundColor:'#33A2B5',color:'#ffffff'}} variant="contained" onClick={handlePersional} disableElevation>
-                     Send By Persional
-                </Button> 
-               */}
+            
           </div>
                </Box>
               </Card>         
@@ -135,7 +148,7 @@ function Notifications() {
        
       </Dialog>
 
-{/* for state wise  */}
+{/* for District wise  */}
 
 <Dialog
      
@@ -170,7 +183,7 @@ function Notifications() {
     
     
    </Dialog>
-{/* for state wise  */}
+{/* for Number wise  */}
 
 <Dialog
      
@@ -206,7 +219,42 @@ function Notifications() {
     
    </Dialog>
 
+  
+{/* for All State wise  */}
+
+<Dialog
      
+     maxWidth={maxWidth}
+     open={allopen}
+     onClose={handleAllClose}
+   > 
+   
+      <div>
+  <IconButton
+   edge="start"
+   color="inherit"
+   onClick={handleAllClose}
+   aria-label="close"
+   style={{float:'right'}}
+ >
+   <CloseIcon />
+ </IconButton>
+ </div>
+       <Box
+         noValidate
+         component="form"
+         sx={{
+          
+         
+           maxWidth
+         }}
+       >
+          <Allnotification/>
+        
+       </Box>
+    
+    
+   </Dialog>   
    
    
      

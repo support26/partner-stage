@@ -53,6 +53,7 @@ import { textTransform } from "@mui/system";
 import "../AddUsers/style.css";
 import nophoto from "assets/images/no-image-available.png";
 import profile from "assets/images/profile.png";
+import Switch from "@mui/material/Switch";
 
 // const style = {
 //   position: 'absolute',
@@ -74,6 +75,9 @@ const style = {
   width: 50,
 };
 export default function Tables(props) {
+
+
+  
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -97,6 +101,7 @@ export default function Tables(props) {
   const [otheropen, setotherOpen] = useState(false);
   const otherhandleOpen = () => setotherOpen(true);
   const otherhandleClose = () => setotherOpen(false);
+  const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
 
   const handleClose = () => {
     setOpen(false);
@@ -138,7 +143,12 @@ export default function Tables(props) {
           setDistrict(params.row.runner_district);
           setTehsil(params.row.runner_taluka);
           setVillage(params.row.runner_village);
-
+          setdob(params.row.dob);
+          setage(params.row.age);
+          setaddress(params.row.address);
+          seteducation(params.row.education);
+          setgender(params.row.gender);
+          
           //  setPancardImages(params.row.pancard_image);
           //  setother_Id_proof_image(params.row.other_Id_proof_image);
           // console.log(params.row.profileImage)
@@ -186,23 +196,23 @@ export default function Tables(props) {
     },
     { field: "id", headerName: "ID", width: 80 },
 
-    {
-      field: "Image",
-      headerName: "profileImage",
-     width:80,
+    // {
+    //   field: "Image",
+    //   headerName: "profileImage",
+    //  width:80,
 
-      renderCell: (params) => {
-              return params.row.profileImage==null ? <img src = {profile}width="40px"
-              height="40px"
-              style={{ borderRadius: "50%"}} />  :      
-       <img
-          src={params.row.profileImage}
-          width="40px"
-          height="40px"
-          style={{ borderRadius: "50%"}}
-        />
-      },
-    },
+    //   renderCell: (params) => {
+    //           return params.row.profileImage==null ? <img src = {profile}width="40px"
+    //           height="40px"
+    //           style={{ borderRadius: "50%"}} />  :      
+    //    <img
+    //       src={params.row.profileImage}
+    //       width="40px"
+    //       height="40px"
+    //       style={{ borderRadius: "50%"}}
+    //     />
+    //   },
+    // },
 
     { field: "name", headerName: "Name", width: 130 },
 
@@ -220,76 +230,105 @@ export default function Tables(props) {
       width: 120,
       
     },
+        
     {
-      field: "isUserActiveOrNot",
-      headerName: "UserActiveOrNot  ",
-      type: "number",
-      width: 200,
-      
+      field: "latlong_address",
+      headerName: "GPS address",
+      type: "text",
+      width: 130,
     },
-    
+    {
+      field: "acct_holder_name",
+      headerName: "acct_holder_name",
+      type: "text",
+      width: 90,
+    },
+
+    {
+      field: "bank_name",
+      headerName: "bank_name",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "bank_ifsc_code",
+      headerName: "bank_ifsc_code",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "pancard_no",
+      headerName: "pancard_no",
+      type: "text",
+      width: 130,
+    },
+
+    {
+      field: "other_id_proof_no",
+      headerName: "other_id_proof_no",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "runner_state",
+      headerName: "runner_state",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "runner_district",
+      headerName: "runner_district",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "runner_taluka",
+      headerName: "runner_taluka",
+      type: "text",
+      width: 130,
+    },
+    {
+      field: "runner_village",
+      headerName: "runner_village",
+      type: "text",
+      width: 130,
+    }, 
+      {
+        field: "isUserActiveOrNot",
+        type: "text", width: 130
+      }
+      
     // {
-    //   field: "latlong_address",
-    //   headerName: "Address",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "acct_holder_name",
-    //   headerName: "acct_holder_name",
-    //   type: "text",
-    //   width: 90,
+    //   field: "isUserActiveOrNot",
+    //   headerName: "Status",
+    //   width: 100,
+    //   sortable: false,
+    //   renderCell: function (params) {
+    //     const handleActiveStatus = (event) => {
+    //       event.preventDefault();
+    //       const id = params.row.id;
+    //       if (params.row.isUserActiveOrNot === "y") {
+    //         const isUserActiveOrNot = "n";
+    //      //   ChangeAdminUserStatus(id, isUserActiveOrNot);
+    //       } else {
+    //         const isUserActiveOrNot = "y";
+    //        // ChangeAdminUserStatus(id, isUserActiveOrNot);
+    //       }
+    //       GetRunner();
+    //       console.log(id, isUserActiveOrNot);
+    //     };
+    //     return params.row.isUserActiveOrNot === "y" ? (
+    //       <Switch
+    //         onChange={handleActiveStatus}
+    //         defaultChecked
+    //         color="success"
+    //       />
+    //     ) : (
+    //       <Switch  onChange={handleActiveStatus} color="success" />
+    //     );
+    //   },
     // },
 
-    // {
-    //   field: "bank_name",
-    //   headerName: "bank_name",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "bank_ifsc_code",
-    //   headerName: "bank_ifsc_code",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "pancard_no",
-    //   headerName: "pancard_no",
-    //   type: "text",
-    //   width: 130,
-    // },
-
-    // {
-    //   field: "other_id_proof_no",
-    //   headerName: "other_id_proof_no",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "runner_state",
-    //   headerName: "runner_state",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "runner_district",
-    //   headerName: "runner_district",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "runner_taluka",
-    //   headerName: "runner_taluka",
-    //   type: "text",
-    //   width: 130,
-    // },
-    // {
-    //   field: "runner_village",
-    //   headerName: "runner_village",
-    //   type: "text",
-    //   width: 130,
-    // },
   ];
 
   //runner set data
@@ -315,6 +354,12 @@ export default function Tables(props) {
   const [pancard_image, setPancardImages] = useState("");
   const [other_id_proof_no, setother_id_proof_no] = useState("");
   const [pancard_no, setPancardno] = useState("");
+  const [age, setage] = useState("");
+  const [address, setaddress] = useState("");
+  const [education, seteducation] = useState("");
+  const [gender, setgender] = useState("");
+  const [dob, setdob] = useState("");
+  
   const [bank_name, setBankName] = useState("");
   const [profileImage, setprofileImage] = useState(null);
   const [APIData, setAPIData] = useState([]);
@@ -369,6 +414,7 @@ export default function Tables(props) {
           bank_passbook_photo,
           pancard_image,
           other_Id_proof_image,
+          dob,gender,education,address,age
         },
         {
           headers: {
@@ -579,9 +625,39 @@ export default function Tables(props) {
               value={Email}
               onChange={(e) => setEmail(e.target.vaue)}
             />
-
             <TextField
-              label="Address"
+              label="age"
+              
+              value={age}
+              onChange={(e) => setage(e.target.value)}
+            /> 
+           <TextField
+            label="Address"
+            
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
+          />
+          <TextField
+            label="Education "
+            
+            value={education}
+            onChange={(e) => seteducation(e.target.value)}
+          />
+          <TextField
+            label="Gender"
+            
+            value={gender}
+            onChange={(e) => setgender(e.target.value)}
+          />
+           <TextField
+            label="DOB "
+            
+            value={dob}
+            onChange={(e) => setdob(e.target.value)}
+          />
+            <TextField
+              label="GPS Address"
+
               value={latlong_address}
               onChange={(e) => setAddress(e.target.value)}
             />

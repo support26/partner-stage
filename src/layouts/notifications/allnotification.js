@@ -6,43 +6,25 @@ import Button from "@mui/material/Button";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
-import NativeSelect from "@mui/material/NativeSelect";
+
 
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import MDAlert from "components/MDAlert";
-import MDButton from "components/MDButton";
-import MDSnackbar from "components/MDSnackbar";
-import { Navigate } from "react-router-dom";
+
 import axios from "axios";
 import { useEffect } from "react";
 
-//  React example components
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 // mui custom style
 
-function State() {
-  const [state, setState] = useState(null);
-  const [stateName, setStateName] = useState([]);
+function Allnotification() {
+
   const [body, setBody] = useState(null);
   const [title, setTitle] = useState(null);
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("https://project-swarksha.uc.r.appspot.com/states")
-      .then((response) => {
-        setStateName(response.data.states);
-        console.log(response.data);
-      });
-  }, []);
 
   let file;
   let form_data = new FormData();
@@ -61,7 +43,7 @@ function State() {
 
   const sendNotification = (event) => {
     event.preventDefault();
-    console.log("#####", state);
+    
     const notification = {
       title: title,
       body: body,
@@ -70,7 +52,7 @@ function State() {
     console.log("@@@@@@", notification);
     axios
       .post("http://localhost:8001/users/notification", {
-        state,
+        
         notification,
       })
       .then((res) => {
@@ -83,29 +65,10 @@ function State() {
 
   return (
     <Card sx={{ px: 5, py: 1, pb: 2, width: "100%" }}>
-      <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
-        State Notification
+      <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
+        All Notification
       </MDTypography>
-      <Box sx={{ pb: 3, minWidth: 120, ml: 5 }}>
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel variant="standard" htmlFor="uncontrolled-native">
-            State
-          </InputLabel>
-          <NativeSelect
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-          >
-            <option> None </option>
-            {stateName.map(({ name }) => {
-              return (
-                <option key={name} value={name} style={{ color: "black" }}>
-                  {name}
-                </option>
-              );
-            })}
-          </NativeSelect>
-        </FormControl>
-      </Box>
+  
       <TextField
         type="text"
         label="Title..."
@@ -120,14 +83,14 @@ function State() {
         style={{ minWidth: "auto", maxWidth: "400px" }}
         value={body}
         onChange={(e) => setBody(e.target.value)}
-      />{" "}
+      />
       <br />
       <TextField
         helperText="Any ID Proof Photo(Aadhar/Voter ID) "
         type="file"
         onChange={handelstateImages}
         // src={stateImages}
-      />{" "}
+      />
       <br />
       <Button
         variant="contained"
@@ -141,4 +104,4 @@ function State() {
   );
 }
 
-export default State;
+export default Allnotification;
