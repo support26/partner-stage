@@ -75,9 +75,6 @@ const style = {
   width: 50,
 };
 export default function Tables(props) {
-
-
-  
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -148,7 +145,7 @@ export default function Tables(props) {
           setaddress(params.row.address);
           seteducation(params.row.education);
           setgender(params.row.gender);
-          
+
           //  setPancardImages(params.row.pancard_image);
           //  setother_Id_proof_image(params.row.other_Id_proof_image);
           // console.log(params.row.profileImage)
@@ -204,7 +201,7 @@ export default function Tables(props) {
     //   renderCell: (params) => {
     //           return params.row.profileImage==null ? <img src = {profile}width="40px"
     //           height="40px"
-    //           style={{ borderRadius: "50%"}} />  :      
+    //           style={{ borderRadius: "50%"}} />  :
     //    <img
     //       src={params.row.profileImage}
     //       width="40px"
@@ -227,17 +224,15 @@ export default function Tables(props) {
       field: "email",
       headerName: "Email",
       type: "text",
-      width: 130
-   
+      width: 130,
     },
     {
       field: "phone_number",
       headerName: "Number  ",
       type: "number",
       width: 120,
-      
     },
-        
+
     {
       field: "latlong_address",
       headerName: "GPS address",
@@ -299,19 +294,38 @@ export default function Tables(props) {
       headerName: "runner_village",
       type: "text",
       width: 130,
-    }, 
-     
+    },
     {
-      field: "isUserDisabled",
-      type: "text", width: 60,
-      renderCell: (params) => {
-                  return params.row.isUserDisabled==null ?   <CircleIcon style={{color:"red" ,marginLeft:'10px'}} />:      
-                  <CircleIcon style={{color:"green" ,marginLeft:'10px'}} />
-          },
+      field: "is_active",
+      headerName: "Active Status",
+      width: 120,
+      sortable: false,
+      renderCell: function (params) {
+        const handleActiveStatus = (event) => {
+          event.preventDefault();
+          const id = params.row.id;
+          if (params.row.isUserDisabled === "y") {
+            const is_active = "n";
+            // ChangeAdminUserStatus(id, is_active);
+          } else {
+            const is_active = "y";
+            // ChangeAdminUserStatus(id, is_active);
+          }
+          // GetUsers();
+          // console.log(id, is_active);
+        };
+        return params.row.isUserDisabled === "y" ||  params.row.isUserDisabled === null ? (
+          <Switch
+            onChange={handleActiveStatus}
+            defaultChecked
+            color="success"
+          />
+        ) : (
+          <Switch onChange={handleActiveStatus} color="success" />
+        );
+      },
     },
 
-  
-      
     // {
     //   field: "isUserActiveOrNot",
     //   headerName: "Status",
@@ -342,7 +356,6 @@ export default function Tables(props) {
     //     );
     //   },
     // },
-
   ];
 
   //runner set data
@@ -373,7 +386,7 @@ export default function Tables(props) {
   const [education, seteducation] = useState("");
   const [gender, setgender] = useState("");
   const [dob, setdob] = useState("");
-  
+
   const [bank_name, setBankName] = useState("");
   const [profileImage, setprofileImage] = useState(null);
   const [APIData, setAPIData] = useState([]);
@@ -428,7 +441,11 @@ export default function Tables(props) {
           bank_passbook_photo,
           pancard_image,
           other_Id_proof_image,
-          dob,gender,education,address,age
+          dob,
+          gender,
+          education,
+          address,
+          age,
         },
         {
           headers: {
@@ -530,11 +547,9 @@ export default function Tables(props) {
           </Grid>
         </Grid>
         <Dialog
-           
           open={open}
           onClose={handleClose}
-          TransitionComponent={Transition} 
-         
+          TransitionComponent={Transition}
         >
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
@@ -641,37 +656,31 @@ export default function Tables(props) {
             />
             <TextField
               label="age"
-              
               value={age}
               onChange={(e) => setage(e.target.value)}
-            /> 
-           <TextField
-            label="Address"
-            
-            value={address}
-            onChange={(e) => setaddress(e.target.value)}
-          />
-          <TextField
-            label="Education "
-            
-            value={education}
-            onChange={(e) => seteducation(e.target.value)}
-          />
-          <TextField
-            label="Gender"
-            
-            value={gender}
-            onChange={(e) => setgender(e.target.value)}
-          />
-           <TextField
-            label="DOB "
-            
-            value={dob}
-            onChange={(e) => setdob(e.target.value)}
-          />
+            />
+            <TextField
+              label="Address"
+              value={address}
+              onChange={(e) => setaddress(e.target.value)}
+            />
+            <TextField
+              label="Education "
+              value={education}
+              onChange={(e) => seteducation(e.target.value)}
+            />
+            <TextField
+              label="Gender"
+              value={gender}
+              onChange={(e) => setgender(e.target.value)}
+            />
+            <TextField
+              label="DOB "
+              value={dob}
+              onChange={(e) => setdob(e.target.value)}
+            />
             <TextField
               label="GPS Address"
-
               value={latlong_address}
               onChange={(e) => setAddress(e.target.value)}
             />

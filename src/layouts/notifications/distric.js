@@ -179,6 +179,7 @@ function Distric() {
       <TextField
         helperText="image / upload"
         type="file"
+        inputProps={{accept:".png, .jpeg, .jpg"}}
         onChange={handelDistricImages}
       />{" "}
       <br />
