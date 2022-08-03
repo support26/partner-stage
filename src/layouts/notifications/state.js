@@ -37,7 +37,6 @@ function State() {
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
 
-
   useEffect(() => {
     axios
       .get("https://project-swarksha.uc.r.appspot.com/states")
@@ -57,7 +56,7 @@ function State() {
       .then((response) => {
         console.log(response.data);
         setImage(response.data.data.fileUrl);
-    setBtnDisabled(false);
+        setBtnDisabled(false);
       })
       .catch((e) => {
         console.log(e);
@@ -68,8 +67,7 @@ function State() {
     event.preventDefault();
     if (state === null) {
       setError("Please select state");
-    }
-    else if (!title || !body) {
+    } else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
       console.log("#####", state);
@@ -136,11 +134,15 @@ function State() {
       {error && (
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
       )}
-      <TextField helperText="Image " type="file" onChange={handelstateImages} />{" "}
+      <TextField helperText="Image " type="file" inputProps={{accept:".png, .jpeg, .jpg"}} onChange={handelstateImages} />{" "}
       <br />
       <Button
         variant="contained"
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+        style={
+          btnDisabled == true
+            ? { background: "#a7c5c9", color: "white" }
+            : { background: "#33A2B5", color: "white" }
+        }
         href="#contained-buttons"
         onClick={sendNotification}
         disabled={btnDisabled}
