@@ -1,20 +1,38 @@
 import Api, { baseUrl } from "./config";
-const token = localStorage.getItem('token');
 class AdminRepository {
-// get all admin users
-   GetAlladminUser = () => {
-    return Api.get(`${baseUrl}admin/allUsers`, {
+  // get all admin users
+  async getAlladminUser() {
+    const token = localStorage.getItem("token");
+    console.log("@@@",token);
+    const reponse = await Api.get(`${baseUrl}admin/allUsers`, {
       headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    });
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+       
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
   }
+  //  GetAlladminUser = () => {
+  //   return Api.get(`${baseUrl}admin/allUsers`, {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   });
+  // }
   // add admin user
   async addAdminUser(data) {
+    const token = localStorage.getItem("token");
     const reponse = await Api.post(`${baseUrl}admin/create`, data, {
       headers: {
-        'Authorization': 'Bearer ' + token
-      }
+        Authorization: "Bearer " + token,
+      },
     })
       .then((response) => {
         return response;
@@ -27,10 +45,11 @@ class AdminRepository {
   }
   // update admin user
   async updateAdminUser(data, userId) {
+    const token = localStorage.getItem("token");
     const reponse = await Api.put(`${baseUrl}admin/update/${userId}`, data, {
       headers: {
-        'Authorization': 'Bearer ' + token
-      }
+        Authorization: "Bearer " + token,
+      },
     })
       .then((response) => {
         return response;
@@ -41,13 +60,18 @@ class AdminRepository {
       });
     return reponse;
   }
-  // change admin_user active status 
+  // change admin_user active status
   async changeAdminUserStatus(userId, is_active) {
-    const reponse = await Api.put(`${baseUrl}admin/active/${userId}`, {is_active}, {
-      headers: {
-        'Authorization': 'Bearer ' + token
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}admin/active/${userId}`,
+      { is_active },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       }
-    })
+    )
       .then((response) => {
         return response;
       })
@@ -57,8 +81,6 @@ class AdminRepository {
       });
     return reponse;
   }
-  
 }
-
 
 export default new AdminRepository();

@@ -11,8 +11,8 @@ class UsersRepository {
         
            
     }
-    UploadImageFile = (id, ImageFile) =>{
-      return Api.put(`${baseUrl}users/uploadFile/${id}`, ImageFile,
+    UploadImageFile = (ImageFile) =>{
+      return Api.put(`${baseUrl}users/uploadFile`, ImageFile,
       {
         headers: {
           'Authorization': 'Bearer ' + token,
