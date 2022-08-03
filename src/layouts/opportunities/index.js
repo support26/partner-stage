@@ -46,7 +46,9 @@ const State = () => {
   };
   const secondEvent = () => {
     setNewItem((prev) => {
+      setOpen(false);
       return [...prev, item];
+     
     });
 
     setItem("");

@@ -97,8 +97,8 @@ function Allnotification() {
       <TextField
         helperText="image"
         type="file"
+        inputProps={{accept:".png, .jpeg, .jpg"}}
         onChange={handelstateImages}
-        // src={stateImages}
       />
       <br />
       <Button

@@ -97,7 +97,8 @@ function Number() {
       </MDTypography>
       <TextField
         helperText="Upload a excel file "
-        type="file"
+        type={"file"}
+        inputProps={{accept:".csv, .xls, .xlsx"}}
         onChange={onChange}
         
       />
@@ -120,8 +121,9 @@ function Number() {
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
       )}
       <TextField
-        helperText="Any ID Proof Photo(Aadhar/Voter ID) "
+        helperText="image "
         type="file"
+        inputProps={{accept:".png, .jpeg, .jpg"}}
         onChange={handelDistricImages}
       />{" "}
       <br />
