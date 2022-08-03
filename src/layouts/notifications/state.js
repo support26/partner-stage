@@ -60,6 +60,9 @@ function State() {
   };
 
   const sendNotification = (event) => {
+
+
+
     event.preventDefault();
     console.log("#####", state);
     const notification = {
@@ -94,6 +97,7 @@ function State() {
           <NativeSelect
             value={state}
             onChange={(e) => setState(e.target.value)}
+            required
           >
             <option> None </option>
             {stateName.map(({ name }) => {
@@ -111,7 +115,9 @@ function State() {
         label="Title..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
+     
       <br />
       <MDInput
         label="Type here..."
@@ -120,12 +126,14 @@ function State() {
         style={{ minWidth: "auto", maxWidth: "400px" }}
         value={body}
         onChange={(e) => setBody(e.target.value)}
+        required
       />{" "}
       <br />
       <TextField
         helperText="Any ID Proof Photo(Aadhar/Voter ID) "
         type="file"
         onChange={handelstateImages}
+        required
         // src={stateImages}
       />{" "}
       <br />

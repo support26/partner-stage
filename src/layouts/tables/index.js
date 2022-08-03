@@ -54,7 +54,7 @@ import "../AddUsers/style.css";
 import nophoto from "assets/images/no-image-available.png";
 import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
-
+import CircleIcon from '@mui/icons-material/Circle';
 // const style = {
 //   position: 'absolute',
 //   top: '50%',
@@ -194,7 +194,7 @@ export default function Tables(props) {
         );
       },
     },
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", headerName: "ID", width: 40 },
 
     // {
     //   field: "Image",
@@ -213,7 +213,14 @@ export default function Tables(props) {
     //     />
     //   },
     // },
-
+    {
+      field: "Status",
+      type: "text", width: 60,
+      renderCell: (params) => {
+                  return params.row.isUserActiveOrNot==null ?   <CircleIcon style={{color:"red" ,marginLeft:'10px'}} />:      
+                  <CircleIcon style={{color:"green" ,marginLeft:'10px'}} />
+          },
+    },
     { field: "name", headerName: "Name", width: 130 },
 
     {
@@ -293,10 +300,17 @@ export default function Tables(props) {
       type: "text",
       width: 130,
     }, 
-      {
-        field: "isUserActiveOrNot",
-        type: "text", width: 130
-      }
+     
+    {
+      field: "isUserDisabled",
+      type: "text", width: 60,
+      renderCell: (params) => {
+                  return params.row.isUserDisabled==null ?   <CircleIcon style={{color:"red" ,marginLeft:'10px'}} />:      
+                  <CircleIcon style={{color:"green" ,marginLeft:'10px'}} />
+          },
+    },
+
+  
       
     // {
     //   field: "isUserActiveOrNot",
