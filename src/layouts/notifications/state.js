@@ -64,6 +64,9 @@ function State() {
   };
 
   const sendNotification = (event) => {
+
+
+
     event.preventDefault();
     if (state === null) {
       setError("Please select state");
@@ -104,6 +107,7 @@ function State() {
           <NativeSelect
             value={state}
             onChange={(e) => setState(e.target.value)}
+            required
           >
             <option> None </option>
             {stateName.map(({ name }) => {
@@ -121,7 +125,9 @@ function State() {
         label="Title..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
+     
       <br />
       <MDInput
         label="Type here..."
@@ -130,6 +136,7 @@ function State() {
         style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
         value={body}
         onChange={(e) => setBody(e.target.value)}
+        required
       />{" "}
       {error && (
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>

@@ -161,6 +161,7 @@ function Distric() {
         label="Title..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
       <br />
       <MDInput
@@ -170,6 +171,7 @@ function Distric() {
         style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
         value={body}
         onChange={(e) => setBody(e.target.value)}
+         required
       />{" "}
       {error && (
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>

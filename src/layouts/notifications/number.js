@@ -100,6 +100,7 @@ function Number() {
         type={"file"}
         inputProps={{accept:".csv, .xls, .xlsx"}}
         onChange={onChange}
+        
       />
       <TextField
         value={title}

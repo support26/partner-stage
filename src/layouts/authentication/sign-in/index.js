@@ -119,6 +119,7 @@ function Basic () {
                 type="password"
                 name="password"
                 value={password}
+                required
                 placeholder="password"
                 onChange={(e) => setPassword(e.target.value)}
                 fullWidth
