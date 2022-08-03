@@ -28,5 +28,5 @@ ChangeUserStatus: async (userId, isUserActiveOrNot) => {
       dispatch(errorMessage(responseData.data.message))
     }
 
-  },
+  }
 }
