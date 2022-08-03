@@ -40,8 +40,10 @@ function Distric() {
   const [body, setBody] = useState(null);
   const [title, setTitle] = useState(null);
   const [district, setDistrict] = useState(null);
+  const [error, setError] = useState(null);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
- 
+
   const getDistrict = (e) => {
     //setsId(e.target.value)
     const demo = e.target.value;
@@ -60,7 +62,7 @@ function Distric() {
       .get("https://project-swarksha.uc.r.appspot.com/states")
       .then((response) => {
         setState(response.data.states);
-        
+
         console.log(response.data);
       });
   }, []);
@@ -68,12 +70,15 @@ function Distric() {
   let file;
   let form_data = new FormData();
   const handelDistricImages = (event) => {
+    setBtnDisabled(true);
     file = event.target.files[0];
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
         console.log(response.data);
         setImage(response.data.data.fileUrl);
+        setBtnDisabled(false);
+
       })
       .catch((e) => {
         console.log(e);
@@ -82,24 +87,32 @@ function Distric() {
 
   const sendNotification = (event) => {
     event.preventDefault();
-    console.log("#####", district);
-    const notification = {
-      title: title,
-      body: body,
-      image: image,
-    };
-    console.log("@@@@@@", notification);
-    axios
-      .post("http://localhost:8001/users/notification", {
-        district,
-        notification,
-      })
-      .then((res) => {
-        console.log("%%%%%%%%%", res);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    
+    if (district === null) {
+      setError("Please select district");
+    }
+   else if (!title || !body) {
+      setError("Please fill all the fields");
+    } else {
+      console.log("#####", district);
+      const notification = {
+        title: title,
+        body: body,
+        image: image,
+      };
+      console.log("@@@@@@", notification);
+      axios
+        .post("http://localhost:8001/users/notification", {
+          district,
+          notification,
+        })
+        .then((res) => {
+          console.log("%%%%%%%%%", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
   };
 
   return (
@@ -124,16 +137,14 @@ function Distric() {
           </NativeSelect>
         </FormControl>
 
-        <FormControl
-          sx={{ width: 120, ml: 3 }}
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-        >
+        <FormControl sx={{ width: 120, ml: 3 }}>
           <InputLabel variant="standard" htmlFor="uncontrolled-native">
             District
           </InputLabel>
-          <NativeSelect>
-            {" "}
+          <NativeSelect
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
+          >
             <option> None </option>
             {districts.map(({ name }) => {
               return (
@@ -157,12 +168,14 @@ function Distric() {
         label="Type here..."
         multiline
         rows={5}
-        style={{ minWidth: "auto", maxWidth: "400px" }}
+        style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
         value={body}
         onChange={(e) => setBody(e.target.value)}
          required
       />{" "}
-      <br />
+      {error && (
+        <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
+      )}
       <TextField
         helperText="image / upload"
         type="file"
@@ -170,9 +183,11 @@ function Distric() {
       />{" "}
       <br />
       <Button
+        type="submit"
         variant="contained"
-        style={{ background: "#33A2B5", color: "white" }}
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
         onClick={sendNotification}
+        disabled={btnDisabled}
       >
         Send
       </Button>
