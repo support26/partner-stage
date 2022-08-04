@@ -25,7 +25,7 @@ import PieChart from "examples/Charts/PieChart";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-import verticalBarChartData from "layouts/dashboard/data/verticalBarChartData";
+// import verticalBarChartData from "layouts/dashboard/data/verticalBarChartData";
 
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
@@ -35,9 +35,10 @@ import useusers from "../../hooks/useUsers";
 // import { useSelector } from 'react-redux'
 
 function Dashboard() {
-  const { GetTotalUsers, GetActiveUsers } = useUsers();
   const [totalUsers, setTotalUsers] = useState("0");
   const [activeUsers, setActiveUsers] = useState("0");
+  const [total, setTotal] = useState([]);
+  const [state, setState] = useState([]);
 
   const partner_app_users = () => {
     UserRepository.TotalUsers()
@@ -56,11 +57,31 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
+    UserRepository.usersByState()
+      .then((res) => {
+        console.log(res);
+        setTotal(res.data.data.total);
+        setState(res.data.data.state);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     partner_app_users();
   }, []);
 
+
+ const verticalBarChartData = {
+    labels: state,
+    datasets: [
+      {
+        label: 'users in state',
+        color: 'info',
+        data: total,
+      }
+    ]
+  }
   // const partner_app_active_users = () => {
   //   getActiveUsers().then((res) => {
   //     setActiveUsers(res.data.data);
@@ -107,8 +128,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
-                count="34k"
+                title="Nothing"
+                count="0"
                 // percentage={{
                 //   color: 'success',
                 //   amount: '+1%',
