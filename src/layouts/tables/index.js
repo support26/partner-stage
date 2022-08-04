@@ -54,15 +54,8 @@ import "../AddUsers/style.css";
 import nophoto from "assets/images/no-image-available.png";
 import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
-import CircleIcon from '@mui/icons-material/Circle';
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 50,
+import CircleIcon from "@mui/icons-material/Circle";
 
-// };
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -212,11 +205,15 @@ export default function Tables(props) {
     // },
     {
       field: "Status",
-      type: "text", width: 60,
+      type: "text",
+      width: 60,
       renderCell: (params) => {
-                  return params.row.isUserActiveOrNot==null ?   <CircleIcon style={{color:"red" ,marginLeft:'10px'}} />:      
-                  <CircleIcon style={{color:"green" ,marginLeft:'10px'}} />
-          },
+        return params.row.isUserActiveOrNot == null ? (
+          <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
+        ) : (
+          <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
+        );
+      },
     },
     { field: "name", headerName: "Name", width: 130 },
 
@@ -314,7 +311,8 @@ export default function Tables(props) {
           // GetUsers();
           // console.log(id, is_active);
         };
-        return params.row.isUserDisabled === "y" ||  params.row.isUserDisabled === null ? (
+        return params.row.isUserDisabled === "y" ||
+          params.row.isUserDisabled === null ? (
           <Switch
             onChange={handleActiveStatus}
             defaultChecked
@@ -325,37 +323,6 @@ export default function Tables(props) {
         );
       },
     },
-
-    // {
-    //   field: "isUserActiveOrNot",
-    //   headerName: "Status",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: function (params) {
-    //     const handleActiveStatus = (event) => {
-    //       event.preventDefault();
-    //       const id = params.row.id;
-    //       if (params.row.isUserActiveOrNot === "y") {
-    //         const isUserActiveOrNot = "n";
-    //      //   ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       } else {
-    //         const isUserActiveOrNot = "y";
-    //        // ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       }
-    //       GetRunner();
-    //       console.log(id, isUserActiveOrNot);
-    //     };
-    //     return params.row.isUserActiveOrNot === "y" ? (
-    //       <Switch
-    //         onChange={handleActiveStatus}
-    //         defaultChecked
-    //         color="success"
-    //       />
-    //     ) : (
-    //       <Switch  onChange={handleActiveStatus} color="success" />
-    //     );
-    //   },
-    // },
   ];
 
   //runner set data
@@ -396,16 +363,14 @@ export default function Tables(props) {
   //get api
 
   const GetRunner = () => {
-    axios
-      .get(`http://localhost:8001/users/allusers`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
+    UserRepository.GetAllRunner()
       .then((response) => {
         setAPIData(response.data.data);
         setTableLoading(false);
         console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -414,52 +379,42 @@ export default function Tables(props) {
     GetRunner();
   }, []);
 
+  var data = {
+    name: name,
+    acct_holder_name: acct_holder_name,
+    bank_name: bank_name,
+    acct_holder_name: acct_holder_name,
+    bank_acct_no: bank_acct_no,
+    bank_ifsc_code: bank_ifsc_code,
+    other_id_proof_no: other_id_proof_no,
+    pancard_no: pancard_no,
+    phone_number: phone_number,
+    latlong_address: latlong_address,
+    runner_state: runner_state,
+    runner_district: runner_district,
+    runner_taluka: runner_taluka,
+    runner_village: runner_village,
+    profileImage: profileImage,
+    bank_passbook_photo: bank_passbook_photo,
+    pancard_image: pancard_image,
+    other_Id_proof_image: other_Id_proof_image,
+    dob: dob,
+    gender: gender,
+    education: education,
+    address: address,
+    age: age,
+  };
   const updateAPIData = (event) => {
     setOpen(false);
-    console.log("ohter", other_Id_proof_image);
-    // console.log(profileImage);
     event.preventDefault();
-    axios
-      .put(
-        `http://localhost:8001/users/profile/${id}`,
-        {
-          name,
-          acct_holder_name,
-          bank_name,
-          acct_holder_name,
-          bank_acct_no,
-          bank_ifsc_code,
-          other_id_proof_no,
-          pancard_no,
-          phone_number,
-          latlong_address,
-          runner_state,
-          runner_district,
-          runner_taluka,
-          runner_village,
-          profileImage,
-          bank_passbook_photo,
-          pancard_image,
-          other_Id_proof_image,
-          dob,
-          gender,
-          education,
-          address,
-          age,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "content-type": "application/json",
-          },
-        }
-      )
+    UserRepository.UpdateRunners(id, data)
       .then((response) => {
         console.log(response);
-
         GetRunner();
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   let file;
