@@ -183,6 +183,40 @@ export default function useAdmin() {
       return false;
     },
 
+//get anounce and banner data
+Banners_Anouncements: async () => {
+  var responseData = await AdminRepository.banners_Anouncements();
+  if (responseData.status === 200) {
+    return responseData;
+  } else {
+    console.log(responseData.data);
+  }
+  return responseData;
+},
+     //anouncement
+     Anouncements: async (data) => {
+      var responseData = await AdminRepository.anouncement(data);
+      if (responseData.status === 200) {
+        return responseData
+        console.log(responseData);
+       
+      }
+      return false;
+
+    },
+
+      //Banner
+      Banners: async (data) => {
+        var responseData = await AdminRepository.banner(data);
+        if (responseData.status === 200) {
+          return responseData
+          console.log(responseData);
+         
+        }
+        return false;
+  
+      },
+
     //reset api 
     // Runner: async (data) => {
     //   var responseData = await AuthRepository.runnerTable(data);

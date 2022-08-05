@@ -43,7 +43,7 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import UploadImages from "./upload_image";
+// import UploadImages from "./upload_image";
 import { Navigate } from "react-router-dom";
 import borders from "assets/theme-dark/base/borders";
 //import IconButton from '@mui/material/IconButton';
@@ -74,7 +74,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 50,
 };
-export default function Tables(props) {
+export default function Tables() {
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -314,7 +314,7 @@ export default function Tables(props) {
           // GetUsers();
           // console.log(id, is_active);
         };
-        return params.row.isUserDisabled === "y" ||  params.row.isUserDisabled === null ? (
+        return params.row.isUserDisabled === "n" ||  params.row.isUserDisabled === null ? (
           <Switch
             onChange={handleActiveStatus}
             defaultChecked
@@ -326,36 +326,6 @@ export default function Tables(props) {
       },
     },
 
-    // {
-    //   field: "isUserActiveOrNot",
-    //   headerName: "Status",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: function (params) {
-    //     const handleActiveStatus = (event) => {
-    //       event.preventDefault();
-    //       const id = params.row.id;
-    //       if (params.row.isUserActiveOrNot === "y") {
-    //         const isUserActiveOrNot = "n";
-    //      //   ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       } else {
-    //         const isUserActiveOrNot = "y";
-    //        // ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       }
-    //       GetRunner();
-    //       console.log(id, isUserActiveOrNot);
-    //     };
-    //     return params.row.isUserActiveOrNot === "y" ? (
-    //       <Switch
-    //         onChange={handleActiveStatus}
-    //         defaultChecked
-    //         color="success"
-    //       />
-    //     ) : (
-    //       <Switch  onChange={handleActiveStatus} color="success" />
-    //     );
-    //   },
-    // },
   ];
 
   //runner set data
@@ -980,130 +950,7 @@ export default function Tables(props) {
                 submit
               </Button>
             </div>
-            {/* pancard images */}
-            {/* 
-  <div sx={{display: 'inline' }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-
-              }}
-              onClick={imagespancardhandleOpen}
-              alt="The upload image."
-              src={pancard_image}
-              display="inline"
-            />  
-             <TextField
-             style={{position:'relative',
-             left:'25px'}}
-            id="standard-helperText"
-            label="Pan Card No"
-            helperText="Some important text"
-            value={pancard_no}
-            onChange={(e) => setPancardno(e.target.value)}
-          />
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <IconButton
-                style={{
-                 position:'relative',
-                left:0,
-                right:0,
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input //pancard image
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  onChange={handlePancardImages}
-                />
-                <PhotoCamera />
-              </IconButton>
-            </Stack>
-             */}
-
-            {/* Any ID Proof Photo(Aadhar/Voter ID)
-            <Box
-              component="img"
-              sx={{
-               height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-               
-              }}
-              onClick={otherhandleOpen}
-              alt="The upload image."
-              src={other_Id_proof_image}
-             
-              // / src={URL.createObjectURL(profileImage)}
-            />  
-          
-            <span style={{ fontSize: "12px", marginLeft: "40px", color:'hwb(0deg 0% 100% / 60%)'}}>
-              Any ID Proof Photo(Aadhar/Voter ID)
-            </span>
-
-           
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <IconButton
-                style={{
-                 marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input
-                  hidden
-                  // helperText="Any ID Proof Photo(Aadhar/Voter ID) "
-                  type="file"
-                  onChange={handelother_Id_proof_image}
-                  accept="image/*"
-                />
-                <PhotoCamera />
-              </IconButton>
-            </Stack>
-
- */}
-
-            {/* <TextField
-              type="file"
-              accept="image/png, image/jpeg"
-              helperText="bank_passbook_photo"
-              onChange={(e) => setbank_passbook_photo(e.target.files[0])}
-            /> */}
-            {/* <TextField
-              type="file"
-              helperText="Pancard Photos"
-              onChange={(e) => setPancard(e.target.files[0])}
-            /> */}
-
-            {/* <TextField
-              type="file"
-              accept="image/png, image/jpeg"
-              helperText="profileImage"
-             // value={profileImage}
-              onChange={(e) => setprofileImage(e.target.files[0])} 
-              
-            />  */}
+         
           </Box>
         </Dialog>
       </MDBox>
