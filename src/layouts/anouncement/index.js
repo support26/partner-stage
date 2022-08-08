@@ -31,52 +31,33 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import { Fullscreen } from "@mui/icons-material";
-import Banner from "./Banner";
+
 import Anouncement from "./Anouncement";
 import Editbanner_announcement from "./Editbanner_anouncement"
 
-function BanerAnouncement() {
+function Anouncementbanner() {
   const {
-   
-    Banners_Anouncements,
+       GetAnouncements,UpdateAnounce
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
-  const [employee_name, setEmployee_name] = useState("");
-  const [users_name, setUsers_name] = useState("");
-  const [users_email, setUsers_email] = useState("");
-  const [user_type, setUser_type] = useState("0");
   const [user_id, setUser_id] = useState("");
-  const [is_active, setIs_active] = useState("Y");
+
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
-  const [open, setOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const handleModal = () => {
-    setUser_type("0");
-    setOpenModal(true);
-  };
-  const closeModal = () => setOpenModal(false);
+
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
     setEditUserModal(false);
-    setUsers_name("");
-    setUsers_email("");
+   
   };
-
-  const [vertical, setVertical] = useState("top");
-  const [horizontal, setHorizontal] = useState("center");
-  const [snackType, setSnackType] = useState("");
-  const handleOpen = (snack) => {
-    setSnackType(snack);
-    setOpen(true);
-  };
-  const handleClose = (reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
+// Anouncement text
+const [AnnouncementText, setAnnouncementText] = useState(null);
+const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState(null);
+const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
+  useState(false);
+const admin_email = localStorage.getItem("user_email");
+// const  = localStorage.getItem("user_email");
 
   //popup
   const [banneropen, setBannerOpen] = useState(false);
@@ -98,10 +79,10 @@ function BanerAnouncement() {
     setAnounceOpen(false);
   };
   const [loading, setLoading] = useState(false);
-
-  const GetUsers = () => {
+// get data
+  const GetAnounce = () => {
     setLoading(true);
-    var AllAdminUsers = Banners_Anouncements();
+    var AllAdminUsers = GetAnouncements();
     AllAdminUsers.then((response) => {
       if (response.status === 200) {
         setLoading(false);
@@ -113,8 +94,35 @@ function BanerAnouncement() {
   };
 
 
+ const data_1={
+    AnnouncementText: AnnouncementText,
+    AnnouncementIsEnglish: AnnouncementIsEnglish,
+    DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
+    admin_email
+  }
+
+// update anounce
+const handleSubmit= (event) => {
+    event.preventDefault();
+    var UpdateAnounceSuccess = UpdateAnounce(data_1, user_id);
+    UpdateAnounceSuccess.then((response) => {
+      if (response.status === 200) {
+        
+         closeEditUserModal();GetAnounce();
+        // handleOpen();
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+    setAnnouncementText("");
+    setAnnouncementIsEnglish("");
+    setDisplayAnnouncementTextOrNot("");
+  };
+
+
   useEffect(() => {
-    GetUsers();
+    GetAnounce();
+   
   }, []);
 
   const columns = [
@@ -133,12 +141,14 @@ function BanerAnouncement() {
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
-          setUser_type(thisRow.roleId);
+       
+        
           setUser_id(params.id);
-          setUsers_name(thisRow.users_name);
-          setUsers_email(thisRow.users_email);
-          setIs_active(params.row.is_active);
-          setEmployee_name(params.row.employee_name);
+          setAnnouncementText(thisRow.AnnouncementText);
+          setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
+          setDisplayAnnouncementTextOrNot(params.row.DisplayAnnouncementTextOrNot);
+         
+
           setEditUserModal(true);
           return console.log(thisRow);
         };
@@ -154,25 +164,25 @@ function BanerAnouncement() {
                 focus: { backgroundColor: "red" },
               },
             }}
-          >
+          > 
             Edit
           </Button>
         );
       },
     },
     { field: "id", headerName: "ID", width: 70 },
-    { field: "url", headerName: "url", width: 200 },
-    { field: "Description", headerName: "Hindi", width: 200 },
-    { field: "DescriptionIsEnglish", headerName: "English", width: 200 },
-    { field: "AppVersion", headerName: "App Version", width: 200 },
-    { field: "ButtonText", headerName: "Button Text", width: 150 },
-    { field: "ShowButton", headerName: "Show Button", width: 140 },
+  
+    { field: "AnnouncementText", headerName: "Announcement Text", width: 200 },
     {
-      field: "DisplayBannerOrNot",
-      headerName: "DisplayBannerOrNot",
+      field: "AnnouncementIsEnglish",
+      headerName: "AnuncementIsEnglish",
       width: 200,
     },
- 
+    {
+      field: "DisplayAnnouncementTextOrNot",
+      headerName: "DisplayAnnouncementTextOrNot",
+      width: 200,
+    },
     {
       field: "created_by",
       headerName: "created_by",
@@ -184,121 +194,43 @@ function BanerAnouncement() {
       width: 200,
     },
     {
-      field: "updated_by",
-      headerName: "updated_by",
-      width: 200,
-    }, 
-     {
-      field: "updated_at",
-      headerName: "updated_at",
-      width: 200,
-    },
-
-    // {
-    //   field: "is_active",
-    //   headerName: "Status",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: function (params) {
-    //     const handleActiveStatus = (event) => {
-    //       event.preventDefault();
-    //       const id = params.row.id;
-    //       if (params.row.is_active === "Y") {
-    //         const is_active = "N";
-    //         ChangeAdminUserStatus(id, is_active);
-    //       } else {
-    //         const is_active = "Y";
-    //         ChangeAdminUserStatus(id, is_active);
-    //       }
-    //       // GetUsers();
-    //       console.log(id, is_active);
-    //     };
-    //     return params.row.is_active === "Y" ? (
-    //       <Switch
-    //         onChange={handleActiveStatus}
-    //         defaultChecked
-    //         color="success"
-    //       />
-    //     ) : (
-    //       <Switch onChange={handleActiveStatus} color="success" />
-    //     );
-    //   },
-    // },
+        field: "updated_by",
+        headerName: "updated_by",
+        width: 200,
+      }, {
+        field: "updated_at",
+        headerName: "updated_at",
+        width: 200,
+      },
+  
   ];
-  const data = {
-    users_name: users_name,
-    users_email: users_email,
-    user_type: user_type,
-    employee_name: employee_name,
-  };
+ 
 
-  // const addAdminUsers = (event) => {
-  //   event.preventDefault();
-  //   var UserAddedSuccessfully = AddAdminUser(data);
-  //   UserAddedSuccessfully.then((response) => {
-  //     if (response.status === 200) {
-  //       GetUsers();
-  //       closeModal();
-  //       handleOpen();
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   setUsers_name("");
-  //   setUsers_email("");
-  //   setEmployee_name("");
-  // };
+ 
+ 
+//  const data = {
+//    AnnouncementText,
+//    AnnouncementIsEnglish,
+//    DisplayAnnouncementTextOrNot,
+//    admin_email,
+//  };
+//  const handleSubmit = (event) => {
+//    event.preventDefault();
+//    console.log(data)
+//    var addAnnouncement = Anouncements(data);
+//    addAnnouncement.then((response) => {
+//      setAnnouncementText("");
+//      setAnnouncementIsEnglish("");
+//      setDisplayAnnouncementTextOrNot("");
+//      console.log(response)
+//    });
+//  };
 
-  const data_1 = {
-    users_name: users_name,
-    users_email: users_email,
-    user_type: user_type,
-    employee_name: employee_name,
-    is_active: is_active,
-  // };
-  // const updateUser = (event) => {
-  //   event.preventDefault();
-  //   var UserUpdatedSuccessfully = UpdateAdminUser(data_1, user_id);
-  //   UserUpdatedSuccessfully.then((response) => {
-  //     if (response.status === 200) {
-  //       GetUsers();
-  //       closeEditUserModal();
-  //       handleOpen();
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   setUsers_name("");
-  //   setUsers_email("");
-  //   setEmployee_name("");
-  // };
-  }
   return (
     <DashboardLayout>
       <DashboardNavbar />
       {/*  Banner Notification */}
-      <Dialog maxWidth={maxWidth} open={banneropen} onClose={handleBannerClose}>
-        <div>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleBannerClose}
-            aria-label="close"
-            style={{ float: "right" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { mx: 2, my: 1 },
-          }}
-        > 
-        <Banner/>
-        </Box>
-      </Dialog>
+    
 
       {/*  Announcement Notification */}
       <Dialog
@@ -318,8 +250,6 @@ function BanerAnouncement() {
           </IconButton>
         </div>
         <Box
-          noValidate
-          component="form"
           sx={{
             "& .MuiTextField-root": { mx: 3, my: 2 },
           }}
@@ -347,30 +277,75 @@ function BanerAnouncement() {
           </IconButton>
         </div>
         <Box
-          noValidate
-          component="form"
           sx={{
             "& .MuiTextField-root": { mx: 3, my: 2 },
           }}
         >
-          <Editbanner_announcement/>
+          <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
+       
+       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
+          Anouncement Notification
+        </MDTypography>
+
+       
+        <TextField
+          id="outlined"
+          required
+          value={AnnouncementText}
+          onChange={(e) => setAnnouncementText(e.target.value)}
+          label="Announcement Hindi"
+        />
+
+        <TextField
+          id="outlined-input"
+          label="AnnouncementIs English"
+          type="text"
+          value={AnnouncementIsEnglish}
+          onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
+          required
+        />
+        <div style={{ marginLeft: 30, marginBottom: 20 }}>
+          <MDTypography>Display Banner</MDTypography>
+          <Select
+            // value={age}
+            // onChange={handleChange}
+            label="Display"
+            required
+            style={{ width: 200, height: 30 }}
+            value={DisplayAnnouncementTextOrNot}
+            onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
+          >
+            <MenuItem value="None">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value= {1} >yes</MenuItem>
+            <MenuItem value= {0} >no</MenuItem>
+          </Select>
+        </div>
+
+        {/* <Box paddingLeft={10}>
+            <MDTypography for="cars">DisplayAnnouncementTextOrNot</MDTypography>
+            <select name="cars" id="cars">
+              <option value="true">yes</option>
+              <option value="false">No</option>
+            </select>
+          </Box> */}
+        <Button
+          type="submit"
+          variant="contained"
+          value="Submit"
+          style={{ background: "#33A2B5", color: "white" }}
+          onClick={handleSubmit}
+        >
+          Send
+        </Button>
+  
+      </Card> 
         </Box>
       </Dialog>
 
       <div style={{ float: "right", display: "flex" }}>
-        <Button
-          type="submit"
-          variant="contained"
-          style={{
-            background: "#33A2B5",
-            color: "white",
-            margin: "10px",
-            color: "#000",
-          }}
-          onClick={handleBannerClickOpen}
-        >
-          Add Banner
-        </Button>
+          
 
         <Button
           variant="contained"
@@ -383,7 +358,7 @@ function BanerAnouncement() {
             color: "#000",
           }}
         >
-          Announcement
+         Add Announcement
         </Button>
       </div>
       <br />
@@ -412,4 +387,4 @@ function BanerAnouncement() {
   );
   
 }
-export default BanerAnouncement;
+export default Anouncementbanner;
