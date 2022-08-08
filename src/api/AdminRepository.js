@@ -3,14 +3,13 @@ class AdminRepository {
   // get all admin users
   async getAlladminUser() {
     const token = localStorage.getItem("token");
-   // console.log("@@@",token);
+    // console.log("@@@",token);
     const reponse = await Api.get(`${baseUrl}admin/allUsers`, {
       headers: {
         Authorization: "Bearer " + token,
       },
     })
       .then((response) => {
-       
         return response;
       })
       .catch((error) => {
@@ -82,7 +81,42 @@ class AdminRepository {
     return reponse;
   }
 
-  //add  Anouncement 
+  //add  Anouncement
+  async banner(data) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.post(`${baseUrl}admin/addBanner`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+  async banners_Anouncements() {
+    const token = localStorage.getItem("token");
+    // console.log("@@@",token);
+    const reponse = await Api.get(`${baseUrl}admin/banner`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //add  Anouncement
   async anouncement(data) {
     const token = localStorage.getItem("token");
     const reponse = await Api.post(`${baseUrl}admin/addAnnouncement`, data, {
@@ -100,42 +134,40 @@ class AdminRepository {
     return reponse;
   }
 
- //add  Anouncement 
- async banner(data) {
-  const token = localStorage.getItem("token");
-  const reponse = await Api.post(`${baseUrl}admin/addBanner`, data, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .then((response) => {
-      return response;
+  async getanouncements() {
+    const token = localStorage.getItem("token");
+    // console.log("@@@",token);
+    const reponse = await Api.get(`${baseUrl}admin/announcement`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     })
-    .catch((error) => {
-      console.log(error.response);
-      return error.response;
-    });
-  return reponse;
-}
-async banners_Anouncements() {
-  const token = localStorage.getItem("token");
- // console.log("@@@",token);
-  const reponse = await Api.get(`${baseUrl}admin/banner`, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .then((response) => {
-     
-      return response;
-    })
-    .catch((error) => {
-      console.log(error.response);
-      return error.response;
-    });
-  return reponse;
-}
-
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+    // update anounce
+    async updateAnounce(data, userId) {
+      const token = localStorage.getItem("token");
+      const reponse = await Api.put(`${baseUrl}admin/updateAnnouncement/${userId}`, data, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        });
+      return reponse;
+    }
 }
 
 export default new AdminRepository();
