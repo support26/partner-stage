@@ -126,55 +126,7 @@ function Notifications() {
             </Card>
           </Grid>
 
-          <Grid item  xs={12} sm={12} md={6}>
-          
-            <Card sx={{ px: 8, py: 4, width: "100%"}}>
-              <MDTypography align="center" variant="h3" sx={{ pb: "10px" }}>
-                Banner
-              </MDTypography>
-
-              <Box sx={{ minWidth: 120 }}>
-                <div align="center">
-                  <Button
-                    style={{
-                      color: "#ffffff",
-                      backgroundColor: "#33A2B5",
-                      width: 200,
-                    }}
-                    onClick={handleAllOpen}
-                  >
-                    All Notification
-                  </Button>
-               
-                </div>
-              </Box>
-            </Card>
-            <Grid item xs={12} sm={12} md={12} >
-             
-              <Card sx={{ px: 8, py: 4, width: "100%" , my:3}}>
-                <MDTypography align="center" variant="h3" sx={{ pb: "10px" }}>
-                  Anouncement
-                </MDTypography>
-
-                <Box sx={{ minWidth: 120 }}>
-                  <div align="center">
-                    <Button
-                      style={{
-                        color: "#ffffff",
-                        backgroundColor: "#33A2B5",
-                        width: 200,
-                        margin: 5,
-                      }}
-                      onClick={handleAllOpen}
-                    >
-                      All Notification
-                    </Button>
-                    
-                  </div>
-                </Box>
-              </Card>
-            </Grid>
-          </Grid>
+        
         </Grid>
       </MDBox>
 

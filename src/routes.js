@@ -2,6 +2,7 @@ import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
 import Notifications from "./layouts/notifications";
 import Opportunities from "./layouts/opportunities";
+import BanerAnouncement from "./layouts/banner"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -41,6 +42,14 @@ const routes = [
     icon: <Icon fontSize="medium">assignment</Icon>,
     route: "/opportunities",
     component: <Opportunities />,
+  },
+  {
+    type: "collapse",
+    name: "Banner",
+    key: "BanerAnouncement",
+    icon: <Icon fontSize="medium">Banner</Icon>,
+    route: "/banner",
+    component: <BanerAnouncement />,
   },
   // {
   //   type: "collapse",

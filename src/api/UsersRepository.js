@@ -4,15 +4,7 @@ const token = localStorage.getItem("token");
 class UsersRepository {
   GetAllRunner = () => {
     const token = localStorage.getItem("token");
-    return Api.get(`${baseUrl}users/allusers`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-    };
-  UpdateRunners = (id, data) => {
-    const token = localStorage.getItem("token");
-    return Api.put(`${baseUrl}users/profile/${id}`, data, {
+    return Api.get(`${baseUrl}users/${10}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -42,14 +34,10 @@ class UsersRepository {
       },
     });
   };
-  usersByState = () => {
-    const token = localStorage.getItem("token");
-    return Api.get(`${baseUrl}users/app/usersByState`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-  };
+
+
+
+  
 }
 
 export default new UsersRepository();
