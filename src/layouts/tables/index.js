@@ -208,12 +208,12 @@ export default function Tables(props) {
       type: "text",
       width: 60,
       renderCell: (params) => {
-        return params.row.isUserActiveOrNot == null ? (
+        return params.row.isUserActiveOrNot == null || params.row.isUserActiveOrNot == "n" ? (
           <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
         ) : (
           <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
         );
-      },
+      }
     },
     { field: "name", headerName: "Name", width: 130 },
 
@@ -402,7 +402,7 @@ export default function Tables(props) {
     gender: gender,
     education: education,
     address: address,
-    age: age,
+    age: age
   };
   const updateAPIData = (event) => {
     setOpen(false);
