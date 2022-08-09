@@ -116,7 +116,7 @@ function Number() {
         multiline
         rows={5}
         style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
-      />{" "}
+      />
       {error && (
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
       )}
@@ -125,7 +125,7 @@ function Number() {
         type="file"
         inputProps={{accept:".png, .jpeg, .jpg"}}
         onChange={handelDistricImages}
-      />{" "}
+      />
       <br />
       <Button
         onClick={sendNotification}
