@@ -35,14 +35,7 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
-  {
-    type: "collapse",
-    name: "Opportunities",
-    key: "opportunities",
-    icon: <Icon fontSize="medium">assignment</Icon>,
-    route: "/opportunities",
-    component: <Opportunities />,
-  },
+  
   {
     type: "collapse",
     name: "Banner",
@@ -55,9 +48,17 @@ const routes = [
     type: "collapse",
     name: "Anouncement",
     key: "Anouncement",
-    icon: <Icon fontSize="medium">Anouncement</Icon>,
+    icon: <Icon fontSize="medium">campaign</Icon>,
     route: "/anouncement",
     component: <Anouncement />,
+  },
+  {
+    type: "collapse",
+    name: "Opportunities",
+    key: "opportunities",
+    icon: <Icon fontSize="medium">assignment</Icon>,
+    route: "/opportunities",
+    component: <Opportunities />,
   },
   // {
   //   type: "collapse",
