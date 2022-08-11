@@ -70,6 +70,7 @@ function Number() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", phone_number);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
@@ -80,6 +81,7 @@ function Number() {
         .post("http://localhost:8001/users/notification", {
           phone_number,
           notification,
+          admin_email
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);

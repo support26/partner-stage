@@ -70,18 +70,18 @@ function Dashboard() {
   useEffect(() => {
     partner_app_users();
   }, []);
+ 
 
-
- const verticalBarChartData = {
+  const verticalBarChartData = {
     labels: state,
     datasets: [
       {
-        label: 'users in state',
-        color: 'info',
+        label: "Users",
+        color: "info",
         data: total,
-      }
-    ]
-  }
+      },
+    ],
+  };
   // const partner_app_active_users = () => {
   //   getActiveUsers().then((res) => {
   //     setActiveUsers(res.data.data);

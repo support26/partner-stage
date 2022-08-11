@@ -50,15 +50,17 @@ function Allnotification() {
     else if (!body) {
       setError("Please fill message fields");
     } else {
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
-        image: image,
+        image: image
       };
       console.log("@@@@@@", notification);
       axios
         .post("http://localhost:8001/users/notification", {
           notification,
+          admin_email
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);

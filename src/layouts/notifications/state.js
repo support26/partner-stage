@@ -74,6 +74,7 @@ function State() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", state);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
@@ -84,6 +85,7 @@ function State() {
         .post("http://localhost:8001/users/notification", {
           state,
           notification,
+          admin_email
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);

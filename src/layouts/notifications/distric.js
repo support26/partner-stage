@@ -95,6 +95,7 @@ function Distric() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", district);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
@@ -105,6 +106,7 @@ function Distric() {
         .post("http://localhost:8001/users/notification", {
           district,
           notification,
+          admin_email
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);
