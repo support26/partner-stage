@@ -40,7 +40,7 @@ const routes = [
     type: "collapse",
     name: "Banner",
     key: "BanerAnouncement",
-    icon: <Icon fontSize="medium">Banner</Icon>,
+    icon: <Icon fontSize="medium">ad_units_rounded</Icon>,
     route: "/banner",
     component: <BanerAnouncement />,
   },

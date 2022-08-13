@@ -116,6 +116,24 @@ class AdminRepository {
     return reponse;
   }
 
+    //  updateBanner
+    async updateBanner(data, userId) {
+      const token = localStorage.getItem("token");
+      const reponse = await Api.put(`${baseUrl}admin/updateBanner/${userId}`, data, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        });
+      return reponse;
+    }
+
   //add  Anouncement
   async anouncement(data) {
     const token = localStorage.getItem("token");
@@ -160,6 +178,27 @@ class AdminRepository {
         },
       })
         .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        });
+      return reponse;
+    }
+
+
+    // get notification 
+    async getNotification() {
+      const token = localStorage.getItem("token");
+      // console.log("@@@",token);
+      const reponse = await Api.get(`${baseUrl}admin/notificationLogs`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => {
+          console.log(response);
           return response;
         })
         .catch((error) => {

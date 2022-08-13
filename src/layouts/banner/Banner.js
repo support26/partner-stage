@@ -76,7 +76,7 @@ function Banner() {
       <MDTypography align="center" variant="h3" sx={{ mx: 8 }}>
         Banner Notification
       </MDTypography>
-      <form>
+      <form  onSubmit={handleBannerSubmit}>
         <Card sx={{ px: 3, py: 2, pb: 1, width: "100%" }}>
           <TextField
             required
@@ -158,7 +158,7 @@ function Banner() {
             type="submit"
             variant="contained"
             style={{ background: "#33A2B5", color: "white" }}
-            onClick={handleBannerSubmit}
+           
           >
             Send
           </Button>

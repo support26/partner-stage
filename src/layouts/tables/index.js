@@ -1,5 +1,7 @@
 import UserRepository from "api/UsersRepository";
 import Modal from "@mui/material/Modal";
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
@@ -15,7 +17,7 @@ import axios from "axios";
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
-
+import Select from '@mui/material/Select';
 import MDTypography from "components/MDTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 //  React example components
@@ -23,7 +25,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -92,10 +97,23 @@ export default function Tables() {
   const otherhandleOpen = () => setotherOpen(true);
   const otherhandleClose = () => setotherOpen(false);
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
-
+const [selectvalue, setSelectvalue] = useState(true)
   const handleClose = () => {
     setOpen(false);
   };
+  const [allopen, setAllOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("md");
+  const handleAllOpen = () => {
+    setAllOpen(true);
+  };
+  const handleAllClose = () => {
+    setAllOpen(false);
+  };
+  const handelSelect= (e)=>{
+  const demo=  setSelectvalue(e.target.value)
+  handleAllOpen();
+    console.log(selectvalue);
+  }
   const columns = [
     {
       field: "action",
@@ -173,11 +191,13 @@ export default function Tables() {
           return console.log(id);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
-
+   
         return (
           <Button
             style={{ color: "black", backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
+            disabled={disabled}
+
           >
             Edit
           </Button>
@@ -297,31 +317,31 @@ export default function Tables() {
       headerName: "Active Status",
       width: 120,
       sortable: false,
+      
       renderCell: function (params) {
-        const handleActiveStatus = (event) => {
-          event.preventDefault();
-          const id = params.row.id;
-          if (params.row.isUserDisabled === "y") {
-            const is_active = "n";
-            // ChangeAdminUserStatus(id, is_active);
-          } else {
-            const is_active = "y";
-            // ChangeAdminUserStatus(id, is_active);
-          }
-          // GetUsers();
-          // console.log(id, is_active);
-        };
-        return params.row.isUserDisabled === "y" ||
-          params.row.isUserDisabled === null ? (
-          <Switch
-            onChange={handleActiveStatus}
-            defaultChecked
-            color="success"
-          />
-        ) : (
-          <Switch onChange={handleActiveStatus} color="success" />
-        );
+        const id = params.row.id;
+        console.log(id)
+        return ( <Select
+         value={selectvalue}
+         onChange={handelSelect}
+          size="small"
+          sx={{ height: 1 }}
+          native
+          autoFocus
+         
+        >
+          <option value='y'> Active</option>
+          <option value='n'>Disabled</option>
+         
+        </Select>)
+         
+        
       },
+    }, {
+      field: "reason",
+      headerName: "reason",
+      type: "text",
+      width: 230,
     },
   ];
 
@@ -361,7 +381,11 @@ export default function Tables() {
   const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   //get api
-
+  const roleId = localStorage.getItem("roleId");
+  // const  = localStorage.getItem("user_email");
+  const [disabled, setDisabled] = useState(
+    (roleId==1)? true : false
+  )
   const GetRunner = () => {
     UserRepository.GetAllRunner()
       .then((response) => {
@@ -473,6 +497,9 @@ export default function Tables() {
 
   return (
     <DashboardLayout>
+
+
+
       <DashboardNavbar />
       <MDBox pt={6} pb={3} style={{ textTransform: "capitalize" }}>
         <Grid container spacing={6}>
@@ -503,7 +530,7 @@ export default function Tables() {
         </Grid>
         <Dialog
           open={open}
-          onClose={handleClose}
+          
           TransitionComponent={Transition}
         >
           <AppBar sx={{ position: "relative" }}>
@@ -940,6 +967,46 @@ export default function Tables() {
         </Dialog>
       </MDBox>
       {/* <Footer /> */}
+      <Dialog maxWidth={maxWidth} open={allopen} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleAllClose}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            maxWidth,
+          }}
+        >
+         <DialogTitle>Reason for  Active or Deactive  </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+          
+          </DialogContentText>
+          <TextareaAutosize
+             minRows={10}
+             aria-label="maximum height"
+             placeholder="Maximum 6 rows"
+             
+             style={{ width: 300 }}
+          />
+        </DialogContent>
+        <DialogActions>
+         
+          <Button onClick={handleAllClose}>Send</Button>
+        </DialogActions>
+        </Box>
+      </Dialog>
     </DashboardLayout>
+      
+  
   );
 }

@@ -31,14 +31,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import { Fullscreen } from "@mui/icons-material";
-import Banner from "./Banner";
-import Anouncement from "./Anouncement";
-import Editbanner_announcement from "./Editbanner_anouncement"
+// import Banner from "./Banner";
+
 
 function BanerAnouncement() {
   const {
-   
-    Banners_Anouncements,
+    Banners, Banners_Anouncements,UpdateBanner
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
@@ -52,6 +50,11 @@ function BanerAnouncement() {
   const [pageSize, setPageSize] = useState(10);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const roleId = localStorage.getItem("roleId");
+
+const [disabled, setDisabled] = useState(
+  (roleId==1)? true : false
+)
   const handleModal = () => {
     setUser_type("0");
     setOpenModal(true);
@@ -99,10 +102,10 @@ function BanerAnouncement() {
   };
   const [loading, setLoading] = useState(false);
 
-  const GetUsers = () => {
+  const GetBanner = () => {
     setLoading(true);
-    var AllAdminUsers = Banners_Anouncements();
-    AllAdminUsers.then((response) => {
+    var Banners_Anouncement = Banners_Anouncements();
+    Banners_Anouncement.then((response) => {
       if (response.status === 200) {
         setLoading(false);
         setUsers(response.data.data);
@@ -114,7 +117,7 @@ function BanerAnouncement() {
 
 
   useEffect(() => {
-    GetUsers();
+    GetBanner();
   }, []);
 
   const columns = [
@@ -135,10 +138,13 @@ function BanerAnouncement() {
             );
           setUser_type(thisRow.roleId);
           setUser_id(params.id);
-          setUsers_name(thisRow.users_name);
-          setUsers_email(thisRow.users_email);
-          setIs_active(params.row.is_active);
-          setEmployee_name(params.row.employee_name);
+          seturl(thisRow.url);
+          setDescription(thisRow.Description);
+          setDescriptionIsEnglish(params.row.DescriptionIsEnglish);
+          setAppVersion(params.row.AppVersion);
+          setButtonText(params.row.ButtonText);
+          setShowButton(params.row.ShowButton);
+          setDisplayBannerOrNot(params.row.DisplayBannerOrNot);
           setEditUserModal(true);
           return console.log(thisRow);
         };
@@ -146,6 +152,7 @@ function BanerAnouncement() {
           <Button
             onClick={onClick}
             variant="contained"
+            disabled={disabled}
             sx={{
               color: "#000",
               backgroundColor: "#33A2B5",
@@ -166,11 +173,26 @@ function BanerAnouncement() {
     { field: "DescriptionIsEnglish", headerName: "English", width: 200 },
     { field: "AppVersion", headerName: "App Version", width: 200 },
     { field: "ButtonText", headerName: "Button Text", width: 150 },
-    { field: "ShowButton", headerName: "Show Button", width: 140 },
+    { field: "ShowButton", headerName: "Show Button", width: 140 ,
+    renderCell: function (params) {
+      return params.row.ShowButton === 1 ? (
+      <Button sx={{color:'green'}}>Yes</Button>
+      ) : (
+        <Button sx={{color:'red'}} >No</Button>
+      );
+    },
+  },
     {
       field: "DisplayBannerOrNot",
-      headerName: "DisplayBannerOrNot",
+      headerName: "Display Banner",
       width: 200,
+      renderCell: function (params) {
+        return params.row.DisplayBannerOrNot === 1 ? (
+        <Button sx={{color:'green'}}>Yes</Button>
+        ) : (
+          <Button sx={{color:'red'}} >No</Button>
+        );
+      },
     },
  
     {
@@ -193,91 +215,100 @@ function BanerAnouncement() {
       headerName: "updated_at",
       width: 200,
     },
-
-    // {
-    //   field: "is_active",
-    //   headerName: "Status",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: function (params) {
-    //     const handleActiveStatus = (event) => {
-    //       event.preventDefault();
-    //       const id = params.row.id;
-    //       if (params.row.is_active === "Y") {
-    //         const is_active = "N";
-    //         ChangeAdminUserStatus(id, is_active);
-    //       } else {
-    //         const is_active = "Y";
-    //         ChangeAdminUserStatus(id, is_active);
-    //       }
-    //       // GetUsers();
-    //       console.log(id, is_active);
-    //     };
-    //     return params.row.is_active === "Y" ? (
-    //       <Switch
-    //         onChange={handleActiveStatus}
-    //         defaultChecked
-    //         color="success"
-    //       />
-    //     ) : (
-    //       <Switch onChange={handleActiveStatus} color="success" />
-    //     );
-    //   },
-    // },
   ];
-  const data = {
-    users_name: users_name,
-    users_email: users_email,
-    user_type: user_type,
-    employee_name: employee_name,
-  };
+  
+  const [url, seturl] = useState("");
+  const [Description, setDescription] = useState("");
+  const [DescriptionIsEnglish, setDescriptionIsEnglish] = useState("");
+  const [AppVersion, setAppVersion] = useState("");
+  const [ButtonText, setButtonText] = useState("");
+  const [ShowButton, setShowButton] = useState(false);
+  const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState(false);
 
-  // const addAdminUsers = (event) => {
-  //   event.preventDefault();
-  //   var UserAddedSuccessfully = AddAdminUser(data);
-  //   UserAddedSuccessfully.then((response) => {
-  //     if (response.status === 200) {
-  //       GetUsers();
-  //       closeModal();
-  //       handleOpen();
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   setUsers_name("");
-  //   setUsers_email("");
-  //   setEmployee_name("");
-  // };
+  const admin_email = localStorage.getItem("user_email");
 
-  const data_1 = {
-    users_name: users_name,
-    users_email: users_email,
-    user_type: user_type,
-    employee_name: employee_name,
-    is_active: is_active,
-  // };
-  // const updateUser = (event) => {
-  //   event.preventDefault();
-  //   var UserUpdatedSuccessfully = UpdateAdminUser(data_1, user_id);
-  //   UserUpdatedSuccessfully.then((response) => {
-  //     if (response.status === 200) {
-  //       GetUsers();
-  //       closeEditUserModal();
-  //       handleOpen();
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   setUsers_name("");
-  //   setUsers_email("");
-  //   setEmployee_name("");
-  // };
-  }
+
+const data = {
+ 
+  url:url,
+  Description:Description,
+  DescriptionIsEnglish:DescriptionIsEnglish,
+  AppVersion:AppVersion,
+  ButtonText:ButtonText,
+  ShowButton:ShowButton,
+  DisplayBannerOrNot:DisplayBannerOrNot,
+  admin_email:admin_email
+};
+
+
+
+// const data_1={
+//   AnnouncementText: AnnouncementText,
+//   AnnouncementIsEnglish: AnnouncementIsEnglish,
+//   DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
+//   admin_email
+// }
+
+// update anounce
+const handleSubmit= (event) => {
+  event.preventDefault();
+  var UpdateBannerSuccess = UpdateBanner(data, user_id);
+  UpdateBannerSuccess.then((response) => {
+    if (response.status === 200) {
+      
+       closeEditUserModal();GetBanner();
+      // handleOpen();
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+  seturl("");
+  setDescription("");
+  setDescriptionIsEnglish("");
+  setAppVersion("");
+  setButtonText("");
+  setShowButton("");
+  setDisplayBannerOrNot("");
+ 
+};
+const data3 = {
+  url,
+  Description,
+  DescriptionIsEnglish,
+  AppVersion,
+  ButtonText,
+  ShowButton,
+  DisplayBannerOrNot,
+  admin_email,
+};
+
+const handleBannerSubmit = (event) => {
+  event.preventDefault();
+  console.log(data3)
+  var addBanners = Banners(data3);
+  addBanners.then((response) => {
+    if (response.status === 200) {
+      GetBanner();
+      handleBannerClose();
+      
+    }
+  }).catch((e) => {
+    console.log(e);
+  })
+  seturl("");
+  setDescription("");
+  setDescriptionIsEnglish("");
+  setAppVersion("");
+  setButtonText("");
+  setShowButton("");
+  setDisplayBannerOrNot("");
+ 
+};
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {/*  Banner Notification */}
-      <Dialog maxWidth={maxWidth} open={banneropen} onClose={handleBannerClose}>
+      {/*  post Banner Notification */}
+      <Dialog maxWidth={maxWidth} open={banneropen} >
         <div>
           <IconButton
             edge="start"
@@ -296,38 +327,105 @@ function BanerAnouncement() {
             "& .MuiTextField-root": { mx: 2, my: 1 },
           }}
         > 
-        <Banner/>
-        </Box>
-      </Dialog>
+        {/* <Banner/> */}
+      
+      <form  >
+        <Card sx={{ px: 3, py: 2, pb: 1, width: "100%" }}> 
+     <MDTypography align="center" variant="h3" sx={{ mx: 8 }}>
+        Banner Notification
+      </MDTypography>
+          <TextField
+            required
+            id="outlined-required"
+            value={url}
+            onChange={(e) => seturl(e.target.value)}
+            label="url"
+          />
+          <TextField
+            id="outlined"
+            label="Description"
+            value={Description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <TextField
+            id="outlined-input"
+            label="DescriptionIsEnglish"
+            type="text"
+            required
+            value={DescriptionIsEnglish}
+            onChange={(e) => setDescriptionIsEnglish(e.target.value)}
+          />
+          <TextField
+            id="Button Text"
+            label="Button Text"
+            value={ButtonText}
+            onChange={(e) => setButtonText(e.target.value)}
+            required
+          />
 
-      {/*  Announcement Notification */}
-      <Dialog
-        maxWidth={maxWidth}
-        open={anounceopen}
-        onClose={handleAnounceClose}
-      >
-        <div>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleAnounceClose}
-            aria-label="close"
-            style={{ float: "right" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { mx: 3, my: 2 },
-          }}
+          <TextField
+            id="App Version"
+            label="App Version"
+            value={AppVersion}
+            onChange={(e) => setAppVersion(e.target.value)}
+            type='number'
+            required
+          />
+
+          <div style={{ display: "flex" }}>
+            <div style={{ margin: 8 }}>
+              <MDTypography for="cars">show button</MDTypography>
+
+              <Select
+                // value={age}
+                // onChange={handleChange}
+                label="Age"
+                required
+                style={{ width: 150, height: 30, border: "2px solide red" }}
+                value={ShowButton}
+                onChange={(e) => setShowButton(e.target.value)}
+              >
+                <MenuItem value="None"></MenuItem>
+                <MenuItem value={true}>yes</MenuItem>
+                <MenuItem value={false}>no</MenuItem>
+              </Select>
+            </div>
+            <div style={{ margin: 8 }}>
+              <MDTypography for="cars">Display Banner</MDTypography>
+              <Select
+                // value={age}
+                // onChange={handleChange}
+                label="Age"
+                required
+                style={{ width: 150, height: 30, border: "2px solide red" }}
+                DisplayBannerOrNot
+                value={DisplayBannerOrNot}
+                onChange={(e) => setDisplayBannerOrNot(e.target.value)}
+              >
+                <MenuItem value="None"></MenuItem>
+                <MenuItem value={true}>yes</MenuItem>
+                <MenuItem value={false}>no</MenuItem>
+              </Select>
+            </div>
+          </div>
+
+<Button
+          type="submit"
+          variant="contained"
+          value="Submit"
+          style={{ background: "#33A2B5", color: "white" }}
+          onClick={handleBannerSubmit}
+
         >
-         <Anouncement/>
+          Send
+        </Button>
+          </Card>  </form>
         </Box>
       </Dialog>
 
+      
+       
       {/* Edit Banner */}
 
       <Dialog
@@ -350,10 +448,102 @@ function BanerAnouncement() {
           noValidate
           component="form"
           sx={{
-            "& .MuiTextField-root": { mx: 3, my: 2 },
+            "& .MuiTextField-root": { mx: 3, my: 1 },
           }}
         >
-          <Editbanner_announcement/>
+            <MDTypography align="center" variant="h3" sx={{ pb: "10px" }}>
+              Anouncement & Banner
+            </MDTypography>
+          <Card sx={{ px: 5, py: 1, pb: 4, width: "100%" }}>
+         
+       
+       
+        <TextField
+            required
+            id="outlined-required"
+            value={url}
+            onChange={(e) => seturl(e.target.value)}
+            label="url"
+          />
+          <TextField
+            id="outlined"
+            label="Description"
+            value={Description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <TextField
+            id="outlined-input"
+            label="DescriptionIsEnglish"
+            type="text"
+            required
+            value={DescriptionIsEnglish}
+            onChange={(e) => setDescriptionIsEnglish(e.target.value)}
+          />
+          <TextField
+            id="Button Text"
+            label="Button Text"
+            value={ButtonText}
+            onChange={(e) => setButtonText(e.target.value)}
+            required
+          />
+
+          <TextField
+            id="App Version"
+            label="App Version"
+            value={AppVersion}
+            onChange={(e) => setAppVersion(e.target.value)}
+            type='number'
+            required
+          />
+
+          <div style={{ display: "flex" }}>
+            <div style={{ margin: 8 }}>
+              <MDTypography for="cars">show button</MDTypography>
+
+              <Select
+                // value={age}
+                // onChange={handleChange}
+                label="Age"
+                required
+                style={{ width: 150, height: 30, border: "2px solide red" }}
+                value={ShowButton}
+                onChange={(e) => setShowButton(e.target.value)}
+              >
+                <MenuItem value="None"></MenuItem>
+                <MenuItem value={1}>yes</MenuItem>
+                <MenuItem value={0}>no</MenuItem>
+              </Select>
+            </div>
+            <div style={{ margin: 8 }}>
+              <MDTypography for="cars">Display Banner</MDTypography>
+              <Select
+                // value={age}
+                // onChange={handleChange}
+                label="Age"
+                required
+                style={{ width: 150, height: 30, border: "2px solide red" }}
+                DisplayBannerOrNot
+                value={DisplayBannerOrNot}
+                onChange={(e) => setDisplayBannerOrNot(e.target.value)}
+              >
+                <MenuItem value="None"></MenuItem>
+                <MenuItem value={1}>yes</MenuItem>
+                <MenuItem value={0}>no</MenuItem>
+              </Select>
+            </div>
+          </div>
+    
+
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ background: "#33A2B5", color: "white" }}
+              onClick={handleSubmit} 
+            >
+              Send
+            </Button>
+          </Card>
         </Box>
       </Dialog>
 
@@ -368,23 +558,12 @@ function BanerAnouncement() {
             color: "#000",
           }}
           onClick={handleBannerClickOpen}
+          disabled={disabled}
         >
           Add Banner
         </Button>
 
-        <Button
-          variant="contained"
-          onClick={handleAnounceOpen}
-          type="submit"
-          style={{
-            background: "#33A2B5",
-            color: "white",
-            margin: "10px",
-            color: "#000",
-          }}
-        >
-          Announcement
-        </Button>
+       
       </div>
       <br />
       <div style={{ height: 500, width: "100%", marginTop: "55px" }}>

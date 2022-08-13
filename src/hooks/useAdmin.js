@@ -206,7 +206,21 @@ export default function useAdmin() {
       }
       return responseData;
     },
-
+    //update updateBanner user
+    UpdateBanner: async (data, userId) => {
+      var responseData = await AdminRepository.updateBanner(data, userId);
+      if (responseData.status === 200) {
+        console.log(responseData.data);
+        dispatch(errorMessage(""));
+        dispatch(successMsg(responseData.data.data));
+        return responseData;
+      } else {
+        console.log(responseData.data);
+        dispatch(successMsg(""));
+        dispatch(errorMessage(responseData.data.message));
+      }
+      return responseData;
+    },
     //get anounce  data
     GetAnouncements: async () => {
       var responseData = await AdminRepository.getanouncements();
@@ -217,7 +231,7 @@ export default function useAdmin() {
       }
       return responseData;
     },
-    //anouncement
+    // add anouncement
     Anouncements: async (data) => {
       var responseData = await AdminRepository.anouncement(data);
       if (responseData.status === 200) {
@@ -241,7 +255,16 @@ export default function useAdmin() {
       }
       return responseData;
     },
-
+ //get notification  data
+ GetNotification: async () => {
+  var responseData = await AdminRepository.getNotification();
+  if (responseData.status === 200) {
+    return responseData;
+  } else {
+    console.log(responseData.data);
+  }
+  return responseData;
+},
     //reset api
     // Runner: async (data) => {
     //   var responseData = await AuthRepository.runnerTable(data);
