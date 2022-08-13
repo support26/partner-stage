@@ -5,7 +5,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 // @mui material components
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
@@ -73,6 +73,14 @@ const style = {
   width: 50,
 };
 export default function Tables() {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+  
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -523,6 +531,9 @@ const [selectvalue, setSelectvalue] = useState(true)
                   // checkboxSelection
                   loading={tableLoading}
                   disableSelectionOnClick
+                  components={{
+                    Toolbar: CustomToolbar,
+                  }}
                 />
               </div>
             </Card>

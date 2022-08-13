@@ -22,13 +22,14 @@ import bgImage from "assets/images/Ellipse 1 (1).svg";
 
 //sign css
 import "./sign.css";
-
+import Cookies from 'js-cookie'
 import useAdmin from '../../../hooks/useAdmin'
 import { Redirect } from "react-router-dom";
 import  {error} from 'api/AuthRepository';
  
 function Basic () {
   const nav = useNavigate()
+ 
   const [admin_name, setadmin_name] = useState('')
   const [password, setPassword] = useState('')
   // const [msg, setMsg] = useState()
@@ -68,7 +69,15 @@ function Basic () {
     setadmin_name('')
     setPassword('')
   }
-  // const session_token = sessionStorage.getItem('session_token') ;
+  useEffect(() => {
+    const session_token = Cookies.get('token') ;
+  if (session_token) {
+   nav("/dashboard");
+  }
+  
+  }, [])
+  
+ 
   // if (session_token) {
   //   return <Navigate to="/dashboard" />;
   // }
