@@ -329,7 +329,8 @@ const handleBannerSubmit = (event) => {
         > 
         {/* <Banner/> */}
       
-      <form  >
+      <form onSubmit={handleBannerSubmit}
+ >
         <Card sx={{ px: 3, py: 2, pb: 1, width: "100%" }}> 
      <MDTypography align="center" variant="h3" sx={{ mx: 8 }}>
         Banner Notification
@@ -410,13 +411,12 @@ const handleBannerSubmit = (event) => {
             </div>
           </div>
 
-<Button
+    <Button
           type="submit"
           variant="contained"
           value="Submit"
           style={{ background: "#33A2B5", color: "white" }}
-          onClick={handleBannerSubmit}
-
+       
         >
           Send
         </Button>
