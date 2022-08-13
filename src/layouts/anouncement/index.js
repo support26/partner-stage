@@ -139,9 +139,9 @@ const updateBanner= (event) => {
     }).catch((e) => {
       console.log(e);
     })
-      setAnnouncementText("");
-      setAnnouncementIsEnglish("");
-      setDisplayAnnouncementTextOrNot("");
+      setAnnouncementText(null);
+      setAnnouncementIsEnglish(null);
+      setDisplayAnnouncementTextOrNot(null);
     
    
   };

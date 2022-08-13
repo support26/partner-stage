@@ -36,6 +36,23 @@ export default function useUsers() {
       dispatch(errorMessage(responseData.data.message));
     }
   },
+  //change admin_user active status
+  ChangeRunnerDisable: async (userId, data) => {
+    var responseData = await UsersRepository.changeRunnerDisable(
+      userId,
+      data
+    );
+    if (responseData.status === 200) {
+      console.log(responseData);
+      return responseData;
+      // dispatch(errorMessage(""));
+      // dispatch(successMsg(responseData.data.data));
+    } else {
+      console.log(responseData.data);
+      // dispatch(successMsg(""));
+      // dispatch(errorMessage(responseData.data.message));
+    }
+  },
   //get total users
   // GetTotalUsers: async () => {
   //   var responseData = await UsersRepository.totalUsers();

@@ -1,6 +1,6 @@
 import UserRepository from "api/UsersRepository";
 import Modal from "@mui/material/Modal";
-import TextareaAutosize from '@mui/material/TextareaAutosize';
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
@@ -17,7 +17,7 @@ import axios from "axios";
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
-import Select from '@mui/material/Select';
+import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 //  React example components
@@ -25,10 +25,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -60,6 +60,8 @@ import nophoto from "assets/images/no-image-available.png";
 import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
 import CircleIcon from "@mui/icons-material/Circle";
+
+import useUsers from "../../hooks/useUsers";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -105,7 +107,8 @@ export default function Tables() {
   const otherhandleOpen = () => setotherOpen(true);
   const otherhandleClose = () => setotherOpen(false);
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
-const [selectvalue, setSelectvalue] = useState(true)
+  const [selectvalue, setSelectvalue] = useState("y");
+  const [reason, setReason] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
@@ -114,14 +117,32 @@ const [selectvalue, setSelectvalue] = useState(true)
   const handleAllOpen = () => {
     setAllOpen(true);
   };
-  const handleAllClose = () => {
-    setAllOpen(false);
+
+ 
+
+  const sumbitRunnerDisable = () => { 
+    const admin_email= localStorage.getItem('user_email') 
+
+    const disabledData =  {
+        isUserDisabled:selectvalue,
+        reason:reason,
+        admin_email:admin_email
+      }
+      console.log(disabledData);
+    var updateDisableStatus = ChangeRunnerDisable(id,disabledData);
+    updateDisableStatus.then((response)=>{
+      // console.log(response);
+      if(response.status === 200){
+        GetRunner();
+        setAllOpen(false);
+      } 
+      
+
+    }).catch((e)=>{
+      console.log(e);
+    })
   };
-  const handelSelect= (e)=>{
-  const demo=  setSelectvalue(e.target.value)
-  handleAllOpen();
-    console.log(selectvalue);
-  }
+
   const columns = [
     {
       field: "action",
@@ -171,25 +192,25 @@ const [selectvalue, setSelectvalue] = useState(true)
 
           //pancard
           if (params.row.bank_passbook_photo == null) {
-            setbank_passbook_photo(nophoto);
+            setbank_passbook_photo("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setbank_passbook_photo(params.row.bank_passbook_photo);
           }
           //profile
           if (params.row.profileImage == null) {
-            setprofileImage(profile);
+            setprofileImage("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png");
           } else {
             setprofileImage(params.row.profileImage);
           }
           //pancard
           if (params.row.pancard_image == null) {
-            setPancardImages(nophoto);
+            setPancardImages("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setPancardImages(params.row.pancard_image);
           }
           //pancard
           if (params.row.other_Id_proof_image == null) {
-            setother_Id_proof_image(nophoto);
+            setother_Id_proof_image("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setother_Id_proof_image(params.row.other_Id_proof_image);
           }
@@ -199,13 +220,12 @@ const [selectvalue, setSelectvalue] = useState(true)
           return console.log(id);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
-   
+
         return (
           <Button
             style={{ color: "black", backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
             disabled={disabled}
-
           >
             Edit
           </Button>
@@ -236,12 +256,13 @@ const [selectvalue, setSelectvalue] = useState(true)
       type: "text",
       width: 60,
       renderCell: (params) => {
-        return params.row.isUserActiveOrNot == null || params.row.isUserActiveOrNot == "n" ? (
+        return params.row.isUserActiveOrNot == null ||
+          params.row.isUserActiveOrNot == "n" ? (
           <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
         ) : (
           <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
         );
-      }
+      },
     },
     { field: "name", headerName: "Name", width: 130 },
 
@@ -321,35 +342,68 @@ const [selectvalue, setSelectvalue] = useState(true)
       width: 130,
     },
     {
-      field: "is_active",
+      field: "isUserDisabled",
       headerName: "Active Status",
       width: 120,
       sortable: false,
-      
+      // type:'text'
       renderCell: function (params) {
-        const id = params.row.id;
-        console.log(id)
-        return ( <Select
-         value={selectvalue}
-         onChange={handelSelect}
-          size="small"
-          sx={{ height: 1 }}
-          native
-          autoFocus
-         
-        >
-          <option value='y'> Active</option>
-          <option value='n'>Disabled</option>
-         
-        </Select>)
-         
         
+        const handelSelect = (e) => {
+          setSelectvalue(e.target.value);
+          console.log(selectvalue);
+          setReason(params.row.reason);
+
+          setID(params.row.id);
+          handleAllOpen();
+         
+        };
+        // console.log(id);
+        return params.row.isUserDisabled === "n" ||
+          params.row.isUserDisabled === null ? (
+          <Select
+            value={"n"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+            disabled={disabled}
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
+        ) : (
+          <Select
+            disabled={disabled}
+            value={"y"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
+        );
       },
-    }, {
+    },
+    {
       field: "reason",
       headerName: "reason",
       type: "text",
       width: 230,
+    },  {
+      field: "updated_by",
+      headerName: "updated_by",
+      type: "text",
+      width: 160,
+    }, {
+      field: "updated_at",
+      headerName: "updated_at",
+      type: "text",
+      width: 150,
     },
   ];
 
@@ -371,9 +425,9 @@ const [selectvalue, setSelectvalue] = useState(true)
   const [bank_ifsc_code, setbank_ifsc_code] = useState("");
   const token = localStorage.getItem("token");
 
-  const [other_Id_proof_image, setother_Id_proof_image] = useState("");
+  const [other_Id_proof_image, setother_Id_proof_image] = useState(null);
 
-  const [pancard_image, setPancardImages] = useState("");
+  const [pancard_image, setPancardImages] = useState(null);
   const [other_id_proof_no, setother_id_proof_no] = useState("");
   const [pancard_no, setPancardno] = useState("");
   const [age, setage] = useState("");
@@ -391,9 +445,10 @@ const [selectvalue, setSelectvalue] = useState(true)
   //get api
   const roleId = localStorage.getItem("roleId");
   // const  = localStorage.getItem("user_email");
-  const [disabled, setDisabled] = useState(
-    (roleId==1)? true : false
-  )
+  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
+  const {
+    ChangeRunnerDisable
+  } = useUsers();
   const GetRunner = () => {
     UserRepository.GetAllRunner()
       .then((response) => {
@@ -410,7 +465,8 @@ const [selectvalue, setSelectvalue] = useState(true)
     setTableLoading(true);
     GetRunner();
   }, []);
-
+  
+  const updated_by = localStorage.getItem('user_email')
   var data = {
     name: name,
     acct_holder_name: acct_holder_name,
@@ -434,15 +490,17 @@ const [selectvalue, setSelectvalue] = useState(true)
     gender: gender,
     education: education,
     address: address,
-    age: age
+    age: age,
+    updated_by:updated_by
   };
   const updateAPIData = (event) => {
-    setOpen(false);
     event.preventDefault();
+    console.log(data);
     UserRepository.UpdateRunners(id, data)
-      .then((response) => {
-        console.log(response);
-        GetRunner();
+    .then((response) => {
+      console.log(response);
+      GetRunner();
+      setOpen(false);
       })
       .catch((error) => {
         console.log(error);
@@ -505,9 +563,6 @@ const [selectvalue, setSelectvalue] = useState(true)
 
   return (
     <DashboardLayout>
-
-
-
       <DashboardNavbar />
       <MDBox pt={6} pb={3} style={{ textTransform: "capitalize" }}>
         <Grid container spacing={6}>
@@ -539,11 +594,7 @@ const [selectvalue, setSelectvalue] = useState(true)
             </Card>
           </Grid>
         </Grid>
-        <Dialog
-          open={open}
-          
-          TransitionComponent={Transition}
-        >
+        <Dialog open={open} TransitionComponent={Transition}>
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <IconButton
@@ -973,17 +1024,16 @@ const [selectvalue, setSelectvalue] = useState(true)
                 submit
               </Button>
             </div>
-         
           </Box>
         </Dialog>
       </MDBox>
       {/* <Footer /> */}
-      <Dialog maxWidth={maxWidth} open={allopen} >
+      <Dialog maxWidth={maxWidth} open={allopen}>
         <div>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={handleAllClose}
+            onClick={()=>{setAllOpen(false)}}
             aria-label="close"
             style={{ float: "right" }}
           >
@@ -997,27 +1047,30 @@ const [selectvalue, setSelectvalue] = useState(true)
             maxWidth,
           }}
         >
-         <DialogTitle>Reason for  Active or Deactive  </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+          <DialogTitle>Reason for Active or Deactive </DialogTitle>
+          <DialogContent>
+            <DialogContentText></DialogContentText>
+            <TextareaAutosize
+              minRows={10}
+              aria-label="maximum height"
+              placeholder="Maximum 6 rows"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </DialogContent>
+          <DialogActions>
+          <Button
+            style={{ color: "black", backgroundColor: "#33A2B5" }}
+            onClick={sumbitRunnerDisable}
+            disabled={disabled}
+          >
+            Send
+          </Button>
           
-          </DialogContentText>
-          <TextareaAutosize
-             minRows={10}
-             aria-label="maximum height"
-             placeholder="Maximum 6 rows"
-             
-             style={{ width: 300 }}
-          />
-        </DialogContent>
-        <DialogActions>
-         
-          <Button onClick={handleAllClose}>Send</Button>
-        </DialogActions>
+          </DialogActions>
         </Box>
       </Dialog>
     </DashboardLayout>
-      
-  
   );
 }
