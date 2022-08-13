@@ -1,17 +1,17 @@
 import { useState } from "react";
 import UserRepository from "api/UsersRepository";
-
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
+import SaveIcon from '@mui/icons-material/Save';
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-
+import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -23,8 +23,11 @@ function Allnotification() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-
-
+  const [loading, setLoading] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
+  function handleClick() {
+    setLoading(true);
+  }
   let file;
   let form_data = new FormData();
   const handelstateImages = (event) => {
@@ -50,6 +53,8 @@ function Allnotification() {
     else if (!body) {
       setError("Please fill message fields");
     } else {
+      setSendBtn(null)
+    setLoading(true);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
@@ -64,6 +69,9 @@ function Allnotification() {
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);
+    setLoading(false);
+    setSendBtn("send succesfully")
+
         })
         .catch((err) => {
           console.log("err", err);
@@ -103,15 +111,28 @@ function Allnotification() {
         onChange={handelstateImages}
       />
       <br />
-      <Button
+      {/* <Button
         variant="contained"
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white",marginBottom:'40px'} : {background: "#33A2B5",color: "white" }}
         href="#contained-buttons"
         onClick={sendNotification}
         disabled={btnDisabled}
       >
         Send
-      </Button>
+      </Button> */}
+      <LoadingButton
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }

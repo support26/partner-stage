@@ -203,7 +203,30 @@ function Notifications() {
         </Grid>
       </MDBox>
 
-      {/* History */}
+       {/* for All State wise  */}
+
+      <Dialog maxWidth={maxWidth} open={allopen} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleAllClose}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            maxWidth,
+          }}
+        >
+          <Allnotification />
+        </Box>
+      </Dialog>
 
       {/* for state */}
       <Dialog maxWidth={maxWidth} open={open} >
@@ -278,30 +301,7 @@ function Notifications() {
         </Box>
       </Dialog>
 
-      {/* for All State wise  */}
-
-      <Dialog maxWidth={maxWidth} open={allopen} >
-        <div>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleAllClose}
-            aria-label="close"
-            style={{ float: "right" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            maxWidth,
-          }}
-        >
-          <Allnotification />
-        </Box>
-      </Dialog>
+    
     </DashboardLayout>
   );
 }
