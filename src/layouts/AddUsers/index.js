@@ -40,7 +40,7 @@ const style_1 = {
   transform: "translate(-50%, -50%)",
   width: "350px",
   padding: "35px",
-  height: "570px",
+  height: "488px",
   borderRadius: "15px",
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -230,7 +230,7 @@ function AddUsers() {
     users_email: users_email,
     user_type: user_type,
     employee_name: employee_name,
-    is_active: is_active,
+    // is_active: is_active,  
   };
   const updateUser = (event) => {
     event.preventDefault();
@@ -466,7 +466,7 @@ function AddUsers() {
                   Support
                 </option>
               </select>
-              <label style={{ fontSize: "16px" }}>Active Status</label>
+              {/* <label style={{ fontSize: "16px" }}>Active Status</label>
               <select
                 required
                 className="modalInput"
@@ -487,7 +487,7 @@ function AddUsers() {
                 >
                   Inactive
                 </option>
-              </select>
+              </select> */}
               <input
                 className="modalSubmit"
                 type="submit"
