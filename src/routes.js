@@ -2,13 +2,12 @@ import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
 import Notifications from "./layouts/notifications";
 import Opportunities from "./layouts/opportunities";
-import BanerAnouncement from "./layouts/banner"
-import Anouncement from "./layouts/anouncement"
+import BanerAnouncement from "./layouts/banner";
+import Anouncement from "./layouts/anouncement";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-
-const temp = localStorage.getItem('roleId')
+const temp = localStorage.getItem("roleId");
 
 const routes = [
   {
@@ -17,7 +16,7 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="medium">dashboard</Icon>,
     route: "/dashboard",
-    component: < Dashboard />,
+    component: <Dashboard />,
   },
   {
     type: "collapse",
@@ -27,15 +26,14 @@ const routes = [
     route: "/runners",
     component: <Tables />,
   },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="medium">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
-  
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="medium">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
   {
     type: "collapse",
     name: "Banner",
@@ -69,22 +67,21 @@ const routes = [
   //   component: <AddUsers />,
   // },
   // {
-    // type: "collapse",
-    // name: "Sign In",
-    // key: "sign-in",
-    // icon: <Icon fontSize="medium">login</Icon>,
+  // type: "collapse",
+  // name: "Sign In",
+  // key: "sign-in",
+  // icon: <Icon fontSize="medium">login</Icon>,
   //   route: "/sign-in",
   //   component: <SignIn />,
   // },
   // {
-    // type: "collapse",
-    // name: "reset ",
-    // key: "reset-password",
-    // icon: <Icon fontSize="medium">ResetPassword</Icon>,
+  // type: "collapse",
+  // name: "reset ",
+  // key: "reset-password",
+  // icon: <Icon fontSize="medium">ResetPassword</Icon>,
   //   route: "/reset",
   //   component: <ResetPassword />,
   // }
-
 ];
 
 export default routes;
