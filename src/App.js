@@ -34,6 +34,7 @@ import SignIn from "layouts/authentication/sign-in";
 import ResetPassword from "layouts/authentication/reset-password/cover/index";
 import AddUsers from "layouts/AddUsers";
 import Notifications from "./layouts/notifications";
+import Cookies from 'js-cookie';
 
 //  React contexts
 import {
@@ -197,7 +198,7 @@ export default function App() {
           <Route path="/notifications" element={<Notifications />} />
         )}
         {/* below line first check that token is present than show routes*/}
-        {localStorage.getItem("token") && getRoutes(routes)}
+        {Cookies.get('token') && getRoutes(routes)}
       </Routes>
     </ThemeProvider>
   );

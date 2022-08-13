@@ -12,19 +12,20 @@ import {
   Runner,
   successMsg,
 } from "../store/auth/action";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
+import Cookies from 'js-cookie'
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function useAdmin() {
   const dispatch = useDispatch();
-  const [cookies, setCookie, getCookie] = useCookies();
+  // const [cookies, setCookie, getCookie] = useCookies();
   const nav = useNavigate();
 
   return {
     login: async (data) => {
       var responseData = await AuthRepository.UserLogin(data);
       if (responseData.status === 200) {
-        setCookie(responseData.data.data.session_token, "token");
+        // setCookie(responseData.data.data.session_token, "token");
         if (responseData.data.data.login_count == 0) {
           sessionStorage.setItem("token", responseData.data.data.session_token);
 
@@ -32,6 +33,7 @@ export default function useAdmin() {
           nav("/reset");
         } else {
           dispatch(login(responseData.data));
+          Cookies.set('token', responseData.data.data.session_token, { expires: 1 });
           localStorage.setItem("token", responseData.data.data.session_token);
           localStorage.setItem("user_email", responseData.data.data.user_email);
           localStorage.setItem("users_name", responseData.data.data.users_name);
@@ -128,9 +130,7 @@ export default function useAdmin() {
 
       nav("/sign-in");
       localStorage.clear();
-      //removeCookie("token");
-      ///  Response.Cookies.Clear();
-      // dispatch(logout());
+      Cookies.remove('token');
       return true;
     },
 
