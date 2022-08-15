@@ -188,8 +188,8 @@ export default function useAdmin() {
       return false;
     },
     //Banner
-    Banners: async (data) => {
-      var responseData = await AdminRepository.banner(data);
+    BannersPost: async (data) => {
+      var responseData = await AdminRepository.bannersPost(data);
       if (responseData.status === 200) {
         return responseData;
         console.log(responseData);

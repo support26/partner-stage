@@ -25,6 +25,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // mui custom style
 
@@ -36,6 +37,8 @@ function State() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
 
   useEffect(() => {
     axios
@@ -74,6 +77,8 @@ function State() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", state);
+      setSendBtn(null)
+      setLoading(true);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
@@ -89,6 +94,8 @@ function State() {
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);
+          setLoading(false);
+          setSendBtn("send succesfully")
         })
         .catch((err) => {
           console.log("err", err);
@@ -145,19 +152,19 @@ function State() {
       )}
       <TextField helperText="Image " type="file" inputProps={{accept:".png, .jpeg, .jpg"}} onChange={handelstateImages} />{" "}
       <br />
-      <Button
-        variant="contained"
-        style={
-          btnDisabled == true
-            ? { background: "#a7c5c9", color: "white" }
-            : { background: "#33A2B5", color: "white" }
-        }
-        href="#contained-buttons"
-        onClick={sendNotification}
-        disabled={btnDisabled}
-      >
-        Send
-      </Button>
+      <LoadingButton
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }

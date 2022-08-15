@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as XLSX from "xlsx";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // @mui material components
 import TextField from "@mui/material/TextField";
@@ -21,7 +22,8 @@ function Number() {
   const [phone_number, setPhone_number] = useState([]);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
   var reqData;
 
   let file;
@@ -69,6 +71,8 @@ function Number() {
     } else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
+      setSendBtn(null)
+      setLoading(true);
       console.log("#####", phone_number);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
@@ -85,6 +89,8 @@ function Number() {
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);
+          setLoading(false);
+          setSendBtn("send succesfully")
         })
         .catch((err) => {
           console.log("err", err);
@@ -129,15 +135,19 @@ function Number() {
         onChange={handelDistricImages}
       />
       <br />
-      <Button
-        onClick={sendNotification}
-        variant="contained"
+      <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
-        href="#contained-buttons"
-        disabled={btnDisabled}
-      >
-        Send
-      </Button>
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }

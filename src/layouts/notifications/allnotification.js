@@ -25,9 +25,7 @@ function Allnotification() {
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
-  function handleClick() {
-    setLoading(true);
-  }
+ 
   let file;
   let form_data = new FormData();
   const handelstateImages = (event) => {
@@ -69,8 +67,8 @@ function Allnotification() {
         })
         .then((res) => {
           console.log("%%%%%%%%%", res);
-    setLoading(false);
-    setSendBtn("send succesfully")
+        setLoading(false);
+        setSendBtn("send succesfully")
 
         })
         .catch((err) => {
@@ -111,15 +109,6 @@ function Allnotification() {
         onChange={handelstateImages}
       />
       <br />
-      {/* <Button
-        variant="contained"
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white",marginBottom:'40px'} : {background: "#33A2B5",color: "white" }}
-        href="#contained-buttons"
-        onClick={sendNotification}
-        disabled={btnDisabled}
-      >
-        Send
-      </Button> */}
       <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
 

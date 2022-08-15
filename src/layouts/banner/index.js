@@ -36,7 +36,7 @@ import { Fullscreen } from "@mui/icons-material";
 
 function BanerAnouncement() {
   const {
-    Banners, Banners_Anouncements,UpdateBanner
+    BannersPost, Banners_Anouncements,UpdateBanner
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
@@ -242,13 +242,6 @@ const data = {
 
 
 
-// const data_1={
-//   AnnouncementText: AnnouncementText,
-//   AnnouncementIsEnglish: AnnouncementIsEnglish,
-//   DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
-//   admin_email
-// }
-
 // update anounce
 const handleSubmit= (event) => {
   event.preventDefault();
@@ -256,7 +249,8 @@ const handleSubmit= (event) => {
   UpdateBannerSuccess.then((response) => {
     if (response.status === 200) {
       
-       closeEditUserModal();GetBanner();
+       closeEditUserModal();
+       GetBanner();
       // handleOpen();
     }
   }).catch((e) => {
@@ -285,7 +279,7 @@ const data3 = {
 const handleBannerSubmit = (event) => {
   event.preventDefault();
   console.log(data3)
-  var addBanners = Banners(data3);
+  var addBanners = BannersPost(data3);
   addBanners.then((response) => {
     if (response.status === 200) {
       GetBanner();
@@ -327,10 +321,9 @@ const handleBannerSubmit = (event) => {
             "& .MuiTextField-root": { mx: 2, my: 1 },
           }}
         > 
-        {/* <Banner/> */}
+        {/*post*/}
       
-      <form onSubmit={handleBannerSubmit}
- >
+      <form>
         <Card sx={{ px: 3, py: 2, pb: 1, width: "100%" }}> 
      <MDTypography align="center" variant="h3" sx={{ mx: 8 }}>
         Banner Notification
@@ -416,7 +409,7 @@ const handleBannerSubmit = (event) => {
           variant="contained"
           value="Submit"
           style={{ background: "#33A2B5", color: "white" }}
-       
+          onClick={handleBannerSubmit}
         >
           Send
         </Button>

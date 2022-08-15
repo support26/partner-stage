@@ -82,7 +82,7 @@ class AdminRepository {
   }
 
   //add  Anouncement
-  async banner(data) {
+  async bannersPost(data) {
     const token = localStorage.getItem("token");
     const reponse = await Api.post(`${baseUrl}admin/addBanner`, data, {
       headers: {
