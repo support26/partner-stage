@@ -32,15 +32,14 @@ import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import { Fullscreen } from "@mui/icons-material";
 
-import Anouncement from "./Anouncement";
-import Editbanner_announcement from "./Editbanner_anouncement"
+// import Anouncement from "./Anouncement";
+// import Editbanner_announcement from "./Editbanner_anouncement"
 
 function Anouncementbanner() {
   const {
-       GetAnouncements,UpdateAnounce
+       GetAnouncements,UpdateAnouncement,AddAnouncements
   } = useAdmin();
-  const { successMessage } = useSelector((state) => state.auth);
-  const { msg } = useSelector((state) => state.auth);
+
   const [user_id, setUser_id] = useState("");
 
   const [users, setUsers] = useState([]);
@@ -49,28 +48,27 @@ function Anouncementbanner() {
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
     setEditUserModal(false);
+    setAnnouncementText("");
+    setAnnouncementIsEnglish("");
+    setDisplayAnnouncementTextOrNot("");
    
   };
 // Anouncement text
-const [AnnouncementText, setAnnouncementText] = useState(null);
-const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState(null);
+const [AnnouncementText, setAnnouncementText] = useState("");
+const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
 const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
   useState(false);
 const admin_email = localStorage.getItem("user_email");
-// const  = localStorage.getItem("user_email");
-
+const roleId = localStorage.getItem("roleId");
+const [loading, setLoading] = useState(false);
+const [disabled, setDisabled] = useState(
+  (roleId==1)? true : false
+)
   //popup
   const [banneropen, setBannerOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("md");
   const [anounceopen, setAnounceOpen] = useState(false);
 
-  const handleBannerClickOpen = () => {
-    setBannerOpen(true);
-  };
-
-  const handleBannerClose = () => {
-    setBannerOpen(false);
-  };
   const handleAnounceOpen = () => {
     setAnounceOpen(true);
   };
@@ -78,7 +76,6 @@ const admin_email = localStorage.getItem("user_email");
   const handleAnounceClose = () => {
     setAnounceOpen(false);
   };
-  const [loading, setLoading] = useState(false);
 // get data
   const GetAnounce = () => {
     setLoading(true);
@@ -102,13 +99,14 @@ const admin_email = localStorage.getItem("user_email");
   }
 
 // update anounce
-const handleSubmit= (event) => {
+const updateBanner= (event) => {
     event.preventDefault();
-    var UpdateAnounceSuccess = UpdateAnounce(data_1, user_id);
+    var UpdateAnounceSuccess = UpdateAnouncement(data_1, user_id);
     UpdateAnounceSuccess.then((response) => {
       if (response.status === 200) {
         
-         closeEditUserModal();GetAnounce();
+         closeEditUserModal();
+         GetAnounce();
         // handleOpen();
       }
     }).catch((e) => {
@@ -118,9 +116,34 @@ const handleSubmit= (event) => {
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
   };
-
+  const data2 = {
+    AnnouncementText,
+    AnnouncementIsEnglish,
+    DisplayAnnouncementTextOrNot,
+    admin_email,
+  };
+  const postandleSubmit = (event) => {
+    event.preventDefault();
+    console.log(data2)
+    var addAnnouncement = AddAnouncements(data2);
+    addAnnouncement.then((response) => {
+      if (response.status === 200) {
+        GetAnounce();
+        handleAnounceClose();
+        
+      }
+    }).catch((e) => {
+      console.log(e);
+    })
+      setAnnouncementText(null);
+      setAnnouncementIsEnglish(null);
+      setDisplayAnnouncementTextOrNot(null);
+    
+   
+  };
 
   useEffect(() => {
+   
     GetAnounce();
    
   }, []);
@@ -153,23 +176,24 @@ const handleSubmit= (event) => {
           return console.log(thisRow);
         };
         return (
-          <Button
-            onClick={onClick}
-            variant="contained"
-            sx={{
-              color: "#000",
-              backgroundColor: "#33A2B5",
-              "&:hover": {
-                backgroundColor: "#378c9b",
-                focus: { backgroundColor: "red" },
-              },
-            }}
-          > 
-            Edit
-          </Button>
-        );
+        <Button 
+              onClick={onClick}
+              variant="contained"
+              disabled={disabled}
+              sx={{
+                color: "#000",
+                backgroundColor: "#33A2B5",
+                "&:hover": {
+                  backgroundColor: "#378c9b",
+                  focus: { backgroundColor: "red" },
+                },
+              }}
+            > 
+              Edit
+            </Button>
+          );
+        },
       },
-    },
     { field: "id", headerName: "ID", width: 70 },
   
     { field: "AnnouncementText", headerName: "Announcement Text", width: 200 },
@@ -180,8 +204,15 @@ const handleSubmit= (event) => {
     },
     {
       field: "DisplayAnnouncementTextOrNot",
-      headerName: "DisplayAnnouncementTextOrNot",
-      width: 200,
+      headerName: "Display Announcement",
+      width: 200,  
+        renderCell: function (params) {
+        return params.row.DisplayAnnouncementTextOrNot === 1 ? (
+        <Button sx={{color:'green'}}>Yes</Button>
+        ) : (
+          <Button sx={{color:'red'}} >No</Button>
+        );
+      },
     },
     {
       field: "created_by",
@@ -204,27 +235,6 @@ const handleSubmit= (event) => {
       },
   
   ];
- 
-
- 
- 
-//  const data = {
-//    AnnouncementText,
-//    AnnouncementIsEnglish,
-//    DisplayAnnouncementTextOrNot,
-//    admin_email,
-//  };
-//  const handleSubmit = (event) => {
-//    event.preventDefault();
-//    console.log(data)
-//    var addAnnouncement = Anouncements(data);
-//    addAnnouncement.then((response) => {
-//      setAnnouncementText("");
-//      setAnnouncementIsEnglish("");
-//      setDisplayAnnouncementTextOrNot("");
-//      console.log(response)
-//    });
-//  };
 
   return (
     <DashboardLayout>
@@ -232,11 +242,11 @@ const handleSubmit= (event) => {
       {/*  Banner Notification */}
     
 
-      {/*  Announcement Notification */}
+      {/*  Post Notification */}
       <Dialog
         maxWidth={maxWidth}
         open={anounceopen}
-        onClose={handleAnounceClose}
+      
       >
         <div>
           <IconButton
@@ -254,16 +264,71 @@ const handleSubmit= (event) => {
             "& .MuiTextField-root": { mx: 3, my: 2 },
           }}
         >
-         <Anouncement/>
+   <form onSubmit={postandleSubmit}> 
+    
+    <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
+       
+       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
+          Anouncement Notification
+        </MDTypography>
+
+       
+        <TextField
+          id="outlined"
+          required
+          value={AnnouncementText}
+          onChange={(e) => setAnnouncementText(e.target.value)}
+          label="Announcement Hindi"
+        />
+
+        <TextField
+          id="outlined-input"
+          label="AnnouncementIs English"
+          type="text"
+          value={AnnouncementIsEnglish}
+          onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
+          required
+        />
+        <div style={{ marginLeft: 30, marginBottom: 20 }}>
+          <MDTypography>Display Banner</MDTypography>
+          <Select
+            // value={age}
+            // onChange={handleChange}
+            label="Display"
+            required
+            style={{ width: 200, height: 30 }}
+            value={DisplayAnnouncementTextOrNot}
+            onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
+          >
+            <MenuItem value="None">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value= {true} >yes</MenuItem>
+            <MenuItem value= {false} >no</MenuItem>
+          </Select>
+        </div>
+
+     
+        <Button
+          type="submit"
+          variant="contained"
+          value="Submit"
+          style={{ background: "#33A2B5", color: "white" }}
+      
+        >
+          Send
+        </Button>
+          
+      </Card>  </form>
         </Box>
       </Dialog>
 
-      {/* Edit Banner */}
+      {/* Update Banner */}
 
       <Dialog
         maxWidth={maxWidth}
         open={editUserModal}
-        onClose={closeEditUserModal}
+        
       >
         <div>
           <IconButton
@@ -335,7 +400,7 @@ const handleSubmit= (event) => {
           variant="contained"
           value="Submit"
           style={{ background: "#33A2B5", color: "white" }}
-          onClick={handleSubmit}
+          onClick={updateBanner}
         >
           Send
         </Button>
@@ -351,6 +416,7 @@ const handleSubmit= (event) => {
           variant="contained"
           onClick={handleAnounceOpen}
           type="submit"
+          disabled={disabled}
           style={{
             background: "#33A2B5",
             color: "white",

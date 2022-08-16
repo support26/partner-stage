@@ -1,9 +1,11 @@
 import UserRepository from "api/UsersRepository";
 import Modal from "@mui/material/Modal";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 // @mui material components
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
@@ -15,7 +17,7 @@ import axios from "axios";
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
-
+import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 //  React example components
@@ -23,7 +25,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -56,6 +61,8 @@ import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
 import CircleIcon from "@mui/icons-material/Circle";
 
+import useUsers from "../../hooks/useUsers";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -68,6 +75,14 @@ const style = {
   width: 50,
 };
 export default function Tables() {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+  
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -92,10 +107,42 @@ export default function Tables() {
   const otherhandleOpen = () => setotherOpen(true);
   const otherhandleClose = () => setotherOpen(false);
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
-
+  const [selectvalue, setSelectvalue] = useState("y");
+  const [reason, setReason] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
+  const [allopen, setAllOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("md");
+  const handleAllOpen = () => {
+    setAllOpen(true);
+  };
+
+ 
+
+  const sumbitRunnerDisable = () => { 
+    const admin_email= localStorage.getItem('user_email') 
+
+    const disabledData =  {
+        isUserDisabled:selectvalue,
+        reason:reason,
+        admin_email:admin_email
+      }
+      console.log(disabledData);
+    var updateDisableStatus = ChangeRunnerDisable(id,disabledData);
+    updateDisableStatus.then((response)=>{
+      // console.log(response);
+      if(response.status === 200){
+        GetRunner();
+        setAllOpen(false);
+      } 
+      
+
+    }).catch((e)=>{
+      console.log(e);
+    })
+  };
+
   const columns = [
     {
       field: "action",
@@ -145,25 +192,25 @@ export default function Tables() {
 
           //pancard
           if (params.row.bank_passbook_photo == null) {
-            setbank_passbook_photo(nophoto);
+            setbank_passbook_photo("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setbank_passbook_photo(params.row.bank_passbook_photo);
           }
           //profile
           if (params.row.profileImage == null) {
-            setprofileImage(profile);
+            setprofileImage("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png");
           } else {
             setprofileImage(params.row.profileImage);
           }
           //pancard
           if (params.row.pancard_image == null) {
-            setPancardImages(nophoto);
+            setPancardImages("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setPancardImages(params.row.pancard_image);
           }
           //pancard
           if (params.row.other_Id_proof_image == null) {
-            setother_Id_proof_image(nophoto);
+            setother_Id_proof_image("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setother_Id_proof_image(params.row.other_Id_proof_image);
           }
@@ -178,6 +225,7 @@ export default function Tables() {
           <Button
             style={{ color: "black", backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
+            disabled={disabled}
           >
             Edit
           </Button>
@@ -208,12 +256,13 @@ export default function Tables() {
       type: "text",
       width: 60,
       renderCell: (params) => {
-        return params.row.isUserActiveOrNot == null || params.row.isUserActiveOrNot == "n" ? (
+        return params.row.isUserActiveOrNot == null ||
+          params.row.isUserActiveOrNot == "n" ? (
           <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
         ) : (
           <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
         );
-      }
+      },
     },
     { field: "name", headerName: "Name", width: 130 },
 
@@ -293,35 +342,68 @@ export default function Tables() {
       width: 130,
     },
     {
-      field: "is_active",
+      field: "isUserDisabled",
       headerName: "Active Status",
       width: 120,
       sortable: false,
+      // type:'text'
       renderCell: function (params) {
-        const handleActiveStatus = (event) => {
-          event.preventDefault();
-          const id = params.row.id;
-          if (params.row.isUserDisabled === "y") {
-            const is_active = "n";
-            // ChangeAdminUserStatus(id, is_active);
-          } else {
-            const is_active = "y";
-            // ChangeAdminUserStatus(id, is_active);
-          }
-          // GetUsers();
-          // console.log(id, is_active);
+        
+        const handelSelect = (e) => {
+          setSelectvalue(e.target.value);
+          console.log(selectvalue);
+          setReason(params.row.reason);
+
+          setID(params.row.id);
+          handleAllOpen();
+         
         };
-        return params.row.isUserDisabled === "y" ||
+        // console.log(id);
+        return params.row.isUserDisabled === "n" ||
           params.row.isUserDisabled === null ? (
-          <Switch
-            onChange={handleActiveStatus}
-            defaultChecked
-            color="success"
-          />
+          <Select
+            value={"n"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+            disabled={disabled}
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
         ) : (
-          <Switch onChange={handleActiveStatus} color="success" />
+          <Select
+            disabled={disabled}
+            value={"y"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
         );
       },
+    },
+    {
+      field: "reason",
+      headerName: "reason",
+      type: "text",
+      width: 230,
+    },  {
+      field: "updated_by",
+      headerName: "updated_by",
+      type: "text",
+      width: 160,
+    }, {
+      field: "updated_at",
+      headerName: "updated_at",
+      type: "text",
+      width: 150,
     },
   ];
 
@@ -343,9 +425,9 @@ export default function Tables() {
   const [bank_ifsc_code, setbank_ifsc_code] = useState("");
   const token = localStorage.getItem("token");
 
-  const [other_Id_proof_image, setother_Id_proof_image] = useState("");
+  const [other_Id_proof_image, setother_Id_proof_image] = useState(null);
 
-  const [pancard_image, setPancardImages] = useState("");
+  const [pancard_image, setPancardImages] = useState(null);
   const [other_id_proof_no, setother_id_proof_no] = useState("");
   const [pancard_no, setPancardno] = useState("");
   const [age, setage] = useState("");
@@ -361,7 +443,12 @@ export default function Tables() {
   const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   //get api
-
+  const roleId = localStorage.getItem("roleId");
+  // const  = localStorage.getItem("user_email");
+  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
+  const {
+    ChangeRunnerDisable
+  } = useUsers();
   const GetRunner = () => {
     UserRepository.GetAllRunner()
       .then((response) => {
@@ -378,7 +465,8 @@ export default function Tables() {
     setTableLoading(true);
     GetRunner();
   }, []);
-
+  
+  const updated_by = localStorage.getItem('user_email')
   var data = {
     name: name,
     acct_holder_name: acct_holder_name,
@@ -402,15 +490,17 @@ export default function Tables() {
     gender: gender,
     education: education,
     address: address,
-    age: age
+    age: age,
+    updated_by:updated_by
   };
   const updateAPIData = (event) => {
-    setOpen(false);
     event.preventDefault();
+    console.log(data);
     UserRepository.UpdateRunners(id, data)
-      .then((response) => {
-        console.log(response);
-        GetRunner();
+    .then((response) => {
+      console.log(response);
+      GetRunner();
+      setOpen(false);
       })
       .catch((error) => {
         console.log(error);
@@ -496,16 +586,15 @@ export default function Tables() {
                   // checkboxSelection
                   loading={tableLoading}
                   disableSelectionOnClick
+                  components={{
+                    Toolbar: CustomToolbar,
+                  }}
                 />
               </div>
             </Card>
           </Grid>
         </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
+        <Dialog open={open} TransitionComponent={Transition}>
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <IconButton
@@ -935,11 +1024,53 @@ export default function Tables() {
                 submit
               </Button>
             </div>
-         
           </Box>
         </Dialog>
       </MDBox>
       {/* <Footer /> */}
+      <Dialog maxWidth={maxWidth} open={allopen}>
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={()=>{setAllOpen(false)}}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            maxWidth,
+          }}
+        >
+          <DialogTitle>Reason for Active or Deactive </DialogTitle>
+          <DialogContent>
+            <DialogContentText></DialogContentText>
+            <TextareaAutosize
+              minRows={10}
+              aria-label="maximum height"
+              placeholder="Maximum 6 rows"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </DialogContent>
+          <DialogActions>
+          <Button
+            style={{ color: "black", backgroundColor: "#33A2B5" }}
+            onClick={sumbitRunnerDisable}
+            disabled={disabled}
+          >
+            Send
+          </Button>
+          
+          </DialogActions>
+        </Box>
+      </Dialog>
     </DashboardLayout>
   );
 }

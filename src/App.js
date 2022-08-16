@@ -33,6 +33,8 @@ import routes from "routes";
 import SignIn from "layouts/authentication/sign-in";
 import ResetPassword from "layouts/authentication/reset-password/cover/index";
 import AddUsers from "layouts/AddUsers";
+import Notifications from "./layouts/notifications";
+import Cookies from 'js-cookie';
 
 //  React contexts
 import {
@@ -156,6 +158,10 @@ export default function App() {
           <Route path="*" element={<Navigate to="/sign-in" />} />
           {/* change later it to 404 page */}
           {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+          {roleId == 0 && (
+            <Route path="/notifications" element={<Notifications />} />
+          )}
+          {/* below line first check that token is present than show routes*/}
           {localStorage.getItem("token") && getRoutes(routes)}
         </Routes>
       </ThemeProvider>
@@ -182,11 +188,17 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/sign-in" />} />
         <Route path="/sign-in" element={<SignIn />} />
-        {sessionStorage.getItem("token") && <Route path="/reset" element={<ResetPassword />} />}
+        {sessionStorage.getItem("token") && (
+          <Route path="/reset" element={<ResetPassword />} />
+        )}
         <Route path="*" element={<Navigate to="/sign-in" />} />
         {/* change later it to 404 page */}
         {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
-        {localStorage.getItem("token") && getRoutes(routes)}
+        {roleId == 0 && (
+          <Route path="/notifications" element={<Notifications />} />
+        )}
+        {/* below line first check that token is present than show routes*/}
+        {Cookies.get('token') && getRoutes(routes)}
       </Routes>
     </ThemeProvider>
   );
