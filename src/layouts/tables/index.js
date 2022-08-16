@@ -1,9 +1,11 @@
 import UserRepository from "api/UsersRepository";
 import Modal from "@mui/material/Modal";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 // @mui material components
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
@@ -15,7 +17,7 @@ import axios from "axios";
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
-
+import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import DeleteIcon from "@mui/icons-material/Delete";
 //  React example components
@@ -23,7 +25,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -43,7 +48,7 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import UploadImages from "./upload_image";
+// import UploadImages from "./upload_image";
 import { Navigate } from "react-router-dom";
 import borders from "assets/theme-dark/base/borders";
 //import IconButton from '@mui/material/IconButton';
@@ -54,15 +59,10 @@ import "../AddUsers/style.css";
 import nophoto from "assets/images/no-image-available.png";
 import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
-import CircleIcon from '@mui/icons-material/Circle';
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 50,
+import CircleIcon from "@mui/icons-material/Circle";
 
-// };
+import useUsers from "../../hooks/useUsers";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -74,7 +74,15 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 50,
 };
-export default function Tables(props) {
+export default function Tables() {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+  
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -99,10 +107,42 @@ export default function Tables(props) {
   const otherhandleOpen = () => setotherOpen(true);
   const otherhandleClose = () => setotherOpen(false);
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
-
+  const [selectvalue, setSelectvalue] = useState("y");
+  const [reason, setReason] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
+  const [allopen, setAllOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("md");
+  const handleAllOpen = () => {
+    setAllOpen(true);
+  };
+
+ 
+
+  const sumbitRunnerDisable = () => { 
+    const admin_email= localStorage.getItem('user_email') 
+
+    const disabledData =  {
+        isUserDisabled:selectvalue,
+        reason:reason,
+        admin_email:admin_email
+      }
+      console.log(disabledData);
+    var updateDisableStatus = ChangeRunnerDisable(id,disabledData);
+    updateDisableStatus.then((response)=>{
+      // console.log(response);
+      if(response.status === 200){
+        GetRunner();
+        setAllOpen(false);
+      } 
+      
+
+    }).catch((e)=>{
+      console.log(e);
+    })
+  };
+
   const columns = [
     {
       field: "action",
@@ -152,25 +192,25 @@ export default function Tables(props) {
 
           //pancard
           if (params.row.bank_passbook_photo == null) {
-            setbank_passbook_photo(nophoto);
+            setbank_passbook_photo("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setbank_passbook_photo(params.row.bank_passbook_photo);
           }
           //profile
           if (params.row.profileImage == null) {
-            setprofileImage(profile);
+            setprofileImage("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png");
           } else {
             setprofileImage(params.row.profileImage);
           }
           //pancard
           if (params.row.pancard_image == null) {
-            setPancardImages(nophoto);
+            setPancardImages("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setPancardImages(params.row.pancard_image);
           }
           //pancard
           if (params.row.other_Id_proof_image == null) {
-            setother_Id_proof_image(nophoto);
+            setother_Id_proof_image("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
           } else {
             setother_Id_proof_image(params.row.other_Id_proof_image);
           }
@@ -183,8 +223,9 @@ export default function Tables(props) {
 
         return (
           <Button
-            style={{ color: "black", backgroundColor: "#33A2B5" }}
+            style={{  color:'#fff', backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
+            disabled={disabled}
           >
             Edit
           </Button>
@@ -212,11 +253,16 @@ export default function Tables(props) {
     // },
     {
       field: "Status",
-      type: "text", width: 60,
+      type: "text",
+      width: 60,
       renderCell: (params) => {
-                  return params.row.isUserActiveOrNot==null ?   <CircleIcon style={{color:"red" ,marginLeft:'10px'}} />:      
-                  <CircleIcon style={{color:"green" ,marginLeft:'10px'}} />
-          },
+        return params.row.isUserActiveOrNot == null ||
+          params.row.isUserActiveOrNot == "n" ? (
+          <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
+        ) : (
+          <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
+        );
+      },
     },
     { field: "name", headerName: "Name", width: 130 },
 
@@ -296,66 +342,69 @@ export default function Tables(props) {
       width: 130,
     },
     {
-      field: "is_active",
+      field: "isUserDisabled",
       headerName: "Active Status",
       width: 120,
       sortable: false,
+      // type:'text'
       renderCell: function (params) {
-        const handleActiveStatus = (event) => {
-          event.preventDefault();
-          const id = params.row.id;
-          if (params.row.isUserDisabled === "y") {
-            const is_active = "n";
-            // ChangeAdminUserStatus(id, is_active);
-          } else {
-            const is_active = "y";
-            // ChangeAdminUserStatus(id, is_active);
-          }
-          // GetUsers();
-          // console.log(id, is_active);
+        
+        const handelSelect = (e) => {
+          setSelectvalue(e.target.value);
+          console.log(selectvalue);
+          setReason(params.row.reason);
+
+          setID(params.row.id);
+          handleAllOpen();
+         
         };
-        return params.row.isUserDisabled === "y" ||  params.row.isUserDisabled === null ? (
-          <Switch
-            onChange={handleActiveStatus}
-            defaultChecked
-            color="success"
-          />
+        // console.log(id);
+        return params.row.isUserDisabled === "n" ||
+          params.row.isUserDisabled === null ? (
+          <Select
+            value={"n"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+            disabled={disabled}
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
         ) : (
-          <Switch onChange={handleActiveStatus} color="success" />
+          <Select
+            disabled={disabled}
+            value={"y"}
+            size="small"
+            onChange={handelSelect}
+            sx={{ height: 0.5 }}
+            native
+            autoFocus
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </Select>
         );
       },
     },
-
-    // {
-    //   field: "isUserActiveOrNot",
-    //   headerName: "Status",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: function (params) {
-    //     const handleActiveStatus = (event) => {
-    //       event.preventDefault();
-    //       const id = params.row.id;
-    //       if (params.row.isUserActiveOrNot === "y") {
-    //         const isUserActiveOrNot = "n";
-    //      //   ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       } else {
-    //         const isUserActiveOrNot = "y";
-    //        // ChangeAdminUserStatus(id, isUserActiveOrNot);
-    //       }
-    //       GetRunner();
-    //       console.log(id, isUserActiveOrNot);
-    //     };
-    //     return params.row.isUserActiveOrNot === "y" ? (
-    //       <Switch
-    //         onChange={handleActiveStatus}
-    //         defaultChecked
-    //         color="success"
-    //       />
-    //     ) : (
-    //       <Switch  onChange={handleActiveStatus} color="success" />
-    //     );
-    //   },
-    // },
+    {
+      field: "reason",
+      headerName: "reason",
+      type: "text",
+      width: 230,
+    },  {
+      field: "updated_by",
+      headerName: "updated_by",
+      type: "text",
+      width: 160,
+    }, {
+      field: "updated_at",
+      headerName: "updated_at",
+      type: "text",
+      width: 150,
+    },
   ];
 
   //runner set data
@@ -376,9 +425,9 @@ export default function Tables(props) {
   const [bank_ifsc_code, setbank_ifsc_code] = useState("");
   const token = localStorage.getItem("token");
 
-  const [other_Id_proof_image, setother_Id_proof_image] = useState("");
+  const [other_Id_proof_image, setother_Id_proof_image] = useState(null);
 
-  const [pancard_image, setPancardImages] = useState("");
+  const [pancard_image, setPancardImages] = useState(null);
   const [other_id_proof_no, setother_id_proof_no] = useState("");
   const [pancard_no, setPancardno] = useState("");
   const [age, setage] = useState("");
@@ -394,18 +443,21 @@ export default function Tables(props) {
   const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   //get api
-
+  const roleId = localStorage.getItem("roleId");
+  // const  = localStorage.getItem("user_email");
+  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
+  const {
+    ChangeRunnerDisable
+  } = useUsers();
   const GetRunner = () => {
-    axios
-      .get(`http://localhost:8001/users/allusers`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
+    UserRepository.GetAllRunner()
       .then((response) => {
         setAPIData(response.data.data);
         setTableLoading(false);
         console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -413,53 +465,46 @@ export default function Tables(props) {
     setTableLoading(true);
     GetRunner();
   }, []);
-
+  
+  const updated_by = localStorage.getItem('user_email')
+  var data = {
+    name: name,
+    acct_holder_name: acct_holder_name,
+    bank_name: bank_name,
+    acct_holder_name: acct_holder_name,
+    bank_acct_no: bank_acct_no,
+    bank_ifsc_code: bank_ifsc_code,
+    other_id_proof_no: other_id_proof_no,
+    pancard_no: pancard_no,
+    phone_number: phone_number,
+    latlong_address: latlong_address,
+    runner_state: runner_state,
+    runner_district: runner_district,
+    runner_taluka: runner_taluka,
+    runner_village: runner_village,
+    profileImage: profileImage,
+    bank_passbook_photo: bank_passbook_photo,
+    pancard_image: pancard_image,
+    other_Id_proof_image: other_Id_proof_image,
+    dob: dob,
+    gender: gender,
+    education: education,
+    address: address,
+    age: age,
+    updated_by:updated_by
+  };
   const updateAPIData = (event) => {
-    setOpen(false);
-    console.log("ohter", other_Id_proof_image);
-    // console.log(profileImage);
     event.preventDefault();
-    axios
-      .put(
-        `http://localhost:8001/users/profile/${id}`,
-        {
-          name,
-          acct_holder_name,
-          bank_name,
-          acct_holder_name,
-          bank_acct_no,
-          bank_ifsc_code,
-          other_id_proof_no,
-          pancard_no,
-          phone_number,
-          latlong_address,
-          runner_state,
-          runner_district,
-          runner_taluka,
-          runner_village,
-          profileImage,
-          bank_passbook_photo,
-          pancard_image,
-          other_Id_proof_image,
-          dob,
-          gender,
-          education,
-          address,
-          age,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "content-type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-
-        GetRunner();
+    console.log(data);
+    UserRepository.UpdateRunners(id, data)
+    .then((response) => {
+      console.log(response);
+      GetRunner();
+      setOpen(false);
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   let file;
@@ -541,16 +586,15 @@ export default function Tables(props) {
                   // checkboxSelection
                   loading={tableLoading}
                   disableSelectionOnClick
+                  components={{
+                    Toolbar: CustomToolbar,
+                  }}
                 />
               </div>
             </Card>
           </Grid>
         </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
+        <Dialog open={open} TransitionComponent={Transition}>
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <IconButton
@@ -980,134 +1024,53 @@ export default function Tables(props) {
                 submit
               </Button>
             </div>
-            {/* pancard images */}
-            {/* 
-  <div sx={{display: 'inline' }}>
-            <Box
-              component="img"
-              sx={{
-                height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-
-              }}
-              onClick={imagespancardhandleOpen}
-              alt="The upload image."
-              src={pancard_image}
-              display="inline"
-            />  
-             <TextField
-             style={{position:'relative',
-             left:'25px'}}
-            id="standard-helperText"
-            label="Pan Card No"
-            helperText="Some important text"
-            value={pancard_no}
-            onChange={(e) => setPancardno(e.target.value)}
-          />
-            
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <IconButton
-                style={{
-                 position:'relative',
-                left:0,
-                right:0,
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input //pancard image
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  onChange={handlePancardImages}
-                />
-                <PhotoCamera />
-              </IconButton>
-            </Stack>
-             */}
-
-            {/* Any ID Proof Photo(Aadhar/Voter ID)
-            <Box
-              component="img"
-              sx={{
-               height: 100,
-                width: 219,
-                ml: 3.5,
-                mt:2.5,
-                display:'inline',
-                borderRadius :'10px',boxShadow: 1
-               
-              }}
-              onClick={otherhandleOpen}
-              alt="The upload image."
-              src={other_Id_proof_image}
-             
-              // / src={URL.createObjectURL(profileImage)}
-            />  
-          
-            <span style={{ fontSize: "12px", marginLeft: "40px", color:'hwb(0deg 0% 100% / 60%)'}}>
-              Any ID Proof Photo(Aadhar/Voter ID)
-            </span>
-
-           
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <IconButton
-                style={{
-                 marginTop: "-110px",
-                marginLeft: "228px",
-                fontSize: "20px",
-                color: "white",
-                backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input
-                  hidden
-                  // helperText="Any ID Proof Photo(Aadhar/Voter ID) "
-                  type="file"
-                  onChange={handelother_Id_proof_image}
-                  accept="image/*"
-                />
-                <PhotoCamera />
-              </IconButton>
-            </Stack>
-
- */}
-
-            {/* <TextField
-              type="file"
-              accept="image/png, image/jpeg"
-              helperText="bank_passbook_photo"
-              onChange={(e) => setbank_passbook_photo(e.target.files[0])}
-            /> */}
-            {/* <TextField
-              type="file"
-              helperText="Pancard Photos"
-              onChange={(e) => setPancard(e.target.files[0])}
-            /> */}
-
-            {/* <TextField
-              type="file"
-              accept="image/png, image/jpeg"
-              helperText="profileImage"
-             // value={profileImage}
-              onChange={(e) => setprofileImage(e.target.files[0])} 
-              
-            />  */}
           </Box>
         </Dialog>
       </MDBox>
       {/* <Footer /> */}
+      <Dialog maxWidth={maxWidth} open={allopen}>
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={()=>{setAllOpen(false)}}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            maxWidth,
+          }}
+        >
+          <DialogTitle>Reason for Active or Deactive </DialogTitle>
+          <DialogContent>
+            <DialogContentText></DialogContentText>
+            <TextareaAutosize
+              minRows={10}
+              aria-label="maximum height"
+              placeholder="Maximum 6 rows"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </DialogContent>
+          <DialogActions>
+          <Button
+            style={{ color: "black", backgroundColor: "#33A2B5" }}
+            onClick={sumbitRunnerDisable}
+            disabled={disabled}
+          >
+            Send
+          </Button>
+          
+          </DialogActions>
+        </Box>
+      </Dialog>
     </DashboardLayout>
   );
 }

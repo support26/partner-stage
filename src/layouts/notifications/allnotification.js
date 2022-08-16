@@ -1,30 +1,30 @@
 import { useState } from "react";
 import UserRepository from "api/UsersRepository";
-
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 // @mui material components
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
 //  React components
-import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-
 import axios from "axios";
-import { useEffect } from "react";
+import useAdmin from "../../hooks/useAdmin";
 
 // mui custom style
 
 function Allnotification() {
   const [body, setBody] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-
-
+  const [loading, setLoading] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
+  const {SendNotification} = useAdmin();
+  // function handleClick() {
+  //   setLoading(true);
+  // }
   let file;
   let form_data = new FormData();
   const handelstateImages = (event) => {
@@ -50,18 +50,22 @@ function Allnotification() {
     else if (!body) {
       setError("Please fill message fields");
     } else {
+      setSendBtn(null)
+    setLoading(true);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
-        image: image,
+        image: image
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          notification,
-        })
-        .then((res) => {
+        var SendNotifications = SendNotification(notification, admin_email);
+        SendNotifications.then((res) => {
           console.log("%%%%%%%%%", res);
+    setLoading(false);
+    setSendBtn("sent succesfully")
+    setTimeout(() => {
+      setSendBtn("send")
+    }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
@@ -101,15 +105,19 @@ function Allnotification() {
         onChange={handelstateImages}
       />
       <br />
-      <Button
-        variant="contained"
+      <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
-        href="#contained-buttons"
-        onClick={sendNotification}
-        disabled={btnDisabled}
-      >
-        Send
-      </Button>
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }

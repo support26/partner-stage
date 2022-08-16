@@ -9,6 +9,7 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import NativeSelect from "@mui/material/NativeSelect";
 
+
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -19,12 +20,15 @@ import MDSnackbar from "components/MDSnackbar";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
+import useAdmin from "../../hooks/useAdmin";
+
 
 //  React example components
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // mui custom style
 
@@ -36,6 +40,9 @@ function State() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
+  const [loading, setLoading] = useState(false);
+  const {SendNotificationByNumber} = useAdmin();
 
   useEffect(() => {
     axios
@@ -74,23 +81,31 @@ function State() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", state);
+      setSendBtn(null)
+      setLoading(true);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
         image: image,
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          state,
-          notification,
-        })
-        .then((res) => {
+      // console.log("@@@@@@", notification);
+      setSendBtn(null)
+    setLoading(true);
+      var sendNotificationByNumber = SendNotificationByNumber()
+      sendNotificationByNumber.then((res) => {
           console.log("%%%%%%%%%", res);
+          setLoading(false);
+          setSendBtn("sent succesfully")
+          setTimeout(() => {
+            setSendBtn("send")
+          }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
         });
+        
+
     }
   };
 
@@ -143,7 +158,7 @@ function State() {
       )}
       <TextField helperText="Image " type="file" inputProps={{accept:".png, .jpeg, .jpg"}} onChange={handelstateImages} />{" "}
       <br />
-      <Button
+      {/* <Button
         variant="contained"
         style={
           btnDisabled == true
@@ -155,7 +170,20 @@ function State() {
         disabled={btnDisabled}
       >
         Send
-      </Button>
+      </Button> */}
+       <LoadingButton
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }

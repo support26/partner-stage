@@ -6,7 +6,7 @@ import cookies from "js-cookie";
 
 // local testing
 //export const mainUrl = `http://localhost:8001`;
-export const mainUrl = `https://android-mapping-backend.el.r.appspot.com`;
+ export const mainUrl = `https://android-mapping-backend.el.r.appspot.com`;
 const baseDomain = `${mainUrl}/`;
 
 

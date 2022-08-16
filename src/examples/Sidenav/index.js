@@ -33,7 +33,7 @@ import {
 } from "context";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
-const roleId = localStorage.getItem('roleId')
+  const roleId = localStorage.getItem("roleId");
 
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -105,7 +105,11 @@ const roleId = localStorage.getItem('roleId')
           </Link>
         ) : (
           <NavLink key={key} to={route}>
-            <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
+            <SidenavCollapse
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+            />
           </NavLink>
         );
       } else if (type === "title") {
@@ -162,9 +166,9 @@ const roleId = localStorage.getItem('roleId')
           </MDTypography>
         </MDBox>
         {/* remove component={Navlink} from below MDBox to prevent unuseful click on brand image */}
-        <MDBox  to="/dashboard" display="flex" alignItems="center">
+        <MDBox to="/dashboard" display="flex" alignItems="center">
           {brand && (
-            <MDBox component="img" src={brand} alt="Brand" width="4rem"  />
+            <MDBox component="img" src={brand} alt="Brand" width="4rem" />
           )}
           <MDBox
             width={!brandName && "100%"}
@@ -189,13 +193,24 @@ const roleId = localStorage.getItem('roleId')
       />
       <List>
         {renderRoutes}
-        {
-        (roleId == 0) ?(
-        <NavLink  to={"/users"} key={"users"}>
-          <SidenavCollapse name={"All Users"} icon={<Icon fontSize="medium">account_circle</Icon>} active={"users" === collapseName} />
-        </NavLink>
-        ) : null
-}
+        {roleId == 0 ? (
+          <>
+            <NavLink to={"/notifications"} key={"notifications"}>
+              <SidenavCollapse
+                name={"Notifications"}
+                icon={<Icon fontSize="medium">notifications</Icon>}
+                active={"notifications" === collapseName}
+              />
+            </NavLink>
+            <NavLink to={"/users"} key={"users"}>
+              <SidenavCollapse
+                name={"Support Users"}
+                icon={<Icon fontSize="medium">account_circle</Icon>}
+                active={"users" === collapseName}
+              />
+            </NavLink>
+          </>
+        ) : null}
       </List>
     </SidenavRoot>
   );

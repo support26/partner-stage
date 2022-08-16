@@ -3,11 +3,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import UserRepository from "api/UsersRepository";
 
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import NativeSelect from "@mui/material/NativeSelect";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 //  React components
 import MDBox from "components/MDBox";
@@ -29,6 +31,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useEffect } from "react";
 import axios from "axios";
+import useAdmin from "../../hooks/useAdmin";
 
 // mui custom style
 
@@ -38,10 +41,13 @@ function Distric() {
   const [sId, setsId] = useState(null);
   const [image, setImage] = useState(null);
   const [body, setBody] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [district, setDistrict] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [sendBtn, setSendBtn] = useState('send');
+  const [loading, setLoading] = useState(false);
+  const {SendNotificationByDistrict} = useAdmin();
 
 
   const getDistrict = (e) => {
@@ -94,24 +100,32 @@ function Distric() {
    else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
+      setSendBtn(null)
+      setLoading(true);
       console.log("#####", district);
+      const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
         body: body,
         image: image,
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          district,
-          notification,
-        })
-        .then((res) => {
+      // console.log("@@@@@@", notification);
+setSendBtn(null)
+    setLoading(true);
+      var sendNotificationByDistrict = SendNotificationByDistrict(notification, admin_email,district);
+      sendNotificationByDistrict.then((res) => {
           console.log("%%%%%%%%%", res);
+          setLoading(false);
+    setSendBtn("sent succesfully")
+    setTimeout(() => {
+      setSendBtn("send")
+    }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
         });
+        
+
     }
   };
 
@@ -183,7 +197,7 @@ function Distric() {
         onChange={handelDistricImages}
       />{" "}
       <br />
-      <Button
+      {/* <Button
         type="submit"
         variant="contained"
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
@@ -191,7 +205,20 @@ function Distric() {
         disabled={btnDisabled}
       >
         Send
-      </Button>
+      </Button> */}
+      <LoadingButton
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+
+          size="small"
+          onClick={sendNotification}
+          
+          loading={loading}
+          loadingPosition="center"
+          variant="contained"
+          disabled={btnDisabled}
+        >
+          {sendBtn}
+        </LoadingButton>
     </Card>
   );
 }
