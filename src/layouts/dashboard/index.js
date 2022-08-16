@@ -1,38 +1,14 @@
+import { useState, useEffect } from "react";
+import UserRepository from "api/UsersRepository";
 // @mui material components
 import Grid from "@mui/material/Grid";
-//Hooks
-import useUsers from "../../hooks/useUsers";
-import { useState, useEffect } from "react";
-
-import UserRepository from "api/UsersRepository";
-//  React components
-import { Navigate } from "react-router-dom";
-// import { useState } from "react";
-import cookies from "js-cookie";
-
 import MDBox from "components/MDBox";
 
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
-import PieChart from "examples/Charts/PieChart";
-
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-// import verticalBarChartData from "layouts/dashboard/data/verticalBarChartData";
-
-// Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
-import pieChartData from "./data/pieChartData";
-import useusers from "../../hooks/useUsers";
-// import { useSelector } from 'react-redux'
 
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState("0");
@@ -43,7 +19,6 @@ function Dashboard() {
   const partner_app_users = () => {
     UserRepository.TotalUsers()
       .then((res) => {
-        // console.log(res.data.data.total_users);
         setTotalUsers(res.data.data.total_users);
       })
       .catch((err) => {
@@ -51,7 +26,6 @@ function Dashboard() {
       });
     UserRepository.ActiveUsers()
       .then((res) => {
-        // console.log(res);
         setActiveUsers(res.data.data.active_users);
       })
       .catch((err) => {
@@ -82,11 +56,7 @@ function Dashboard() {
       },
     ],
   };
-  // const partner_app_active_users = () => {
-  //   getActiveUsers().then((res) => {
-  //     setActiveUsers(res.data.data);
-  //   });
-  // };
+
 
   return (
     <DashboardLayout>

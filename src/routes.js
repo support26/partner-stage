@@ -1,13 +1,10 @@
 import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
-import Notifications from "./layouts/notifications";
 import Opportunities from "./layouts/opportunities";
-import BanerAnouncement from "./layouts/banner";
+import Banner from "./layouts/banner/index";
 import Anouncement from "./layouts/anouncement";
 // @mui icons
 import Icon from "@mui/material/Icon";
-
-const temp = localStorage.getItem("roleId");
 
 const routes = [
   {
@@ -26,21 +23,13 @@ const routes = [
     route: "/runners",
     component: <Tables />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Notifications",
-  //   key: "notifications",
-  //   icon: <Icon fontSize="medium">notifications</Icon>,
-  //   route: "/notifications",
-  //   component: <Notifications />,
-  // },
   {
     type: "collapse",
     name: "Banner",
-    key: "BanerAnouncement",
+    key: "banner",
     icon: <Icon fontSize="medium">ad_units_rounded</Icon>,
     route: "/banner",
-    component: <BanerAnouncement />,
+    component: <Banner />,
   },
   {
     type: "collapse",
@@ -58,30 +47,7 @@ const routes = [
     route: "/opportunities",
     component: <Opportunities />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "All Users",
-  //   key: "users",
-  // //   icon: <Icon fontSize="medium">account_circle</Icon>,
-  //   route: "/users",
-  //   component: <AddUsers />,
-  // },
-  // {
-  // type: "collapse",
-  // name: "Sign In",
-  // key: "sign-in",
-  // icon: <Icon fontSize="medium">login</Icon>,
-  //   route: "/sign-in",
-  //   component: <SignIn />,
-  // },
-  // {
-  // type: "collapse",
-  // name: "reset ",
-  // key: "reset-password",
-  // icon: <Icon fontSize="medium">ResetPassword</Icon>,
-  //   route: "/reset",
-  //   component: <ResetPassword />,
-  // }
+  
 ];
 
 export default routes;

@@ -21,7 +21,7 @@ import MDInput from "components/MDInput";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 
-const State = () => {
+const Opportunities = () => {
   const [open, setOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("sm");
 
@@ -177,4 +177,4 @@ const State = () => {
   );
 };
 
-export default State;
+export default Opportunities;

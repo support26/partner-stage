@@ -59,6 +59,7 @@ function Notifications() {
   };
 
   const handleClose = () => {
+    GetBanner();
     setOpen(false);
   };
 
@@ -67,6 +68,7 @@ function Notifications() {
   };
 
   const handleDistricClose = () => {
+    GetBanner();
     setdisOpen(false);
   };
   const handleNumberOpen = () => {
@@ -74,12 +76,14 @@ function Notifications() {
   };
 
   const handleNumberClose = () => {
+    GetBanner();
     setnumOpen(false);
   };
   const handleAllOpen = () => {
     setAllOpen(true);
   };
   const handleAllClose = () => {
+    GetBanner();
     setAllOpen(false);
   };
   
@@ -114,7 +118,7 @@ function Notifications() {
                     }}
                     onClick={handleAllOpen}
                   >
-                    All Notification
+                    Send to All
                   </Button>
 <br/>
                   <Button
