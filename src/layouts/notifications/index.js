@@ -74,6 +74,7 @@ function Notifications() {
   };
 
   const handleNumberClose = () => {
+   
     setnumOpen(false);
   };
   const handleAllOpen = () => {
@@ -81,6 +82,7 @@ function Notifications() {
   };
   const handleAllClose = () => {
     setAllOpen(false);
+
   };
   
   useEffect(() => {
