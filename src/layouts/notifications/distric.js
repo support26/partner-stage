@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import UserRepository from "api/UsersRepository";
 
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -99,6 +100,8 @@ function Distric() {
    else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
+      setSendBtn(null)
+      setLoading(true);
       console.log("#####", district);
       const admin_email = localStorage.getItem("user_email");
       const notification = {

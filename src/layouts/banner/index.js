@@ -380,7 +380,7 @@ function Banner() {
                 variant="contained"
                 value="Submit"
                 onClick={handleBannerSubmit}
-                style={{ background: "#33A2B5", color: "white",marginTop:"5px" }}
+                style={{ background: "#33A2B5",  color:'#fff',marginTop:"5px" }}
               >
                 Send
               </Button>
@@ -513,7 +513,7 @@ function Banner() {
             background: "#33A2B5",
             color: "white",
             margin: "10px",
-            color: "#000",
+            color:'#fff'
           }}
           onClick={handleBannerClickOpen}
           disabled={disabled}

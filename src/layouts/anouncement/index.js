@@ -181,7 +181,7 @@ const updateBanner= (event) => {
               variant="contained"
               disabled={disabled}
               sx={{
-                color: "#000",
+                color:'#fff',
                 backgroundColor: "#33A2B5",
                 "&:hover": {
                   backgroundColor: "#378c9b",
@@ -421,7 +421,7 @@ const updateBanner= (event) => {
             background: "#33A2B5",
             color: "white",
             margin: "10px",
-            color: "#000",
+            color:'#fff',
           }}
         >
          Add Announcement

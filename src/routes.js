@@ -34,7 +34,7 @@ const routes = [
   {
     type: "collapse",
     name: "Anouncement",
-    key: "Anouncement",
+    key: "anouncement",
     icon: <Icon fontSize="medium">campaign</Icon>,
     route: "/anouncement",
     component: <Anouncement />,

@@ -13,10 +13,12 @@ import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState("0");
   const [activeUsers, setActiveUsers] = useState("0");
+  const [support_users, setSupport_users] = useState("0");
   const [total, setTotal] = useState([]);
   const [state, setState] = useState([]);
 
   const partner_app_users = () => {
+    // total users
     UserRepository.TotalUsers()
       .then((res) => {
         setTotalUsers(res.data.data.total_users);
@@ -24,6 +26,7 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
+      // active users
     UserRepository.ActiveUsers()
       .then((res) => {
         setActiveUsers(res.data.data.active_users);
@@ -31,9 +34,23 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
+
+        // support users 
+        UserRepository.supportUsers()
+        .then((res) => {
+          
+          setSupport_users(res.data.data.support_users);
+
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+
+      // state graph
     UserRepository.usersByState()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setTotal(res.data.data.total);
         setState(res.data.data.state);
       })
@@ -98,8 +115,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Nothing"
-                count="0"
+                title="Support Users"
+                count={support_users}
                 // percentage={{
                 //   color: 'success',
                 //   amount: '+1%',

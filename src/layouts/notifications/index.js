@@ -85,6 +85,7 @@ function Notifications() {
   const handleAllClose = () => {
     GetBanner();
     setAllOpen(false);
+
   };
   
   useEffect(() => {

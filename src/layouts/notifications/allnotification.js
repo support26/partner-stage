@@ -105,15 +105,6 @@ function Allnotification() {
         onChange={handelstateImages}
       />
       <br />
-      {/* <Button
-        variant="contained"
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white",marginBottom:'40px'} : {background: "#33A2B5",color: "white" }}
-        href="#contained-buttons"
-        onClick={sendNotification}
-        disabled={btnDisabled}
-      >
-        Send
-      </Button> */}
       <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
 

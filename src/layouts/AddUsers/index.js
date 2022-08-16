@@ -147,7 +147,7 @@ function AddUsers() {
             onClick={onClick}
             variant="contained"
             sx={{
-              color: "#000",
+              color:'#fff',
               backgroundColor: "#33A2B5",
               "&:hover": {
                 backgroundColor: "#378c9b",
@@ -504,7 +504,7 @@ function AddUsers() {
         </Fade>
       </Modal>
       <div>
-        <button className="modalOpenBtn" onClick={handleModal}>
+        <button className="modalOpenBtn" onClick={handleModal} style ={{ color:'#fff'}}>
           Add Users
         </button>
       </div>

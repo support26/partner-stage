@@ -77,6 +77,8 @@ function Number() {
     } else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
+      setSendBtn(null)
+      setLoading(true);
       console.log("#####", phone_number);
       const admin_email = localStorage.getItem("user_email");
       const notification = {

@@ -50,6 +50,15 @@ class UsersRepository {
       },
     });
   };
+
+  supportUsers = () => {
+    const token = localStorage.getItem("token");
+    return Api.get(`${baseUrl}admin/support_users`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  };
  // change runner  disable status
  async changeRunnerDisable(userId, data) {
   const token = localStorage.getItem("token");

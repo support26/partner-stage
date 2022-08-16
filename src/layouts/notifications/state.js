@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import NativeSelect from "@mui/material/NativeSelect";
-import LoadingButton from '@mui/lab/LoadingButton';
+
 
 //  React components
 import MDBox from "components/MDBox";
@@ -28,6 +28,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // mui custom style
 
@@ -80,6 +81,8 @@ function State() {
       setError("Please fill all the fields");
     } else {
       console.log("#####", state);
+      setSendBtn(null)
+      setLoading(true);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,

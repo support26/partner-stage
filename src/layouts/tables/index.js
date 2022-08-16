@@ -223,7 +223,7 @@ export default function Tables() {
 
         return (
           <Button
-            style={{ color: "black", backgroundColor: "#33A2B5" }}
+            style={{  color:'#fff', backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
             disabled={disabled}
           >
