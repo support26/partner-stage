@@ -4,28 +4,27 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 // @mui material components
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import SaveIcon from '@mui/icons-material/Save';
 //  React components
-import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
-import { useEffect } from "react";
+import useAdmin from "../../hooks/useAdmin";
 
 // mui custom style
 
 function Allnotification() {
   const [body, setBody] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
- 
+  const {SendNotification} = useAdmin();
+  // function handleClick() {
+  //   setLoading(true);
+  // }
   let file;
   let form_data = new FormData();
   const handelstateImages = (event) => {
@@ -59,17 +58,14 @@ function Allnotification() {
         body: body,
         image: image
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          notification,
-          admin_email
-        })
-        .then((res) => {
+        var SendNotifications = SendNotification(notification, admin_email);
+        SendNotifications.then((res) => {
           console.log("%%%%%%%%%", res);
-        setLoading(false);
-        setSendBtn("send succesfully")
-
+    setLoading(false);
+    setSendBtn("sent succesfully")
+    setTimeout(() => {
+      setSendBtn("send")
+    }, 2000);
         })
         .catch((err) => {
           console.log("err", err);

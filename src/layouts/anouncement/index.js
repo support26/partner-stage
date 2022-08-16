@@ -37,7 +37,7 @@ import { Fullscreen } from "@mui/icons-material";
 
 function Anouncementbanner() {
   const {
-       GetAnouncements,UpdateAnounce,Anouncements
+       GetAnouncements,UpdateAnouncement,AddAnouncements
   } = useAdmin();
 
   const [user_id, setUser_id] = useState("");
@@ -48,16 +48,19 @@ function Anouncementbanner() {
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
     setEditUserModal(false);
+    setAnnouncementText("");
+    setAnnouncementIsEnglish("");
+    setDisplayAnnouncementTextOrNot("");
    
   };
 // Anouncement text
-const [AnnouncementText, setAnnouncementText] = useState(null);
-const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState(null);
+const [AnnouncementText, setAnnouncementText] = useState("");
+const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
 const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
   useState(false);
 const admin_email = localStorage.getItem("user_email");
 const roleId = localStorage.getItem("roleId");
-// const  = localStorage.getItem("user_email");
+const [loading, setLoading] = useState(false);
 const [disabled, setDisabled] = useState(
   (roleId==1)? true : false
 )
@@ -66,13 +69,6 @@ const [disabled, setDisabled] = useState(
   const [maxWidth, setMaxWidth] = useState("md");
   const [anounceopen, setAnounceOpen] = useState(false);
 
-  const handleBannerClickOpen = () => {
-    setBannerOpen(true);
-  };
-
-  const handleBannerClose = () => {
-    setBannerOpen(false);
-  };
   const handleAnounceOpen = () => {
     setAnounceOpen(true);
   };
@@ -80,7 +76,6 @@ const [disabled, setDisabled] = useState(
   const handleAnounceClose = () => {
     setAnounceOpen(false);
   };
-  const [loading, setLoading] = useState(false);
 // get data
   const GetAnounce = () => {
     setLoading(true);
@@ -106,11 +101,12 @@ const [disabled, setDisabled] = useState(
 // update anounce
 const updateBanner= (event) => {
     event.preventDefault();
-    var UpdateAnounceSuccess = UpdateAnounce(data_1, user_id);
+    var UpdateAnounceSuccess = UpdateAnouncement(data_1, user_id);
     UpdateAnounceSuccess.then((response) => {
       if (response.status === 200) {
         
-         closeEditUserModal();GetAnounce();
+         closeEditUserModal();
+         GetAnounce();
         // handleOpen();
       }
     }).catch((e) => {
@@ -129,7 +125,7 @@ const updateBanner= (event) => {
   const postandleSubmit = (event) => {
     event.preventDefault();
     console.log(data2)
-    var addAnnouncement = Anouncements(data2);
+    var addAnnouncement = AddAnouncements(data2);
     addAnnouncement.then((response) => {
       if (response.status === 200) {
         GetAnounce();
@@ -185,7 +181,7 @@ const updateBanner= (event) => {
               variant="contained"
               disabled={disabled}
               sx={{
-                color: "#000",
+                color:'#fff',
                 backgroundColor: "#33A2B5",
                 "&:hover": {
                   backgroundColor: "#378c9b",
@@ -425,7 +421,7 @@ const updateBanner= (event) => {
             background: "#33A2B5",
             color: "white",
             margin: "10px",
-            color: "#000",
+            color:'#fff',
           }}
         >
          Add Announcement

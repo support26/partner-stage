@@ -9,6 +9,7 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import NativeSelect from "@mui/material/NativeSelect";
 
+
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -19,6 +20,8 @@ import MDSnackbar from "components/MDSnackbar";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
+import useAdmin from "../../hooks/useAdmin";
+
 
 //  React example components
 import InputLabel from "@mui/material/InputLabel";
@@ -37,8 +40,9 @@ function State() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
+  const [loading, setLoading] = useState(false);
+  const {SendNotificationByNumber} = useAdmin();
 
   useEffect(() => {
     axios
@@ -85,21 +89,23 @@ function State() {
         body: body,
         image: image,
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          state,
-          notification,
-          admin_email
-        })
-        .then((res) => {
+      // console.log("@@@@@@", notification);
+      setSendBtn(null)
+    setLoading(true);
+      var sendNotificationByNumber = SendNotificationByNumber()
+      sendNotificationByNumber.then((res) => {
           console.log("%%%%%%%%%", res);
           setLoading(false);
-          setSendBtn("send succesfully")
+          setSendBtn("sent succesfully")
+          setTimeout(() => {
+            setSendBtn("send")
+          }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
         });
+        
+
     }
   };
 
@@ -152,7 +158,20 @@ function State() {
       )}
       <TextField helperText="Image " type="file" inputProps={{accept:".png, .jpeg, .jpg"}} onChange={handelstateImages} />{" "}
       <br />
-      <LoadingButton
+      {/* <Button
+        variant="contained"
+        style={
+          btnDisabled == true
+            ? { background: "#a7c5c9", color: "white" }
+            : { background: "#33A2B5", color: "white" }
+        }
+        href="#contained-buttons"
+        onClick={sendNotification}
+        disabled={btnDisabled}
+      >
+        Send
+      </Button> */}
+       <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
 
           size="small"

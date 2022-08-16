@@ -69,12 +69,18 @@ function AddUsers() {
     setUser_type("0");
     setOpenModal(true);
   };
-  const closeModal = () => setOpenModal(false);
+  const closeModal = () => {
+    setOpenModal(false);
+    setUsers_name("");
+    setUsers_email("");
+    setEmployee_name("");
+  };
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
     setEditUserModal(false);
     setUsers_name("");
     setUsers_email("");
+    setEmployee_name("");
   };
 
   const [vertical, setVertical] = useState("top");
@@ -141,7 +147,7 @@ function AddUsers() {
             onClick={onClick}
             variant="contained"
             sx={{
-              color: "#000",
+              color:'#fff',
               backgroundColor: "#33A2B5",
               "&:hover": {
                 backgroundColor: "#378c9b",
@@ -230,7 +236,7 @@ function AddUsers() {
     users_email: users_email,
     user_type: user_type,
     employee_name: employee_name,
-    // is_active: is_active,  
+    // is_active: is_active,
   };
   const updateUser = (event) => {
     event.preventDefault();
@@ -498,7 +504,7 @@ function AddUsers() {
         </Fade>
       </Modal>
       <div>
-        <button className="modalOpenBtn" onClick={handleModal}>
+        <button className="modalOpenBtn" onClick={handleModal} style ={{ color:'#fff'}}>
           Add Users
         </button>
       </div>
@@ -511,9 +517,9 @@ function AddUsers() {
             "& .MuiDataGrid-cell:hover": {
               color: "ravi.main",
             },
-            '& .MuiDataGrid-row:focus':{
-              backgroundColor: '#33A2B5'
-            }
+            "& .MuiDataGrid-row:focus": {
+              backgroundColor: "#33A2B5",
+            },
           }}
           rows={users}
           columns={columns}

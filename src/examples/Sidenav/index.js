@@ -204,7 +204,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </NavLink>
             <NavLink to={"/users"} key={"users"}>
               <SidenavCollapse
-                name={"All Users"}
+                name={"Support Users"}
                 icon={<Icon fontSize="medium">account_circle</Icon>}
                 active={"users" === collapseName}
               />

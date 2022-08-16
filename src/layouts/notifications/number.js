@@ -1,29 +1,35 @@
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import LoadingButton from '@mui/lab/LoadingButton';
 
 // @mui material components
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import LoadingButton from '@mui/lab/LoadingButton';
+
 import UserRepository from "api/UsersRepository";
 
 //  React components
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import axios from "axios";
+import useAdmin from "../../hooks/useAdmin";
+
 
 // mui custom style
 
 function Number() {
   const [image, setImage] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [body, setBody] = useState(null);
   const [phone_number, setPhone_number] = useState([]);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
+  const [loading, setLoading] = useState(false);
+  const {SendNotificationByNumber} = useAdmin();
+
+
   var reqData;
 
   let file;
@@ -80,21 +86,22 @@ function Number() {
         body: body,
         image: image,
       };
-      console.log("@@@@@@", notification);
-      axios
-        .post("http://localhost:8001/users/notification", {
-          phone_number,
-          notification,
-          admin_email
-        })
-        .then((res) => {
+      // console.log("@@@@@@", notification);
+      setLoading(true);
+      // setSendBtn("")s
+      var sendNotificationByNumber = SendNotificationByNumber(notification, admin_email,phone_number)
+      sendNotificationByNumber.then((res) => {
           console.log("%%%%%%%%%", res);
           setLoading(false);
-          setSendBtn("send succesfully")
+    setSendBtn("sent succesfully")
+    setTimeout(() => {
+      setSendBtn("send")
+    }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
         });
+
     }
   };
 
@@ -135,6 +142,15 @@ function Number() {
         onChange={handelDistricImages}
       />
       <br />
+      {/* <Button
+        onClick={sendNotification}
+        variant="contained"
+        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
+        href="#contained-buttons"
+        disabled={btnDisabled}
+      >
+        Send
+      </Button> */}
       <LoadingButton
         style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
 
