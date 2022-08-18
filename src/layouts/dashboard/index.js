@@ -114,7 +114,7 @@ function Dashboard() {
             <MDBox mb={0}>
               <ComplexStatisticsCard
                 color="success"
-                icon="store"
+                icon="group"
                 title="Support Users"
                 count={support_users}
                 // percentage={{

@@ -128,7 +128,7 @@ export default function Tables() {
         reason:reason,
         admin_email:admin_email
       }
-      console.log(disabledData);
+      // console.log(disabledData);
     var updateDisableStatus = ChangeRunnerDisable(id,disabledData);
     updateDisableStatus.then((response)=>{
       // console.log(response);
@@ -196,7 +196,8 @@ export default function Tables() {
           } else {
             setbank_passbook_photo(params.row.bank_passbook_photo);
           }
-          //profile
+          //pro
+          
           if (params.row.profileImage == null) {
             setprofileImage("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png");
           } else {
@@ -217,7 +218,8 @@ export default function Tables() {
 
           setOpen(true);
 
-          return console.log(id);
+          return 
+          // console.log(id);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
 
@@ -351,7 +353,7 @@ export default function Tables() {
         
         const handelSelect = (e) => {
           setSelectvalue(e.target.value);
-          console.log(selectvalue);
+          // console.log(selectvalue);
           setReason(params.row.reason);
 
           setID(params.row.id);
@@ -447,20 +449,22 @@ export default function Tables() {
   // const  = localStorage.getItem("user_email");
   const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
   const {
-    ChangeRunnerDisable
+    ChangeRunnerDisable,GetAllRunner,UpdateRunners 
   } = useUsers();
+ 
   const GetRunner = () => {
-    UserRepository.GetAllRunner()
-      .then((response) => {
+    setLoading(true);
+    var GetAllRunners = GetAllRunner();
+    GetAllRunners.then((response) => {
+      
         setAPIData(response.data.data);
         setTableLoading(false);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
   useEffect(() => {
     setTableLoading(true);
     GetRunner();
@@ -493,19 +497,34 @@ export default function Tables() {
     age: age,
     updated_by:updated_by
   };
+  // const updateAPIData = (event) => {
+  //   event.preventDefault();
+  //   console.log(data);
+  //   UserRepository.UpdateRunners(id, data)
+  //   .then((response) => {
+  //     console.log(response);
+  //     GetRunner();
+  //     setOpen(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   const updateAPIData = (event) => {
     event.preventDefault();
-    console.log(data);
-    UserRepository.UpdateRunners(id, data)
-    .then((response) => {
-      console.log(response);
-      GetRunner();
-      setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    var UpdateRunnr = UpdateRunners(id, data);
+    UpdateRunnr.then((response) => {
+      if (response.status === 200) {
+        GetRunner();
+        console.log(response);
+        setOpen(false);
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
   };
+
 
   let file;
   let form_data = new FormData();
@@ -515,7 +534,7 @@ export default function Tables() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setprofileImage(response.data.data.fileUrl);
       })
       .catch((e) => {
@@ -528,7 +547,7 @@ export default function Tables() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setPancardImages(response.data.data.fileUrl);
       })
       .catch((e) => {
@@ -540,7 +559,7 @@ export default function Tables() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setbank_passbook_photo(response.data.data.fileUrl);
       })
       .catch((e) => {
@@ -552,7 +571,7 @@ export default function Tables() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setother_Id_proof_image(response.data.data.fileUrl);
         setTableLoading(false);
       })
@@ -653,7 +672,8 @@ export default function Tables() {
                 >
                   <input
                     hidden
-                    accept="image/*"
+                    // inputProps={{accept:".png, .jpeg, .jpg"}}
+                    accept=".png, .jpeg, .jpg"
                     type="file"
                     onChange={handleProfileImage}
                   />
@@ -818,7 +838,7 @@ export default function Tables() {
                 >
                   <input //passbook image
                     hidden
-                    accept="image/*"
+                    accept=".png, .jpeg, .jpg"
                     type="file"
                     onChange={handleBank_passbook_photo}
                   />
@@ -897,7 +917,7 @@ export default function Tables() {
                 >
                   <input //passbook image
                     hidden
-                    accept="image/*"
+                    accept=".png, .jpeg, .jpg"
                     type="file"
                     onChange={handlePancardImages}
                   />
@@ -971,7 +991,7 @@ export default function Tables() {
                 >
                   <input //passbook image
                     hidden
-                    accept="image/*"
+                    accept=".png, .jpeg, .jpg"
                     type="file"
                     onChange={handelother_Id_proof_image}
                   />

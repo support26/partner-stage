@@ -58,7 +58,7 @@ class AuthRepository {
     })
       .then((response) => {
         // console.log('token')
-        console.log(response)
+        // console.log(response)
         return response;
 
       })

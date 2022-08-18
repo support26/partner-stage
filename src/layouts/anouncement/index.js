@@ -124,7 +124,7 @@ const updateBanner= (event) => {
   };
   const postandleSubmit = (event) => {
     event.preventDefault();
-    console.log(data2)
+    // console.log(data2)
     var addAnnouncement = AddAnouncements(data2);
     addAnnouncement.then((response) => {
       if (response.status === 200) {
@@ -173,7 +173,8 @@ const updateBanner= (event) => {
          
 
           setEditUserModal(true);
-          return console.log(thisRow);
+          return 
+          // console.log(thisRow);
         };
         return (
         <Button 

@@ -10,11 +10,14 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import axios from "axios";
 import useAdmin from "../../hooks/useAdmin";
-
+import Dialog from "@mui/material/Dialog";
+import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 // mui custom style
 
 function Allnotification() {
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
@@ -22,6 +25,20 @@ function Allnotification() {
   const [loading, setLoading] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const {SendNotification} = useAdmin();
+
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [value,setValue] =useState(0)
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
+
   // function handleClick() {
   //   setLoading(true);
   // }
@@ -33,7 +50,7 @@ function Allnotification() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
       })
@@ -58,13 +75,29 @@ function Allnotification() {
         body: body,
         image: image
       };
+      handleClickOpen()
+      
+
+      // setSendBtn("")s
+      var timerun = 0;
+    var progressInterval = setInterval(() => {
+      setValue(prev => prev + 20);
+      timerun +=1
+         
+      }, 800);
         var SendNotifications = SendNotification(notification, admin_email);
         SendNotifications.then((res) => {
-          console.log("%%%%%%%%%", res);
+          // console.log("%%%%%%%%%", res);
     setLoading(false);
+    if (timerun === 6) {
+      clearInterval(progressInterval);
+      setValue(100)
+    } 
     setSendBtn("sent succesfully")
     setTimeout(() => {
       setSendBtn("send")
+      handleClose();
+
     }, 2000);
         })
         .catch((err) => {
@@ -118,6 +151,23 @@ function Allnotification() {
         >
           {sendBtn}
         </LoadingButton>
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
     </Card>
   );
 }

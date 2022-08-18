@@ -3,7 +3,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import UserRepository from "api/UsersRepository";
 
-
+import Dialog from "@mui/material/Dialog";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -40,37 +42,66 @@ function Distric() {
   const [districts, setDistricts] = useState([]);
   const [sId, setsId] = useState(null);
   const [image, setImage] = useState(null);
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
-  const [district, setDistrict] = useState(null);
+  const [district, setDistrict] = useState("");
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
-  const {SendNotificationByDistrict} = useAdmin();
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [value,setValue] =useState(0)
+  const {SendNotificationByDistrict,GetStateList,GetDistrictList} = useAdmin();
 
+  const GetStateListForNotification = () => {
+    var stateList =  GetStateList()
+    stateList.then((res) => {
+       setState(res.data.states);
+     }).catch((err) => {
+       console.log(err);
+     })
+   }
+ 
+  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
 
   const getDistrict = (e) => {
     //setsId(e.target.value)
     const demo = e.target.value;
-    console.log(demo);
+    // console.log(demo);
+    const districtList = GetDistrictList(demo)
+    districtList.then((res) => {
+        setDistricts(res.data.districts);
+      }).catch((err) => {
+        console.log(err);
+      })
+  
 
-    axios
-      .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${demo}`)
-      .then((response) => {
-        setDistricts(response.data.districts);
-        // setTableLoading(false);
-        console.log(response.data);
-      });
+    // axios
+    //   .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${demo}`)
+    //   .then((response) => {
+    //     setDistricts(response.data.districts);
+    //     // setTableLoading(false);
+    //     // console.log(response.data);
+    //   });
   };
   useEffect(() => {
-    axios
-      .get("https://project-swarksha.uc.r.appspot.com/states")
-      .then((response) => {
-        setState(response.data.states);
+    GetStateListForNotification();
+    // axios
+    //   .get("https://project-swarksha.uc.r.appspot.com/states")
+    //   .then((response) => {
+    //     setState(response.data.states);
 
-        console.log(response.data);
-      });
+    //     // console.log(response.data);
+    //   });
   }, []);
 
   let file;
@@ -81,7 +112,7 @@ function Distric() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
 
@@ -94,7 +125,7 @@ function Distric() {
   const sendNotification = (event) => {
     event.preventDefault();
     
-    if (district === null) {
+    if (district === null || district === "") {
       setError("Please select district");
     }
    else if (!title || !body) {
@@ -102,7 +133,7 @@ function Distric() {
     } else {
       setSendBtn(null)
       setLoading(true);
-      console.log("#####", district);
+      // console.log("#####", district);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
@@ -112,13 +143,25 @@ function Distric() {
       // console.log("@@@@@@", notification);
 setSendBtn(null)
     setLoading(true);
+    handleClickOpen()
+    // setSendBtn("")s
+    var timerun = 0;
+    var progressInterval = setInterval(() => {
+      setValue(prev => prev + 20);
+      timerun +=1
+      if (timerun === 6) {
+        clearInterval(progressInterval);
+        setValue(0)
+      }    
+      }, 800);
       var sendNotificationByDistrict = SendNotificationByDistrict(notification, admin_email,district);
       sendNotificationByDistrict.then((res) => {
-          console.log("%%%%%%%%%", res);
+          // console.log("%%%%%%%%%", res);
           setLoading(false);
     setSendBtn("sent succesfully")
     setTimeout(() => {
       setSendBtn("send")
+      handleClose();
     }, 2000);
         })
         .catch((err) => {
@@ -219,6 +262,23 @@ setSendBtn(null)
         >
           {sendBtn}
         </LoadingButton>
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
     </Card>
   );
 }

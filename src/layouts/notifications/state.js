@@ -21,7 +21,10 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import useAdmin from "../../hooks/useAdmin";
+import Dialog from "@mui/material/Dialog";
 
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 //  React example components
 import InputLabel from "@mui/material/InputLabel";
@@ -33,24 +36,46 @@ import LoadingButton from '@mui/lab/LoadingButton';
 // mui custom style
 
 function State() {
-  const [state, setState] = useState(null);
+  const [state, setState] = useState("");
   const [stateName, setStateName] = useState([]);
-  const [body, setBody] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [body, setBody] = useState("");
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
-  const {SendNotificationByNumber} = useAdmin();
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [value,setValue] =useState(0)
+  const {SendNotificationByState,GetStateList} = useAdmin();
+
+ const GetStateListForNotification = () => {
+   var stateList =  GetStateList()
+   stateList.then((res) => {
+      setStateName(res.data.states);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+ 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
 
   useEffect(() => {
-    axios
-      .get("https://project-swarksha.uc.r.appspot.com/states")
-      .then((response) => {
-        setStateName(response.data.states);
-        console.log(response.data);
-      });
+    GetStateListForNotification();
+    // axios
+    //   .get("https://project-swarksha.uc.r.appspot.com/states")
+    //   .then((response) => {
+    //     setStateName(response.data.states);
+    //     // console.log(response.data);
+    //   });
   }, []);
 
   let file;
@@ -61,7 +86,7 @@ function State() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
       })
@@ -75,12 +100,12 @@ function State() {
 
 
     event.preventDefault();
-    if (state === null) {
+    if (state === null || state === "") {
       setError("Please select state");
     } else if (!title || !body) {
       setError("Please fill all the fields");
     } else {
-      console.log("#####", state);
+      // console.log("#####", state);
       setSendBtn(null)
       setLoading(true);
       const admin_email = localStorage.getItem("user_email");
@@ -92,13 +117,27 @@ function State() {
       // console.log("@@@@@@", notification);
       setSendBtn(null)
     setLoading(true);
-      var sendNotificationByNumber = SendNotificationByNumber()
-      sendNotificationByNumber.then((res) => {
-          console.log("%%%%%%%%%", res);
+    handleClickOpen()
+      
+
+    // setSendBtn("")s
+    var timerun = 0;
+  var progressInterval = setInterval(() => {
+    setValue(prev => prev + 20);
+    timerun +=1
+    if (timerun === 6) {
+      clearInterval(progressInterval);
+      setValue(0)
+    }    
+    }, 800);
+    var sendNotificationByState = SendNotificationByState(notification, admin_email, state);
+    sendNotificationByState.then((res) => {
+          // console.log("%%%%%%%%%", res);
           setLoading(false);
           setSendBtn("sent succesfully")
           setTimeout(() => {
             setSendBtn("send")
+            handleClose();
           }, 2000);
         })
         .catch((err) => {
@@ -184,6 +223,25 @@ function State() {
         >
           {sendBtn}
         </LoadingButton>
+
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
+
     </Card>
   );
 }

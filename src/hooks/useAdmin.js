@@ -30,7 +30,7 @@ export default function useAdmin() {
             "employee_name",
             responseData.data.data.employee_name
           );
-          console.log(responseData.data);
+          // console.log(responseData.data);
 
           nav("/dashboard");
         }
@@ -46,7 +46,7 @@ export default function useAdmin() {
       if (responseData.status === 200) {
         return responseData;
       } else {
-        console.log(responseData.data);
+        // console.log(responseData.data);
       }
       return responseData;
     },
@@ -55,12 +55,12 @@ export default function useAdmin() {
     AddAdminUser: async (data) => {
       var responseData = await AdminRepository.addAdminUser(data);
       if (responseData.status === 200) {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(errorMessage(""));
         dispatch(successMsg(responseData.data.data));
         return responseData;
       } else {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(successMsg(""));
         dispatch(errorMessage(responseData.data.message));
       }
@@ -71,12 +71,12 @@ export default function useAdmin() {
     UpdateAdminUser: async (data, userId) => {
       var responseData = await AdminRepository.updateAdminUser(data, userId);
       if (responseData.status === 200) {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(errorMessage(""));
         dispatch(successMsg(responseData.data.data));
         return responseData;
       } else {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(successMsg(""));
         dispatch(errorMessage(responseData.data.message));
       }
@@ -90,11 +90,11 @@ export default function useAdmin() {
         is_active
       );
       if (responseData.status === 200) {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(errorMessage(""));
         dispatch(successMsg(responseData.data.data));
       } else {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         dispatch(successMsg(""));
         dispatch(errorMessage(responseData.data.message));
       }
@@ -115,7 +115,7 @@ export default function useAdmin() {
     },
     //logout
     logOut: async () => {
-      nav("/sign-in");
+      nav("/");
       localStorage.clear();
       Cookies.remove("token");
       return true;
@@ -125,7 +125,7 @@ export default function useAdmin() {
     AddBanner: async (data) => {
       var responseData = await AdminRepository.addBanner(data);
       if (responseData.status === 200) {
-        console.log(responseData);
+        // console.log(responseData);
         return responseData;
       }
       return responseData;
@@ -144,7 +144,7 @@ export default function useAdmin() {
     UpdateBanner: async (data, userId) => {
       var responseData = await AdminRepository.updateBanner(data, userId);
       if (responseData.status === 200) {
-        console.log(responseData.data);
+        // console.log(responseData.data);
         return responseData;
       }
       return responseData;
@@ -169,11 +169,26 @@ export default function useAdmin() {
     UpdateAnouncement: async (data, userId) => {
       var responseData = await AdminRepository.updateAnouncement(data, userId);
       if (responseData.status === 200) {
-        console.log(responseData.data);
+        // console.log(responseData.data);
       }
       return responseData;
     },
-
+//get state list
+GetStateList: async () => {
+  var responseData = await AdminRepository.getStateList();
+  if (responseData.status === 200) {
+    return responseData;
+  }
+  return responseData;
+},
+//get district list
+GetDistrictList: async (stateId) => {
+  var responseData = await AdminRepository.getDistrictList(stateId);
+  if (responseData.status === 200) {
+    return responseData;
+  }
+  return responseData;
+},
     //get notification  data
     GetNotification: async () => {
       var responseData = await AdminRepository.getNotification();

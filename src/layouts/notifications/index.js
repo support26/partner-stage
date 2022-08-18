@@ -46,7 +46,7 @@ function Notifications() {
       var GetNotifications = GetNotification();
       GetNotifications.then((response) => {
         if (response.status === 200) {
-         console.log(response);
+        //  console.log(response);
           setNoticationLog(response.data.data);
         }
       }).catch((e) => {

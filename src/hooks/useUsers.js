@@ -27,7 +27,7 @@ export default function useUsers() {
       isUserActiveOrNot
     );
     if (responseData.status === 200) {
-      console.log(responseData.data);
+      // console.log(responseData.data);
       dispatch(errorMessage(""));
       dispatch(successMsg(responseData.data.data));
     } else {
@@ -43,6 +43,32 @@ export default function useUsers() {
       data
     );
     if (responseData.status === 200) {
+      // console.log(responseData);
+      return responseData;
+      // dispatch(errorMessage(""));
+      // dispatch(successMsg(responseData.data.data));
+    } else {
+      console.log(responseData.data);
+      // dispatch(successMsg(""));
+      // dispatch(errorMessage(responseData.data.message));
+    }
+  },
+
+   //get notification  data
+   GetAllRunner: async () => {
+    var responseData = await UsersRepository.getAllRunner();
+    if (responseData.status === 200) {
+      return responseData;
+    } 
+    return responseData;
+  },
+  //change admin_user active status
+  UpdateRunners: async (userId, data) => {
+    var responseData = await UsersRepository.updateRunners(
+      userId,
+      data
+    );
+    if (responseData.status === 200) {
       console.log(responseData);
       return responseData;
       // dispatch(errorMessage(""));
@@ -53,25 +79,5 @@ export default function useUsers() {
       // dispatch(errorMessage(responseData.data.message));
     }
   },
-  //get total users
-  // GetTotalUsers: async () => {
-  //   var responseData = await UsersRepository.totalUsers();
-  //   if (responseData.status === 200) {
-  //     console.log(responseData);
-  //     return responseData;
-  //   } else {
-  //     console.log(responseData.data);
-  //   }
-  // },
-  // //get active users
-  // GetActiveUsers: async () => {
-  //   var responseData = await UsersRepository.activeUsers();
-  //   if (responseData.status === 200) {
-  //     console.log(responseData);
-  //     return responseData;
-  //   } else {
-  //     console.log(responseData.data);
-  //   }
-  // },
 }
 }

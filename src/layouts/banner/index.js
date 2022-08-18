@@ -113,7 +113,8 @@ function Banner() {
           setShowButton(params.row.ShowButton);
           setDisplayBannerOrNot(params.row.DisplayBannerOrNot);
           setEditUserModal(true);
-          return console.log(thisRow);
+          return
+          //  console.log(thisRow);
         };
         return (
           <Button
@@ -245,7 +246,7 @@ function Banner() {
         DisplayBannerOrNot,
         admin_email,
       };
-      console.log(data_1);
+      // console.log(data_1);
       var addBanners = AddBanner(data_1);
       addBanners
         .then((response) => {

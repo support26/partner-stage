@@ -140,7 +140,8 @@ function AddUsers() {
           setIs_active(params.row.is_active);
           setEmployee_name(params.row.employee_name);
           setEditUserModal(true);
-          return console.log(thisRow);
+          return 
+          // console.log(thisRow);
         };
         return (
           <Button
@@ -193,7 +194,7 @@ function AddUsers() {
             ChangeAdminUserStatus(id, is_active);
           }
           // GetUsers();
-          console.log(id, is_active);
+          // console.log(id, is_active);
         };
         return params.row.is_active === "Y" ? (
           <Switch
