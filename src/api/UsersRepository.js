@@ -1,5 +1,4 @@
 import Api, { baseUrl } from "./config";
-const token = localStorage.getItem("token");
 
 class UsersRepository {
   GetAllRunner = () => {
@@ -9,7 +8,7 @@ class UsersRepository {
         Authorization: "Bearer " + token,
       },
     });
-    };
+  };
   UpdateRunners = (id, data) => {
     const token = localStorage.getItem("token");
     return Api.put(`${baseUrl}users/profile/${id}`, data, {
@@ -19,6 +18,7 @@ class UsersRepository {
     });
   };
   UploadImageFile = (ImageFile) => {
+    const token = localStorage.getItem("token");
     return Api.put(`${baseUrl}users/uploadFile`, ImageFile, {
       headers: {
         Authorization: "Bearer " + token,
@@ -59,29 +59,27 @@ class UsersRepository {
       },
     });
   };
- // change runner  disable status
- async changeRunnerDisable(userId, data) {
-  const token = localStorage.getItem("token");
-  const reponse = await Api.put(
-    `${baseUrl}users/disableRunner/${userId}`,
-    data,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  )
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      console.log(error.response);
-      return error.response;
-    });
-  return reponse;
-}
-
-  
+  // change runner  disable status
+  async changeRunnerDisable(userId, data) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}users/disableRunner/${userId}`,
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
 }
 
 export default new UsersRepository();

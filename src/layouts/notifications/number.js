@@ -21,7 +21,7 @@ import useAdmin from "../../hooks/useAdmin";
 function Number() {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("");
   const [phone_number, setPhone_number] = useState([]);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -40,7 +40,7 @@ function Number() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
       })
@@ -60,11 +60,11 @@ function Number() {
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
       reqData = data.split("\n");
-      console.log(reqData[0]);
+      // console.log(reqData[0]);
       if (/[a-zA-Z]+$/.test(reqData[0]) === true) {
         reqData.shift();
       }
-      console.log(">>>>>", reqData);
+      // console.log(">>>>>", reqData);
       setPhone_number(reqData);
     };
     reader.readAsBinaryString(file);
@@ -74,12 +74,12 @@ function Number() {
     event.preventDefault();
     if (phone_number.length <= 0) {
       setError("Please upload phone numbers");
-    } else if (!title || !body) {
+    } else if (!title || !body || title.length <= 0 || body.length <= 0) {
       setError("Please fill all the fields");
     } else {
       setSendBtn(null)
       setLoading(true);
-      console.log("#####", phone_number);
+      // console.log("#####", phone_number);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
@@ -91,7 +91,7 @@ function Number() {
       // setSendBtn("")s
       var sendNotificationByNumber = SendNotificationByNumber(notification, admin_email,phone_number)
       sendNotificationByNumber.then((res) => {
-          console.log("%%%%%%%%%", res);
+          // console.log("%%%%%%%%%", res);
           setLoading(false);
     setSendBtn("sent succesfully")
     setTimeout(() => {

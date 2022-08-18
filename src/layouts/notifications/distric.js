@@ -40,37 +40,52 @@ function Distric() {
   const [districts, setDistricts] = useState([]);
   const [sId, setsId] = useState(null);
   const [image, setImage] = useState(null);
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
-  const [district, setDistrict] = useState(null);
+  const [district, setDistrict] = useState("");
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
-  const {SendNotificationByDistrict} = useAdmin();
+  const {SendNotificationByDistrict,GetStateList,GetDistrictList} = useAdmin();
 
-
+  const GetStateListForNotification = () => {
+    var stateList =  GetStateList()
+    stateList.then((res) => {
+       setState(res.data.states);
+     }).catch((err) => {
+       console.log(err);
+     })
+   }
   const getDistrict = (e) => {
     //setsId(e.target.value)
     const demo = e.target.value;
-    console.log(demo);
+    // console.log(demo);
+    const districtList = GetDistrictList(demo)
+    districtList.then((res) => {
+        setDistricts(res.data.districts);
+      }).catch((err) => {
+        console.log(err);
+      })
+  
 
-    axios
-      .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${demo}`)
-      .then((response) => {
-        setDistricts(response.data.districts);
-        // setTableLoading(false);
-        console.log(response.data);
-      });
+    // axios
+    //   .get(`https://project-swarksha.uc.r.appspot.com/districts?sid=${demo}`)
+    //   .then((response) => {
+    //     setDistricts(response.data.districts);
+    //     // setTableLoading(false);
+    //     // console.log(response.data);
+    //   });
   };
   useEffect(() => {
-    axios
-      .get("https://project-swarksha.uc.r.appspot.com/states")
-      .then((response) => {
-        setState(response.data.states);
+    GetStateListForNotification();
+    // axios
+    //   .get("https://project-swarksha.uc.r.appspot.com/states")
+    //   .then((response) => {
+    //     setState(response.data.states);
 
-        console.log(response.data);
-      });
+    //     // console.log(response.data);
+    //   });
   }, []);
 
   let file;
@@ -81,7 +96,7 @@ function Distric() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
 
@@ -94,7 +109,7 @@ function Distric() {
   const sendNotification = (event) => {
     event.preventDefault();
     
-    if (district === null) {
+    if (district === null || district === "") {
       setError("Please select district");
     }
    else if (!title || !body) {
@@ -102,7 +117,7 @@ function Distric() {
     } else {
       setSendBtn(null)
       setLoading(true);
-      console.log("#####", district);
+      // console.log("#####", district);
       const admin_email = localStorage.getItem("user_email");
       const notification = {
         title: title,
@@ -114,7 +129,7 @@ setSendBtn(null)
     setLoading(true);
       var sendNotificationByDistrict = SendNotificationByDistrict(notification, admin_email,district);
       sendNotificationByDistrict.then((res) => {
-          console.log("%%%%%%%%%", res);
+          // console.log("%%%%%%%%%", res);
           setLoading(false);
     setSendBtn("sent succesfully")
     setTimeout(() => {

@@ -199,7 +199,34 @@ class AdminRepository {
       },
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+  // get state list for notification
+  async getStateList() {
+    const reponse = await Api.get(
+      `https://project-swarksha.uc.r.appspot.com/states`,
+    ).then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //get district list by state id for notification
+  async getDistrictList(stateId) {
+    const reponse = await Api.get(
+      `https://project-swarksha.uc.r.appspot.com/districts?sid=${stateId}`,
+    ).then((response) => {
         return response;
       })
       .catch((error) => {

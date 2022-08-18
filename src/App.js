@@ -152,17 +152,17 @@ export default function App() {
         {layout === "vr" && <Configurator />}
 
         <Routes>
-          <Route path="/" element={<Navigate to="/sign-in" />} />
-          <Route path="/sign-in" element={<SignIn />} />
+          <Route exact path="/" element={<SignIn />} />
+          {/* <Route path="/sign-in" element={<SignIn />} /> */}
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="*" element={<Navigate to="/sign-in" />} />
+          <Route path="*" element={<Navigate to="/" />} />
           {/* change later it to 404 page */}
-          {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
-          {roleId == 0 && (
+          {Cookies.get('token') && roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+          {Cookies.get('token') && roleId == 0 && (
             <Route path="/notifications" element={<Notifications />} />
           )}
           {/* below line first check that token is present than show routes*/}
-          {localStorage.getItem("token") && getRoutes(routes)}
+          {Cookies.get('token') && getRoutes(routes)}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -186,15 +186,15 @@ export default function App() {
 
       {layout === "vr" && <Configurator />}
       <Routes>
-        <Route path="/" element={<Navigate to="/sign-in" />} />
-        <Route path="/sign-in" element={<SignIn />} />
+      <Route exact path="/" element={<SignIn />} />
+        {/* <Route path="/sign-in" element={<SignIn />} /> */}
         {sessionStorage.getItem("token") && (
           <Route path="/reset" element={<ResetPassword />} />
         )}
-        <Route path="*" element={<Navigate to="/sign-in" />} />
+        <Route path="*" element={<Navigate to="/" />} />
         {/* change later it to 404 page */}
-        {roleId == 0 && <Route path="/users" element={<AddUsers />} />}
-        {roleId == 0 && (
+        {Cookies.get('token') && roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+        {Cookies.get('token') && roleId == 0 && (
           <Route path="/notifications" element={<Notifications />} />
         )}
         {/* below line first check that token is present than show routes*/}

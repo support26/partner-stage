@@ -27,7 +27,7 @@ export default function useUsers() {
       isUserActiveOrNot
     );
     if (responseData.status === 200) {
-      console.log(responseData.data);
+      // console.log(responseData.data);
       dispatch(errorMessage(""));
       dispatch(successMsg(responseData.data.data));
     } else {
@@ -43,7 +43,7 @@ export default function useUsers() {
       data
     );
     if (responseData.status === 200) {
-      console.log(responseData);
+      // console.log(responseData);
       return responseData;
       // dispatch(errorMessage(""));
       // dispatch(successMsg(responseData.data.data));

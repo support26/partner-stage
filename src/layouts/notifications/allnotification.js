@@ -14,7 +14,7 @@ import useAdmin from "../../hooks/useAdmin";
 // mui custom style
 
 function Allnotification() {
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
@@ -33,7 +33,7 @@ function Allnotification() {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setImage(response.data.data.fileUrl);
         setBtnDisabled(false);
       })
@@ -60,7 +60,7 @@ function Allnotification() {
       };
         var SendNotifications = SendNotification(notification, admin_email);
         SendNotifications.then((res) => {
-          console.log("%%%%%%%%%", res);
+          // console.log("%%%%%%%%%", res);
     setLoading(false);
     setSendBtn("sent succesfully")
     setTimeout(() => {
