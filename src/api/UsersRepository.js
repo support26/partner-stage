@@ -2,23 +2,61 @@ import Api, { baseUrl } from "./config";
 const token = localStorage.getItem("token");
 
 class UsersRepository {
-  GetAllRunner = () => {
+  // getAllRunner = () => {
+  //   const token = localStorage.getItem("token");
+  //   return Api.get(`${baseUrl}users/allusers`, {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   });
+  //   };
+
+    async getAllRunner() {
+      const token = localStorage.getItem("token");
+      const reponse = await Api.get(`${baseUrl}users/allusers`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        });
+      return reponse;
+    }
+
+  // updateRunners = (id, data) => {
+  //   const token = localStorage.getItem("token");
+  //   return Api.put(`${baseUrl}users/profile/${id}`, data, {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   });
+  // };
+
+  async updateRunners(id, data) {
     const token = localStorage.getItem("token");
-    return Api.get(`${baseUrl}users/allusers`, {
+    const reponse = await Api.put(`${baseUrl}users/profile/${id}`, data, {
       headers: {
         Authorization: "Bearer " + token,
       },
-    });
-    };
-  UpdateRunners = (id, data) => {
-    const token = localStorage.getItem("token");
-    return Api.put(`${baseUrl}users/profile/${id}`, data, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-  };
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+
   UploadImageFile = (ImageFile) => {
+    const token = localStorage.getItem("token");
     return Api.put(`${baseUrl}users/uploadFile`, ImageFile, {
       headers: {
         Authorization: "Bearer " + token,
@@ -26,6 +64,25 @@ class UsersRepository {
       },
     });
   };
+  // async UploadImageFile(ImageFile) {
+  //   const token = localStorage.getItem("token");
+  //   const reponse = await Api.put(`${baseUrl}users/uploadFile`, ImageFile, {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //       "content-type": "multipart/form-data",
+
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return response;
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response);
+  //       return error.response;
+  //     });
+  //   return reponse;
+  // }
+
   TotalUsers = () => {
     const token = localStorage.getItem("token");
     return Api.get(`${baseUrl}users/app/totalUsers`, {
