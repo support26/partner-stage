@@ -140,6 +140,7 @@ function Basic () {
                 className="sign-button"
                 type="submit"
                 value="Submit"
+               
                 // onClick={createPost}
               >
                 Sign in

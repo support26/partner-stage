@@ -3,7 +3,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import UserRepository from "api/UsersRepository";
 
-
+import Dialog from "@mui/material/Dialog";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -47,6 +49,9 @@ function Distric() {
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [value,setValue] =useState(0)
   const {SendNotificationByDistrict,GetStateList,GetDistrictList} = useAdmin();
 
   const GetStateListForNotification = () => {
@@ -57,6 +62,17 @@ function Distric() {
        console.log(err);
      })
    }
+ 
+  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
+
   const getDistrict = (e) => {
     //setsId(e.target.value)
     const demo = e.target.value;
@@ -127,6 +143,17 @@ function Distric() {
       // console.log("@@@@@@", notification);
 setSendBtn(null)
     setLoading(true);
+    handleClickOpen()
+    // setSendBtn("")s
+    var timerun = 0;
+    var progressInterval = setInterval(() => {
+      setValue(prev => prev + 20);
+      timerun +=1
+      if (timerun === 6) {
+        clearInterval(progressInterval);
+        setValue(0)
+      }    
+      }, 800);
       var sendNotificationByDistrict = SendNotificationByDistrict(notification, admin_email,district);
       sendNotificationByDistrict.then((res) => {
           // console.log("%%%%%%%%%", res);
@@ -134,6 +161,7 @@ setSendBtn(null)
     setSendBtn("sent succesfully")
     setTimeout(() => {
       setSendBtn("send")
+      handleClose();
     }, 2000);
         })
         .catch((err) => {
@@ -234,6 +262,23 @@ setSendBtn(null)
         >
           {sendBtn}
         </LoadingButton>
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
     </Card>
   );
 }

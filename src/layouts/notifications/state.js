@@ -21,7 +21,10 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import useAdmin from "../../hooks/useAdmin";
+import Dialog from "@mui/material/Dialog";
 
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 //  React example components
 import InputLabel from "@mui/material/InputLabel";
@@ -42,6 +45,9 @@ function State() {
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [value,setValue] =useState(0)
   const {SendNotificationByState,GetStateList} = useAdmin();
 
  const GetStateListForNotification = () => {
@@ -52,6 +58,16 @@ function State() {
       console.log(err);
     })
   }
+ 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
+
   useEffect(() => {
     GetStateListForNotification();
     // axios
@@ -101,13 +117,27 @@ function State() {
       // console.log("@@@@@@", notification);
       setSendBtn(null)
     setLoading(true);
-      var sendNotificationByState = SendNotificationByState(notification, admin_email, state);
-      sendNotificationByState.then((res) => {
+    handleClickOpen()
+      
+
+    // setSendBtn("")s
+    var timerun = 0;
+  var progressInterval = setInterval(() => {
+    setValue(prev => prev + 20);
+    timerun +=1
+    if (timerun === 6) {
+      clearInterval(progressInterval);
+      setValue(0)
+    }    
+    }, 800);
+    var sendNotificationByState = SendNotificationByState(notification, admin_email, state);
+    sendNotificationByState.then((res) => {
           // console.log("%%%%%%%%%", res);
           setLoading(false);
           setSendBtn("sent succesfully")
           setTimeout(() => {
             setSendBtn("send")
+            handleClose();
           }, 2000);
         })
         .catch((err) => {
@@ -193,6 +223,25 @@ function State() {
         >
           {sendBtn}
         </LoadingButton>
+
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
+
     </Card>
   );
 }

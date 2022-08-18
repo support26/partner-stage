@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import * as XLSX from "xlsx";
-
+import Dialog from "@mui/material/Dialog";
+import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 // @mui material components
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -28,8 +31,19 @@ function Number() {
   const [sendBtn, setSendBtn] = useState('send');
   const [loading, setLoading] = useState(false);
   const {SendNotificationByNumber} = useAdmin();
+  const [maxWidth, setMaxWidth] = useState("sm");
 
+  const [value,setValue] =useState(0)
+  // let progressInterval = '0';
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+   
+    setOpen(false);
+  };
   var reqData;
 
   let file;
@@ -71,12 +85,15 @@ function Number() {
   };
 
   const sendNotification = (event) => {
+
+  
     event.preventDefault();
     if (phone_number.length <= 0) {
       setError("Please upload phone numbers");
     } else if (!title || !body || title.length <= 0 || body.length <= 0) {
       setError("Please fill all the fields");
     } else {
+      
       setSendBtn(null)
       setLoading(true);
       // console.log("#####", phone_number);
@@ -88,14 +105,30 @@ function Number() {
       };
       // console.log("@@@@@@", notification);
       setLoading(true);
+      handleClickOpen()
+      
+
       // setSendBtn("")s
+      var timerun = 0;
+    var progressInterval = setInterval(() => {
+      setValue(prev => prev + 20);
+      timerun +=1
+      if (timerun === 6) {
+        clearInterval(progressInterval);
+        setValue(0)
+      }    
+      }, 800);
       var sendNotificationByNumber = SendNotificationByNumber(notification, admin_email,phone_number)
       sendNotificationByNumber.then((res) => {
           // console.log("%%%%%%%%%", res);
           setLoading(false);
-    setSendBtn("sent succesfully")
+          
+          setSendBtn("sent succesfully")
+
     setTimeout(() => {
       setSendBtn("send")
+      handleClose();
+
     }, 2000);
         })
         .catch((err) => {
@@ -104,6 +137,11 @@ function Number() {
 
     }
   };
+  // useEffect(() => {
+  //   if (value >= 100) {
+  //     clearInterval(progressInterval);
+  //   }
+  // }, []);
 
   return (
     <Card sx={{ px: 5, py: 3, width: "100%", height: "530px" }}>
@@ -164,6 +202,26 @@ function Number() {
         >
           {sendBtn}
         </LoadingButton>
+
+        <Dialog width='100px' open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" ,}}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
+     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
+         
+       
+      </Dialog>
+
+      
     </Card>
   );
 }
