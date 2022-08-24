@@ -41,8 +41,8 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Opportunities",
-    key: "opportunities",
+    name: "Opportunity",
+    key: "opportunity",
     icon: <Icon fontSize="medium">assignment</Icon>,
     route: "/opportunities",
     component: <Opportunities />,

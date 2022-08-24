@@ -301,7 +301,7 @@ function AddUsers() {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openModal}
-        onClose={closeModal}
+        // onClose={closeModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -319,7 +319,7 @@ function AddUsers() {
                 marginTop: -2,
                 transform: "translateY(-1px)",
               }}
-              onClick={closeModal}
+               onClick={closeModal}
             >
               close
             </Icon>
@@ -394,7 +394,7 @@ function AddUsers() {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={editUserModal}
-        onClose={closeEditUserModal}
+        // onClose={closeEditUserModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
