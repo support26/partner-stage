@@ -267,6 +267,22 @@ class AdminRepository {
       });
     return reponse;
   }
+   //send version notification
+   async sendNotificationByVersion(notification, admin_email, AppVersion) {
+    const reponse = await Api.post(`${baseUrl}users/notification`, {
+      notification,
+      admin_email,
+      AppVersion,
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
   //send notification by state
   async sendNotificationByState(notification, admin_email, state) {
     const reponse = await Api.post(`${baseUrl}users/notification`, {

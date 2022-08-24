@@ -22,37 +22,55 @@ import bgImage from 'assets/images/Ellipse 1 (1).svg'
 //sign css
 import 'layouts/authentication/sign-in/sign.css'
 import useAdmin from '../../../../hooks/useAdmin'
+import { useDispatch, useSelector } from "react-redux";
+
 
 function Cover () {
   const nav = useNavigate()
   const [oldPassword, setoldPassword] = useState('')
   const [newPassword, setnewPassword] = useState('')
   const [confirmpassword, setconfirmpassword] = useState('')
-  const [msg, setMsg] = useState()
+  const [message , setMessage] = useState(<p style ={{fontSize:'10px' ,color:''}}><b>Must</b> include at least <b>one</b> number,<b>special characterone </b>,letter and of <b></b>.</p>)
+  // const [msg, setMsg] = useState()
+  const {msg}= useSelector((state)=>state.auth)
+
   const {GetUserProfile} = useAdmin()
   const {Reset} = useAdmin()
   //console.log(GetUserProfile);
-  console.log(document.cookie);
+  // console.log(document.cookie);
   const handleReset = event => {
     event.preventDefault()
-    Reset({oldPassword,newPassword})
- // console.log(Reset);
-    // const password=(newPassword===confirmpassword)  
-    // if(password){
-    //   console.log(password)
-      
-  //     Reset({oldPassword,newPassword,login_count})
+    // Reset({oldPassword,newPassword})
     
-  //   }else{
-  //     // console.log('does not match');
-  //  setMessage('Does Not Match password')
+ // console.log(Reset);
+     
+ if(newPassword.length > 8 ){
+   setMessage('')
+  if(newPassword !==oldPassword){
+    if( newPassword===confirmpassword ){
+      setMessage('')
+      Reset({oldPassword,newPassword})
+    
+    }else{
+      // console.log('does not match');
+   setMessage('Does Not Match password')
 
-  //   }
+    }}else{
+      setMessage('Not use old Password ')
+    }
+  }else{
+    setMessage('Must be 8 digit')
+  }
+    
+
     if(!localStorage.getItem('token')){
       return <Navigate to='/' />
     }
 
   };
+
+
+  
   
   return (
     <>
@@ -81,7 +99,7 @@ function Cover () {
           </MDBox>
 
           <form onSubmit={handleReset}>
-            <MDBox mb={2} px={4}>
+     <MDBox mb={2} px={4}>
               <MDInput
                 className='sign-input'
                 autoFocus
@@ -95,6 +113,8 @@ function Cover () {
                 required
                 fullWidth
               />
+            <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
+
             </MDBox>
             <MDBox mb={2} px={4}>
               <MDInput
@@ -106,7 +126,7 @@ function Cover () {
                 onChange={(e) => setnewPassword(e.target.value)}
                 fullWidth
               />
-              <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
+             
             </MDBox>
             <MDBox mb={5} px={4}>
               <MDInput
@@ -118,7 +138,7 @@ function Cover () {
                 onChange={(e) => setconfirmpassword(e.target.value)}
                 fullWidth
               />
-              <small style={{ color: 'red', fontSize: '15px' }}>{msg}</small>
+              <small style={{ color: 'red', fontSize: '15px' }}>{message}</small>
             </MDBox>
             <MDBox mb={0} px={3}>
               <MDButton
@@ -138,7 +158,7 @@ function Cover () {
              
               </MDTypography>
             </MDBox>
-            
+             
           </form>
         </Card>
       </BasicLayout>
