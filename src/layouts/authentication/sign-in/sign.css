@@ -13,7 +13,7 @@
 }
 .sign-input{
     background-color: #D9D9D9 !important;
-    border-radius: 20px 20px !important;
+    /* border-radius: 20px 20px !important; */
     
 
 }
@@ -37,3 +37,7 @@ border-radius: 28px;
     z-index: 99999999;
 }
 
+.eysImage img {width:'50px';
+    height:'20px'
+
+}

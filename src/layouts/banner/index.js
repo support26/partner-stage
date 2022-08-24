@@ -19,7 +19,54 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
+import InputBase from '@mui/material/InputBase';
+import { styled } from '@mui/material/styles';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP =20;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
+      width: 250,
+      padding:10
+    },
+  },
+};
+
+
+const version = [
+  "17.8",
+  "17.9",
+  "18.0",
+  "18.1",
+  "1.6",
+  "1.7",
+  "1.8",
+ "null"
+];
+
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    marginTop: theme.spacing(3),
+  },
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+  
+  },
+}));
 function Banner() {
   const { GetBanner, AddBanner, UpdateBanner } = useAdmin();
   const [user_id, setUser_id] = useState("");
@@ -28,12 +75,20 @@ function Banner() {
   const [loading, setLoading] = useState(false);
   const [banneropen, setBannerOpen] = useState(false);
   const [url, seturl] = useState("");
+  
   const [Description, setDescription] = useState("");
   const [DescriptionIsEnglish, setDescriptionIsEnglish] = useState("");
-  const [AppVersion, setAppVersion] = useState("");
+  const [AppVersion, setAppVersion] = useState([]);
   const [ButtonText, setButtonText] = useState("");
   const [ShowButton, setShowButton] = useState(false);
   const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState(false);
+
+//gif 
+const [gifurl, setGifurl] = useState(null);
+const [gifVisibility, setGifVisibility] = useState(false)
+const [gifOpen, setGifOpen] = useState(false)
+
+
   const [errormsg, setErrormsg] = useState(null);
   const roleId = localStorage.getItem("roleId");
 
@@ -44,10 +99,13 @@ function Banner() {
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion("");
+    setAppVersion([]);
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
+    setGifurl("");
+    setGifVisibility("");
+    setGifOpen("");
   };
 
   //popup
@@ -62,10 +120,13 @@ function Banner() {
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion("");
+    setAppVersion([]);
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
+    setGifurl("");
+    setGifVisibility("");
+    setGifOpen("");
     setErrormsg("");
   };
 
@@ -87,6 +148,18 @@ function Banner() {
   useEffect(() => {
     GetBannerData();
   }, []);
+  const isAllSelected =
+  version.length > 0 && AppVersion.length === version.length;
+
+const handleChange = (event) => {
+  const value = event.target.value;
+  if (value[value.length - 1] === "all") {
+    setAppVersion(AppVersion.length === version.length ? [] : version);
+    return;
+  }
+  setAppVersion(value);
+  console.log(AppVersion)
+};
 
   const columns = [
     {
@@ -108,10 +181,13 @@ function Banner() {
           seturl(thisRow.url);
           setDescription(thisRow.Description);
           setDescriptionIsEnglish(params.row.DescriptionIsEnglish);
-          setAppVersion(params.row.AppVersion);
+          // setAppVersion(params.row.AppVersion);
           setButtonText(params.row.ButtonText);
           setShowButton(params.row.ShowButton);
           setDisplayBannerOrNot(params.row.DisplayBannerOrNot);
+          setGifurl(params.row.gifurl);
+          setGifVisibility(params.row.gifVisibility);
+          setGifOpen(params.row.gifOpen);
           setEditUserModal(true);
           return
           //  console.log(thisRow);
@@ -167,23 +243,37 @@ function Banner() {
     },
 
     {
+      field: "gifurl",
+      headerName: "Gif Url ",
+      width: 200,
+    }, {
+      field: "gifVisibility",
+      headerName: "Gif Visibility",
+      width: 200,
+    }, {
+      field: "gifOpen",
+      headerName: "Gif Url to be opened ",
+      width: 200,
+    },
+
+    {
       field: "created_by",
-      headerName: "created_by",
+      headerName: "Created By",
       width: 200,
     },
     {
       field: "created_at",
-      headerName: "created_at",
+      headerName: "Created At",
       width: 200,
     },
     {
       field: "updated_by",
-      headerName: "updated_by",
+      headerName: "Updated By",
       width: 200,
     },
     {
       field: "updated_at",
-      headerName: "updated_at",
+      headerName: "Updated At",
       width: 200,
     },
   ];
@@ -198,6 +288,9 @@ function Banner() {
     ButtonText: ButtonText,
     ShowButton: ShowButton,
     DisplayBannerOrNot: DisplayBannerOrNot,
+    gifurl:gifurl,
+    gifVisibility:gifVisibility,
+    gifOpen:gifOpen,
     admin_email: admin_email,
   };
 
@@ -217,10 +310,13 @@ function Banner() {
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion("");
+    setAppVersion([]);
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
+    setGifurl("");
+    setGifVisibility("");
+    setGifOpen("");
   };
 
   //add banner
@@ -244,6 +340,9 @@ function Banner() {
         ButtonText,
         ShowButton,
         DisplayBannerOrNot,
+        gifurl,
+        gifVisibility,
+        gifOpen,
         admin_email,
       };
       // console.log(data_1);
@@ -261,10 +360,13 @@ function Banner() {
       seturl("");
       setDescription("");
       setDescriptionIsEnglish("");
-      setAppVersion("");
+      setAppVersion([]);
       setButtonText("");
       setShowButton("");
       setDisplayBannerOrNot("");
+      setGifurl("");
+      setGifVisibility("");
+      setGifOpen("");
     }
   };
   return (
@@ -287,16 +389,68 @@ function Banner() {
           // noValidate
           // component="form"
           sx={{
-            "& .MuiTextField-root": { mx: 2, my: 1 },
+            "& .MuiTextField-root": { mx: 1, my: 1 },
           }}
         >
           {/* < add Banner/> */}
 
           <form>
-            <Card sx={{ px: 3, py: 2, pb: 3, width: "100%" }}>
-              <MDTypography align="center" variant="h3" sx={{ mx: 8 }}>
-                Banner Notification
+             <MDTypography align="center" variant="h3" sx={{ px:18}}>
+              Add Banner
               </MDTypography>
+            <Card sx={{ px: 3, py: 1, width: "100%" }}>
+            {errormsg && (
+                <small style={{ color: "red", fontSize: "15px" }}>
+                  {errormsg}
+                </small>
+              )}    
+                <FormControl sx={{mb :0,p:1}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                
+                <Select
+                  id="demo-customized-select-native"
+                  value={AppVersion}
+                   onChange={handleChange}
+                  input={<BootstrapInput />}
+                  MenuProps={MenuProps}
+                  renderValue={(selected) => selected.join(', ')}
+                  style= {{
+                    width:'100%',
+                               
+                  }}
+                  
+                  multiple
+                >
+                 
+                   <MenuItem
+          value="all"
+                 
+        >
+          <ListItemIcon>
+            <Checkbox
+
+              checked={isAllSelected}
+              indeterminate={
+                AppVersion.length > 0 && AppVersion.length < version.length
+              }
+            />
+          </ListItemIcon>
+          <ListItemText
+         
+            primary="Select All"
+          />
+        </MenuItem>
+        {version.map((version) => (
+          <MenuItem key={version} value={version}>
+            <ListItemIcon>
+              <Checkbox checked={AppVersion.indexOf(version) > -1} />
+            </ListItemIcon>
+            <ListItemText primary={version} />
+          </MenuItem>
+        ))}
+                  
+                </Select>
+              </FormControl>
               <TextField
                 required
                 id="outlined-required"
@@ -318,6 +472,7 @@ function Banner() {
                 required
                 value={DescriptionIsEnglish}
                 onChange={(e) => setDescriptionIsEnglish(e.target.value)}
+                
               />
               <TextField
                 id="Button Text"
@@ -326,56 +481,81 @@ function Banner() {
                 onChange={(e) => setButtonText(e.target.value)}
                 required
               />
+            
+     
+     <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={ShowButton}
+                  onChange={(e) => setShowButton(e.target.value)}
+                  input={<BootstrapInput />}
+                  required
+                >
+                  <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
 
-              <TextField
-                id="App Version"
-                label="App Version"
-                value={AppVersion}
-                onChange={(e) => setAppVersion(e.target.value)}
-                type="number"
-                required
-              />
-              {errormsg && (
-                <small style={{ color: "red", fontSize: "15px" }}>
-                  {errormsg}
-                </small>
-              )}
-              <div style={{ display: "flex" }}>
-                <div style={{ margin: 8, marginLeft: "20px" }}>
-                  <MDTypography >show button</MDTypography>
+            <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={DisplayBannerOrNot}
+                  onChange={(e) => setDisplayBannerOrNot(e.target.value)}
+                  input={<BootstrapInput />}
+                  required
+                >
+                 <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
+              <hr/> 
+{/* gif  */}
+          <TextField
+              id="gifurl"
+              label="Gif Url"
+              value={gifurl}
+              onChange={(e) => setGifurl(e.target.value)}
+              required
+            />
+  
+            <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={gifVisibility}
+                  onChange={(e) => setGifVisibility(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                  <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
 
-                  <Select
-                    // value={age}
-                    // onChange={handleChange}
-                    label="Age"
-                    required
-                    style={{ width: 150, height: 30, border: "2px solide red" }}
-                    value={ShowButton}
-                    onChange={(e) => setShowButton(e.target.value)}
-                  >
-                    <MenuItem value="None"></MenuItem>
-                    <MenuItem value={true}>yes</MenuItem>
-                    <MenuItem value={false}>no</MenuItem>
-                  </Select>
-                </div>
-                <div style={{ margin: 8,  marginLeft: "20px" }}>
-                  <MDTypography >Display Banner</MDTypography>
-                  <Select
-                    // value={age}
-                    // onChange={handleChange}
-                    label="Age"
-                    required
-                    style={{ width: 150, height: 30, border: "2px solide red" }}
-                    value={DisplayBannerOrNot}
-                    onChange={(e) => setDisplayBannerOrNot(e.target.value)}
-                  >
-                    <MenuItem value="None"></MenuItem>
-                    <MenuItem value={true}>yes</MenuItem>
-                    <MenuItem value={false}>no</MenuItem>
-                  </Select>
-                </div>
-              </div>
+            <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={gifOpen}
+                  onChange={(e) => setGifOpen(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                 <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
 
+
+            
               <Button
                 type="submit"
                 variant="contained"
@@ -412,13 +592,60 @@ function Banner() {
           noValidate
           // component="form"
           sx={{
-            "& .MuiTextField-root": { mx: 3, my: 1 },
+            "& .MuiTextField-root": {mx: 1, my: 1},
           }}
         >
-          <MDTypography align="center" variant="h3" sx={{ pb: "10px" }}>
-            Anouncement & Banner
+          <MDTypography align="center" variant="h3" sx={{px:18} } >
+            Edit Banner
           </MDTypography>
-          <Card sx={{ px: 5, py: 1, pb: 4, width: "100%" }}>
+          <Card sx={{ px: 3, py: 1, width: "100%" }}> 
+          <FormControl sx={{mb :0,p:1}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                <br/>
+                <Select
+                  id="demo-customized-select-native"
+                  value={AppVersion}
+                   onChange={handleChange}
+                  input={<BootstrapInput />}
+                  MenuProps={MenuProps}
+                  renderValue={(selected) => selected.join(', ')}
+                  style= {{
+                    width:'100%',
+                               
+                  }}
+                  
+                  multiple
+                >
+                 
+                   <MenuItem
+          value="all"
+                 
+        >
+          <ListItemIcon>
+            <Checkbox
+
+              checked={isAllSelected}
+              indeterminate={
+                AppVersion.length > 0 && AppVersion.length < version.length
+              }
+            />
+          </ListItemIcon>
+          <ListItemText
+         
+            primary="Select All"
+          />
+        </MenuItem>
+        {version.map((version) => (
+          <MenuItem key={version} value={version}>
+            <ListItemIcon>
+              <Checkbox checked={AppVersion.indexOf(version) > -1} />
+            </ListItemIcon>
+            <ListItemText primary={version} />
+          </MenuItem>
+        ))}
+                  
+                </Select>
+              </FormControl>
             <TextField
               required
               id="outlined-required"
@@ -449,51 +676,84 @@ function Banner() {
               required
             />
 
-            <TextField
+            {/* <TextField
               id="App Version"
               label="App Version"
               value={AppVersion}
               onChange={(e) => setAppVersion(e.target.value)}
               type="number"
               required
-            />
-
-            <div style={{ display: "flex" }}>
-              <div style={{ margin: 8 }}>
-                <MDTypography >show button</MDTypography>
-
-                <Select
-                  // value={age}
-                  // onChange={handleChange}
-                  label="Age"
-                  required
-                  style={{ width: 150, height: 30, border: "2px solide red" }}
+            /> */}
+      
+       
+ <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
                   value={ShowButton}
                   onChange={(e) => setShowButton(e.target.value)}
+                  input={<BootstrapInput />}
                 >
-                  <MenuItem value="None"></MenuItem>
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
-                </Select>
-              </div>
-              <div style={{ margin: 8 }}>
-                <MDTypography >Display Banner</MDTypography>
-                <Select
-                  // value={age}
-                  // onChange={handleChange}
-                  label="Age"
-                  required
-                  style={{ width: 150, height: 30, border: "2px solide red" }}
+                  <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
+
+            <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
                   value={DisplayBannerOrNot}
                   onChange={(e) => setDisplayBannerOrNot(e.target.value)}
+                  input={<BootstrapInput />}
                 >
-                  <MenuItem value="None"></MenuItem>
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
-                </Select>
-              </div>
-            </div>
+                 <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
+              <hr/> 
+{/* gif  */}
+          <TextField
+              id="gifurl"
+              label="Gif Url"
+              value={gifurl}
+              onChange={(e) => setGifurl(e.target.value)}
+              required
+            />
+  
+            <FormControl sx={{ m: 1 }} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={gifVisibility}
+                  onChange={(e) => setGifVisibility(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                  <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
 
+            <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel>
+                <NativeSelect
+                  id="demo-customized-select-native"
+                  value={gifOpen}
+                  onChange={(e) => setGifOpen(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                 <option aria-label="None">Select</option>
+                  <option value={1}>yes</option>
+                  <option value={0}>no</option>
+                  
+                </NativeSelect>
+              </FormControl>
             <Button
               type="submit"
               variant="contained"

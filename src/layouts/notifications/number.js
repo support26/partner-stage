@@ -108,7 +108,7 @@ function Number() {
       handleClickOpen()
       
 
-      // setSendBtn("")s
+      // setSendBtn("")
       var timerun = 0;
     var progressInterval = setInterval(() => {
       setValue(prev => prev + 20);
@@ -144,9 +144,9 @@ function Number() {
   // }, []);
 
   return (
-    <Card sx={{ px: 5, py: 3, width: "100%", height: "530px" }}>
+    <Card sx={{ px: 5, py: 2, width: "100%"}}>
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-        Number Notification
+       Send By Number
       </MDTypography>
       <TextField
         helperText="Upload a excel file "

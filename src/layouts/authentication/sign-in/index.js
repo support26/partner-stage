@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
+import Hide from 'assets/images/hide1.png';
+import Show from 'assets/images/eye.png';
 // @mui material components
 import Card from "@mui/material/Card";
 
@@ -26,12 +28,15 @@ import Cookies from 'js-cookie'
 import useAdmin from '../../../hooks/useAdmin'
 import { Redirect } from "react-router-dom";
 import  {error} from 'api/AuthRepository';
+import { margin } from "@mui/system";
  
 function Basic () {
   const nav = useNavigate()
  
   const [admin_name, setadmin_name] = useState('')
   const [password, setPassword] = useState('')
+  const [isRevealPwd, setIsRevealPwd] = useState(false);
+
   // const [msg, setMsg] = useState()
   const {login, isLogin} = useAdmin()
  
@@ -111,7 +116,7 @@ function Basic () {
             <MDBox mb={2} px={4}>
               <MDInput
                 className="sign-input"
-                autoFocus
+               
                 id="name"
                 value={admin_name}
                 onChange={(e) => setadmin_name(e.target.value)}
@@ -125,7 +130,8 @@ function Basic () {
             <MDBox mb={5} px={4}>
               <MDInput
                 className="sign-input"
-                type="password"
+            
+                type={isRevealPwd ? "text" : "password"}
                 name="password"
                 value={password}
                 required
@@ -133,6 +139,12 @@ function Basic () {
                 onChange={(e) => setPassword(e.target.value)}
                 fullWidth
               />
+         <img
+          title={isRevealPwd ? "Hide password" : "Show password"}
+          src={isRevealPwd ? Hide : Show}
+          style={{width:'20px',height:'20px',float:'right',position:'relative',top:'-30px' , right:'20px'}}
+          onClick={() => setIsRevealPwd(prevState => !prevState)}
+        />
               <small style={{ color: "red", fontSize: "15px" }}>{msg}</small>
             </MDBox>
             <MDBox mb={0} px={3}>
