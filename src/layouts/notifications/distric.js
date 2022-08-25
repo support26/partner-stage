@@ -213,7 +213,7 @@ setSendBtn(null)
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-    console.log(district)
+    // console.log(district)
   };
 
   return (
@@ -230,7 +230,7 @@ setSendBtn(null)
           <NativeSelect value={sId} onChange={getDistrict} 
           input={<BootstrapInput />}
           MenuProps={MenuProps}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={(selected) => selected.join(",")}
           style= {{
             width:'100%',
                        
@@ -260,7 +260,7 @@ setSendBtn(null)
              onChange={handleChange}
             input={<BootstrapInput />}
             MenuProps={MenuProps}
-            renderValue={(selected) => selected.join(', ')}
+            renderValue={(selected) => selected.join(", ")}
             style= {{
               width:'100%',
                          

@@ -24,7 +24,6 @@ import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -50,17 +49,8 @@ const MenuProps = {
   },
 };
 
+const version = [null,"Version : 18.1","Version : 18.0", "Version : 17.8", "Version : 17.9",  "1.6", "Version : 1.7", "Version : 1.8"];
 
-const version = [
-  "17.8",
-  "17.9",
-  "18.0",
-  "18.1",
-  "1.6",
-  "1.7",
-  "1.8",
- "null"
-];
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
     marginTop: theme.spacing(3),
@@ -76,8 +66,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   
   },
 }));
-// import Anouncement from "./Anouncement";
-// import Editbanner_announcement from "./Editbanner_anouncement"
+
 
 function Anouncementbanner() {
   const {
@@ -95,12 +84,12 @@ function Anouncementbanner() {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
-    setAppVersion([])
+    setAppVersion("")
   };
 // Anouncement text
 const [AnnouncementText, setAnnouncementText] = useState("");
 const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
-const [AppVersion, setAppVersion] = useState([]);
+const [AppVersion, setAppVersion] = useState("");
 const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
   useState(false);
 const admin_email = localStorage.getItem("user_email");
@@ -161,11 +150,12 @@ const updateBanner= (event) => {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
-     setAppVersion([])
+     setAppVersion("")
   };
   const data2 = {
     AnnouncementText,
-    AnnouncementIsEnglish,AppVersion,
+    AnnouncementIsEnglish,
+    AppVersion,
     DisplayAnnouncementTextOrNot,
     admin_email
   };
@@ -196,20 +186,13 @@ const updateBanner= (event) => {
   }, []);
 
 
-  const isAllSelected =
-  version.length > 0 && AppVersion.length === version.length;
-
 const handleChange = (event) => {
+  event.preventDefault();
   const value = event.target.value;
-  if (value[value.length - 1] === "all") {
-    setAppVersion(AppVersion.length === version.length ? [] : version);
-    return;
-  }
+  
   setAppVersion(value);
   console.log(AppVersion)
 };
-
-  
 
   const columns = [
     {
@@ -233,7 +216,7 @@ const handleChange = (event) => {
           setAnnouncementText(thisRow.AnnouncementText);
           setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
           setDisplayAnnouncementTextOrNot(params.row.DisplayAnnouncementTextOrNot);
-        //  setAppVersion(params.row.AppVersion)
+          setAppVersion([params.row.AppVersion])
 
           setEditUserModal(true);
           return 
@@ -341,48 +324,37 @@ const handleChange = (event) => {
            Add Anouncement
         </MDTypography>
     <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
-    <FormControl sx={{mb :0,p:1}} variant="standard">
+      {/* <TextField 
+       value={AppVersion}
+      onChange={handleChange}
+
+      input={<BootstrapInput />}
+
+      MenuProps={MenuProps}/> */}
+  <FormControl sx={{mb :0,p:1}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
-                <br/>
+                
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
-                   onChange={handleChange}
+                  onChange={(e) => setAppVersion(e.target.value)}
+
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
-                  renderValue={(selected) => selected.join(', ')}
+                  
                   style= {{
                     width:'100%',
                                
                   }}
                   
-                  multiple
+                 
                 >
                  
-                   <MenuItem
-          value="all"
-                 
-        >
-          <ListItemIcon>
-            <Checkbox
-
-              checked={isAllSelected}
-              indeterminate={
-                AppVersion.length > 0 && AppVersion.length < version.length
-              }
-            />
-          </ListItemIcon>
-          <ListItemText
-         
-            primary="Select All"
-          />
-        </MenuItem>
+              
         {version.map((version) => (
           <MenuItem key={version} value={version}>
-            <ListItemIcon>
-              <Checkbox checked={AppVersion.indexOf(version) > -1} />
-            </ListItemIcon>
-            <ListItemText primary={version} />
+            {version}
+            
           </MenuItem>
         ))}
                   
@@ -407,18 +379,18 @@ const handleChange = (event) => {
           
         <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Display anounceopen</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
             onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
                   input={<BootstrapInput />}
                   
                 >
-                  <option aria-label="None">Select</option>
-                  <option value={true}>yes</option>
-                  <option value={false}>no</option>
+                  <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
      <br/>
         <Button
@@ -462,55 +434,51 @@ const handleChange = (event) => {
         </MDTypography>
           <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
        
+      {/* <TextField
+       value={AppVersion}
+       required
       
+       onChange={(e) => setAppVersion(e.target.value)}
+       label="VersionFilled "
+       /> */}
 
-          <FormControl sx={{mb :0,p:1}} variant="standard">
+
+<FormControl sx={{mb :0,p:1}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
                 <br/>
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
                    onChange={handleChange}
+                  // onChange={(e) => setShowButton(e.target.value)}
+
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
-                  renderValue={(selected) => selected.join(', ')}
+                 
                   style= {{
                     width:'100%',
                                
                   }}
                   
-                  multiple
+                  
                 >
-                 
-                   <MenuItem
-          value="all"
-                 
-        >
-          <ListItemIcon>
-            <Checkbox
-
-              checked={isAllSelected}
-              indeterminate={
-                AppVersion.length > 0 && AppVersion.length < version.length
-              }
-            />
-          </ListItemIcon>
-          <ListItemText
-         
-            primary="Select All"
-          />
-        </MenuItem>
-        {version.map((version) => (
-          <MenuItem key={version} value={version}>
-            <ListItemIcon>
-              <Checkbox checked={AppVersion.indexOf(version) > -1} />
-            </ListItemIcon>
-            <ListItemText primary={version} />
-          </MenuItem>
-        ))}
+            
+                {version.map((version) => (
+                  <MenuItem key={version} value={version}>
+                    {version}
+                    
+                  </MenuItem>
+                ))}
                   
                 </Select>
-              </FormControl>
+                </FormControl>
+               {/* <TextField
+          id="outlined"
+          required
+          value={AppVersion}
+          onChange={handleChange}
+          label="AppVersion "
+        /> */}
         <TextField
           id="outlined"
           required
@@ -531,17 +499,17 @@ const handleChange = (event) => {
       
         <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Display Announcement</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
                   onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                 <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
        
         <Button
@@ -594,7 +562,7 @@ const handleChange = (event) => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageMenuItems={[5, 10, 20, 50]}
           loading={loading}
         />
       </div>

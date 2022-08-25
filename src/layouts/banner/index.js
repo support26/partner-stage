@@ -21,7 +21,6 @@ import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import InputBase from '@mui/material/InputBase';
 import { styled } from '@mui/material/styles';
 import ListItemText from '@mui/material/ListItemText';
@@ -40,17 +39,7 @@ const MenuProps = {
   },
 };
 
-
-const version = [
-  "17.8",
-  "17.9",
-  "18.0",
-  "18.1",
-  "1.6",
-  "1.7",
-  "1.8",
- "null"
-];
+const version = [null,"Version : 17.8", "Version : 17.9", "Version : 18.0", "Version : 18.1", "1.6", "Version : 1.7", "Version : 1.8"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -78,15 +67,15 @@ function Banner() {
   
   const [Description, setDescription] = useState("");
   const [DescriptionIsEnglish, setDescriptionIsEnglish] = useState("");
-  const [AppVersion, setAppVersion] = useState([]);
+  const [AppVersion, setAppVersion] = useState("");
   const [ButtonText, setButtonText] = useState("");
   const [ShowButton, setShowButton] = useState(false);
   const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState(false);
 
 //gif 
-const [gifurl, setGifurl] = useState(null);
-const [gifVisibility, setGifVisibility] = useState(false)
-const [gifOpen, setGifOpen] = useState(false)
+const [Gif_Url, setGif_Url] = useState(null);
+const [Gif_Visibility, setGif_Visibility] = useState(null)
+const [Gif_Url_to_be_opened, setGif_Url_to_be_opened] = useState(null)
 
 
   const [errormsg, setErrormsg] = useState(null);
@@ -99,13 +88,13 @@ const [gifOpen, setGifOpen] = useState(false)
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion([]);
+    setAppVersion("");
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
-    setGifurl("");
-    setGifVisibility("");
-    setGifOpen("");
+    setGif_Url(null);
+    setGif_Visibility(null);
+    setGif_Url_to_be_opened(null);
   };
 
   //popup
@@ -120,13 +109,13 @@ const [gifOpen, setGifOpen] = useState(false)
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion([]);
+    setAppVersion("");
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
-    setGifurl("");
-    setGifVisibility("");
-    setGifOpen("");
+    setGif_Url("");
+    setGif_Visibility("");
+    setGif_Url_to_be_opened("");
     setErrormsg("");
   };
 
@@ -148,15 +137,10 @@ const [gifOpen, setGifOpen] = useState(false)
   useEffect(() => {
     GetBannerData();
   }, []);
-  const isAllSelected =
-  version.length > 0 && AppVersion.length === version.length;
-
+  
 const handleChange = (event) => {
   const value = event.target.value;
-  if (value[value.length - 1] === "all") {
-    setAppVersion(AppVersion.length === version.length ? [] : version);
-    return;
-  }
+ 
   setAppVersion(value);
   console.log(AppVersion)
 };
@@ -181,13 +165,13 @@ const handleChange = (event) => {
           seturl(thisRow.url);
           setDescription(thisRow.Description);
           setDescriptionIsEnglish(params.row.DescriptionIsEnglish);
-          // setAppVersion(params.row.AppVersion);
+         setAppVersion(params.row.AppVersion);
           setButtonText(params.row.ButtonText);
           setShowButton(params.row.ShowButton);
           setDisplayBannerOrNot(params.row.DisplayBannerOrNot);
-          setGifurl(params.row.gifurl);
-          setGifVisibility(params.row.gifVisibility);
-          setGifOpen(params.row.gifOpen);
+          setGif_Url(params.row.Gif_Url);
+          setGif_Visibility(params.row.Gif_Visibility);
+          setGif_Url_to_be_opened(params.row.Gif_Url_to_be_opened);
           setEditUserModal(true);
           return
           //  console.log(thisRow);
@@ -243,15 +227,15 @@ const handleChange = (event) => {
     },
 
     {
-      field: "gifurl",
+      field: "Gif_Url",
       headerName: "Gif Url ",
       width: 200,
     }, {
-      field: "gifVisibility",
+      field: "Gif_Visibility",
       headerName: "Gif Visibility",
       width: 200,
     }, {
-      field: "gifOpen",
+      field: "Gif_Url_to_be_opened",
       headerName: "Gif Url to be opened ",
       width: 200,
     },
@@ -288,9 +272,9 @@ const handleChange = (event) => {
     ButtonText: ButtonText,
     ShowButton: ShowButton,
     DisplayBannerOrNot: DisplayBannerOrNot,
-    gifurl:gifurl,
-    gifVisibility:gifVisibility,
-    gifOpen:gifOpen,
+    Gif_Url:Gif_Url,
+    Gif_Visibility:Gif_Visibility,
+    Gif_Url_to_be_opened:Gif_Url_to_be_opened,
     admin_email: admin_email,
   };
 
@@ -310,13 +294,13 @@ const handleChange = (event) => {
     seturl("");
     setDescription("");
     setDescriptionIsEnglish("");
-    setAppVersion([]);
+    setAppVersion("");
     setButtonText("");
     setShowButton("");
     setDisplayBannerOrNot("");
-    setGifurl("");
-    setGifVisibility("");
-    setGifOpen("");
+    setGif_Url("");
+    setGif_Visibility("");
+    setGif_Url_to_be_opened("");
   };
 
   //add banner
@@ -340,12 +324,12 @@ const handleChange = (event) => {
         ButtonText,
         ShowButton,
         DisplayBannerOrNot,
-        gifurl,
-        gifVisibility,
-        gifOpen,
+        Gif_Url,
+        Gif_Visibility,
+        Gif_Url_to_be_opened,
         admin_email,
       };
-      // console.log(data_1);
+      console.log(data_1);
       var addBanners = AddBanner(data_1);
       addBanners
         .then((response) => {
@@ -360,13 +344,13 @@ const handleChange = (event) => {
       seturl("");
       setDescription("");
       setDescriptionIsEnglish("");
-      setAppVersion([]);
+      setAppVersion("");
       setButtonText("");
       setShowButton("");
       setDisplayBannerOrNot("");
-      setGifurl("");
-      setGifVisibility("");
-      setGifOpen("");
+      setGif_Url("");
+      setGif_Visibility("");
+      setGif_Url_to_be_opened("");
     }
   };
   return (
@@ -406,46 +390,28 @@ const handleChange = (event) => {
               )}    
                 <FormControl sx={{mb :0,p:1}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
-                
+                <br/>
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
-                   onChange={handleChange}
+                  onChange={(e) => setAppVersion(e.target.value)}
+
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
-                  renderValue={(selected) => selected.join(', ')}
+                  
                   style= {{
                     width:'100%',
                                
                   }}
                   
-                  multiple
+                 
                 >
                  
-                   <MenuItem
-          value="all"
-                 
-        >
-          <ListItemIcon>
-            <Checkbox
-
-              checked={isAllSelected}
-              indeterminate={
-                AppVersion.length > 0 && AppVersion.length < version.length
-              }
-            />
-          </ListItemIcon>
-          <ListItemText
-         
-            primary="Select All"
-          />
-        </MenuItem>
+              
         {version.map((version) => (
           <MenuItem key={version} value={version}>
-            <ListItemIcon>
-              <Checkbox checked={AppVersion.indexOf(version) > -1} />
-            </ListItemIcon>
-            <ListItemText primary={version} />
+            {version}
+            
           </MenuItem>
         ))}
                   
@@ -460,7 +426,7 @@ const handleChange = (event) => {
               />
               <TextField
                 id="outlined"
-                label="Description"
+                label="Description Hindi"
                 value={Description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -484,74 +450,74 @@ const handleChange = (event) => {
             
      
      <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel>
-                <NativeSelect
+                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel><br/>
+                <Select
                   id="demo-customized-select-native"
                   value={ShowButton}
                   onChange={(e) => setShowButton(e.target.value)}
                   input={<BootstrapInput />}
                   required
                 >
-                  <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                  <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
 
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel>
-                <NativeSelect
+                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel><br/>
+                <Select
                   id="demo-customized-select-native"
                   value={DisplayBannerOrNot}
                   onChange={(e) => setDisplayBannerOrNot(e.target.value)}
                   input={<BootstrapInput />}
                   required
                 >
-                 <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
               <hr/> 
 {/* gif  */}
           <TextField
-              id="gifurl"
+              id="Gif_Url"
               label="Gif Url"
-              value={gifurl}
-              onChange={(e) => setGifurl(e.target.value)}
+              value={Gif_Url}
+              onChange={(e) => setGif_Url(e.target.value)}
               required
             />
   
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel>
-                <NativeSelect
+                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel><br/>
+                <Select
                   id="demo-customized-select-native"
-                  value={gifVisibility}
-                  onChange={(e) => setGifVisibility(e.target.value)}
+                  value={Gif_Visibility}
+                  onChange={(e) => setGif_Visibility(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                  <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                  <MenuItem aria-label="None" >Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
 
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel>
-                <NativeSelect
+                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel><br/>
+                <Select
                   id="demo-customized-select-native"
-                  value={gifOpen}
-                  onChange={(e) => setGifOpen(e.target.value)}
+                  value={Gif_Url_to_be_opened}
+                  onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                 <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
 
 
@@ -606,43 +572,25 @@ const handleChange = (event) => {
                   id="demo-customized-select-native"
                   value={AppVersion}
                    onChange={handleChange}
+                  // onChange={(e) => setShowButton(e.target.value)}
+
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
-                  renderValue={(selected) => selected.join(', ')}
+                 
                   style= {{
                     width:'100%',
                                
                   }}
                   
-                  multiple
+                  
                 >
-                 
-                   <MenuItem
-          value="all"
-                 
-        >
-          <ListItemIcon>
-            <Checkbox
-
-              checked={isAllSelected}
-              indeterminate={
-                AppVersion.length > 0 && AppVersion.length < version.length
-              }
-            />
-          </ListItemIcon>
-          <ListItemText
-         
-            primary="Select All"
-          />
-        </MenuItem>
-        {version.map((version) => (
-          <MenuItem key={version} value={version}>
-            <ListItemIcon>
-              <Checkbox checked={AppVersion.indexOf(version) > -1} />
-            </ListItemIcon>
-            <ListItemText primary={version} />
-          </MenuItem>
-        ))}
+            
+                {version.map((version) => (
+                  <MenuItem key={version} value={version}>
+                    {version}
+                    
+                  </MenuItem>
+                ))}
                   
                 </Select>
               </FormControl>
@@ -655,7 +603,7 @@ const handleChange = (event) => {
             />
             <TextField
               id="outlined"
-              label="Description"
+              label="Description Hindi"
               value={Description}
               onChange={(e) => setDescription(e.target.value)}
               required
@@ -688,71 +636,71 @@ const handleChange = (event) => {
        
  <FormControl sx={{ m: 1 }} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
                   value={ShowButton}
                   onChange={(e) => setShowButton(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                  <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                  <MenuItem value={null}>Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
 
             <FormControl sx={{ m: 1 }} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
                   value={DisplayBannerOrNot}
                   onChange={(e) => setDisplayBannerOrNot(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                 <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
               <hr/> 
 {/* gif  */}
           <TextField
-              id="gifurl"
+              id="Gif_Url"
               label="Gif Url"
-              value={gifurl}
-              onChange={(e) => setGifurl(e.target.value)}
+              value={Gif_Url}
+              onChange={(e) => setGif_Url(e.target.value)}
               required
             />
   
             <FormControl sx={{ m: 1 }} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
-                  value={gifVisibility}
-                  onChange={(e) => setGifVisibility(e.target.value)}
+                  value={Gif_Visibility}
+                  onChange={(e) => setGif_Visibility(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                  <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                  <MenuItem avalue={null}>Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
 
             <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
                 <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel>
-                <NativeSelect
+                <Select
                   id="demo-customized-select-native"
-                  value={gifOpen}
-                  onChange={(e) => setGifOpen(e.target.value)}
+                  value={Gif_Url_to_be_opened}
+                  onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
                   input={<BootstrapInput />}
                 >
-                 <option aria-label="None">Select</option>
-                  <option value={1}>yes</option>
-                  <option value={0}>no</option>
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                   
-                </NativeSelect>
+                </Select>
               </FormControl>
             <Button
               type="submit"
@@ -800,7 +748,7 @@ const handleChange = (event) => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageMenuItems={[5, 10, 20, 50]}
           loading={loading}
         />
       </div>
