@@ -228,6 +228,15 @@ GetDistrictList: async (stateId) => {
         return responseData;
       }
       return responseData;
-    }
+    },
+
+      //send notification by version
+      SendNotificationByVersion: async (notification, admin_email, AppVersion) => {
+        var responseData = await AdminRepository.sendNotificationByVersion(notification, admin_email, AppVersion);
+        if (responseData.status === 200) {
+          return responseData;
+        }
+        return responseData;
+      }
   };
 }

@@ -289,57 +289,57 @@ export default function Tables() {
     },
     {
       field: "acct_holder_name",
-      headerName: "acct_holder_name",
+      headerName: "Account Holder Name",
       type: "text",
       width: 90,
     },
 
     {
       field: "bank_name",
-      headerName: "bank_name",
+      headerName: "Bank Name",
       type: "text",
       width: 130,
     },
     {
       field: "bank_ifsc_code",
-      headerName: "bank_ifsc_code",
+      headerName: "IFSC Code",
       type: "text",
       width: 130,
     },
     {
       field: "pancard_no",
-      headerName: "pancard_no",
+      headerName: "Pancard Number",
       type: "text",
       width: 130,
     },
 
     {
       field: "other_id_proof_no",
-      headerName: "other_id_proof_no",
+      headerName: "Other ID Proof Number",
       type: "text",
       width: 130,
     },
     {
       field: "runner_state",
-      headerName: "runner_state",
+      headerName: "Runner State",
       type: "text",
       width: 130,
     },
     {
       field: "runner_district",
-      headerName: "runner_district",
+      headerName: "Runner District",
       type: "text",
       width: 130,
     },
     {
       field: "runner_taluka",
-      headerName: "runner_taluka",
+      headerName: "Runner Taluka",
       type: "text",
       width: 130,
     },
     {
       field: "runner_village",
-      headerName: "runner_village",
+      headerName: "Runner Village",
       type: "text",
       width: 130,
     },
@@ -398,12 +398,12 @@ export default function Tables() {
       width: 230,
     },  {
       field: "updated_by",
-      headerName: "updated_by",
+      headerName: "Update By",
       type: "text",
       width: 160,
     }, {
       field: "updated_at",
-      headerName: "updated_at",
+      headerName: "Update At",
       type: "text",
       width: 150,
     },
@@ -700,7 +700,7 @@ export default function Tables() {
             sx={{
               "& .MuiTextField-root": { mx: 3, my: 2, width: "20ch" },
             }}
-            noValidate
+            
             autoComplete="off"
           >
             <TextField

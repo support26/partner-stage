@@ -24,14 +24,57 @@ import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 import { Fullscreen } from "@mui/icons-material";
+import InputBase from '@mui/material/InputBase';
+import { styled } from '@mui/material/styles';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP =20;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
+      width: 250,
+      padding:10
+    },
+  },
+};
+
+
+const version = [
+  "17.8",
+  "17.9",
+  "18.0",
+  "18.1",
+  "1.6",
+  "1.7",
+  "1.8",
+ "null"
+];
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    marginTop: theme.spacing(3),
+  },
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+  
+  },
+}));
 // import Anouncement from "./Anouncement";
 // import Editbanner_announcement from "./Editbanner_anouncement"
 
@@ -51,11 +94,12 @@ function Anouncementbanner() {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
-   
+    setAppVersion("")
   };
 // Anouncement text
 const [AnnouncementText, setAnnouncementText] = useState("");
 const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
+const [AppVersion, setAppVersion] = useState("");
 const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
   useState(false);
 const admin_email = localStorage.getItem("user_email");
@@ -95,6 +139,7 @@ const [disabled, setDisabled] = useState(
     AnnouncementText: AnnouncementText,
     AnnouncementIsEnglish: AnnouncementIsEnglish,
     DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
+    AppVersion:AppVersion,
     admin_email
   }
 
@@ -115,12 +160,14 @@ const updateBanner= (event) => {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
+     setAppVersion("")
   };
   const data2 = {
     AnnouncementText,
     AnnouncementIsEnglish,
+    AppVersion,
     DisplayAnnouncementTextOrNot,
-    admin_email,
+    admin_email
   };
   const postandleSubmit = (event) => {
     event.preventDefault();
@@ -138,8 +185,8 @@ const updateBanner= (event) => {
       setAnnouncementText(null);
       setAnnouncementIsEnglish(null);
       setDisplayAnnouncementTextOrNot(null);
-    
-   
+      setAppVersion(null)
+
   };
 
   useEffect(() => {
@@ -147,6 +194,15 @@ const updateBanner= (event) => {
     GetAnounce();
    
   }, []);
+
+
+const handleChange = (event) => {
+  event.preventDefault();
+  const value = event.target.value;
+  
+  setAppVersion(value);
+  console.log(AppVersion)
+};
 
   const columns = [
     {
@@ -170,7 +226,7 @@ const updateBanner= (event) => {
           setAnnouncementText(thisRow.AnnouncementText);
           setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
           setDisplayAnnouncementTextOrNot(params.row.DisplayAnnouncementTextOrNot);
-         
+          setAppVersion([params.row.AppVersion])
 
           setEditUserModal(true);
           return 
@@ -204,6 +260,11 @@ const updateBanner= (event) => {
       width: 200,
     },
     {
+      field: "AppVersion",
+      headerName: "AppVersion",
+      width: 200,
+    },
+    {
       field: "DisplayAnnouncementTextOrNot",
       headerName: "Display Announcement",
       width: 200,  
@@ -217,21 +278,21 @@ const updateBanner= (event) => {
     },
     {
       field: "created_by",
-      headerName: "created_by",
+      headerName: "Created By",
       width: 200,
     }, 
      {
       field: "created_at",
-      headerName: "created_at",
+      headerName: "Created At",
       width: 200,
     },
     {
         field: "updated_by",
-        headerName: "updated_by",
+        headerName: "Updated By",
         width: 200,
       }, {
         field: "updated_at",
-        headerName: "updated_at",
+        headerName: "Updated At",
         width: 200,
       },
   
@@ -262,18 +323,53 @@ const updateBanner= (event) => {
         </div>
         <Box
           sx={{
-            "& .MuiTextField-root": { mx: 3, my: 2 },
+            "& .MuiTextField-root": { mx:1, my: 1 },
           }}
         >
-   <form onSubmit={postandleSubmit}> 
-    
-    <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
-       
-       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-          Anouncement Notification
-        </MDTypography>
 
-       
+
+          {/* add Anouncement */}
+   <form onSubmit={postandleSubmit}> 
+     <MDTypography align="center" variant="h3" sx={{ px:10 }}>
+           Add Anouncement
+        </MDTypography>
+    <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
+      {/* <TextField 
+       value={AppVersion}
+      onChange={handleChange}
+
+      input={<BootstrapInput />}
+
+      MenuProps={MenuProps}/> */}
+  <FormControl sx={{mb :0,p:1}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                
+                <Select
+                  id="demo-customized-select-native"
+                  value={AppVersion}
+                  onChange={(e) => setAppVersion(e.target.value)}
+
+                  input={<BootstrapInput />}
+                  MenuProps={MenuProps}
+                  
+                  style= {{
+                    width:'100%',
+                               
+                  }}
+                  
+                 
+                >
+                 
+              
+        {version.map((version) => (
+          <MenuItem key={version} value={version}>
+            {version}
+            
+          </MenuItem>
+        ))}
+                  
+                </Select>
+              </FormControl>
         <TextField
           id="outlined"
           required
@@ -290,26 +386,23 @@ const updateBanner= (event) => {
           onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
           required
         />
-        <div style={{ marginLeft: 30, marginBottom: 20 }}>
-          <MDTypography>Display Banner</MDTypography>
-          <Select
-            // value={age}
-            // onChange={handleChange}
-            label="Display"
-            required
-            style={{ width: 200, height: 30 }}
-            value={DisplayAnnouncementTextOrNot}
+          
+        <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Display anounceopen</InputLabel>
+                <Select
+                  id="demo-customized-select-native"
+                  value={DisplayAnnouncementTextOrNot}
             onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
-          >
-            <MenuItem value="None">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value= {true} >yes</MenuItem>
-            <MenuItem value= {false} >no</MenuItem>
-          </Select>
-        </div>
-
-     
+                  input={<BootstrapInput />}
+                  
+                >
+                  <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
+                  
+                </Select>
+              </FormControl>
+     <br/>
         <Button
           type="submit"
           variant="contained"
@@ -344,16 +437,58 @@ const updateBanner= (event) => {
         </div>
         <Box
           sx={{
-            "& .MuiTextField-root": { mx: 3, my: 2 },
+            "& .MuiTextField-root": { mx: 1, my: 1 },
           }}
-        >
+        > <MDTypography align="center" variant="h3" sx={{ px: 10 }}>
+             Edit Anouncement 
+        </MDTypography>
           <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
        
-       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-          Anouncement Notification
-        </MDTypography>
+      {/* <TextField
+       value={AppVersion}
+       required
+      
+       onChange={(e) => setAppVersion(e.target.value)}
+       label="VersionFilled "
+       /> */}
 
-       
+
+<FormControl sx={{mb :0,p:1}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                <br/>
+                <Select
+                  id="demo-customized-select-native"
+                  value={AppVersion}
+                   onChange={handleChange}
+                  // onChange={(e) => setShowButton(e.target.value)}
+
+                  input={<BootstrapInput />}
+                  MenuProps={MenuProps}
+                 
+                  style= {{
+                    width:'100%',
+                               
+                  }}
+                  
+                  
+                >
+            
+                {version.map((version) => (
+                  <MenuItem key={version} value={version}>
+                    {version}
+                    
+                  </MenuItem>
+                ))}
+                  
+                </Select>
+                </FormControl>
+               {/* <TextField
+          id="outlined"
+          required
+          value={AppVersion}
+          onChange={handleChange}
+          label="AppVersion "
+        /> */}
         <TextField
           id="outlined"
           required
@@ -370,32 +505,23 @@ const updateBanner= (event) => {
           onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
           required
         />
-        <div style={{ marginLeft: 30, marginBottom: 20 }}>
-          <MDTypography>Display Banner</MDTypography>
-          <Select
-            // value={age}
-            // onChange={handleChange}
-            label="Display"
-            required
-            style={{ width: 200, height: 30 }}
-            value={DisplayAnnouncementTextOrNot}
-            onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
-          >
-            <MenuItem value="None">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value= {1} >yes</MenuItem>
-            <MenuItem value= {0} >no</MenuItem>
-          </Select>
-        </div>
-
-        {/* <Box paddingLeft={10}>
-            <MDTypography for="cars">DisplayAnnouncementTextOrNot</MDTypography>
-            <select name="cars" id="cars">
-              <option value="true">yes</option>
-              <option value="false">No</option>
-            </select>
-          </Box> */}
+        
+      
+        <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
+                <InputLabel htmlFor="demo-customized-select-native">Display Announcement</InputLabel>
+                <Select
+                  id="demo-customized-select-native"
+                  value={DisplayAnnouncementTextOrNot}
+                  onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                 <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
+                  
+                </Select>
+              </FormControl>
+       
         <Button
           type="submit"
           variant="contained"
@@ -446,7 +572,7 @@ const updateBanner= (event) => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageMenuItems={[5, 10, 20, 50]}
           loading={loading}
         />
       </div>

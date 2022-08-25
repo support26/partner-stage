@@ -136,11 +136,11 @@ const Opportunities = () => {
           sx={{
             maxWidth,
           }}
-        >
-          <Card sx={{ px: 5, py: 0, pb: 2, width: "100%" }}>
-            <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
-              Oportunity
+        >  <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
+            Opportunity
             </MDTypography>
+          <Card sx={{ px: 5, py:   0, pb: 2, width: "100%" }}>
+          
             <TextField
               type="text"
               label="Title..."

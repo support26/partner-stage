@@ -34,6 +34,39 @@ import Select from "@mui/material/Select";
 import { useEffect } from "react";
 import axios from "axios";
 import useAdmin from "../../hooks/useAdmin";
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import './style.css'
+import InputBase from '@mui/material/InputBase';
+import { styled } from '@mui/material/styles';
+// mui custom style
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    marginTop: theme.spacing(3),
+  },
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+  
+  },
+}));
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP =20;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
+      width: 250,
+      padding:10,
+      fontSize:10
+    },
+  },
+};
 
 // mui custom style
 
@@ -44,7 +77,7 @@ function Distric() {
   const [image, setImage] = useState(null);
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
-  const [district, setDistrict] = useState("");
+  const [district, setDistrict] = useState([]);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState('send');
@@ -172,18 +205,39 @@ setSendBtn(null)
     }
   };
 
+  const handleChange = (event) => {
+    const {
+      target: { value }
+    } = event;
+    setDistrict(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+    // console.log(district)
+  };
+
   return (
     <Card sx={{ px: 5, py: 1, pb: 4, width: "100%" }}>
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-        Distric Notification
+        District Notification
       </MDTypography>
-      <Box sx={{ pb: 2, minWidth: 120 }}>
-        <FormControl sx={{ width: 160 }}>
+    
+      <FormControl sx={{ mb:3 }}>
+      
           <InputLabel variant="standard" htmlFor="uncontrolled-native">
             State
-          </InputLabel>
-          <NativeSelect value={sId} onChange={getDistrict}>
-            <option> None </option>
+          </InputLabel><br/>
+          <NativeSelect value={sId} onChange={getDistrict} 
+          input={<BootstrapInput />}
+          MenuProps={MenuProps}
+          renderValue={(selected) => selected.join(",")}
+          style= {{
+            width:'100%',
+                       
+          }}>
+           <MenuItem value="" disabled>
+                      <em>select the value</em>
+                    </MenuItem>
             {state.map(({ name, sid }) => {
               return (
                 <option key={name} value={sid} style={{ color: "black" }}>
@@ -194,25 +248,41 @@ setSendBtn(null)
           </NativeSelect>
         </FormControl>
 
-        <FormControl sx={{ width: 120, ml: 3 }}>
+        <FormControl sx={{mb :3}} variant="standard">
           <InputLabel variant="standard" htmlFor="uncontrolled-native">
             District
           </InputLabel>
-          <NativeSelect
+          <br/>
+          <Select
             value={district}
-            onChange={(e) => setDistrict(e.target.value)}
+            id="demo-customized-select-native"
+
+             onChange={handleChange}
+            input={<BootstrapInput />}
+            MenuProps={MenuProps}
+            renderValue={(selected) => selected.join(", ")}
+            style= {{
+              width:'100%',
+                         
+            }}
+            multiple
           >
-            <option> None </option>
+             <MenuItem value="" disabled>
+                      <em>select the value</em>
+                    </MenuItem>
             {districts.map(({ name }) => {
               return (
-                <option key={name} value={name} style={{ color: "black" }}>
-                  {name}
-                </option>
+               
+
+                 <MenuItem key={name} value={name} style={{ color: "black" }}>
+                    <Checkbox checked={district.indexOf(name) > -1} />
+                <ListItemText primary={name} />
+                </MenuItem>
               );
             })}
-          </NativeSelect>
+          </Select>
         </FormControl>
-      </Box>
+     
       <TextField
         type="text"
         label="Title..."

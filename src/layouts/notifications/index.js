@@ -29,15 +29,17 @@ import "../AddUsers/style.css";
 import axios from "axios";
 import { useEffect } from "react";
 import useAdmin from "../../hooks/useAdmin";
+import Version from "./sendversion";
 
 function Notifications() {
   const [open, setOpen] = useState(false);
   const [disopen, setdisOpen] = useState(false);
   const [numopen, setnumOpen] = useState(false);
   const [allopen, setAllOpen] = useState(false);
+  const [versionopen, setVersionOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("sm");
   const [noticationLog, setNoticationLog] = useState([]);
-
+ 
   const {
     GetNotification } = useAdmin();
 
@@ -87,6 +89,14 @@ function Notifications() {
     setAllOpen(false);
 
   };
+  const handleVersionOpen = () => {
+    setVersionOpen(true);
+  };
+  const handleVersionClose = () => {
+    GetBanner();
+    setVersionOpen(false);
+
+  };
   
   useEffect(() => {
     GetBanner();
@@ -100,7 +110,7 @@ function Notifications() {
       <MDBox mt={3} mb={1}>
         <Grid container spacing={1} justifyContent="center">
           <Grid item sx={{ padding: 1 }} xs={12} sm={12} md={8}>
-            <Card sx={{  width: "100%" ,py:10}}>
+            <Card sx={{  width: "100%" ,py:6}}>
             
 
               <Box sx={{ }} textAlign='center'>
@@ -143,7 +153,7 @@ function Notifications() {
                     }}
                     onClick={handleDistricOpen}
                   >
-                    Send By Distric
+                    Send By District
                   </Button>
                   <br/>
                   <Button
@@ -157,7 +167,18 @@ function Notifications() {
                   >
                     Send By Number
                   </Button>
-
+                  <br/>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      backgroundColor: "#33A2B5",
+                      width: 200,
+                      margin:10
+                    }}
+                    onClick={handleVersionOpen}
+                  >
+                    Send By version
+                  </Button>
                
 
               
@@ -305,7 +326,31 @@ function Notifications() {
           <Number />
         </Box>
       </Dialog>
+{/* Send By Version  */}
+      {/* for Number wise  */}
 
+      <Dialog maxWidth={maxWidth} open={versionopen}>
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleVersionClose}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            maxWidth,
+          }}
+        >
+      <Version/>
+        </Box>
+      </Dialog>
     
     </DashboardLayout>
   );
