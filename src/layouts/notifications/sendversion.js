@@ -41,7 +41,7 @@ const MenuProps = {
   },
 };
 
-const version = ["17.8", "17.9", "18.0", "18.1", "1.6", "1.7", "1.8", "null"];
+const version = [null,"Version : 17.8", "Version : 17.9", "Version : 18.0", "Version : 18.1", "1.6", "Version : 1.7", "Version : 1.8"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -159,7 +159,7 @@ function Version() {
       return;
     }
     setAppVersion(value);
-    console.log(AppVersion);
+    // console.log(AppVersion);
   };
 
   return (

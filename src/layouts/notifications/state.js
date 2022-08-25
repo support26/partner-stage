@@ -178,17 +178,15 @@ function State() {
         });
     }
   };
-
-  const isAllSelected = stateName.length > 0 && state.length === stateName.length;
-
+  const isAllstate =  stateName.length > 0 && state.length === stateName.length;
   const handleChange = (event) => {
     const value = event.target.value;
     if (value[value.length - 1] === "all") {
-      setState(stateName.length === state.length ? [] : state);
+      setState(state.length === stateName.length ? [] : stateName);
       return;
     }
     setState(value);
-    console.log(state);
+    // console.log(state)
   };
   // const handleChange = (event) => {
   //   const {
@@ -226,7 +224,7 @@ function State() {
           <MenuItem value="all">
             <ListItemIcon>
               <Checkbox
-                checked={isAllSelected}
+                checked={isAllstate}
                 indeterminate={
                   state.length > 0 && state.length < stateName.length
                 }
@@ -235,8 +233,8 @@ function State() {
             <ListItemText primary="Select All" />
           </MenuItem>
 
-          {stateName.map(({ name }) => {
-            return (
+          {stateName.map(({ name }) => (
+            
               <MenuItem key={name} value={name} style={{ color: "black" }}>
                 <ListItemIcon>
                 <Checkbox checked={state.indexOf(name) > -1} />
@@ -247,8 +245,8 @@ function State() {
 
 
 
-            );
-          })}
+          
+          ))}
         </Select>
       </FormControl>
       <TextField
@@ -278,19 +276,7 @@ function State() {
         onChange={handelstateImages}
       />{" "}
       <br />
-      {/* <Button
-        variant="contained"
-        style={
-          btnDisabled == true
-            ? { background: "#a7c5c9", color: "white" }
-            : { background: "#33A2B5", color: "white" }
-        }
-        href="#contained-buttons"
-        onClick={sendNotification}
-        disabled={btnDisabled}
-      >
-        Send
-      </Button> */}
+   
       <LoadingButton
         style={
           btnDisabled == true
