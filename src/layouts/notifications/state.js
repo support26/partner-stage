@@ -221,7 +221,7 @@ function State() {
           }}
           multiple
         >
-          <MenuItem value="all">
+          {/* <MenuItem value="all">
             <ListItemIcon>
               <Checkbox
                 checked={isAllstate}
@@ -231,7 +231,7 @@ function State() {
               />
             </ListItemIcon>
             <ListItemText primary="Select All" />
-          </MenuItem>
+          </MenuItem> */}
 
           {stateName.map(({ name }) => (
             

@@ -49,17 +49,8 @@ const MenuProps = {
   },
 };
 
+const version = [null,"Version : 18.1","Version : 18.0", "Version : 17.8", "Version : 17.9",  "1.6", "Version : 1.7", "Version : 1.8"];
 
-const version = [
-  "17.8",
-  "17.9",
-  "18.0",
-  "18.1",
-  "1.6",
-  "1.7",
-  "1.8",
- "null"
-];
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
     marginTop: theme.spacing(3),
@@ -75,8 +66,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   
   },
 }));
-// import Anouncement from "./Anouncement";
-// import Editbanner_announcement from "./Editbanner_anouncement"
+
 
 function Anouncementbanner() {
   const {
