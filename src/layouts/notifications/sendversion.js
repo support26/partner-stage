@@ -102,8 +102,14 @@ function Version() {
 
   const sendNotification = (event) => {
     event.preventDefault();
-    if (!title || !body || title.length <= 0 || body.length <= 0) {
+
+    if (AppVersion === [""] || AppVersion === [] || AppVersion.length === 0) {
+      setError("Please select version");
+      // console.log(AppVersion.length);
+    } else if (!title || !body || title.length <= 0 || body.length <= 0) {
       setError("Please fill all the fields");
+      // console.log(AppVersion.length);
+
     } else {
       setSendBtn(null);
       setLoading(true);

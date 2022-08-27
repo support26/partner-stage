@@ -21,6 +21,7 @@ import MDAlert from "components/MDAlert";
 import MDButton from "components/MDButton";
 import MDSnackbar from "components/MDSnackbar";
 import { Navigate } from "react-router-dom";
+import ListItemIcon from "@mui/material/ListItemIcon";
 
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -158,7 +159,7 @@ function Distric() {
   const sendNotification = (event) => {
     event.preventDefault();
     
-    if (district === null || district === "") {
+    if (district.length === 0|| district === "") {
       setError("Please select district");
     }
    else if (!title || !body) {
@@ -235,6 +236,7 @@ setSendBtn(null)
             width:'100%',
                        
           }}>
+            <option>Select State</option>
            <MenuItem value="" disabled>
                       <em>select the value</em>
                     </MenuItem>
@@ -267,9 +269,14 @@ setSendBtn(null)
             }}
             multiple
           >
-             <MenuItem value="" disabled>
-                      <em>select the value</em>
-                    </MenuItem>
+            
+                      
+
+            <em>select the value</em>
+             <MenuItem value={null} style={{ color: "black" }}>
+             <Checkbox  checked={district.indexOf(null) > -1}/>
+                <ListItemText primary={"NONE"} />
+              </MenuItem>
             {districts.map(({ name }) => {
               return (
                

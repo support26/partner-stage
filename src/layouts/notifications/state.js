@@ -129,10 +129,11 @@ function State() {
 
   const sendNotification = (event) => {
     event.preventDefault();
-    if (state === null || state === "") {
+    if (state === [""] || state === [] || state.length === 0) {
       setError("Please select state");
     } else if (!title || !body) {
       setError("Please fill all the fields");
+      
     } else {
       // console.log("#####", state);
       setSendBtn(null);
@@ -232,7 +233,13 @@ function State() {
             </ListItemIcon>
             <ListItemText primary="Select All" />
           </MenuItem> */}
-
+    <MenuItem  value={null} style={{ color: "black" }}>
+                <ListItemIcon>
+                <Checkbox checked={state.indexOf(null) > -1} />
+              </ListItemIcon>
+             
+                <ListItemText primary={"NONE"} />
+              </MenuItem>
           {stateName.map(({ name }) => (
             
               <MenuItem key={name} value={name} style={{ color: "black" }}>
