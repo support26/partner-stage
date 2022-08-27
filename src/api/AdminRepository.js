@@ -1,3 +1,4 @@
+import axios from "axios";
 import Api, { baseUrl } from "./config";
 class AdminRepository {
   // get all admin users
@@ -18,7 +19,24 @@ class AdminRepository {
       });
     return reponse;
   }
-
+//get all runner
+async getAllRunner() {
+  const token = localStorage.getItem("token");
+  // console.log("@@@",token);
+  const reponse = await Api.get(`${baseUrl}users/allusers`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.log(error.response);
+      return error.response;
+    });
+  return reponse;
+}
   // add admin user
   async addAdminUser(data) {
     const token = localStorage.getItem("token");
@@ -210,7 +228,7 @@ class AdminRepository {
   }
   // get state list for notification
   async getStateList() {
-    const reponse = await Api.get(
+    const reponse = await axios.get(
       `https://project-swarksha.uc.r.appspot.com/states`,
     ).then((response) => {
         return response;
@@ -224,7 +242,7 @@ class AdminRepository {
 
   //get district list by state id for notification
   async getDistrictList(stateId) {
-    const reponse = await Api.get(
+    const reponse = await axios.get(
       `https://project-swarksha.uc.r.appspot.com/districts?sid=${stateId}`,
     ).then((response) => {
         return response;
