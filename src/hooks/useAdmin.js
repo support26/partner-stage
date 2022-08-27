@@ -50,6 +50,17 @@ export default function useAdmin() {
       }
       return responseData;
     },
+    //get all runner
+    GetAllRunner: async () => {
+      var responseData = await AdminRepository.getAllRunner();
+      if (responseData.status === 200) {
+        return responseData;
+      } else { 
+        // console.log(responseData.data);
+      }
+      return responseData;
+    },
+      
 
     //add admin user
     AddAdminUser: async (data) => {

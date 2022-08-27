@@ -1,11 +1,16 @@
 import UserRepository from "api/UsersRepository";
+import useAdmin from "../../hooks/useAdmin";
 import Modal from "@mui/material/Modal";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-
+import useUsers from "../../hooks/useUsers";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useHistory } from "react-router";
 import * as React from "react";
-import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from "@mui/x-data-grid";
 // @mui material components
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
@@ -61,7 +66,6 @@ import profile from "assets/images/profile.png";
 import Switch from "@mui/material/Switch";
 import CircleIcon from "@mui/icons-material/Circle";
 
-import useUsers from "../../hooks/useUsers";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -74,7 +78,8 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 50,
 };
-export default function Tables() {
+function Tables() {
+  // const {  }  = useAdmin();
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -82,7 +87,7 @@ export default function Tables() {
       </GridToolbarContainer>
     );
   }
-  
+  const { ChangeRunnerDisable, GetAllRunner, UpdateRunners } = useUsers();
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -109,6 +114,69 @@ export default function Tables() {
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
   const [selectvalue, setSelectvalue] = useState("y");
   const [reason, setReason] = useState(null);
+
+
+  //runner set data
+  const [id, setID] = useState(null);
+  const [name, setFirstName] = useState("");
+
+  const [phone_number, setphone_number] = useState("");
+
+  const [Email, setEmail] = useState("");
+
+  const [latlong_address, setAddress] = useState("");
+  const [runner_state, setState] = useState("");
+  const [runner_district, setDistrict] = useState("");
+  const [runner_taluka, setTehsil] = useState("");
+  const [runner_village, setVillage] = useState("");
+  const [acct_holder_name, setBeneficiaryname] = useState("");
+  const [bank_acct_no, setAccountno] = useState("");
+  const [bank_ifsc_code, setbank_ifsc_code] = useState("");
+  const token = localStorage.getItem("token");
+
+  const [other_Id_proof_image, setother_Id_proof_image] = useState(null);
+
+  const [pancard_image, setPancardImages] = useState(null);
+  const [other_id_proof_no, setother_id_proof_no] = useState("");
+  const [pancard_no, setPancardno] = useState("");
+  const [age, setage] = useState("");
+  const [address, setaddress] = useState("");
+  const [education, seteducation] = useState("");
+  const [gender, setgender] = useState("");
+  const [dob, setdob] = useState("");
+
+  const [bank_name, setBankName] = useState("");
+  const [profileImage, setprofileImage] = useState(null);
+  const [APIData, setAPIData] = useState([]);
+
+  const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
+  const [tableLoading, setTableLoading] = useState(false);
+  //get api
+  const roleId = localStorage.getItem("roleId");
+  // const  = localStorage.getItem("user_email");
+  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
+
+  const GetRunner = () => {
+    setTableLoading(true);
+    var GetAllRunners = GetAllRunner();
+    GetAllRunners.then((response) => {
+      if (response.status === 200) {
+        setTableLoading(false);
+        setAPIData(response.data.data);
+        // console.log(response.data);
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+
+
+  useEffect(() => {
+    GetRunner();
+  }, []);
+
+
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -118,29 +186,27 @@ export default function Tables() {
     setAllOpen(true);
   };
 
- 
+  const sumbitRunnerDisable = () => {
+    const admin_email = localStorage.getItem("user_email");
 
-  const sumbitRunnerDisable = () => { 
-    const admin_email= localStorage.getItem('user_email') 
-
-    const disabledData =  {
-        isUserDisabled:selectvalue,
-        reason:reason,
-        admin_email:admin_email
-      }
-      // console.log(disabledData);
-    var updateDisableStatus = ChangeRunnerDisable(id,disabledData);
-    updateDisableStatus.then((response)=>{
-      // console.log(response);
-      if(response.status === 200){
-        GetRunner();
-        setAllOpen(false);
-      } 
-      
-
-    }).catch((e)=>{
-      console.log(e);
-    })
+    const disabledData = {
+      isUserDisabled: selectvalue,
+      reason: reason,
+      admin_email: admin_email,
+    };
+    // console.log(disabledData);
+    var updateDisableStatus = ChangeRunnerDisable(id, disabledData);
+    updateDisableStatus
+      .then((response) => {
+        // console.log(response);
+        if (response.status === 200) {
+          GetRunner();
+          setAllOpen(false);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const columns = [
@@ -192,40 +258,48 @@ export default function Tables() {
 
           //pancard
           if (params.row.bank_passbook_photo == null) {
-            setbank_passbook_photo("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
+            setbank_passbook_photo(
+              "https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png"
+            );
           } else {
             setbank_passbook_photo(params.row.bank_passbook_photo);
           }
           //pro
-          
+
           if (params.row.profileImage == null) {
-            setprofileImage("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png");
+            setprofileImage(
+              "https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380297203.png"
+            );
           } else {
             setprofileImage(params.row.profileImage);
           }
           //pancard
           if (params.row.pancard_image == null) {
-            setPancardImages("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
+            setPancardImages(
+              "https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png"
+            );
           } else {
             setPancardImages(params.row.pancard_image);
           }
           //pancard
           if (params.row.other_Id_proof_image == null) {
-            setother_Id_proof_image("https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png");
+            setother_Id_proof_image(
+              "https://storage.googleapis.com/android-mapping-backend.appspot.com/1660380245756.png"
+            );
           } else {
             setother_Id_proof_image(params.row.other_Id_proof_image);
           }
 
           setOpen(true);
 
-          return 
+          return;
           // console.log(id);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
 
         return (
           <Button
-            style={{  color:'#fff', backgroundColor: "#33A2B5" }}
+            style={{ color: "#fff", backgroundColor: "#33A2B5" }}
             onClick={handleClickOpen}
             disabled={disabled}
           >
@@ -350,7 +424,6 @@ export default function Tables() {
       sortable: false,
       // type:'text'
       renderCell: function (params) {
-        
         const handelSelect = (e) => {
           setSelectvalue(e.target.value);
           // console.log(selectvalue);
@@ -358,7 +431,6 @@ export default function Tables() {
 
           setID(params.row.id);
           handleAllOpen();
-         
         };
         // console.log(id);
         return params.row.isUserDisabled === "n" ||
@@ -396,12 +468,14 @@ export default function Tables() {
       headerName: "reason",
       type: "text",
       width: 230,
-    },  {
+    },
+    {
       field: "updated_by",
       headerName: "Update By",
       type: "text",
       width: 160,
-    }, {
+    },
+    {
       field: "updated_at",
       headerName: "Update At",
       type: "text",
@@ -409,68 +483,7 @@ export default function Tables() {
     },
   ];
 
-  //runner set data
-  const [id, setID] = useState(null);
-  const [name, setFirstName] = useState("");
-
-  const [phone_number, setphone_number] = useState("");
-
-  const [Email, setEmail] = useState("");
-
-  const [latlong_address, setAddress] = useState("");
-  const [runner_state, setState] = useState("");
-  const [runner_district, setDistrict] = useState("");
-  const [runner_taluka, setTehsil] = useState("");
-  const [runner_village, setVillage] = useState("");
-  const [acct_holder_name, setBeneficiaryname] = useState("");
-  const [bank_acct_no, setAccountno] = useState("");
-  const [bank_ifsc_code, setbank_ifsc_code] = useState("");
-  const token = localStorage.getItem("token");
-
-  const [other_Id_proof_image, setother_Id_proof_image] = useState(null);
-
-  const [pancard_image, setPancardImages] = useState(null);
-  const [other_id_proof_no, setother_id_proof_no] = useState("");
-  const [pancard_no, setPancardno] = useState("");
-  const [age, setage] = useState("");
-  const [address, setaddress] = useState("");
-  const [education, seteducation] = useState("");
-  const [gender, setgender] = useState("");
-  const [dob, setdob] = useState("");
-
-  const [bank_name, setBankName] = useState("");
-  const [profileImage, setprofileImage] = useState(null);
-  const [APIData, setAPIData] = useState([]);
-
-  const [bank_passbook_photo, setbank_passbook_photo] = useState(null);
-  const [tableLoading, setTableLoading] = useState(false);
-  //get api
-  const roleId = localStorage.getItem("roleId");
-  // const  = localStorage.getItem("user_email");
-  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
-  const {
-    ChangeRunnerDisable,GetAllRunner,UpdateRunners 
-  } = useUsers();
- 
-  const GetRunner = () => {
-    setLoading(true);
-    var GetAllRunners = GetAllRunner();
-    GetAllRunners.then((response) => {
-      
-        setAPIData(response.data.data);
-        setTableLoading(false);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  useEffect(() => {
-    setTableLoading(true);
-    GetRunner();
-  }, []);
-  
-  const updated_by = localStorage.getItem('user_email')
+  const updated_by = localStorage.getItem("user_email");
   var data = {
     name: name,
     acct_holder_name: acct_holder_name,
@@ -495,7 +508,7 @@ export default function Tables() {
     education: education,
     address: address,
     age: age,
-    updated_by:updated_by
+    updated_by: updated_by,
   };
   // const updateAPIData = (event) => {
   //   event.preventDefault();
@@ -524,7 +537,6 @@ export default function Tables() {
       console.log(e);
     });
   };
-
 
   let file;
   let form_data = new FormData();
@@ -700,7 +712,6 @@ export default function Tables() {
             sx={{
               "& .MuiTextField-root": { mx: 3, my: 2, width: "20ch" },
             }}
-            
             autoComplete="off"
           >
             <TextField
@@ -1053,7 +1064,9 @@ export default function Tables() {
           <IconButton
             edge="start"
             color="inherit"
-            onClick={()=>{setAllOpen(false)}}
+            onClick={() => {
+              setAllOpen(false);
+            }}
             aria-label="close"
             style={{ float: "right" }}
           >
@@ -1080,17 +1093,17 @@ export default function Tables() {
             />
           </DialogContent>
           <DialogActions>
-          <Button
-            style={{ color: "black", backgroundColor: "#33A2B5" }}
-            onClick={sumbitRunnerDisable}
-            disabled={disabled}
-          >
-            Send
-          </Button>
-          
+            <Button
+              style={{ color: "black", backgroundColor: "#33A2B5" }}
+              onClick={sumbitRunnerDisable}
+              disabled={disabled}
+            >
+              Send
+            </Button>
           </DialogActions>
         </Box>
       </Dialog>
     </DashboardLayout>
   );
 }
+export default Tables;
