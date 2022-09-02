@@ -39,7 +39,7 @@ const MenuProps = {
   },
 };
 
-const version = [null,"Version : 17.8", "Version : 17.9", "Version : 18.0", "Version : 18.1", "1.6", "Version : 1.7", "Version : 1.8"];
+const version = ["1.6", "1.7", "1.8","17.8", "17.9", "18.4"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -195,16 +195,16 @@ const handleChange = (event) => {
         );
       },
     },
-    { field: "id", headerName: "ID", width: 70 },
+    // { field: "id", headerName: "ID", width: 50 },
     { field: "url", headerName: "url", width: 200 },
     { field: "Description", headerName: "Hindi", width: 200 },
     { field: "DescriptionIsEnglish", headerName: "English", width: 200 },
-    { field: "AppVersion", headerName: "App Version", width: 200 },
-    { field: "ButtonText", headerName: "Button Text", width: 150 },
+    { field: "AppVersion", headerName: "App Version", width: 100 },
+    { field: "ButtonText", headerName: "Button Text", width: 110 },
     {
       field: "ShowButton",
       headerName: "Show Button",
-      width: 140,
+      width: 110,
       renderCell: function (params) {
         return params.row.ShowButton === 1 ? (
           <Button sx={{ color: "green" }}>Yes</Button>
@@ -216,7 +216,7 @@ const handleChange = (event) => {
     {
       field: "DisplayBannerOrNot",
       headerName: "Display Banner",
-      width: 200,
+      width: 110,
       renderCell: function (params) {
         return params.row.DisplayBannerOrNot === 1 ? (
           <Button sx={{ color: "green" }}>Yes</Button>
@@ -233,11 +233,25 @@ const handleChange = (event) => {
     }, {
       field: "Gif_Visibility",
       headerName: "Gif Visibility",
-      width: 200,
+      width: 110,
+      renderCell: function (params) {
+        return params.row.Gif_Visibility === 1 ? (
+          <Button sx={{ color: "green" }}>Yes</Button>
+        ) : (
+          <Button sx={{ color: "red" }}>No</Button>
+        );
+      },
     }, {
       field: "Gif_Url_to_be_opened",
       headerName: "Gif Url to be opened ",
-      width: 200,
+      width: 110,
+      renderCell: function (params) {
+        return params.row.Gif_Url_to_be_opened === 1 ? (
+          <Button sx={{ color: "green" }}>Yes</Button>
+        ) : (
+          <Button sx={{ color: "red" }}>No</Button>
+        );
+      },
     },
 
     {
@@ -382,14 +396,14 @@ const handleChange = (event) => {
              <MDTypography align="center" variant="h3" sx={{ px:18}}>
               Add Banner
               </MDTypography>
-            <Card sx={{ px: 3, py: 1, width: "100%" }}>
+            <Card sx={{ px: 3, pt: 0,pb:2, width: "100%" }}>
             {errormsg && (
                 <small style={{ color: "red", fontSize: "15px" }}>
                   {errormsg}
                 </small>
               )}    
                 <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 <br/>
                 <Select
                   id="demo-customized-select-native"
@@ -506,7 +520,7 @@ const handleChange = (event) => {
               </FormControl>
 
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel><br/>
+                <InputLabel htmlFor="demo-customized-select-native">Gif Url Open</InputLabel><br/>
                 <Select
                   id="demo-customized-select-native"
                   value={Gif_Url_to_be_opened}
@@ -748,7 +762,7 @@ const handleChange = (event) => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageMenuItems={[5, 10, 20, 50]}
+          rowsPerPageOptions={[10, 20, 50]}
           loading={loading}
         />
       </div>

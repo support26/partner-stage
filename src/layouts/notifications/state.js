@@ -1,29 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserRepository from "api/UsersRepository";
 
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 // @mui material components
-import Grid from "@mui/material/Grid";
+// import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
-import NativeSelect from "@mui/material/NativeSelect";
+// import Box from "@mui/material/Box";
+// import NativeSelect from "@mui/material/NativeSelect";
 
 //  React components
-import MDBox from "components/MDBox";
+// import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import MDAlert from "components/MDAlert";
-import MDButton from "components/MDButton";
-import MDSnackbar from "components/MDSnackbar";
-import { Navigate } from "react-router-dom";
-import axios from "axios";
-import { useEffect } from "react";
+// import MDAlert from "components/MDAlert";
+// import MDButton from "components/MDButton";
+// import MDSnackbar from "components/MDSnackbar";
+// import { Navigate } from "react-router-dom";
+// import axios from "axios";
+// import { useEffect } from "react";
 import useAdmin from "../../hooks/useAdmin";
-import Dialog from "@mui/material/Dialog";
+// import Dialog from "@mui/material/Dialog";
 
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
+// import CloseIcon from "@mui/icons-material/Close";
+// import IconButton from "@mui/material/IconButton";
 
 //  React example components
 import InputLabel from "@mui/material/InputLabel";
@@ -48,7 +48,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     position: "relative",
     backgroundColor: theme.palette.background.paper,
     border: "1px solid #ced4da",
-    fontSize: 16,
+    fontSize: 11,
     padding: "10px 26px 10px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
   },
@@ -76,38 +76,24 @@ function State() {
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState("send");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [maxWidth, setMaxWidth] = useState("sm");
-  const [value, setValue] = useState(0);
   const { SendNotificationByState, GetStateList } = useAdmin();
 
   const GetStateListForNotification = () => {
     var stateList = GetStateList();
     stateList
       .then((res) => {
-        setStateName(res.data.states);
+        // console.log(res);
+        setStateName(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   useEffect(() => {
     GetStateListForNotification();
-    // axios
-    //   .get("https://project-swarksha.uc.r.appspot.com/states")
-    //   .then((response) => {
-    //     setStateName(response.data.states);
-    //     // console.log(response.data);
-    //   });
   }, []);
 
   let file;
@@ -147,18 +133,6 @@ function State() {
       // console.log("@@@@@@", notification);
       setSendBtn(null);
       setLoading(true);
-      handleClickOpen();
-
-      // setSendBtn("")s
-      var timerun = 0;
-      var progressInterval = setInterval(() => {
-        setValue((prev) => prev + 20);
-        timerun += 1;
-        if (timerun === 6) {
-          clearInterval(progressInterval);
-          setValue(0);
-        }
-      }, 800);
       var sendNotificationByState = SendNotificationByState(
         notification,
         admin_email,
@@ -171,7 +145,6 @@ function State() {
           setSendBtn("sent succesfully");
           setTimeout(() => {
             setSendBtn("send");
-            handleClose();
           }, 2000);
         })
         .catch((err) => {
@@ -187,19 +160,7 @@ function State() {
       return;
     }
     setState(value);
-    // console.log(state)
   };
-  // const handleChange = (event) => {
-  //   const {
-  //     target: { value }
-  //   } = event;
-  //   setState(
-  //     // On autofill we get a stringified value.
-  //     typeof value === "string" ? value.split(",") : value
-  //   );
-  //   console.log(state)
-  // };
-
   return (
     <Card sx={{ px: 5, py: 1, pb: 2, width: "100%" }}>
       <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
@@ -207,7 +168,7 @@ function State() {
       </MDTypography>
       <FormControl sx={{ mb: 2, p: 0 }} variant="standard">
         <InputLabel htmlFor="demo-customized-select-native">
-          State...
+          Select State
         </InputLabel>
         <br />
         <Select
@@ -222,18 +183,7 @@ function State() {
           }}
           multiple
         >
-          {/* <MenuItem value="all">
-            <ListItemIcon>
-              <Checkbox
-                checked={isAllstate}
-                indeterminate={
-                  state.length > 0 && state.length < stateName.length
-                }
-              />
-            </ListItemIcon>
-            <ListItemText primary="Select All" />
-          </MenuItem> */}
-    <MenuItem  value={null} style={{ color: "black" }}>
+    <MenuItem  value={null} style={{ color: "black", size: "5px !important"}}>
                 <ListItemIcon>
                 <Checkbox checked={state.indexOf(null) > -1} />
               </ListItemIcon>
@@ -242,17 +192,13 @@ function State() {
               </MenuItem>
           {stateName.map(({ name }) => (
             
-              <MenuItem key={name} value={name} style={{ color: "black" }}>
+              <MenuItem key={name} value={name} style={{ color: "black"}}>
                 <ListItemIcon>
                 <Checkbox checked={state.indexOf(name) > -1} />
               </ListItemIcon>
              
                 <ListItemText primary={name} />
-              </MenuItem>
-
-
-
-          
+              </MenuItem>  
           ))}
         </Select>
       </FormControl>
@@ -265,7 +211,7 @@ function State() {
       />
       <br />
       <MDInput
-        label="Type here..."
+        label="Type here your message..."
         multiline
         rows={5}
         style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
@@ -277,7 +223,7 @@ function State() {
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
       )}
       <TextField
-        helperText="Image "
+        helperText="jpeg / jpg / png"
         type="file"
         inputProps={{ accept: ".png, .jpeg, .jpg" }}
         onChange={handelstateImages}
@@ -286,7 +232,7 @@ function State() {
    
       <LoadingButton
         style={
-          btnDisabled == true
+          btnDisabled === true
             ? { background: "#a7c5c9", color: "white" }
             : { background: "#33A2B5", color: "white" }
         }
@@ -299,29 +245,6 @@ function State() {
       >
         {sendBtn}
       </LoadingButton>
-      <Dialog width="100px" open={open}>
-        <div>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-            style={{ float: "right" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-
-        <span style={{ color: "green", padding: 20 }}>
-          {" "}
-          <progress
-            value={value}
-            max="100"
-            style={{ backgroundColor: "red" }}
-          ></progress>{" "}
-          {value}
-        </span>
-      </Dialog>
     </Card>
   );
 }

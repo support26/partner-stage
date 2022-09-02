@@ -1,23 +1,14 @@
-import { useState ,useEffect} from "react";
+import { useState } from "react";
 import * as XLSX from "xlsx";
-import Dialog from "@mui/material/Dialog";
-import Box from "@mui/material/Box";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-// @mui material components
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import LoadingButton from '@mui/lab/LoadingButton';
-
+import LoadingButton from "@mui/lab/LoadingButton";
 import UserRepository from "api/UsersRepository";
-
 //  React components
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import axios from "axios";
 import useAdmin from "../../hooks/useAdmin";
-
 
 // mui custom style
 
@@ -28,22 +19,19 @@ function Number() {
   const [phone_number, setPhone_number] = useState([]);
   const [error, setError] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
-  const [sendBtn, setSendBtn] = useState('send');
+  const [sendBtn, setSendBtn] = useState("send");
   const [loading, setLoading] = useState(false);
-  const {SendNotificationByNumber} = useAdmin();
-  const [maxWidth, setMaxWidth] = useState("sm");
+  const { SendNotificationByNumber } = useAdmin();
 
-  const [value,setValue] =useState(0)
-  // let progressInterval = '0';
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const [open, setOpen] = useState(false);
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-   
-    setOpen(false);
-  };
+  // const handleClose = () => {
+
+  //   setOpen(false);
+  // };
   var reqData;
 
   let file;
@@ -85,16 +73,13 @@ function Number() {
   };
 
   const sendNotification = (event) => {
-
-  
     event.preventDefault();
     if (phone_number.length <= 0) {
       setError("Please upload phone numbers");
     } else if (!title || !body || title.length <= 0 || body.length <= 0) {
       setError("Please fill all the fields");
     } else {
-      
-      setSendBtn(null)
+      setSendBtn(null);
       setLoading(true);
       // console.log("#####", phone_number);
       const admin_email = localStorage.getItem("user_email");
@@ -104,56 +89,36 @@ function Number() {
         image: image,
       };
       // console.log("@@@@@@", notification);
-      setLoading(true);
-      handleClickOpen()
-      
-
-      // setSendBtn("")
-      var timerun = 0;
-    var progressInterval = setInterval(() => {
-      setValue(prev => prev + 20);
-      timerun +=1
-      if (timerun === 6) {
-        clearInterval(progressInterval);
-        setValue(0)
-      }    
-      }, 800);
-      var sendNotificationByNumber = SendNotificationByNumber(notification, admin_email,phone_number)
-      sendNotificationByNumber.then((res) => {
+      var sendNotificationByNumber = SendNotificationByNumber(
+        notification,
+        admin_email,
+        phone_number
+      );
+      sendNotificationByNumber
+        .then((res) => {
           // console.log("%%%%%%%%%", res);
           setLoading(false);
-          
-          setSendBtn("sent succesfully")
-
-    setTimeout(() => {
-      setSendBtn("send")
-      handleClose();
-
-    }, 2000);
+          setSendBtn("sent succesfully");
+          setTimeout(() => {
+            setSendBtn("send");
+          }, 2000);
         })
         .catch((err) => {
           console.log("err", err);
         });
-
     }
   };
-  // useEffect(() => {
-  //   if (value >= 100) {
-  //     clearInterval(progressInterval);
-  //   }
-  // }, []);
 
   return (
-    <Card sx={{ px: 5, py: 2, width: "100%"}}>
+    <Card sx={{ px: 5, py: 2, width: "100%" }}>
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
-       Send By Number
+        Send By Number
       </MDTypography>
       <TextField
         helperText="Upload a excel file "
         type={"file"}
-        inputProps={{accept:".csv, .xls, .xlsx"}}
+        inputProps={{ accept: ".csv, .xls, .xlsx" }}
         onChange={onChange}
-        
       />
       <TextField
         value={title}
@@ -163,7 +128,7 @@ function Number() {
       />
       <br />
       <MDInput
-        label="Type here..."
+        label="Type here your message..."
         value={body}
         onChange={(e) => setBody(e.target.value)}
         multiline
@@ -174,54 +139,27 @@ function Number() {
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
       )}
       <TextField
-        helperText="image "
+        helperText="jpeg / jpg / png"
         type="file"
-        inputProps={{accept:".png, .jpeg, .jpg"}}
+        inputProps={{ accept: ".png, .jpeg, .jpg" }}
         onChange={handelDistricImages}
       />
       <br />
-      {/* <Button
+      <LoadingButton
+        style={
+          btnDisabled === true
+            ? { background: "#a7c5c9", color: "white" }
+            : { background: "#33A2B5", color: "white" }
+        }
+        size="small"
         onClick={sendNotification}
+        loading={loading}
+        loadingPosition="center"
         variant="contained"
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
-        href="#contained-buttons"
         disabled={btnDisabled}
       >
-        Send
-      </Button> */}
-      <LoadingButton
-        style= {(btnDisabled == true)? {background: "#a7c5c9",color: "white"} : {background: "#33A2B5",color: "white" }}
-
-          size="small"
-          onClick={sendNotification}
-          
-          loading={loading}
-          loadingPosition="center"
-          variant="contained"
-          disabled={btnDisabled}
-        >
-          {sendBtn}
-        </LoadingButton>
-
-        <Dialog width='100px' open={open} >
-        <div>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-            style={{ float: "right" ,}}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        
-     <span style={{color:'green' , padding:20 }}> <progress value={value} max="100" style={{backgroundColor:'red'}}></progress>  {value}</span>
-         
-       
-      </Dialog>
-
-      
+        {sendBtn}
+      </LoadingButton>
     </Card>
   );
 }
