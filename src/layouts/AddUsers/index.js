@@ -51,8 +51,7 @@ function AddUsers() {
     AddAdminUser,
     UpdateAdminUser,
     ChangeAdminUserStatus,
-    GetAlladminUser,
-    GetAllRunner,
+    GetAlladminUser
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
@@ -63,7 +62,6 @@ function AddUsers() {
   const [user_id, setUser_id] = useState("");
   const [is_active, setIs_active] = useState("Y");
   const [users, setUsers] = useState([]);
-  const [runners, setRunners] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -112,17 +110,6 @@ function AddUsers() {
     }).catch((e) => {
       console.log(e);
     });
-    var AllRunner = GetAllRunner();
-    AllRunner.then((response) => {
-      if (response.status === 200) {
-        console.log(response);
-        setLoading(false);
-        setRunners(response.data.data);
-      }
-    }).catch((e) => {
-      console.log(e);
-    }
-    );
   };
 
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
@@ -541,29 +528,6 @@ function AddUsers() {
           }}
           rows={users}
           columns={columns}
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50]}
-          loading={loading}
-        />
-      </div>
-
-
-      <div style={{ height: 500, width: "100%", marginTop: "55px" }}>
-        <DataGrid
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: "ravi.main",
-            "& .MuiDataGrid-cell:hover": {
-              color: "ravi.main",
-            },
-            "& .MuiDataGrid-row:focus": {
-              backgroundColor: "#33A2B5",
-            },
-          }}
-          rows={runners}
-          columns={columns1}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 20, 50]}

@@ -45,6 +45,7 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { useSelector } from 'react-redux'
 import useAdmin from '../../../hooks/useAdmin'
 import BadgeIcon from '@mui/icons-material/Badge';
+import { fontSize } from '@mui/system';
 
 //import {useNavigate} from 'react-router-dom';
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -191,10 +192,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon sx={iconsStyle} className="fontSizess">account_circle</Icon>
+                <Icon sx={iconsStyle} fontSize='large' > account_circle</Icon>
               </IconButton>
               <IconButton
-                size="small"
+                size="medium"
                 disableRipple
                 color="inherit"
                 sx={navbarMobileMenu}

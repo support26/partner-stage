@@ -49,7 +49,7 @@ const MenuProps = {
   },
 };
 
-const version = [null,"Version : 18.1","Version : 18.0", "Version : 17.8", "Version : 17.9",  "1.6", "Version : 1.7", "Version : 1.8"];
+const version = ["1.1","1.2","1.3","1.6","1.7","1.8","17.0","17.1","17.2","17.3","17.4","17.5","17.6","17.7","17.8","17.9","18.4"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -241,23 +241,23 @@ const handleChange = (event) => {
           );
         },
       },
-    { field: "id", headerName: "ID", width: 70 },
+    // { field: "id", headerName: "ID", width: 50 },
   
     { field: "AnnouncementText", headerName: "Announcement Text", width: 200 },
     {
       field: "AnnouncementIsEnglish",
-      headerName: "AnuncementIsEnglish",
+      headerName: "Anuncement in English",
       width: 200,
     },
     {
       field: "AppVersion",
-      headerName: "AppVersion",
-      width: 200,
+      headerName: "App Version",
+      width: 100,
     },
     {
       field: "DisplayAnnouncementTextOrNot",
       headerName: "Display Announcement",
-      width: 200,  
+      width: 185,  
         renderCell: function (params) {
         return params.row.DisplayAnnouncementTextOrNot === 1 ? (
         <Button sx={{color:'green'}}>Yes</Button>
@@ -562,7 +562,7 @@ const handleChange = (event) => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageMenuItems={[5, 10, 20, 50]}
+          rowsPerPageOptions={[10, 20, 50]}
           loading={loading}
         />
       </div>

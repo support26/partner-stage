@@ -19,24 +19,6 @@ class AdminRepository {
       });
     return reponse;
   }
-//get all runner
-async getAllRunner() {
-  const token = localStorage.getItem("token");
-  // console.log("@@@",token);
-  const reponse = await Api.get(`${baseUrl}users/allusers`, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      console.log(error.response);
-      return error.response;
-    });
-  return reponse;
-}
   // add admin user
   async addAdminUser(data) {
     const token = localStorage.getItem("token");
@@ -228,8 +210,8 @@ async getAllRunner() {
   }
   // get state list for notification
   async getStateList() {
-    const reponse = await axios.get(
-      `https://project-swarksha.uc.r.appspot.com/states`,
+    const reponse = await Api.get(
+      `${baseUrl}sd/states`,
     ).then((response) => {
         return response;
       })
@@ -241,9 +223,9 @@ async getAllRunner() {
   }
 
   //get district list by state id for notification
-  async getDistrictList(stateId) {
-    const reponse = await axios.get(
-      `https://project-swarksha.uc.r.appspot.com/districts?sid=${stateId}`,
+  async getDistrictList(sid) {
+    const reponse = await Api.get(
+      `${baseUrl}sd/districts/${sid}`,
     ).then((response) => {
         return response;
       })

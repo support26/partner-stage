@@ -1,19 +1,11 @@
-import { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
-import Dialog from "@mui/material/Dialog";
-import Box from "@mui/material/Box";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 // @mui material components
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import UserRepository from "api/UsersRepository";
 import ListItemText from "@mui/material/ListItemText";
@@ -21,13 +13,11 @@ import Checkbox from "@mui/material/Checkbox";
 //  React components
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import axios from "axios";
 import useAdmin from "../../hooks/useAdmin";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-import { height } from "@mui/system";
 import "./style.css";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 20;
@@ -41,7 +31,7 @@ const MenuProps = {
   },
 };
 
-const version = [null,"Version : 17.8", "Version : 17.9", "Version : 18.0", "Version : 18.1", "1.6", "Version : 1.7", "Version : 1.8"];
+const version = [null,"Version : 17.8", "Version : 17.9", "Version : 18.4", "Version : 1.7", "Version : 1.8"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -68,20 +58,19 @@ function Version() {
   const [sendBtn, setSendBtn] = useState("send");
   const [loading, setLoading] = useState(false);
   const { SendNotificationByVersion } = useAdmin();
-  const [maxWidth, setMaxWidth] = useState("sm");
 
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
   // let progressInterval = '0';
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  var reqData;
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  // var reqData;
 
   let file;
   let form_data = new FormData();
@@ -120,20 +109,6 @@ function Version() {
         body: body,
         image: image,
       };
-      // console.log("@@@@@@", notification);
-      setLoading(true);
-      handleClickOpen();
-
-      // setSendBtn("")
-      var timerun = 0;
-      var progressInterval = setInterval(() => {
-        setValue((prev) => prev + 20);
-        timerun += 1;
-        if (timerun === 6) {
-          clearInterval(progressInterval);
-          setValue(0);
-        }
-      }, 800);
       var sendNotificationByVersion = SendNotificationByVersion(
         notification,
         admin_email,
@@ -148,7 +123,6 @@ function Version() {
 
           setTimeout(() => {
             setSendBtn("send");
-            handleClose();
           }, 2000);
         })
         .catch((err) => {
@@ -176,7 +150,7 @@ function Version() {
       <Card sx={{ px: 5, py: 2, width: "100%" }}>
         <FormControl sx={{ mb: 3 }} variant="standard">
           <InputLabel htmlFor="demo-customized-select-native">
-            Version...
+            Select Version
           </InputLabel>
           <br />
           <Select
@@ -220,7 +194,7 @@ function Version() {
         />
         <br />
         <MDInput
-          label="Type here..."
+          label="Type here your message..."
           value={body}
           onChange={(e) => setBody(e.target.value)}
           multiline
@@ -231,7 +205,7 @@ function Version() {
           <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
         )}
         <TextField
-          helperText="image "
+          helperText="jpeg / jpg / png"
           type="file"
           inputProps={{ accept: ".png, .jpeg, .jpg" }}
           onChange={handelVersion}
@@ -240,7 +214,7 @@ function Version() {
 
         <LoadingButton
           style={
-            btnDisabled == true
+            btnDisabled === true
               ? { background: "#a7c5c9", color: "white" }
               : { background: "#33A2B5", color: "white" }
           }
@@ -253,30 +227,6 @@ function Version() {
         >
           {sendBtn}
         </LoadingButton>
-
-        <Dialog width="100px" open={open}>
-          <div>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-              style={{ float: "right" }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-
-          <span style={{ color: "green", padding: 20 }}>
-            {" "}
-            <progress
-              value={value}
-              max="100"
-              style={{ backgroundColor: "red" }}
-            ></progress>{" "}
-            {value}
-          </span>
-        </Dialog>
       </Card>
     </div>
   );

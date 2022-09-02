@@ -74,9 +74,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const style = {
   position: "absolute",
   top: "50%",
-  left: "35%",
+  left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 50,
+  // width: 50,
 };
 function Tables() {
   // const {  }  = useAdmin();
@@ -308,7 +308,7 @@ function Tables() {
         );
       },
     },
-    { field: "id", headerName: "ID", width: 40 },
+    { field: "id", headerName: "ID", width: 68 },
 
     // {
     //   field: "Image",
@@ -613,7 +613,7 @@ function Tables() {
                   columns={columns}
                   pageSize={pageSize}
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                  rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                  rowsPerPageOptions={[10, 20, 50, 100]}
                   // checkboxSelection
                   loading={tableLoading}
                   disableSelectionOnClick

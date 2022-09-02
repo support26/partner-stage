@@ -32,7 +32,7 @@ function Breadcrumbs({ icon, title, route, light }) {
             variant="body2"
             color={light ? "dark" : "dark"}
             opacity={light ? 1 : 0.5}
-            sx={{ lineHeight: 0 }}
+            sx={{ lineHeight: 0, fontSize: "27px" }}
           >
             <Icon>{icon}</Icon>
           </MDTypography>
@@ -46,7 +46,7 @@ function Breadcrumbs({ icon, title, route, light }) {
               textTransform="capitalize"
               color={light ? "white" : "dark"}
               opacity={light ? 0.8 : 0.5}
-              sx={{ lineHeight: 0 }}
+              sx={{ lineHeight: 0}}
             >
               {el}
             </MDTypography>
@@ -55,9 +55,10 @@ function Breadcrumbs({ icon, title, route, light }) {
         <MDTypography
           variant="button"
           fontWeight="bold"
+          fontSize="18px"
           textTransform="capitalize"
           color={light ? "white" : "dark"}
-          sx={{ lineHeight: 0 }}
+          sx={{ lineHeight: 0}}
         >
           {title.replace("-", " ")}
         </MDTypography>

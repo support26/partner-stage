@@ -94,6 +94,9 @@ function collapseIconBox(theme, ownerState) {
     "& svg, svg g": {
       color: transparentSidenav || whiteSidenav ? dark.main : white.main,
     },
+    "& .material-icons, .material-icons-round": {
+      fontSize: `24px !important`,
+    },
   };
 }
 
@@ -123,7 +126,7 @@ function collapseText(theme, ownerState) {
 
     "& span": {
       fontWeight: active ? "800" : "500",
-      fontSize: "18px",
+      fontSize: "18px !important",
       lineHeight: 2,
     },
   };
