@@ -332,7 +332,7 @@ const handleChange = (event) => {
 
       MenuProps={MenuProps}/> */}
   <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 
                 <Select
                   id="demo-customized-select-native"
@@ -444,7 +444,7 @@ const handleChange = (event) => {
 
 
 <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 <br/>
                 <Select
                   id="demo-customized-select-native"
