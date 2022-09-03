@@ -152,7 +152,7 @@ function State() {
         });
     }
   };
-  const isAllstate =  stateName.length > 0 && state.length === stateName.length;
+  // const isAllstate =  stateName.length > 0 && state.length === stateName.length;
   const handleChange = (event) => {
     const value = event.target.value;
     if (value[value.length - 1] === "all") {

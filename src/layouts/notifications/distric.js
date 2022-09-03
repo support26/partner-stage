@@ -185,9 +185,9 @@ function Distric() {
           }}
         >
           <option>Select State</option>
-          <MenuItem value="" disabled>
+          {/* <MenuItem value="" disabled>
             <em>select the value</em>
-          </MenuItem>
+          </MenuItem> */}
           {state.map(({ name, sid }) => {
             return (
               <option key={name} value={sid} style={{ color: "black" }}>

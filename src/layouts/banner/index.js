@@ -39,7 +39,7 @@ const MenuProps = {
   },
 };
 
-const version = ["1.6", "1.7", "1.8","17.8", "17.9", "18.4"];
+const version = ["1.1","1.2","1.3","1.6","1.7","1.8","17.0","17.1","17.2","17.3","17.4","17.5","17.6","17.7","17.8","17.9","18.4"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -580,8 +580,7 @@ const handleChange = (event) => {
           </MDTypography>
           <Card sx={{ px: 3, py: 1, width: "100%" }}> 
           <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Version...</InputLabel>
-                <br/>
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
