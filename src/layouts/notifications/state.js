@@ -188,7 +188,7 @@ function State() {
                 <Checkbox checked={state.indexOf(null) > -1} />
               </ListItemIcon>
              
-                <ListItemText primary={"NONE"} />
+                <p>{"NONE"} </p>
               </MenuItem>
           {stateName.map(({ name }) => (
             
@@ -197,7 +197,7 @@ function State() {
                 <Checkbox checked={state.indexOf(name) > -1} />
               </ListItemIcon>
              
-                <ListItemText primary={name} />
+                <p>{name} </p>
               </MenuItem>  
           ))}
         </Select>

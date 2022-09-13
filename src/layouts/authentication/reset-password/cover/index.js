@@ -30,7 +30,7 @@ function Cover () {
   const [oldPassword, setoldPassword] = useState('')
   const [newPassword, setnewPassword] = useState('')
   const [confirmpassword, setconfirmpassword] = useState('')
-  const [message , setMessage] = useState(<p style ={{fontSize:'10px' ,color:''}}><b>Must</b> include at least <b>one</b> number,<b>special characterone </b>,letter and of <b></b>.</p>)
+  const [message , setMessage] = useState(<p style ={{fontSize:'10px' ,color:''}}><b>Must</b> include at least <b>one</b> number,<b>special characterone </b>,letter and <b>greater than 8 characters.</b>.</p>)
   // const [msg, setMsg] = useState()
   const {msg}= useSelector((state)=>state.auth)
 
