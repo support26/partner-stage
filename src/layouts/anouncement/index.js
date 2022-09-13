@@ -243,10 +243,10 @@ const handleChange = (event) => {
       },
     // { field: "id", headerName: "ID", width: 50 },
   
-    { field: "AnnouncementText", headerName: "Announcement Text", width: 200 },
+    { field: "AnnouncementText", headerName: "Announcement in Hindi", width: 200 },
     {
       field: "AnnouncementIsEnglish",
-      headerName: "Anuncement in English",
+      headerName: "Announcement in English",
       width: 200,
     },
     {
@@ -370,7 +370,7 @@ const handleChange = (event) => {
 
         <TextField
           id="outlined-input"
-          label="AnnouncementIs English"
+          label="Announcement English"
           type="text"
           value={AnnouncementIsEnglish}
           onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
@@ -545,7 +545,7 @@ const handleChange = (event) => {
         </Button>
       </div>
       <br />
-      <div style={{ height: 500, width: "100%", marginTop: "55px" }}>
+      <div style={{ height: 420, width: "100%", marginTop: "55px"  }}>
         <DataGrid
           sx={{
             boxShadow: 2,

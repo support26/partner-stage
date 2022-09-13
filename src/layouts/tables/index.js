@@ -465,7 +465,7 @@ function Tables() {
     },
     {
       field: "reason",
-      headerName: "reason",
+      headerName: "Reason",
       type: "text",
       width: 230,
     },
@@ -595,7 +595,7 @@ function Tables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={3} style={{ textTransform: "capitalize" }}>
+      <MDBox pt={6} pb={3} >
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
@@ -730,7 +730,7 @@ function Tables() {
               onChange={(e) => setEmail(e.target.vaue)}
             />
             <TextField
-              label="age"
+              label="Age"
               value={age}
               onChange={(e) => setage(e.target.value)}
             />
@@ -777,6 +777,12 @@ function Tables() {
               onChange={(e) => setDistrict(e.target.value)}
             />
             <TextField
+              id="filled-read-only-input"
+              label="District"
+              value={runner_taluka}
+              onChange={(e) => setTehsil(e.target.value)}
+            />
+            {/* <TextField
               id="filled-number"
               label="Tehsil"
               type="text"
@@ -785,7 +791,7 @@ function Tables() {
               InputLabelProps={{
                 shrink: true,
               }}
-            />
+            /> */}
             <TextField
               id="filled-search"
               label="Village"

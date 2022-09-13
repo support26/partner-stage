@@ -33,20 +33,20 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Anouncement",
+    name: "Announcement",
     key: "anouncement",
     icon: <Icon fontSize="medium">campaign</Icon>,
     route: "/anouncement",
     component: <Anouncement />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Opportunity",
-  //   key: "opportunity",
-  //   icon: <Icon fontSize="medium">assignment</Icon>,
-  //   route: "/opportunities",
-  //   component: <Opportunities />,
-  // },
+  {
+    type: "collapse",
+    name: "Opportunity",
+    key: "opportunity",
+    icon: <Icon fontSize="medium">assignment</Icon>,
+    route: "/opportunities",
+    component: <Opportunities />,
+  },
   
 ];
 
