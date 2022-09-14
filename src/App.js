@@ -187,7 +187,6 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
       <Route exact path="/" element={<SignIn />} />
-        {/* <Route path="/sign-in" element={<SignIn />} /> */}
         {sessionStorage.getItem("token") && (
           <Route path="/reset" element={<ResetPassword />} />
         )}
