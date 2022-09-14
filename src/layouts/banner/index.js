@@ -196,7 +196,7 @@ const handleChange = (event) => {
       },
     },
     // { field: "id", headerName: "ID", width: 50 },
-    { field: "url", headerName: "url", width: 200 },
+    { field: "url", headerName: "Url", width: 200 },
     { field: "Description", headerName: "Hindi", width: 200 },
     { field: "DescriptionIsEnglish", headerName: "English", width: 200 },
     { field: "AppVersion", headerName: "App Version", width: 100 },
@@ -402,9 +402,9 @@ const handleChange = (event) => {
                   {errormsg}
                 </small>
               )}    
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
                 <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
-                <br/>
+               
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
@@ -436,7 +436,7 @@ const handleChange = (event) => {
                 id="outlined-required"
                 value={url}
                 onChange={(e) => seturl(e.target.value)}
-                label="url"
+                label="Url"
               />
               <TextField
                 id="outlined"
@@ -447,7 +447,7 @@ const handleChange = (event) => {
               />
               <TextField
                 id="outlined-input"
-                label="DescriptionIsEnglish"
+                label="Description English"
                 type="text"
                 required
                 value={DescriptionIsEnglish}
@@ -463,8 +463,8 @@ const handleChange = (event) => {
               />
             
      
+            <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Show Button</InputLabel>
      <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel><br/>
                 <Select
                   id="demo-customized-select-native"
                   value={ShowButton}
@@ -479,8 +479,8 @@ const handleChange = (event) => {
                 </Select>
               </FormControl>
 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Display Banner</InputLabel>
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel><br/>
                 <Select
                   id="demo-customized-select-native"
                   value={DisplayBannerOrNot}
@@ -494,7 +494,7 @@ const handleChange = (event) => {
                   
                 </Select>
               </FormControl>
-              <hr/> 
+              
 {/* gif  */}
           <TextField
               id="Gif_Url"
@@ -504,8 +504,8 @@ const handleChange = (event) => {
               required
             />
   
+                <InputLabel htmlFor="uncontrolled-native" sx={{pl:1}}>Gif Visibility</InputLabel>
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel><br/>
                 <Select
                   id="demo-customized-select-native"
                   value={Gif_Visibility}
@@ -519,8 +519,8 @@ const handleChange = (event) => {
                 </Select>
               </FormControl>
 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Gif Url Open</InputLabel>
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Url Open</InputLabel><br/>
                 <Select
                   id="demo-customized-select-native"
                   value={Gif_Url_to_be_opened}
@@ -579,8 +579,8 @@ const handleChange = (event) => {
             Edit Banner
           </MDTypography>
           <Card sx={{ px: 3, py: 1, width: "100%" }}> 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
           <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
@@ -612,7 +612,7 @@ const handleChange = (event) => {
               id="outlined-required"
               value={url}
               onChange={(e) => seturl(e.target.value)}
-              label="url"
+              label="Url"
             />
             <TextField
               id="outlined"
@@ -623,7 +623,7 @@ const handleChange = (event) => {
             />
             <TextField
               id="outlined-input"
-              label="DescriptionIsEnglish"
+              label="Description English"
               type="text"
               required
               value={DescriptionIsEnglish}
@@ -647,8 +647,8 @@ const handleChange = (event) => {
             /> */}
       
        
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Show Button</InputLabel>
  <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Show Button</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={ShowButton}
@@ -662,8 +662,8 @@ const handleChange = (event) => {
                 </Select>
               </FormControl>
 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>  Display Banner</InputLabel>
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Display Banner</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={DisplayBannerOrNot}
@@ -676,7 +676,7 @@ const handleChange = (event) => {
                   
                 </Select>
               </FormControl>
-              <hr/> 
+              
 {/* gif  */}
           <TextField
               id="Gif_Url"
@@ -686,8 +686,8 @@ const handleChange = (event) => {
               required
             />
   
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Gif Visibility</InputLabel>
             <FormControl sx={{ m: 1 }} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Visibility</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={Gif_Visibility}
@@ -701,8 +701,8 @@ const handleChange = (event) => {
                 </Select>
               </FormControl>
 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Gif Url Open</InputLabel>
             <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Gif Open</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={Gif_Url_to_be_opened}

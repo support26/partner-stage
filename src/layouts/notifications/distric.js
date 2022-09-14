@@ -166,8 +166,8 @@ function Distric() {
   };
 
   return (
-    <Card sx={{ px: 5, py: 1, pb: 4, width: "100%" }}>
-      <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
+    <Card sx={{ px: 5, py: 1, pb: 3, width: "100%" }}>
+      <MDTypography align="center" variant="h3" sx={{ pb: "15px" }}>
         District Notification
       </MDTypography>
       <FormControl sx={{ mb: 3 }} variant="standard">
@@ -175,7 +175,7 @@ function Distric() {
           State
         </InputLabel>
         <br />
-        <NativeSelect
+        <NativeSelect sx={{ mb: 2 }}
           value={sId}
           onChange={getDistrict}
           input={<BootstrapInput />}
@@ -199,11 +199,11 @@ function Distric() {
           })}
         </NativeSelect>
       </FormControl>
-      <FormControl sx={{ mb: 3 }} variant="standard">
         <InputLabel variant="standard" htmlFor="uncontrolled-native">
           District
         </InputLabel>
-        <br />
+      <FormControl sx={{ mb: 2 }} variant="standard">
+       
         <Select
           value={district}
           id="demo-customized-select-native"
@@ -237,8 +237,9 @@ function Distric() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
+        sx={{pb:2}}
       />
-      <br />
+      
       <MDInput
         label="Type here your message..."
         multiline
@@ -256,8 +257,9 @@ function Distric() {
         type="file"
         inputProps={{ accept: ".png, .jpeg, .jpg" }}
         onChange={handelDistricImages}
-      />{" "}
-      <br />
+        sx={{pb:2}}
+      />
+
       <LoadingButton
         style={
           btnDisabled == true
