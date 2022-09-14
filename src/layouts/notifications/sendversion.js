@@ -174,14 +174,14 @@ function Version() {
                   }
                 />
               </ListItemIcon>
-              <ListItemText primary="Select All" />
+              <p  >Select All</p>
             </MenuItem>
             {version.map((version) => (
               <MenuItem key={version} value={version}>
                 <ListItemIcon>
                   <Checkbox checked={AppVersion.indexOf(version) > -1} />
                 </ListItemIcon>
-                <ListItemText primary={version} />
+                <p >{version} </p>
               </MenuItem>
             ))}
           </Select>

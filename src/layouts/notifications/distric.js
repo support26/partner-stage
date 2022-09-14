@@ -26,6 +26,7 @@ import "./style.css";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 // mui custom style
+
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
@@ -48,10 +49,10 @@ const MenuProps = {
       maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
       width: 250,
       padding: 10,
-      fontSize: 10,
     },
   },
 };
+
 
 // mui custom style
 
@@ -169,7 +170,7 @@ function Distric() {
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
         District Notification
       </MDTypography>
-      <FormControl sx={{ mb: 3 }}>
+      <FormControl sx={{ mb: 3 }} variant="standard">
         <InputLabel variant="standard" htmlFor="uncontrolled-native">
           State
         </InputLabel>
@@ -182,9 +183,10 @@ function Distric() {
           renderValue={(selected) => selected.join(",")}
           style={{
             width: "100%",
+            height:'5px'
           }}
         >
-          <option>Select State</option>
+          <option >Select State</option>
           {/* <MenuItem value="" disabled>
             <em>select the value</em>
           </MenuItem> */}
@@ -217,13 +219,13 @@ function Distric() {
           <em>Select District</em>
           <MenuItem className="font-edit" value={null} style={{ color: "black" }}>
             <Checkbox checked={district.indexOf(null) > -1} />
-            <ListItemText primary={"NONE"} />
+            <p>{"NONE"}</p>
           </MenuItem>
           {districts.map(({ name }) => {
             return (
               <MenuItem className="font-edit" key={name} value={name} style={{ color: "black" }}>
                 <Checkbox checked={district.indexOf(name) > -1} />
-                <ListItemText primary={name} />
+                <p>{name} </p>
               </MenuItem>
             );
           })}
