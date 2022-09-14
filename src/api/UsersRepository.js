@@ -1,14 +1,6 @@
 import Api, { baseUrl } from "./config";
 
 class UsersRepository {
-  // getAllRunner = () => {
-  //   const token = localStorage.getItem("token");
-  //   return Api.get(`${baseUrl}users/allusers`, {
-  //     headers: {
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   });
-  //   };
 
     async getAllRunner() {
       const token = localStorage.getItem("token");
@@ -26,15 +18,6 @@ class UsersRepository {
         });
       return reponse;
     }
-
-  // updateRunners = (id, data) => {
-  //   const token = localStorage.getItem("token");
-  //   return Api.put(`${baseUrl}users/profile/${id}`, data, {
-  //     headers: {
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   });
-  // };
 
   async updateRunners(id, data) {
     const token = localStorage.getItem("token");
@@ -63,24 +46,6 @@ class UsersRepository {
       },
     });
   };
-  // async UploadImageFile(ImageFile) {
-  //   const token = localStorage.getItem("token");
-  //   const reponse = await Api.put(`${baseUrl}users/uploadFile`, ImageFile, {
-  //     headers: {
-  //       Authorization: "Bearer " + token,
-  //       "content-type": "multipart/form-data",
-
-  //     },
-  //   })
-  //     .then((response) => {
-  //       return response;
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response);
-  //       return error.response;
-  //     });
-  //   return reponse;
-  // }
 
   TotalUsers = () => {
     const token = localStorage.getItem("token");

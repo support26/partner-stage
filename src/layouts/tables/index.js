@@ -1,10 +1,10 @@
 import UserRepository from "api/UsersRepository";
-import useAdmin from "../../hooks/useAdmin";
+// import useAdmin from "../../hooks/useAdmin";
 import Modal from "@mui/material/Modal";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import useUsers from "../../hooks/useUsers";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import * as React from "react";
 import {
   DataGrid,
@@ -23,47 +23,47 @@ import axios from "axios";
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
-import MDTypography from "components/MDTypography";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import MDTypography from "components/MDTypography";
+// import DeleteIcon from "@mui/icons-material/Delete";
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
+// import Footer from "examples/Footer";
+// import DataTable from "examples/Tables/DataTable";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-// Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
-
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
+// Data
+// import authorsTableData from "layouts/tables/data/authorsTableData";
+// import projectsTableData from "layouts/tables/data/projectsTableData";
+
+// import ListItemText from "@mui/material/ListItemText";
+// import ListItem from "@mui/material/ListItem";
+// import List from "@mui/material/List";
+// import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+// import MDInput from "components/MDInput";
+// import MDButton from "components/MDButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 // import UploadImages from "./upload_image";
-import { Navigate } from "react-router-dom";
-import borders from "assets/theme-dark/base/borders";
+// import { Navigate } from "react-router-dom";
+// import borders from "assets/theme-dark/base/borders";
 //import IconButton from '@mui/material/IconButton';
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
-import { textTransform } from "@mui/system";
+// import { textTransform } from "@mui/system";
 import "../AddUsers/style.css";
-import nophoto from "assets/images/no-image-available.png";
-import profile from "assets/images/profile.png";
-import Switch from "@mui/material/Switch";
+// import nophoto from "assets/images/no-image-available.png";
+// import profile from "assets/images/profile.png";
+// import Switch from "@mui/material/Switch";
 import CircleIcon from "@mui/icons-material/Circle";
 
 
@@ -1085,8 +1085,8 @@ function Tables() {
             <DialogContentText></DialogContentText>
             <TextareaAutosize
               minRows={10}
-              aria-label="maximum height"
-              placeholder="Maximum 6 rows"
+              aria-label="Type Here..."
+              placeholder="Type Your Reason Here..."
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               style={{ width: 300 }}

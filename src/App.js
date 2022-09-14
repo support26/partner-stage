@@ -6,10 +6,10 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
+// import Icon from "@mui/material/Icon";
 
 //  React components
-import MDBox from "components/MDBox";
+// import MDBox from "components/MDBox";
 
 //  React example components
 import Sidenav from "examples/Sidenav";
