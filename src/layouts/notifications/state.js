@@ -163,14 +163,14 @@ function State() {
   };
   return (
     <Card sx={{ px: 5, py: 1, pb: 2, width: "100%" }}>
-      <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
+      <MDTypography align="center" variant="h3" sx={{ pb: "10px" }}>
         State Notification
       </MDTypography>
-      <FormControl sx={{ mb: 2, p: 0 }} variant="standard">
-        <InputLabel htmlFor="demo-customized-select-native">
+        <InputLabel htmlFor="demo-customized-select-native" sx={{py:1}}>
           Select State
         </InputLabel>
-        <br />
+      <FormControl sx={{ mb: 2, p: 0 }} variant="standard">
+        
         <Select
           id="demo-customized-select-native"
           value={state}

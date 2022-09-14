@@ -147,12 +147,12 @@ function Version() {
       <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
         Send By Version
       </MDTypography>
-      <Card sx={{ px: 5, py: 2, width: "100%" }}>
-        <FormControl sx={{ mb: 3 }} variant="standard">
+      <Card sx={{ px: 5, py: 1, width: "100%" }}>
           <InputLabel htmlFor="demo-customized-select-native">
             Select Version
           </InputLabel>
-          <br />
+         
+        <FormControl sx={{ mb: 2 }} variant="standard">
           <Select
             id="demo-customized-select-native"
             value={AppVersion}
@@ -191,8 +191,9 @@ function Version() {
           onChange={(e) => setTitle(e.target.value)}
           type="text"
           label="Title..."
+          sx={{mb:2}}
         />
-        <br />
+        
         <MDInput
           label="Type here your message..."
           value={body}

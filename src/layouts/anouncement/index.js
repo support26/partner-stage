@@ -331,8 +331,8 @@ const handleChange = (event) => {
       input={<BootstrapInput />}
 
       MenuProps={MenuProps}/> */}
+ <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
   <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
                 
                 <Select
                   id="demo-customized-select-native"
@@ -377,8 +377,8 @@ const handleChange = (event) => {
           required
         />
           
+ <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Display anounceopen</InputLabel>
         <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Display anounceopen</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
@@ -392,7 +392,7 @@ const handleChange = (event) => {
                   
                 </Select>
               </FormControl>
-     <br/>
+     
         <Button
           type="submit"
           variant="contained"
@@ -443,9 +443,9 @@ const handleChange = (event) => {
        /> */}
 
 
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
 <FormControl sx={{mb :0,p:1}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:2}}>Select Version</InputLabel>
-                <br/>
+              
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
@@ -497,8 +497,8 @@ const handleChange = (event) => {
         />
         
       
+                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Display Announcement</InputLabel>
         <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
-                <InputLabel htmlFor="demo-customized-select-native">Display Announcement</InputLabel>
                 <Select
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
