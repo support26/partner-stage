@@ -110,8 +110,8 @@ function Number() {
   };
 
   return (
-    <Card sx={{ px: 5, py: 2, width: "100%" }}>
-      <MDTypography align="center" variant="h3" sx={{ pb: "20px" }}>
+    <Card sx={{ px: 5, py: 1, width: "100%" }}>
+      <MDTypography align="center" variant="h3">
         Send By Number
       </MDTypography>
       <TextField
@@ -119,14 +119,16 @@ function Number() {
         type={"file"}
         inputProps={{ accept: ".csv, .xls, .xlsx" }}
         onChange={onChange}
+        sx={{py:1}}
       />
       <TextField
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         type="text"
         label="Title..."
-      />
-      <br />
+        />
+        <br/>
+      
       <MDInput
         label="Type here your message..."
         value={body}
