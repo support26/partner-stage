@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
+// import ReactDOM from "react-dom";
+// import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import Hide from 'assets/images/hide1.png';
@@ -13,7 +13,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import Alert from "@mui/material/Alert";
+// import Alert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
 
 // Authentication layout components
@@ -26,7 +26,7 @@ import bgImage from "assets/images/Ellipse 1 (1).svg";
 import "./sign.css";
 import Cookies from 'js-cookie'
 import useAdmin from '../../../hooks/useAdmin'
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import  {error} from 'api/AuthRepository';
 import { margin } from "@mui/system";
  
@@ -46,31 +46,6 @@ function Basic () {
     event.preventDefault();
   
     login({admin_name, password})
-    // axios
-    //   .post('http://localhost:8001/admin/login', { admin_name, password })
-    //   .then(response => {
-        
-    //       nav('/dashboard')
-    //       sessionStorage.setItem(
-    //         'session_token',
-    //         response.data.data.session_token
-    //       )
-    //       sessionStorage.setItem('login_id', response.data.data.id)
-    //       sessionStorage.setItem('login_count', response.data.data.login_count)
-    //       sessionStorage.setItem('user_email', response.data.data.user_email)
-    //       sessionStorage.setItem('users_name', response.data.data.users_name)
-    //       console.log(response)
-    //       if (response.data.data.roleId === 1) {
-    //         sessionStorage.setItem('role_id', 'Support')
-    //       } else {
-    //         sessionStorage.setItem('role_id', 'Admin')
-    //       }
-        
-    //   })
-    //   .catch(e => {
-    //     // console.log(e.response.data.data)
-    //     setMsg(e.response.data.data)
-    //   })
     setadmin_name('')
     setPassword('')
   }
