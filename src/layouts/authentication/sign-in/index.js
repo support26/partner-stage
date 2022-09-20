@@ -7,7 +7,6 @@ import Hide from 'assets/images/hide1.png';
 import Show from 'assets/images/eye.png';
 // @mui material components
 import Card from "@mui/material/Card";
-
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -26,11 +25,30 @@ import bgImage from "assets/images/Ellipse 1 (1).svg";
 import "./sign.css";
 import Cookies from 'js-cookie'
 import useAdmin from '../../../hooks/useAdmin'
+import useUsers from '../../../hooks/useUsers'
 // import { Redirect } from "react-router-dom";
 import  {error} from 'api/AuthRepository';
-import { margin } from "@mui/system";
+import { Box, margin } from "@mui/system";
+// forget password
+import Avatar from '@mui/material/Avatar';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import List from '@mui/material/List';
+import TextField from '@mui/material/TextField';
+import PersonIcon from '@mui/icons-material/Person';
+import { Button, Typography } from "@mui/material";
+import DialogActions from '@mui/material/DialogActions';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+
  
 function Basic () {
+
+ 
+
+
   const nav = useNavigate()
  
   const [admin_name, setadmin_name] = useState('')
@@ -56,11 +74,52 @@ function Basic () {
   }
   
   }, [])
+
+
+  // forget password
+  const [open, setOpen] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const {SendForgetNotification} =useUsers();
+
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setError(null)
+   
+    setErrors(null)
+  };
+
+  const [email, setEmail] = useState(null)
+  const [errors, setErrors] = useState(null)
+  const [error,setError] = useState(null)
   
  
-  // if (session_token) {
-  //   return <Navigate to="/dashboard" />;
-  // }
+  const handelEmail = (event) => {
+    event.preventDefault();
+   
+    if (!email) {
+      setError("Please fill email fields");
+      setErrors('')
+    }else{
+    var sendForgetNotification = SendForgetNotification(email);
+    sendForgetNotification.then((response) => {
+      console.log(response.data.data)
+      setErrors(response.data.data);
+      setError('')
+      // handleClose();
+
+    }).catch((e) => {
+      console.log(e);
+      setError(e.data.data);
+
+    })
+     setEmail(null);
+     
+  };
+}
   return (
     <>
       <BasicLayout className="banner-sign ">
@@ -137,6 +196,8 @@ function Basic () {
                 fontSize="small"
                 fontWeight="medium"
                 textAlign="center"
+                onClick={handleClickOpen}
+                style={{cursor:'pointer'}}
               >
                 Forgot Password ?
               </MDTypography>
@@ -144,6 +205,49 @@ function Basic () {
           </form>
         </Card>
       </BasicLayout>
+
+     
+<Dialog maxWidth={maxWidth} open={open} >
+        <div>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            style={{ float: "right" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Box
+          noValidate
+          component="form"
+          sx={{
+            width:'350px',
+            padding:2.5
+          }}
+        >
+     
+          <DialogTitle id="responsive-dialog-title" sx= {{textAlign:'center'}}>
+          {"Forget Password ?"}
+        </DialogTitle>
+        <Typography  sx= {{textAlign:'center',color:'#7b809a'}}>Just provide your email
+and we can do the rest</Typography>
+      <br/>
+       <TextField name="email" value={email}  onChange={(e) => setEmail(e.target.value)}
+       label = "email" fullWidth  />
+       <small style={{ color: "red", fontSize: "15px" }}>{errors}</small>  
+       <small style={{ color: "red", fontSize: "15px" }}>{error}</small>  
+       
+        <DialogActions>
+               
+         <Button variant="contained" fullWidth className="forgetButton" onClick={handelEmail} >Reset</Button>
+
+       
+          </DialogActions>
+   
+        </Box>
+      </Dialog>
     </>
   );
 }
