@@ -78,5 +78,16 @@ export default function useUsers() {
         // dispatch(errorMessage(responseData.data.message));
       }
     },
+// post forget notification
+  
+SendForgetNotification: async (email) => {
+    var responseData = await UsersRepository.sendForgetNotification(email);
+    if (responseData.status === 200) {
+      return responseData;
+    }
+    return responseData;
+  },
+
+
   };
 }

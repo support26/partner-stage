@@ -101,6 +101,23 @@ class UsersRepository {
       });
     return reponse;
   }
+// post forget password
+
+  async sendForgetNotification(email) {
+    const reponse = await Api.post(`${baseUrl}auth/reset-password`, {
+        email,
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        // console.log(error);
+        return error.response;
+      });
+    return reponse;
+  }
+
+
 }
 
 export default new UsersRepository();
