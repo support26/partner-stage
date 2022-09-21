@@ -93,11 +93,13 @@ export default function useAdmin() {
         // console.log(responseData.data);
         dispatch(errorMessage(""));
         dispatch(successMsg(responseData.data.data));
+        return responseData;
       } else {
         // console.log(responseData.data);
         dispatch(successMsg(""));
         dispatch(errorMessage(responseData.data.message));
       }
+      return responseData;
     },
 
     //reset api
