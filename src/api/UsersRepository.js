@@ -111,8 +111,7 @@ class UsersRepository {
         return response;
       })
       .catch((error) => {
-        // console.log(error);
-        return error.response;
+        return error;
       });
     return reponse;
   }

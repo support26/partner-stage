@@ -60,7 +60,7 @@ function AddUsers() {
   const [users_email, setUsers_email] = useState("");
   const [user_type, setUser_type] = useState("0");
   const [user_id, setUser_id] = useState("");
-  const [is_active, setIs_active] = useState("Y");
+  const [is_active, setIs_active] = useState("");
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [open, setOpen] = useState(false);
@@ -137,7 +137,7 @@ function AddUsers() {
           setUser_id(params.id);
           setUsers_name(thisRow.users_name);
           setUsers_email(thisRow.users_email);
-          setIs_active(params.row.is_active);
+          // setIs_active(params.row.is_active);
           setEmployee_name(params.row.employee_name);
           setEditUserModal(true);
           return 
@@ -161,7 +161,6 @@ function AddUsers() {
         );
       },
     },
-    { field: "id", headerName: "ID", width: 70 },
     { field: "employee_name", headerName: "Employee Name", width: 150 },
     { field: "users_name", headerName: "User Name", width: 140 },
     { field: "users_email", headerName: "Email", width: 200 },
@@ -186,24 +185,30 @@ function AddUsers() {
         const handleActiveStatus = (event) => {
           event.preventDefault();
           const id = params.row.id;
-          if (params.row.is_active === "Y") {
-            const is_active = "N";
-            ChangeAdminUserStatus(id, is_active);
-          } else {
-            const is_active = "Y";
-            ChangeAdminUserStatus(id, is_active);
-          }
-          // GetUsers();
-          // console.log(id, is_active);
+          var ChangeStatus = ChangeAdminUserStatus(id, event.target.value);
+          ChangeStatus.then((response) => {
+            if (response.status === 200) {
+              GetUsers();
+            }
+          }).catch((e) => {
+            console.log(e);
+          });          
         };
-        return params.row.is_active === "Y" ? (
-          <Switch
+        return (
+         <select
+         value={params.row.is_active}
+            style={{
+              width: "100px",
+              height: "30px",
+              borderRadius: "5px",
+              border: "1px solid #33A2B5",
+              outline: "none",
+            }}
             onChange={handleActiveStatus}
-            defaultChecked
-            color="success"
-          />
-        ) : (
-          <Switch onChange={handleActiveStatus} color="success" />
+          >
+            <option value="Y">Active</option>
+            <option value="N">Inactive</option>
+          </select>
         );
       },
     },

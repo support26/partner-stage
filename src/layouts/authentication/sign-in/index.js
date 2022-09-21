@@ -77,14 +77,15 @@ function Basic () {
 
 
   // forget password
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); //for opening forget password dialog
   const [maxWidth, setMaxWidth] = useState("sm");
-  const {SendForgetNotification} =useUsers();
+  const {SendForgetNotification} =useUsers(); //for sending forget password mail to user
 
-
+//to open forget password dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
+  //to close forget password dialog
   const handleClose = () => {
     setOpen(false);
     setError(null)
@@ -92,23 +93,33 @@ function Basic () {
     setErrors(null)
   };
 
-  const [email, setEmail] = useState(null)
+  const [email, setEmail] = useState(null) //for storing email of user
   const [errors, setErrors] = useState(null)
   const [error,setError] = useState(null)
+  const [forgetSubmitBtn, setForgetSubmitBtn] = useState("Reset Password") //for changing button text
   
  
   const handelEmail = (event) => {
     event.preventDefault();
    
-    if (!email) {
-      setError("Please fill email fields");
+    if (!email || email === "" || email === null) {
+      setError("Please enter your email");
       setErrors('')
     }else{
+      setForgetSubmitBtn("Sending...")
     var sendForgetNotification = SendForgetNotification(email);
     sendForgetNotification.then((response) => {
-      console.log(response.data.data)
-      setErrors(response.data.data);
-      setError('')
+      if (response.status === 200) {
+        setErrors(response.data.data);
+        setError('')
+        setForgetSubmitBtn("Reset Password")
+      }
+      else {
+        console.log(response);
+        setError(response.response.data.data);
+        setErrors('')
+        setForgetSubmitBtn("Reset Password")
+      }
       // handleClose();
 
     }).catch((e) => {
@@ -116,8 +127,8 @@ function Basic () {
       setError(e.data.data);
 
     })
-     setEmail(null);
-     
+     setEmail('');
+
   };
 }
   return (
@@ -220,11 +231,12 @@ function Basic () {
           </IconButton>
         </div>
         <Box
-          noValidate
+          // noValidate
           component="form"
           sx={{
-            width:'350px',
-            padding:2.5
+            width:'326px',
+            padding:2.5,
+            
           }}
         >
      
@@ -234,14 +246,15 @@ function Basic () {
         <Typography  sx= {{textAlign:'center',color:'#7b809a'}}>Just provide your email
 and we can do the rest</Typography>
       <br/>
-       <TextField name="email" value={email}  onChange={(e) => setEmail(e.target.value)}
+       <TextField required name="email" type="email" value={email}  onChange={(e) => setEmail(e.target.value)}
        label = "email" fullWidth  />
-       <small style={{ color: "red", fontSize: "15px" }}>{errors}</small>  
-       <small style={{ color: "red", fontSize: "15px" }}>{error}</small>  
+       <small style={{ color: "green", fontSize: "15px", paddingLeft: "5px" }}>{errors}</small>  
+       
+       <small style={{ color: "red", fontSize: "15px", paddingLeft: "8px"}}>{error}</small>  
        
         <DialogActions>
                
-         <Button variant="contained" fullWidth className="forgetButton" onClick={handelEmail} >Reset</Button>
+         <Button type="submit" variant="contained" fullWidth className="forgetButton" onClick={handelEmail} >{forgetSubmitBtn}</Button>
 
        
           </DialogActions>

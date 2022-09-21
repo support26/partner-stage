@@ -82,9 +82,6 @@ export default function useUsers() {
   
 SendForgetNotification: async (email) => {
     var responseData = await UsersRepository.sendForgetNotification(email);
-    if (responseData.status === 200) {
-      return responseData;
-    }
     return responseData;
   },
 
