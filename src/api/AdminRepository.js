@@ -315,6 +315,17 @@ class AdminRepository {
       });
     return reponse;
   }
+  // check if user active or not
+  async checkUserActive() {
+    const userData = localStorage.getItem("userData");
+    const {token} = JSON.parse(userData);
+    // console.log("token", token);
+    return Api.get(`${baseUrl}admin/is-active/${token.id}`, {
+      headers: {
+        Authorization: "Bearer " + token.session_token,
+      },
+    });
+  };
 }
 
 export default new AdminRepository();

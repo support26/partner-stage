@@ -6,6 +6,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 // import AdminRepository from "../../api/AdminRepository";
 //Hooks
 import useAdmin from "../../hooks/useAdmin";
+import AdminRepository from "api/AdminRepository";
 // import { useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 
@@ -30,48 +31,62 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MDTypography from "components/MDTypography";
 // import { Fullscreen } from "@mui/icons-material";
-import InputBase from '@mui/material/InputBase';
-import { styled } from '@mui/material/styles';
+import InputBase from "@mui/material/InputBase";
+import { styled } from "@mui/material/styles";
 // import ListItemText from '@mui/material/ListItemText';
 // import Checkbox from '@mui/material/Checkbox';
 // import ListItemIcon from '@mui/material/ListItemIcon';
 
-
 const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP =20;
+const ITEM_PADDING_TOP = 20;
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
       width: 250,
-      padding:10
+      padding: 10,
     },
   },
 };
 
-const version = ["1.1","1.2","1.3","1.6","1.7","1.8","17.0","17.1","17.2","17.3","17.4","17.5","17.6","17.7","17.8","17.9","18.4"];
+const version = [
+  "1.1",
+  "1.2",
+  "1.3",
+  "1.6",
+  "1.7",
+  "1.8",
+  "17.0",
+  "17.1",
+  "17.2",
+  "17.3",
+  "17.4",
+  "17.5",
+  "17.6",
+  "17.7",
+  "17.8",
+  "17.9",
+  "18.4",
+];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
+  "label + &": {
     marginTop: theme.spacing(3),
   },
-  '& .MuiInputBase-input': {
+  "& .MuiInputBase-input": {
     borderRadius: 4,
-    position: 'relative',
+    position: "relative",
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
+    border: "1px solid #ced4da",
     fontSize: 16,
-    padding: '10px 26px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-  
+    padding: "10px 26px 10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
   },
 }));
 
-
 function Anouncementbanner() {
-  const {
-       GetAnouncements,UpdateAnouncement,AddAnouncements
-  } = useAdmin();
+  const { GetAnouncements, UpdateAnouncement, AddAnouncements, logOut } =
+    useAdmin();
 
   const [user_id, setUser_id] = useState("");
 
@@ -84,20 +99,18 @@ function Anouncementbanner() {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
-    setAppVersion("")
+    setAppVersion("");
   };
-// Anouncement text
-const [AnnouncementText, setAnnouncementText] = useState("");
-const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
-const [AppVersion, setAppVersion] = useState("");
-const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
-  useState(false);
-const admin_email = localStorage.getItem("user_email");
-const roleId = localStorage.getItem("roleId");
-const [loading, setLoading] = useState(false);
-const [disabled, setDisabled] = useState(
-  (roleId==1)? true : false
-)
+  // Anouncement text
+  const [AnnouncementText, setAnnouncementText] = useState("");
+  const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
+  const [AppVersion, setAppVersion] = useState("");
+  const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
+    useState(false);
+  const admin_email = localStorage.getItem("user_email");
+  const roleId = localStorage.getItem("roleId");
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
   //popup
   // const [banneropen, setBannerOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("md");
@@ -110,7 +123,7 @@ const [disabled, setDisabled] = useState(
   const handleAnounceClose = () => {
     setAnounceOpen(false);
   };
-// get data
+  // get data
   const GetAnounce = () => {
     setLoading(true);
     var AllAdminUsers = GetAnouncements();
@@ -124,24 +137,22 @@ const [disabled, setDisabled] = useState(
     });
   };
 
-
- const data_1={
+  const data_1 = {
     AnnouncementText: AnnouncementText,
     AnnouncementIsEnglish: AnnouncementIsEnglish,
     DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
-    AppVersion:AppVersion,
-    admin_email
-  }
+    AppVersion: AppVersion,
+    admin_email,
+  };
 
-// update anounce
-const updateBanner= (event) => {
+  // update anounce
+  const updateBanner = (event) => {
     event.preventDefault();
     var UpdateAnounceSuccess = UpdateAnouncement(data_1, user_id);
     UpdateAnounceSuccess.then((response) => {
       if (response.status === 200) {
-        
-         closeEditUserModal();
-         GetAnounce();
+        closeEditUserModal();
+        GetAnounce();
         // handleOpen();
       }
     }).catch((e) => {
@@ -150,49 +161,58 @@ const updateBanner= (event) => {
     setAnnouncementText("");
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
-     setAppVersion("")
+    setAppVersion("");
   };
   const data2 = {
     AnnouncementText,
     AnnouncementIsEnglish,
     AppVersion,
     DisplayAnnouncementTextOrNot,
-    admin_email
+    admin_email,
   };
   const postandleSubmit = (event) => {
     event.preventDefault();
     // console.log(data2)
     var addAnnouncement = AddAnouncements(data2);
-    addAnnouncement.then((response) => {
-      if (response.status === 200) {
-        GetAnounce();
-        handleAnounceClose();
-        
-      }
-    }).catch((e) => {
-      console.log(e);
-    })
-      setAnnouncementText(null);
-      setAnnouncementIsEnglish(null);
-      setDisplayAnnouncementTextOrNot(null);
-      setAppVersion(null)
-
+    addAnnouncement
+      .then((response) => {
+        if (response.status === 200) {
+          GetAnounce();
+          handleAnounceClose();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    setAnnouncementText(null);
+    setAnnouncementIsEnglish(null);
+    setDisplayAnnouncementTextOrNot(null);
+    setAppVersion(null);
   };
 
   useEffect(() => {
-   
-    GetAnounce();
-   
+    AdminRepository
+      .checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "Y") {
+          GetAnounce();
+        } else {
+          sessionStorage.removeItem("session_token");
+          logOut();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
+  const handleChange = (event) => {
+    event.preventDefault();
+    const value = event.target.value;
 
-const handleChange = (event) => {
-  event.preventDefault();
-  const value = event.target.value;
-  
-  setAppVersion(value);
-  console.log(AppVersion)
-};
+    setAppVersion(value);
+    console.log(AppVersion);
+  };
 
   const columns = [
     {
@@ -210,40 +230,45 @@ const handleChange = (event) => {
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
-       
-        
+
           setUser_id(params.id);
           setAnnouncementText(thisRow.AnnouncementText);
           setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
-          setDisplayAnnouncementTextOrNot(params.row.DisplayAnnouncementTextOrNot);
-          setAppVersion([params.row.AppVersion])
+          setDisplayAnnouncementTextOrNot(
+            params.row.DisplayAnnouncementTextOrNot
+          );
+          setAppVersion([params.row.AppVersion]);
 
           setEditUserModal(true);
-          return 
+          return;
           // console.log(thisRow);
         };
         return (
-        <Button 
-              onClick={onClick}
-              variant="contained"
-              disabled={disabled}
-              sx={{
-                color:'#fff',
-                backgroundColor: "#33A2B5",
-                "&:hover": {
-                  backgroundColor: "#378c9b",
-                  focus: { backgroundColor: "red" },
-                },
-              }}
-            > 
-              Edit
-            </Button>
-          );
-        },
+          <Button
+            onClick={onClick}
+            variant="contained"
+            disabled={disabled}
+            sx={{
+              color: "#fff",
+              backgroundColor: "#33A2B5",
+              "&:hover": {
+                backgroundColor: "#378c9b",
+                focus: { backgroundColor: "red" },
+              },
+            }}
+          >
+            Edit
+          </Button>
+        );
       },
+    },
     // { field: "id", headerName: "ID", width: 50 },
-  
-    { field: "AnnouncementText", headerName: "Announcement in Hindi", width: 200 },
+
+    {
+      field: "AnnouncementText",
+      headerName: "Announcement in Hindi",
+      width: 200,
+    },
     {
       field: "AnnouncementIsEnglish",
       headerName: "Announcement in English",
@@ -257,12 +282,12 @@ const handleChange = (event) => {
     {
       field: "DisplayAnnouncementTextOrNot",
       headerName: "Display Announcement",
-      width: 185,  
-        renderCell: function (params) {
+      width: 185,
+      renderCell: function (params) {
         return params.row.DisplayAnnouncementTextOrNot === 1 ? (
-        <Button sx={{color:'green'}}>Yes</Button>
+          <Button sx={{ color: "green" }}>Yes</Button>
         ) : (
-          <Button sx={{color:'red'}} >No</Button>
+          <Button sx={{ color: "red" }}>No</Button>
         );
       },
     },
@@ -270,36 +295,31 @@ const handleChange = (event) => {
       field: "created_by",
       headerName: "Created By",
       width: 200,
-    }, 
-     {
+    },
+    {
       field: "created_at",
       headerName: "Created At",
       width: 200,
     },
     {
-        field: "updated_by",
-        headerName: "Updated By",
-        width: 200,
-      }, {
-        field: "updated_at",
-        headerName: "Updated At",
-        width: 200,
-      },
-  
+      field: "updated_by",
+      headerName: "Updated By",
+      width: 200,
+    },
+    {
+      field: "updated_at",
+      headerName: "Updated At",
+      width: 200,
+    },
   ];
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       {/*  Banner Notification */}
-    
 
       {/*  Post Notification */}
-      <Dialog
-        maxWidth={maxWidth}
-        open={anounceopen}
-      
-      >
+      <Dialog maxWidth={maxWidth} open={anounceopen}>
         <div>
           <IconButton
             edge="start"
@@ -313,107 +333,100 @@ const handleChange = (event) => {
         </div>
         <Box
           sx={{
-            "& .MuiTextField-root": { mx:1, my: 1 },
+            "& .MuiTextField-root": { mx: 1, my: 1 },
           }}
         >
-
-
           {/* add Anouncement */}
-   <form onSubmit={postandleSubmit}> 
-     <MDTypography align="center" variant="h3" sx={{ px:10 }}>
-           Add Anouncement
-        </MDTypography>
-    <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
-      {/* <TextField 
+          <form onSubmit={postandleSubmit}>
+            <MDTypography align="center" variant="h3" sx={{ px: 10 }}>
+              Add Anouncement
+            </MDTypography>
+            <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
+              {/* <TextField 
        value={AppVersion}
       onChange={handleChange}
 
       input={<BootstrapInput />}
 
       MenuProps={MenuProps}/> */}
- <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
-  <FormControl sx={{mb :0,p:1}} variant="standard">
-                
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Select Version
+              </InputLabel>
+              <FormControl sx={{ mb: 0, p: 1 }} variant="standard">
                 <Select
                   id="demo-customized-select-native"
                   value={AppVersion}
                   onChange={(e) => setAppVersion(e.target.value)}
-
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
-                  
-                  style= {{
-                    width:'100%',
-                               
+                  style={{
+                    width: "100%",
                   }}
-                  
-                 
                 >
-                 
-              
-        {version.map((version) => (
-          <MenuItem key={version} value={version}>
-            {version}
-            
-          </MenuItem>
-        ))}
-                  
+                  {version.map((version) => (
+                    <MenuItem key={version} value={version}>
+                      {version}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
-        <TextField
-          id="outlined"
-          required
-          value={AnnouncementText}
-          onChange={(e) => setAnnouncementText(e.target.value)}
-          label="Announcement Hindi"
-        />
+              <TextField
+                id="outlined"
+                required
+                value={AnnouncementText}
+                onChange={(e) => setAnnouncementText(e.target.value)}
+                label="Announcement Hindi"
+              />
 
-        <TextField
-          id="outlined-input"
-          label="Announcement English"
-          type="text"
-          value={AnnouncementIsEnglish}
-          onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
-          required
-        />
-          
- <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Display anounceopen</InputLabel>
-        <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
+              <TextField
+                id="outlined-input"
+                label="Announcement English"
+                type="text"
+                value={AnnouncementIsEnglish}
+                onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
+                required
+              />
+
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Display anounceopen
+              </InputLabel>
+              <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
                 <Select
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
-            onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
+                  onChange={(e) =>
+                    setDisplayAnnouncementTextOrNot(e.target.value)
+                  }
                   input={<BootstrapInput />}
-                  
                 >
                   <MenuItem aria-label="None">Select</MenuItem>
                   <MenuItem value={1}>yes</MenuItem>
                   <MenuItem value={0}>no</MenuItem>
-                  
                 </Select>
               </FormControl>
-     
-        <Button
-          type="submit"
-          variant="contained"
-          value="Submit"
-          style={{ background: "#33A2B5", color: "white" }}
-      
-        >
-          Send
-        </Button>
-          
-      </Card>  </form>
+
+              <Button
+                type="submit"
+                variant="contained"
+                value="Submit"
+                style={{ background: "#33A2B5", color: "white" }}
+              >
+                Send
+              </Button>
+            </Card>{" "}
+          </form>
         </Box>
       </Dialog>
 
       {/* Update Banner */}
 
-      <Dialog
-        maxWidth={maxWidth}
-        open={editUserModal}
-        
-      >
+      <Dialog maxWidth={maxWidth} open={editUserModal}>
         <div>
           <IconButton
             edge="start"
@@ -429,12 +442,13 @@ const handleChange = (event) => {
           sx={{
             "& .MuiTextField-root": { mx: 1, my: 1 },
           }}
-        > <MDTypography align="center" variant="h3" sx={{ px: 10 }}>
-             Edit Anouncement 
-        </MDTypography>
+        >
+          {" "}
+          <MDTypography align="center" variant="h3" sx={{ px: 10 }}>
+            Edit Anouncement
+          </MDTypography>
           <Card sx={{ px: 3, py: 2, pb: 4, width: "100%" }}>
-       
-      {/* <TextField
+            {/* <TextField
        value={AppVersion}
        required
       
@@ -442,93 +456,85 @@ const handleChange = (event) => {
        label="VersionFilled "
        /> */}
 
+            <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
+              Select Version
+            </InputLabel>
+            <FormControl sx={{ mb: 0, p: 1 }} variant="standard">
+              <Select
+                id="demo-customized-select-native"
+                value={AppVersion}
+                onChange={handleChange}
+                // onChange={(e) => setShowButton(e.target.value)}
 
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Select Version</InputLabel>
-<FormControl sx={{mb :0,p:1}} variant="standard">
-              
-                <Select
-                  id="demo-customized-select-native"
-                  value={AppVersion}
-                   onChange={handleChange}
-                  // onChange={(e) => setShowButton(e.target.value)}
-
-                  input={<BootstrapInput />}
-                  MenuProps={MenuProps}
-                 
-                  style= {{
-                    width:'100%',
-                               
-                  }}
-                  
-                  
-                >
-            
+                input={<BootstrapInput />}
+                MenuProps={MenuProps}
+                style={{
+                  width: "100%",
+                }}
+              >
                 {version.map((version) => (
                   <MenuItem key={version} value={version}>
                     {version}
-                    
                   </MenuItem>
                 ))}
-                  
-                </Select>
-                </FormControl>
-               {/* <TextField
+              </Select>
+            </FormControl>
+            {/* <TextField
           id="outlined"
           required
           value={AppVersion}
           onChange={handleChange}
           label="AppVersion "
         /> */}
-        <TextField
-          id="outlined"
-          required
-          value={AnnouncementText}
-          onChange={(e) => setAnnouncementText(e.target.value)}
-          label="Announcement Hindi"
-        />
+            <TextField
+              id="outlined"
+              required
+              value={AnnouncementText}
+              onChange={(e) => setAnnouncementText(e.target.value)}
+              label="Announcement Hindi"
+            />
 
-        <TextField
-          id="outlined-input"
-          label="AnnouncementIs English"
-          type="text"
-          value={AnnouncementIsEnglish}
-          onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
-          required
-        />
-        
-      
-                <InputLabel htmlFor="demo-customized-select-native" sx={{pl:1}}>Display Announcement</InputLabel>
-        <FormControl sx={{ m: 1 ,mb :3}} variant="standard">
-                <Select
-                  id="demo-customized-select-native"
-                  value={DisplayAnnouncementTextOrNot}
-                  onChange={(e) => setDisplayAnnouncementTextOrNot(e.target.value)}
-                  input={<BootstrapInput />}
-                >
-                 <MenuItem aria-label="None">Select</MenuItem>
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
-                  
-                </Select>
-              </FormControl>
-       
-        <Button
-          type="submit"
-          variant="contained"
-          value="Submit"
-          style={{ background: "#33A2B5", color: "white" }}
-          onClick={updateBanner}
-        >
-          Send
-        </Button>
-  
-      </Card> 
+            <TextField
+              id="outlined-input"
+              label="AnnouncementIs English"
+              type="text"
+              value={AnnouncementIsEnglish}
+              onChange={(e) => setAnnouncementIsEnglish(e.target.value)}
+              required
+            />
+
+            <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
+              Display Announcement
+            </InputLabel>
+            <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
+              <Select
+                id="demo-customized-select-native"
+                value={DisplayAnnouncementTextOrNot}
+                onChange={(e) =>
+                  setDisplayAnnouncementTextOrNot(e.target.value)
+                }
+                input={<BootstrapInput />}
+              >
+                <MenuItem aria-label="None">Select</MenuItem>
+                <MenuItem value={1}>yes</MenuItem>
+                <MenuItem value={0}>no</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Button
+              type="submit"
+              variant="contained"
+              value="Submit"
+              style={{ background: "#33A2B5", color: "white" }}
+              onClick={updateBanner}
+            >
+              Send
+            </Button>
+          </Card>
         </Box>
       </Dialog>
 
       <div style={{ float: "right", display: "flex" }}>
-          
-
         <Button
           variant="contained"
           onClick={handleAnounceOpen}
@@ -538,14 +544,14 @@ const handleChange = (event) => {
             background: "#33A2B5",
             color: "white",
             margin: "10px",
-            color:'#fff',
+            color: "#fff",
           }}
         >
-         Add Announcement
+          Add Announcement
         </Button>
       </div>
       <br />
-      <div style={{ height: 420, width: "100%", marginTop: "55px"  }}>
+      <div style={{ height: 420, width: "100%", marginTop: "55px" }}>
         <DataGrid
           sx={{
             boxShadow: 2,
@@ -568,6 +574,5 @@ const handleChange = (event) => {
       </div>
     </DashboardLayout>
   );
-  
 }
 export default Anouncementbanner;

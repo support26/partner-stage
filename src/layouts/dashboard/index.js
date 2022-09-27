@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import UserRepository from "api/UsersRepository";
+import useAdmin from "../../hooks/useAdmin";
+import AdminRepository from "api/AdminRepository";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -11,6 +13,7 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
 
 function Dashboard() {
+  const { logOut } = useAdmin();
   const [totalUsers, setTotalUsers] = useState("0");
   const [activeUsers, setActiveUsers] = useState("0");
   const [support_users, setSupport_users] = useState("0");
@@ -26,7 +29,7 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
-      // active users
+    // active users
     UserRepository.ActiveUsers()
       .then((res) => {
         setActiveUsers(res.data.data.active_users);
@@ -35,19 +38,19 @@ function Dashboard() {
         console.log(err);
       });
 
-        // support users 
-        UserRepository.supportUsers()
-        .then((res) => {
+    // support users
+    UserRepository.supportUsers()
+      .then((res) => {
           
-          setSupport_users(res.data.data.support_users);
+        setSupport_users(res.data.data.support_users);
 
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
 
-      // state graph
+    // state graph
     UserRepository.usersByState()
       .then((res) => {
         // console.log(res);
@@ -59,7 +62,19 @@ function Dashboard() {
       });
   };
   useEffect(() => {
-    partner_app_users();
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "Y" ) {
+          partner_app_users();
+        }
+        else {
+          sessionStorage.removeItem("session_token");
+          logOut();
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   }, []);
  
 

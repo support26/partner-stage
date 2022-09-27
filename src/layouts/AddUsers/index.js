@@ -6,6 +6,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 // import AdminRepository from "../../api/AdminRepository";
 //Hooks
 import useAdmin from "../../hooks/useAdmin";
+import AdminRepository from "api/AdminRepository";
 import { useSelector } from "react-redux";
 //material UI
 import Icon from "@mui/material/Icon";
@@ -51,7 +52,8 @@ function AddUsers() {
     AddAdminUser,
     UpdateAdminUser,
     ChangeAdminUserStatus,
-    GetAlladminUser
+    GetAlladminUser, 
+    logOut
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
@@ -114,7 +116,19 @@ function AddUsers() {
 
   //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
   useEffect(() => {
-    GetUsers();
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "Y" ) {
+          GetUsers();
+        }
+        else {
+          sessionStorage.removeItem("session_token");
+          logOut();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const columns = [
