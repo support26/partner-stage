@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import "./style.css";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-// import { Navigate } from 'react-router-dom'
-// import AdminRepository from "../../api/AdminRepository";
+import Cookies from "js-cookie";
 //Hooks
 import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
@@ -52,8 +51,7 @@ function AddUsers() {
     AddAdminUser,
     UpdateAdminUser,
     ChangeAdminUserStatus,
-    GetAlladminUser, 
-    logOut
+    GetAlladminUser,
   } = useAdmin();
   const { successMessage } = useSelector((state) => state.auth);
   const { msg } = useSelector((state) => state.auth);
@@ -112,23 +110,23 @@ function AddUsers() {
     }).catch((e) => {
       console.log(e);
     });
-  };
-
-  //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
-  useEffect(() => {
+    //check is user is active or not
     AdminRepository.checkUserActive()
       .then((res) => {
-        if (res.data.data.is_active === "Y" ) {
-          GetUsers();
-        }
-        else {
-          sessionStorage.removeItem("session_token");
-          logOut();
+        if (res.data.data.is_active === "N" ) {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
         }
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  //useEffect to get all users  from the database and set it to the state of users array to be displayed in the table
+  useEffect(() => {
+      GetUsers();
   }, []);
 
   const columns = [

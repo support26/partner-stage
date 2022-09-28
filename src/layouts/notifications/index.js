@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-
+import Cookies from "js-cookie";
 //  React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -41,7 +41,7 @@ function Notifications() {
   const [maxWidth, setMaxWidth] = useState("sm");
   const [noticationLog, setNoticationLog] = useState([]);
 
-  const { GetNotification, logOut } = useAdmin();
+  const { GetNotification } = useAdmin();
 
   const GetBanner = () => {
     var GetNotifications = GetNotification();
@@ -53,6 +53,17 @@ function Notifications() {
     }).catch((e) => {
       console.log(e);
     });
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "N" ) {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleClickOpen = () => {
@@ -96,18 +107,7 @@ function Notifications() {
   };
 
   useEffect(() => {
-    AdminRepository.checkUserActive()
-      .then((res) => {
-        if (res.data.data.is_active === "Y") {
-          GetBanner();
-        } else {
-          sessionStorage.removeItem("session_token");
-          logOut();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      GetBanner();
   }, []);
 
   return (

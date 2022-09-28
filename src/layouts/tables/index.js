@@ -1,6 +1,6 @@
 import UserRepository from "api/UsersRepository";
 import AdminRepository from "api/AdminRepository";
-import useAdmin from "../../hooks/useAdmin";
+import Cookies from "js-cookie";
 import Modal from "@mui/material/Modal";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import useUsers from "../../hooks/useUsers";
@@ -19,7 +19,7 @@ import Card from "@mui/material/Card";
 import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 //import React, { useState ,useEffect} from "react";
-import axios from "axios";
+
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
@@ -79,7 +79,6 @@ const style = {
   // width: 50,
 };
 function Tables() {
-  const { logOut }  = useAdmin();
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -167,21 +166,21 @@ function Tables() {
     }).catch((error) => {
       console.log(error);
     });
-  };
-
-  useEffect(() => {
     AdminRepository.checkUserActive()
       .then((res) => {
-        if (res.data.data.is_active === "Y") {
-          GetRunner();
-        } else {
-          sessionStorage.removeItem("session_token");
-          logOut();
+        if (res.data.data.is_active === "N" ) {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
         }
       })
       .catch((err) => {
-        console.log(err.response);
+        console.log(err);
       });
+  };
+
+  useEffect(() => {
+      GetRunner();
   }, []);
 
   const handleClose = () => {

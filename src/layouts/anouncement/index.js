@@ -7,7 +7,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 //Hooks
 import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
-// import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 import Card from "@mui/material/Card";
 
 //material UI
@@ -67,6 +67,7 @@ const version = [
   "17.8",
   "17.9",
   "18.4",
+  "20.0"
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -85,7 +86,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 function Anouncementbanner() {
-  const { GetAnouncements, UpdateAnouncement, AddAnouncements, logOut } =
+  const { GetAnouncements, UpdateAnouncement, AddAnouncements} =
     useAdmin();
 
   const [user_id, setUser_id] = useState("");
@@ -106,7 +107,7 @@ function Anouncementbanner() {
   const [AnnouncementIsEnglish, setAnnouncementIsEnglish] = useState("");
   const [AppVersion, setAppVersion] = useState("");
   const [DisplayAnnouncementTextOrNot, setDisplayAnnouncementTextOrNot] =
-    useState(false);
+    useState("");
   const admin_email = localStorage.getItem("user_email");
   const roleId = localStorage.getItem("roleId");
   const [loading, setLoading] = useState(false);
@@ -135,6 +136,18 @@ function Anouncementbanner() {
     }).catch((e) => {
       console.log(e);
     });
+    //check is user active or not
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "N" ) {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const data_1 = {
@@ -184,26 +197,14 @@ function Anouncementbanner() {
       .catch((e) => {
         console.log(e);
       });
-    setAnnouncementText(null);
-    setAnnouncementIsEnglish(null);
-    setDisplayAnnouncementTextOrNot(null);
-    setAppVersion(null);
+    setAnnouncementText("");
+    setAnnouncementIsEnglish("");
+    setDisplayAnnouncementTextOrNot("");
+    setAppVersion("");
   };
 
   useEffect(() => {
-    AdminRepository
-      .checkUserActive()
-      .then((res) => {
-        if (res.data.data.is_active === "Y") {
-          GetAnounce();
-        } else {
-          sessionStorage.removeItem("session_token");
-          logOut();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      GetAnounce();
   }, []);
 
   const handleChange = (event) => {
@@ -235,7 +236,7 @@ function Anouncementbanner() {
           setAnnouncementText(thisRow.AnnouncementText);
           setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
           setDisplayAnnouncementTextOrNot(
-            params.row.DisplayAnnouncementTextOrNot
+            params.row.DisplayAnnouncementTextOrNot === 1 ? true : false
           );
           setAppVersion([params.row.AppVersion]);
 
@@ -357,6 +358,7 @@ function Anouncementbanner() {
               </InputLabel>
               <FormControl sx={{ mb: 0, p: 1 }} variant="standard">
                 <Select
+                required
                   id="demo-customized-select-native"
                   value={AppVersion}
                   onChange={(e) => setAppVersion(e.target.value)}
@@ -398,6 +400,7 @@ function Anouncementbanner() {
               </InputLabel>
               <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
                 <Select
+                required
                   id="demo-customized-select-native"
                   value={DisplayAnnouncementTextOrNot}
                   onChange={(e) =>
@@ -405,9 +408,9 @@ function Anouncementbanner() {
                   }
                   input={<BootstrapInput />}
                 >
-                  <MenuItem aria-label="None">Select</MenuItem>
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
+                  {/* <MenuItem aria-label="None">Select</MenuItem> */}
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
                 </Select>
               </FormControl>
 
@@ -419,7 +422,11 @@ function Anouncementbanner() {
               >
                 Send
               </Button>
-            </Card>{" "}
+            <small style={{ color: "red", fontSize: "12px", marginTop: "8px" , textAlign: "center"}}>
+              You can only add upto 10 rows of Announcement, if you exceed <br/> limit of 10,
+              then oldest one will be deleted from this page.
+              </small>
+            </Card>
           </form>
         </Box>
       </Dialog>
@@ -515,9 +522,9 @@ function Anouncementbanner() {
                 }
                 input={<BootstrapInput />}
               >
-                <MenuItem aria-label="None">Select</MenuItem>
-                <MenuItem value={1}>yes</MenuItem>
-                <MenuItem value={0}>no</MenuItem>
+                {/* <MenuItem aria-label="None">Select</MenuItem> */}
+                <MenuItem value={true}>yes</MenuItem>
+                <MenuItem value={false}>no</MenuItem>
               </Select>
             </FormControl>
 

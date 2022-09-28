@@ -5,6 +5,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 //Hooks
 import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
+import Cookies from "js-cookie";
 //material UI
 import Card from "@mui/material/Card";
 import { DataGrid } from "@mui/x-data-grid";
@@ -57,6 +58,7 @@ const version = [
   "17.8",
   "17.9",
   "18.4",
+  "20.0"
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -74,7 +76,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 function Banner() {
-  const { GetBanner, AddBanner, UpdateBanner, logOut } = useAdmin();
+  const { GetBanner, AddBanner, UpdateBanner } = useAdmin();
   const [user_id, setUser_id] = useState("");
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
@@ -86,8 +88,8 @@ function Banner() {
   const [DescriptionIsEnglish, setDescriptionIsEnglish] = useState("");
   const [AppVersion, setAppVersion] = useState("");
   const [ButtonText, setButtonText] = useState("");
-  const [ShowButton, setShowButton] = useState(false);
-  const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState(false);
+  const [ShowButton, setShowButton] = useState("");
+  const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState("");
 
   //gif
   const [Gif_Url, setGif_Url] = useState(null);
@@ -148,28 +150,28 @@ function Banner() {
       .catch((e) => {
         console.log(e);
       });
-  };
-
-  useEffect(() => {
     AdminRepository.checkUserActive()
       .then((res) => {
-        if (res.data.data.is_active === "Y") {
-          GetBannerData();
-        } else {
-          sessionStorage.removeItem("session_token");
-          logOut();
+        if (res.data.data.is_active === "N") {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
         }
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    GetBannerData();
   }, []);
 
   const handleChange = (event) => {
     const value = event.target.value;
 
     setAppVersion(value);
-  // console.log(AppVersion)
+    // console.log(AppVersion)
   };
 
   const columns = [
@@ -194,8 +196,8 @@ function Banner() {
           setDescriptionIsEnglish(params.row.DescriptionIsEnglish);
           setAppVersion(params.row.AppVersion);
           setButtonText(params.row.ButtonText);
-          setShowButton(params.row.ShowButton);
-          setDisplayBannerOrNot(params.row.DisplayBannerOrNot);
+          setShowButton(params.row.ShowButton === 1 ? true : false);
+          setDisplayBannerOrNot(params.row.DisplayBannerOrNot === 1 ? true : false);
           setGif_Url(params.row.Gif_Url);
           setGif_Visibility(params.row.Gif_Visibility);
           setGif_Url_to_be_opened(params.row.Gif_Url_to_be_opened);
@@ -372,7 +374,7 @@ function Banner() {
         Gif_Url_to_be_opened,
         admin_email,
       };
-      console.log(data_1);
+      // console.log(data_1);
       var addBanners = AddBanner(data_1);
       addBanners
         .then((response) => {
@@ -582,6 +584,10 @@ function Banner() {
               >
                 Send
               </Button>
+              <small style={{ color: "red", fontSize: "12px", marginTop: "8px", textAlign: "center" }}>
+              You can only add upto 10 rows of Banner, if you exceed limit of 10,<br/>
+              then oldest one will be deleted from this page.
+              </small>
             </Card>
           </form>
         </Box>
