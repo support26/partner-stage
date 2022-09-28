@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import UserRepository from "api/UsersRepository";
+import AdminRepository from "api/AdminRepository";
+import Cookies from "js-cookie";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
-
 //  React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
+// import { logout } from "store/auth/action";
 
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState("0");
@@ -18,6 +20,20 @@ function Dashboard() {
   const [state, setState] = useState([]);
 
   const partner_app_users = () => {
+        // state graph
+        UserRepository.usersByState()
+        .then((res) => {
+          setTotal(res.data.data.total);
+          setState(res.data.data.state);
+        })
+        .catch((err) => {
+          if(err.response.status === 401){
+            window.location.href = "/";
+            Cookies.remove("token");
+            localStorage.clear();
+          console.log(err);
+          }
+        });
     // total users
     UserRepository.TotalUsers()
       .then((res) => {
@@ -26,7 +42,7 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
-      // active users
+    // active users
     UserRepository.ActiveUsers()
       .then((res) => {
         setActiveUsers(res.data.data.active_users);
@@ -34,25 +50,22 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
-
-        // support users 
-        UserRepository.supportUsers()
-        .then((res) => {
-          
-          setSupport_users(res.data.data.support_users);
-
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-
-      // state graph
-    UserRepository.usersByState()
+    // support users
+    UserRepository.supportUsers()
       .then((res) => {
-        // console.log(res);
-        setTotal(res.data.data.total);
-        setState(res.data.data.state);
+        setSupport_users(res.data.data.support_users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      //check user active
+      AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "N") {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -61,7 +74,6 @@ function Dashboard() {
   useEffect(() => {
     partner_app_users();
   }, []);
- 
 
   const verticalBarChartData = {
     labels: state,
@@ -73,7 +85,6 @@ function Dashboard() {
       },
     ],
   };
-
 
   return (
     <DashboardLayout>

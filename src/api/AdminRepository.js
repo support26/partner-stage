@@ -1,4 +1,3 @@
-import axios from "axios";
 import Api, { baseUrl } from "./config";
 class AdminRepository {
   // get all admin users
@@ -84,7 +83,7 @@ class AdminRepository {
       },
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((error) => {
@@ -210,9 +209,8 @@ class AdminRepository {
   }
   // get state list for notification
   async getStateList() {
-    const reponse = await Api.get(
-      `${baseUrl}sd/states`,
-    ).then((response) => {
+    const reponse = await Api.get(`${baseUrl}sd/states`)
+      .then((response) => {
         return response;
       })
       .catch((error) => {
@@ -224,9 +222,8 @@ class AdminRepository {
 
   //get district list by state id for notification
   async getDistrictList(sid) {
-    const reponse = await Api.get(
-      `${baseUrl}sd/districts/${sid}`,
-    ).then((response) => {
+    const reponse = await Api.get(`${baseUrl}sd/districts/${sid}`)
+      .then((response) => {
         return response;
       })
       .catch((error) => {
@@ -267,8 +264,8 @@ class AdminRepository {
       });
     return reponse;
   }
-   //send version notification
-   async sendNotificationByVersion(notification, admin_email, AppVersion) {
+  //send version notification
+  async sendNotificationByVersion(notification, admin_email, AppVersion) {
     const reponse = await Api.post(`${baseUrl}users/notification`, {
       notification,
       admin_email,
@@ -315,6 +312,15 @@ class AdminRepository {
       });
     return reponse;
   }
+  //check is user active or not
+  async checkUserActive() {
+    const userData = localStorage.getItem("userData");
+    const { token } = JSON.parse(userData);
+    return await Api.get(`${baseUrl}admin/is-active/${token.id}`, {
+      headers: {
+        Authorization: "Bearer " + token.session_token,
+      },
+    });
+  }
 }
-
 export default new AdminRepository();

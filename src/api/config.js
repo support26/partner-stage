@@ -22,8 +22,8 @@ function getToken() {
     }
 }
 
-var token = getToken();
 
+var token = getToken();
 export const customHeaders = {
     "Content-Type": "application/json",
     'Accept': "application/json",

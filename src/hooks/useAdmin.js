@@ -3,7 +3,7 @@ import AdminRepository from "../api/AdminRepository";
 import { useDispatch } from "react-redux";
 import { errorMessage, login, successMsg } from "../store/auth/action";
 import Cookies from "js-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function useAdmin() {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ export default function useAdmin() {
         // console.log(responseData.data);
       }
       return responseData;
-    },      
+    },
 
     //add admin user
     AddAdminUser: async (data) => {
@@ -175,41 +175,52 @@ export default function useAdmin() {
       }
       return responseData;
     },
-//get state list
-GetStateList: async () => {
-  var responseData = await AdminRepository.getStateList();
-  if (responseData.status === 200) {
-    return responseData;
-  }
-  return responseData;
-},
-//get district list
-GetDistrictList: async (stateId) => {
-  var responseData = await AdminRepository.getDistrictList(stateId);
-  if (responseData.status === 200) {
-    return responseData;
-  }
-  return responseData;
-},
+    //get state list
+    GetStateList: async () => {
+      var responseData = await AdminRepository.getStateList();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
+    //get district list
+    GetDistrictList: async (stateId) => {
+      var responseData = await AdminRepository.getDistrictList(stateId);
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
     //get notification  data
     GetNotification: async () => {
       var responseData = await AdminRepository.getNotification();
       if (responseData.status === 200) {
         return responseData;
-      } 
+      }
       return responseData;
     },
     //send notification to all
     SendNotification: async (notification, admin_email) => {
-      var responseData = await AdminRepository.sendNotification(notification, admin_email);
+      var responseData = await AdminRepository.sendNotification(
+        notification,
+        admin_email
+      );
       if (responseData.status === 200) {
         return responseData;
       }
       return responseData;
     },
     // send notification by number
-    SendNotificationByNumber: async (notification, admin_email, phone_number) => {
-      var responseData = await AdminRepository.sendNotificationByNumber(notification, admin_email, phone_number);
+    SendNotificationByNumber: async (
+      notification,
+      admin_email,
+      phone_number
+    ) => {
+      var responseData = await AdminRepository.sendNotificationByNumber(
+        notification,
+        admin_email,
+        phone_number
+      );
       if (responseData.status === 200) {
         return responseData;
       }
@@ -217,7 +228,11 @@ GetDistrictList: async (stateId) => {
     },
     //send notification by state
     SendNotificationByState: async (notification, admin_email, state) => {
-      var responseData = await AdminRepository.sendNotificationByState(notification, admin_email, state);
+      var responseData = await AdminRepository.sendNotificationByState(
+        notification,
+        admin_email,
+        state
+      );
       if (responseData.status === 200) {
         return responseData;
       }
@@ -225,20 +240,32 @@ GetDistrictList: async (stateId) => {
     },
     //send notification by district
     SendNotificationByDistrict: async (notification, admin_email, district) => {
-      var responseData = await AdminRepository.sendNotificationByDistrict(notification, admin_email, district);
+      var responseData = await AdminRepository.sendNotificationByDistrict(
+        notification,
+        admin_email,
+        district
+      );
       if (responseData.status === 200) {
         return responseData;
       }
       return responseData;
     },
 
-      //send notification by version
-      SendNotificationByVersion: async (notification, admin_email, AppVersion) => {
-        var responseData = await AdminRepository.sendNotificationByVersion(notification, admin_email, AppVersion);
-        if (responseData.status === 200) {
-          return responseData;
-        }
+    //send notification by version
+    SendNotificationByVersion: async (
+      notification,
+      admin_email,
+      AppVersion
+    ) => {
+      var responseData = await AdminRepository.sendNotificationByVersion(
+        notification,
+        admin_email,
+        AppVersion
+      );
+      if (responseData.status === 200) {
         return responseData;
       }
+      return responseData;
+    },
   };
 }

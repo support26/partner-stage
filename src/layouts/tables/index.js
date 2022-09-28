@@ -1,5 +1,6 @@
 import UserRepository from "api/UsersRepository";
-// import useAdmin from "../../hooks/useAdmin";
+import AdminRepository from "api/AdminRepository";
+import Cookies from "js-cookie";
 import Modal from "@mui/material/Modal";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import useUsers from "../../hooks/useUsers";
@@ -18,7 +19,7 @@ import Card from "@mui/material/Card";
 import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 //import React, { useState ,useEffect} from "react";
-import axios from "axios";
+
 //  React components
 import MDBox from "components/MDBox";
 import Button from "@mui/material/Button";
@@ -66,7 +67,6 @@ import "../AddUsers/style.css";
 // import Switch from "@mui/material/Switch";
 import CircleIcon from "@mui/icons-material/Circle";
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -79,7 +79,6 @@ const style = {
   // width: 50,
 };
 function Tables() {
-  // const {  }  = useAdmin();
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -114,7 +113,6 @@ function Tables() {
   const [isUserActiveOrNot, setisUserActiveOrNot] = useState("y");
   const [selectvalue, setSelectvalue] = useState("y");
   const [reason, setReason] = useState(null);
-
 
   //runner set data
   const [id, setID] = useState(null);
@@ -168,14 +166,22 @@ function Tables() {
     }).catch((error) => {
       console.log(error);
     });
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "N" ) {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-
   useEffect(() => {
-    GetRunner();
+      GetRunner();
   }, []);
-
-
 
   const handleClose = () => {
     setOpen(false);
@@ -595,7 +601,7 @@ function Tables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={3} >
+      <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
@@ -778,7 +784,6 @@ function Tables() {
             />
             <TextField
               id="filled-read-only-input"
-
               label="Tehsil"
               value={runner_taluka}
               onChange={(e) => setTehsil(e.target.value)}
