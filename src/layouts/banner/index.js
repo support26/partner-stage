@@ -10,6 +10,8 @@ import Cookies from "js-cookie";
 import Card from "@mui/material/Card";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import MDBox from "components/MDBox";
 // import Modal from "@mui/material/Modal";
 // import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
@@ -58,7 +60,7 @@ const version = [
   "17.8",
   "17.9",
   "18.4",
-  "20.0"
+  "20.0",
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -95,6 +97,10 @@ function Banner() {
   const [Gif_Url, setGif_Url] = useState(null);
   const [Gif_Visibility, setGif_Visibility] = useState(null);
   const [Gif_Url_to_be_opened, setGif_Url_to_be_opened] = useState(null);
+  const [ButtonColor, setButtonColor] = useState(null);
+  const [BackgroundColor, setBackgroundColor] = useState(null);
+  const [TextColor, setTextColor] = useState(null);
+  const [UrgentUpdate, setUrgentUpdate] = useState(null);
 
   const [errormsg, setErrormsg] = useState(null);
   const roleId = localStorage.getItem("roleId");
@@ -113,6 +119,10 @@ function Banner() {
     setGif_Url(null);
     setGif_Visibility(null);
     setGif_Url_to_be_opened(null);
+    setButtonColor(null);
+    setBackgroundColor(null);
+    setTextColor(null);
+    setUrgentUpdate(null);
   };
 
   //popup
@@ -134,6 +144,10 @@ function Banner() {
     setGif_Url("");
     setGif_Visibility("");
     setGif_Url_to_be_opened("");
+    setButtonColor("");
+    setBackgroundColor("");
+    setTextColor("");
+    setUrgentUpdate("");
     setErrormsg("");
   };
 
@@ -197,10 +211,34 @@ function Banner() {
           setAppVersion(params.row.AppVersion);
           setButtonText(params.row.ButtonText);
           setShowButton(params.row.ShowButton === 1 ? true : false);
-          setDisplayBannerOrNot(params.row.DisplayBannerOrNot === 1 ? true : false);
+          setDisplayBannerOrNot(
+            params.row.DisplayBannerOrNot === 1 ? true : false
+          );
           setGif_Url(params.row.Gif_Url);
-          setGif_Visibility(params.row.Gif_Visibility);
-          setGif_Url_to_be_opened(params.row.Gif_Url_to_be_opened);
+          setGif_Visibility(
+            params.row.Gif_Visibility === 1
+              ? true
+              : params.row.Gif_Visibility === 0
+              ? false
+              : null
+          );
+          setGif_Url_to_be_opened(
+            params.row.Gif_Url_to_be_opened === 1
+              ? true
+              : params.row.Gif_Url_to_be_opened === 0
+              ? false
+              : null
+          );
+          setButtonColor(params.row.ButtonColor);
+          setBackgroundColor(params.row.BackgroundColor);
+          setTextColor(params.row.TextColor);
+          setUrgentUpdate(
+            params.row.UrgentUpdate === 1
+              ? true
+              : params.row.UrgentUpdate === 0
+              ? false
+              : null
+          );
           setEditUserModal(true);
           return;
           //  console.log(thisRow);
@@ -265,11 +303,13 @@ function Banner() {
       headerName: "Gif Visibility",
       width: 110,
       renderCell: function (params) {
-        return params.row.Gif_Visibility === 1 ? (
-          <Button sx={{ color: "green" }}>Yes</Button>
-        ) : (
-          <Button sx={{ color: "red" }}>No</Button>
-        );
+        if (params.row.Gif_Visibility === 1) {
+          return <Button sx={{ color: "green" }}>Yes</Button>;
+        } else if (params.row.Gif_Visibility === 0) {
+          return <Button sx={{ color: "red" }}>No</Button>;
+        } else {
+          return;
+        }
       },
     },
     {
@@ -277,11 +317,106 @@ function Banner() {
       headerName: "Gif Url to be opened ",
       width: 110,
       renderCell: function (params) {
-        return params.row.Gif_Url_to_be_opened === 1 ? (
-          <Button sx={{ color: "green" }}>Yes</Button>
-        ) : (
-          <Button sx={{ color: "red" }}>No</Button>
+        if (params.row.Gif_Url_to_be_opened === 1) {
+          return <Button sx={{ color: "green" }}>Yes</Button>;
+        } else if (params.row.Gif_Url_to_be_opened === 0) {
+          return <Button sx={{ color: "red" }}>No</Button>;
+        } else {
+          return;
+        }
+        // return params.row.Gif_Url_to_be_opened === 1 ? (
+        //   <Button sx={{ color: "green" }}>Yes</Button>
+        // ) : (
+        //   <Button sx={{ color: "red" }}>No</Button>
+        // );
+      },
+    },
+    {
+      field: "ButtonColor",
+      headerName: "Button Color",
+      width: 110,
+      renderCell: function (params) {
+        return (
+          <Button
+            sx={{
+              color: "#fff",
+              backgroundColor: params.row.ButtonColor,
+              padding: "0px 0px",
+              margin: "10px",
+              "&:hover": {
+                backgroundColor: params.row.ButtonColor,
+                color: "#fff",
+              },
+            }}
+          >
+            {params.row.ButtonColor}
+          </Button>
         );
+      },
+    },
+    {
+      field: "BackgroundColor",
+      headerName: "Background Color",
+      width: 110,
+      renderCell: function (params) {
+        return (
+          <Button
+            sx={{
+              backgroundColor: params.row.BackgroundColor,
+              color: "#fff",
+              padding: "0px 0px",
+              margin: "10px",
+              "&:hover": {
+                backgroundColor: params.row.BackgroundColor,
+                color: "#fff",
+              },
+            }}
+          >
+            {params.row.BackgroundColor}
+          </Button>
+        );
+      },
+    },
+    {
+      field: "TextColor",
+      headerName: "Text Color",
+      width: 110,
+      renderCell: function (params) {
+        return (
+          <Button
+            sx={{
+              backgroundColor: params.row.TextColor,
+              color: "#fff",
+              padding: "0px 0px 0px 0px",
+              margin: "10px",
+              "&:hover": {
+                backgroundColor: params.row.TextColor,
+                color: "#fff",
+              },
+            }}
+          >
+            {params.row.TextColor}
+          </Button>
+        );
+      },
+    },
+    {
+      field: "UrgentUpdate",
+      headerName: "Urgent Update",
+      width: 110,
+      renderCell: function (params) {
+        if (params.row.UrgentUpdate === 1) {
+          return <Button sx={{ color: "green" }}>Yes</Button>;
+        } else if (params.row.UrgentUpdate === 0) {
+          return <Button sx={{ color: "red" }}>No</Button>;
+        } else {
+          return;
+        }
+        // return params.row.UrgentUpdate === 1 ? (
+        //   <Button sx={{ color: "green" }}>Yes</Button>
+        // ) : (
+        //   <Button sx={{ color: "red" }}>No</Button>
+        // );
       },
     },
 
@@ -320,12 +455,31 @@ function Banner() {
     Gif_Url: Gif_Url,
     Gif_Visibility: Gif_Visibility,
     Gif_Url_to_be_opened: Gif_Url_to_be_opened,
+    ButtonColor: ButtonColor,
+    BackgroundColor: BackgroundColor,
+    TextColor: TextColor,
+    UrgentUpdate: UrgentUpdate,
     admin_email: admin_email,
   };
-
+// "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a-z]{2,6})|((\\d{1‌​,3}\\.){3}\\d{1,3}))‌​(:\\d{2,4})?((/|\\?)‌​(((%[0-9a-f]{2})|[-\‌​\w@\\+\\.~#\\?&/=])*‌​))?$"
   // update banner
   const handleSubmit = (event) => {
     event.preventDefault();
+    //check url is valid or not
+    var urlregex = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol (optional) (http:// or https://) (// is also accepted)
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name   (www.example.com)
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path (
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string (
+        "(\\#[-a-z\\d_]*)?$",
+      "i" // fragment locator (
+    );
+    if(!urlregex.test(url)){
+      setErrormsg("Please enter valid url");
+      return;
+    }
+    else{
     var UpdateBannerSuccess = UpdateBanner(data, user_id);
     UpdateBannerSuccess.then((response) => {
       if (response.status === 200) {
@@ -346,6 +500,12 @@ function Banner() {
     setGif_Url("");
     setGif_Visibility("");
     setGif_Url_to_be_opened("");
+    setButtonColor("");
+    setBackgroundColor("");
+    setTextColor("");
+    setUrgentUpdate("");
+    setErrormsg("");
+  }
   };
 
   //add banner
@@ -361,41 +521,66 @@ function Banner() {
     ) {
       setErrormsg("Please fill all the fields");
     } else {
-      const data_1 = {
-        url,
-        Description,
-        DescriptionIsEnglish,
-        AppVersion,
-        ButtonText,
-        ShowButton,
-        DisplayBannerOrNot,
-        Gif_Url,
-        Gif_Visibility,
-        Gif_Url_to_be_opened,
-        admin_email,
-      };
-      // console.log(data_1);
-      var addBanners = AddBanner(data_1);
-      addBanners
-        .then((response) => {
-          if (response.status === 200) {
-            GetBannerData();
-            handleBannerClose();
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      seturl("");
-      setDescription("");
-      setDescriptionIsEnglish("");
-      setAppVersion("");
-      setButtonText("");
-      setShowButton("");
-      setDisplayBannerOrNot("");
-      setGif_Url("");
-      setGif_Visibility("");
-      setGif_Url_to_be_opened("");
+      //check url is valid or not
+      var urlregex = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol (optional) (http:// or https://) (// is also accepted)
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name   (www.example.com)
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path (
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string (
+        "(\\#[-a-z\\d_]*)?$",
+      "i" // fragment locator (
+      );
+      if (!urlregex.test(url)) {
+        setErrormsg("Please enter valid url");
+        return;
+      } else {
+        const data_1 = {
+          url,
+          Description,
+          DescriptionIsEnglish,
+          AppVersion,
+          ButtonText,
+          ShowButton,
+          DisplayBannerOrNot,
+          Gif_Url,
+          Gif_Visibility,
+          Gif_Url_to_be_opened,
+          ButtonColor,
+          BackgroundColor,
+          TextColor,
+          UrgentUpdate,
+          admin_email,
+        };
+
+        // console.log(data_1);
+        var addBanners = AddBanner(data_1);
+        addBanners
+          .then((response) => {
+            if (response.status === 200) {
+              GetBannerData();
+              handleBannerClose();
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        seturl("");
+        setDescription("");
+        setDescriptionIsEnglish("");
+        setAppVersion("");
+        setButtonText("");
+        setShowButton("");
+        setDisplayBannerOrNot("");
+        setGif_Url("");
+        setGif_Visibility("");
+        setGif_Url_to_be_opened("");
+        setButtonColor("");
+        setBackgroundColor("");
+        setTextColor("");
+        setUrgentUpdate("");
+        setErrormsg("");
+      }
     }
   };
   return (
@@ -509,7 +694,7 @@ function Banner() {
 
               <InputLabel
                 htmlFor="demo-customized-select-native"
-                sx={{ pl: 1 }}
+                sx={{ pl: 1, pb: "1px" }}
               >
                 Display Banner
               </InputLabel>
@@ -533,7 +718,6 @@ function Banner() {
                 label="Gif Url"
                 value={Gif_Url}
                 onChange={(e) => setGif_Url(e.target.value)}
-                required
               />
 
               <InputLabel htmlFor="uncontrolled-native" sx={{ pl: 1 }}>
@@ -571,6 +755,65 @@ function Banner() {
                 </Select>
               </FormControl>
 
+              <Grid container spacing={0}>
+                <Grid item xs={12} md={6} lg={4} mt={0}>
+                  <MDBox mb={0}>
+                    <TextField
+                      sx={{ width: "90%" }}
+                      id="ButtonColor"
+                      label="Button Color"
+                      value={ButtonColor}
+                      onChange={(e) => setButtonColor(e.target.value)}
+                      type="color"
+                    />
+                  </MDBox>
+                </Grid>
+
+                <Grid item xs={12} md={6} lg={4} mt={0}>
+                  <MDBox mb={0}>
+                    <TextField
+                      sx={{ width: "90%" }}
+                      id="BackgroundColor"
+                      label="Background Color"
+                      value={BackgroundColor}
+                      onChange={(e) => setBackgroundColor(e.target.value)}
+                      type="color"
+                    />
+                  </MDBox>
+                </Grid>
+
+                <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+                  <MDBox mb={0}>
+                    <TextField
+                      sx={{ width: "90%" }}
+                      id="TextColor"
+                      label="Text Color"
+                      value={TextColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      type="color"
+                    />
+                  </MDBox>
+                </Grid>
+              </Grid>
+
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1, pb: 0.5 }}
+              >
+                Urgent Update
+              </InputLabel>
+              <FormControl sx={{ m: 1 }} variant="standard">
+                <Select
+                  id="demo-customized-select-native"
+                  value={UrgentUpdate}
+                  onChange={(e) => setUrgentUpdate(e.target.value)}
+                  input={<BootstrapInput />}
+                >
+                  <MenuItem aria-label="None">Select</MenuItem>
+                  <MenuItem value={true}>yes</MenuItem>
+                  <MenuItem value={false}>no</MenuItem>
+                </Select>
+              </FormControl>
               <Button
                 type="submit"
                 variant="contained"
@@ -584,9 +827,18 @@ function Banner() {
               >
                 Send
               </Button>
-              <small style={{ color: "red", fontSize: "12px", marginTop: "8px", textAlign: "center" }}>
-              You can only add upto 10 rows of Banner, if you exceed limit of 10,<br/>
-              then oldest one will be deleted from this page.
+              <small
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "8px",
+                  textAlign: "center",
+                }}
+              >
+                You can only add upto 10 rows of Banner, if you exceed limit of
+                10,
+                <br />
+                then oldest one will be deleted from this page.
               </small>
             </Card>
           </form>
@@ -622,6 +874,11 @@ function Banner() {
             Edit Banner
           </MDTypography>
           <Card sx={{ px: 3, py: 1, width: "100%" }}>
+          {errormsg && (
+                <small style={{ color: "red", fontSize: "15px" }}>
+                  {errormsg}
+                </small>
+              )}
             <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
               Select Version
             </InputLabel>
@@ -700,7 +957,7 @@ function Banner() {
               </Select>
             </FormControl>
 
-            <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
+            <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1, pb: "1px" }}>
               {" "}
               Display Banner
             </InputLabel>
@@ -750,6 +1007,64 @@ function Banner() {
                 id="demo-customized-select-native"
                 value={Gif_Url_to_be_opened}
                 onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
+                input={<BootstrapInput />}
+              >
+                <MenuItem aria-label="None">Select</MenuItem>
+                <MenuItem value={true}>yes</MenuItem>
+                <MenuItem value={false}>no</MenuItem>
+              </Select>
+            </FormControl>
+            <Grid container spacing={0}>
+              <Grid item xs={12} md={6} lg={4} mt={0}>
+                <MDBox mb={0}>
+                  <TextField
+                    sx={{ width: "90%" }}
+                    id="ButtonColor"
+                    label="Button Color"
+                    value={ButtonColor}
+                    onChange={(e) => setButtonColor(e.target.value)}
+                    type="color"
+                  />
+                </MDBox>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={4} mt={0}>
+                <MDBox mb={0}>
+                  <TextField
+                    sx={{ width: "90%" }}
+                    id="BackgroundColor"
+                    label="Background Color"
+                    value={BackgroundColor}
+                    onChange={(e) => setBackgroundColor(e.target.value)}
+                    type="color"
+                  />
+                </MDBox>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+                <MDBox mb={0}>
+                  <TextField
+                    sx={{ width: "90%", paddingRight: 0.5 }}
+                    id="TextColor"
+                    label="Text Color"
+                    value={TextColor}
+                    onChange={(e) => setTextColor(e.target.value)}
+                    type="color"
+                  />
+                </MDBox>
+              </Grid>
+            </Grid>
+            <InputLabel
+              htmlFor="demo-customized-select-native"
+              sx={{ pl: 1, pb: 0.5 }}
+            >
+              Urgent Update
+            </InputLabel>
+            <FormControl sx={{ m: 1 }} variant="standard">
+              <Select
+                id="demo-customized-select-native"
+                value={UrgentUpdate}
+                onChange={(e) => setUrgentUpdate(e.target.value)}
                 input={<BootstrapInput />}
               >
                 <MenuItem aria-label="None">Select</MenuItem>
