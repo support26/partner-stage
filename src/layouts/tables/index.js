@@ -371,7 +371,7 @@ function Tables() {
       field: "acct_holder_name",
       headerName: "Account Holder Name",
       type: "text",
-      width: 90,
+      width: 130,
     },
 
     {
@@ -381,10 +381,16 @@ function Tables() {
       width: 130,
     },
     {
+      field: "bank_acct_no",
+      headerName: "Account Number",
+      type: "text",
+      width: 130,
+    },
+    {
       field: "bank_ifsc_code",
       headerName: "IFSC Code",
       type: "text",
-      width: 130,
+      width: 120,
     },
     {
       field: "pancard_no",
