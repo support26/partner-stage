@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import Loader from "Loader";
 import UserRepository from "api/UsersRepository";
 import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
@@ -137,6 +138,7 @@ function Dashboard() {
             </MDBox>
           </Grid>
         </Grid>
+        <Suspense fallback={<Loader/>}>
         <MDBox mt={5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={12}>
@@ -161,6 +163,7 @@ function Dashboard() {
             </Grid> */}
           </Grid>
         </MDBox>
+        </Suspense>
       </MDBox>
     </DashboardLayout>
   );
