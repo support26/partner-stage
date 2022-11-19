@@ -61,6 +61,7 @@ const version = [
   "17.9",
   "18.4",
   "20.0",
+  "20.1"
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
