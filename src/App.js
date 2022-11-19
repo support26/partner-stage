@@ -1,39 +1,22 @@
-import { useState, useEffect, useMemo } from "react";
-
+import React, { useState, useEffect, Suspense } from "react";
+import Loader from "Loader";
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-// import Icon from "@mui/material/Icon";
-
-//  React components
-// import MDBox from "components/MDBox";
-
 //  React example components
 import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
-
 //  React themes
 import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
-
 //  React Dark Mode themes
 import themeDark from "assets/theme-dark";
-import themeDarkRTL from "assets/theme-dark/theme-rtl";
-
-// RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
-
 //  React routes
 import routes from "routes";
 import SignIn from "layouts/authentication/sign-in";
-import ResetPassword from "layouts/authentication/reset-password/cover/index";
-import AddUsers from "layouts/AddUsers";
-import Notifications from "./layouts/notifications";
+// import ResetPassword from "layouts/authentication/reset-password/cover/index";
+// import AddUsers from "layouts/AddUsers";
+// import Notifications from "./layouts/notifications";
 import Cookies from 'js-cookie';
 
 //  React contexts
@@ -43,35 +26,24 @@ import {
   setOpenConfigurator,
 } from "context";
 
-// Images
-import brandWhite from "assets/images/logo-ct.png";
 import anaxee_logo from "assets/images/icons/Ellipse 1.png";
-
+const ResetPassword = React.lazy(() => import('./layouts/authentication/reset-password/cover/index'));
+const AddUsers = React.lazy(() => import('./layouts/AddUsers'));
+const Notifications = React.lazy(() => import('./layouts/notifications'));
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
     direction,
-    layout,
+    // layout,
     openConfigurator,
     sidenavColor,
-    transparentSidenav,
-    whiteSidenav,
+    // transparentSidenav,
+    // whiteSidenav,
     darkMode,
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
-
-    setRtlCache(cacheRtl);
-  }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -106,71 +78,32 @@ export default function App() {
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-
       if (route.route) {
         return (
           <Route
             exact
             path={route.route}
-            element={route.component}
+            element={
+              <Suspense fallback={<Loader/>}>
+              {route.component}
+              </Suspense>
+              }
             key={route.key}
           />
         );
       }
-
       return null;
     });
 
   const roleId = localStorage.getItem("roleId"); // get role id from local storage
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-        <CssBaseline />
-
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={
-                (transparentSidenav && !darkMode) || whiteSidenav
-                  ? anaxee_logo
-                  : brandWhite
-              }
-              brandName=""
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {/* {configsButton} */}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-
-        <Routes>
-          <Route exact path="/" element={<SignIn />} />
-          {/* <Route path="/sign-in" element={<SignIn />} /> */}
-          <Route path="/reset" element={<ResetPassword />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          {/* change later it to 404 page */}
-          {Cookies.get('token') && roleId == 0 && <Route path="/users" element={<AddUsers />} />}
-          {Cookies.get('token') && roleId == 0 && (
-            <Route path="/notifications" element={<Notifications />} />
-          )}
-          {/* below line first check that token is present than show routes*/}
-          {Cookies.get('token') && getRoutes(routes)}
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
+   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {/* {layout === "dashboard" && ( */}
+      {roleId ? (
         <>
+        <Suspense fallback={<Loader/>}>
           <Sidenav
             color={sidenavColor}
             brand={anaxee_logo}
@@ -179,22 +112,37 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          <Configurator />
-          {/* {configsButton} */}
+          </Suspense>
         </>
-      )}
-
-      {layout === "vr" && <Configurator />}
+      ) :
+      null
+      }
       <Routes>
-      <Route exact path="/" element={<SignIn />} />
+      <Route exact path="/" element={
+            <Suspense fallback={<Loader/>}>
+              <SignIn />
+            </Suspense>
+          } />
         {sessionStorage.getItem("token") && (
-          <Route path="/reset" element={<ResetPassword />} />
+          <Route path="/reset" element={
+            <Suspense fallback={<Loader/>}>
+              <ResetPassword />
+            </Suspense>
+          } />
         )}
         <Route path="*" element={<Navigate to="/" />} />
         {/* change later it to 404 page */}
-        {Cookies.get('token') && roleId == 0 && <Route path="/users" element={<AddUsers />} />}
+        {Cookies.get('token') && roleId == 0 && <Route path="/users" element={
+            <Suspense fallback={<Loader/>}>
+              <AddUsers />
+             </Suspense>
+        } />}
         {Cookies.get('token') && roleId == 0 && (
-          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/notifications" element={
+            <Suspense fallback={<Loader/>}>
+              <Notifications />
+            </Suspense>
+          } />
         )}
         {/* below line first check that token is present than show routes*/}
         {Cookies.get('token') && getRoutes(routes)}

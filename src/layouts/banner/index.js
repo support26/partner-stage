@@ -92,6 +92,7 @@ function Banner() {
   const [ButtonText, setButtonText] = useState("");
   const [ShowButton, setShowButton] = useState("");
   const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState("");
+  const [date, setDate] = useState("");
 
   //gif
   const [Gif_Url, setGif_Url] = useState(null);
@@ -123,6 +124,7 @@ function Banner() {
     setBackgroundColor(null);
     setTextColor(null);
     setUrgentUpdate(null);
+    setDate("");
   };
 
   //popup
@@ -149,6 +151,7 @@ function Banner() {
     setTextColor("");
     setUrgentUpdate("");
     setErrormsg("");
+    setDate("");
   };
 
   const GetBannerData = () => {
@@ -229,6 +232,7 @@ function Banner() {
               ? false
               : null
           );
+          setDate(params.row.date === null ? "" : params.row.date);
           setButtonColor(params.row.ButtonColor);
           setBackgroundColor(params.row.BackgroundColor);
           setTextColor(params.row.TextColor);
@@ -291,6 +295,16 @@ function Banner() {
           <Button sx={{ color: "red" }}>No</Button>
         );
       },
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 110,
+      renderCell: function (params) {
+        return params.row.date === null ? "" : (
+          new Date(params.row.date).toLocaleDateString()
+        );
+      }
     },
 
     {
@@ -460,6 +474,7 @@ function Banner() {
     TextColor: TextColor,
     UrgentUpdate: UrgentUpdate,
     admin_email: admin_email,
+    date: date,
   };
 // "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a-z]{2,6})|((\\d{1‌​,3}\\.){3}\\d{1,3}))‌​(:\\d{2,4})?((/|\\?)‌​(((%[0-9a-f]{2})|[-\‌​\w@\\+\\.~#\\?&/=])*‌​))?$"
   // update banner
@@ -505,6 +520,7 @@ function Banner() {
     setTextColor("");
     setUrgentUpdate("");
     setErrormsg("");
+    setDate("");
   }
   };
 
@@ -551,6 +567,7 @@ function Banner() {
           TextColor,
           UrgentUpdate,
           admin_email,
+          date,
         };
 
         // console.log(data_1);
@@ -580,6 +597,7 @@ function Banner() {
         setTextColor("");
         setUrgentUpdate("");
         setErrormsg("");
+        setDate("");
       }
     }
   };
@@ -814,6 +832,20 @@ function Banner() {
                   <MenuItem value={false}>no</MenuItem>
                 </Select>
               </FormControl>
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
               <Button
                 type="submit"
                 variant="contained"
@@ -835,8 +867,8 @@ function Banner() {
                   textAlign: "center",
                 }}
               >
-                You can only add upto 10 rows of Banner, if you exceed limit of
-                10,
+                You can only add upto 100 rows of Banner, if you exceed limit of
+                100,
                 <br />
                 then oldest one will be deleted from this page.
               </small>
@@ -1072,6 +1104,20 @@ function Banner() {
                 <MenuItem value={false}>no</MenuItem>
               </Select>
             </FormControl>
+            <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
             <Button
               type="submit"
               variant="contained"
