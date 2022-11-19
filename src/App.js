@@ -101,7 +101,7 @@ export default function App() {
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       {/* {layout === "dashboard" && ( */}
-      {roleId ? (
+      {Cookies.get('token') ? (
         <>
         <Suspense fallback={<Loader/>}>
           <Sidenav
