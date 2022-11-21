@@ -50,24 +50,7 @@ const MenuProps = {
 };
 
 const version = [
-  "1.1",
-  "1.2",
-  "1.3",
-  "1.6",
-  "1.7",
-  "1.8",
-  "17.0",
-  "17.1",
-  "17.2",
-  "17.3",
-  "17.4",
-  "17.5",
-  "17.6",
-  "17.7",
-  "17.8",
-  "17.9",
-  "18.4",
-  "20.0"
+  "20.1"
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -116,6 +99,7 @@ function Anouncementbanner() {
   // const [banneropen, setBannerOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("md");
   const [anounceopen, setAnounceOpen] = useState(false);
+  const [date, setDate] = useState("");
 
   const handleAnounceOpen = () => {
     setAnounceOpen(true);
@@ -156,6 +140,7 @@ function Anouncementbanner() {
     DisplayAnnouncementTextOrNot: DisplayAnnouncementTextOrNot,
     AppVersion: AppVersion,
     admin_email,
+    date,
   };
 
   // update anounce
@@ -175,6 +160,7 @@ function Anouncementbanner() {
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
     setAppVersion("");
+    setDate("");
   };
   const data2 = {
     AnnouncementText,
@@ -182,6 +168,7 @@ function Anouncementbanner() {
     AppVersion,
     DisplayAnnouncementTextOrNot,
     admin_email,
+    date,
   };
   const postandleSubmit = (event) => {
     event.preventDefault();
@@ -201,6 +188,7 @@ function Anouncementbanner() {
     setAnnouncementIsEnglish("");
     setDisplayAnnouncementTextOrNot("");
     setAppVersion("");
+    setDate("");
   };
 
   useEffect(() => {
@@ -235,6 +223,7 @@ function Anouncementbanner() {
           setUser_id(params.id);
           setAnnouncementText(thisRow.AnnouncementText);
           setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
+          setDate(params.row.date === null ? "" : params.row.date);
           setDisplayAnnouncementTextOrNot(
             params.row.DisplayAnnouncementTextOrNot === 1 ? true : false
           );
@@ -291,6 +280,16 @@ function Anouncementbanner() {
           <Button sx={{ color: "red" }}>No</Button>
         );
       },
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 110,
+      renderCell: function (params) {
+        return params.row.date === null ? "" : (
+          new Date(params.row.date).toLocaleDateString()
+        );
+      }
     },
     {
       field: "created_by",
@@ -361,6 +360,7 @@ function Anouncementbanner() {
                 required
                   id="demo-customized-select-native"
                   value={AppVersion}
+                  displayEmpty
                   onChange={(e) => setAppVersion(e.target.value)}
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
@@ -368,6 +368,9 @@ function Anouncementbanner() {
                     width: "100%",
                   }}
                 >
+                  <MenuItem value="">
+                   <em>None</em>
+                    </MenuItem>
                   {version.map((version) => (
                     <MenuItem key={version} value={version}>
                       {version}
@@ -396,7 +399,7 @@ function Anouncementbanner() {
                 htmlFor="demo-customized-select-native"
                 sx={{ pl: 1 }}
               >
-                Display anounceopen
+                Display Anouncement
               </InputLabel>
               <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
                 <Select
@@ -413,6 +416,20 @@ function Anouncementbanner() {
                   <MenuItem value={false}>no</MenuItem>
                 </Select>
               </FormControl>
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
 
               <Button
                 type="submit"
@@ -423,7 +440,7 @@ function Anouncementbanner() {
                 Send
               </Button>
             <small style={{ color: "red", fontSize: "12px", marginTop: "8px" , textAlign: "center"}}>
-              You can only add upto 10 rows of Announcement, if you exceed <br/> limit of 10,
+              You can only add upto 100 rows of Announcement, if you exceed <br/> limit of 100,
               then oldest one will be deleted from this page.
               </small>
             </Card>
@@ -527,7 +544,20 @@ function Anouncementbanner() {
                 <MenuItem value={false}>no</MenuItem>
               </Select>
             </FormControl>
-
+            <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
             <Button
               type="submit"
               variant="contained"

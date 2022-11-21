@@ -82,7 +82,7 @@ function Tables() {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarExport />
+        <GridToolbarExport csvOptions={{ fields: ['name', 'email', 'phone_number', 'latlong_address', 'acct_holder_name', 'bank_name', 'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'] }} />
       </GridToolbarContainer>
     );
   }

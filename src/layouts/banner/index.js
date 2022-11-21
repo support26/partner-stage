@@ -43,24 +43,7 @@ const MenuProps = {
 };
 
 const version = [
-  "1.1",
-  "1.2",
-  "1.3",
-  "1.6",
-  "1.7",
-  "1.8",
-  "17.0",
-  "17.1",
-  "17.2",
-  "17.3",
-  "17.4",
-  "17.5",
-  "17.6",
-  "17.7",
-  "17.8",
-  "17.9",
-  "18.4",
-  "20.0",
+  "20.1"
 ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -92,6 +75,7 @@ function Banner() {
   const [ButtonText, setButtonText] = useState("");
   const [ShowButton, setShowButton] = useState("");
   const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState("");
+  const [date, setDate] = useState("");
 
   //gif
   const [Gif_Url, setGif_Url] = useState(null);
@@ -123,6 +107,7 @@ function Banner() {
     setBackgroundColor(null);
     setTextColor(null);
     setUrgentUpdate(null);
+    setDate("");
   };
 
   //popup
@@ -149,6 +134,7 @@ function Banner() {
     setTextColor("");
     setUrgentUpdate("");
     setErrormsg("");
+    setDate("");
   };
 
   const GetBannerData = () => {
@@ -229,6 +215,7 @@ function Banner() {
               ? false
               : null
           );
+          setDate(params.row.date === null ? "" : params.row.date);
           setButtonColor(params.row.ButtonColor);
           setBackgroundColor(params.row.BackgroundColor);
           setTextColor(params.row.TextColor);
@@ -291,6 +278,16 @@ function Banner() {
           <Button sx={{ color: "red" }}>No</Button>
         );
       },
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 110,
+      renderCell: function (params) {
+        return params.row.date === null ? "" : (
+          new Date(params.row.date).toLocaleDateString()
+        );
+      }
     },
 
     {
@@ -460,6 +457,7 @@ function Banner() {
     TextColor: TextColor,
     UrgentUpdate: UrgentUpdate,
     admin_email: admin_email,
+    date: date,
   };
 // "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a-z]{2,6})|((\\d{1‌​,3}\\.){3}\\d{1,3}))‌​(:\\d{2,4})?((/|\\?)‌​(((%[0-9a-f]{2})|[-\‌​\w@\\+\\.~#\\?&/=])*‌​))?$"
   // update banner
@@ -505,6 +503,7 @@ function Banner() {
     setTextColor("");
     setUrgentUpdate("");
     setErrormsg("");
+    setDate("");
   }
   };
 
@@ -551,6 +550,7 @@ function Banner() {
           TextColor,
           UrgentUpdate,
           admin_email,
+          date,
         };
 
         // console.log(data_1);
@@ -580,6 +580,7 @@ function Banner() {
         setTextColor("");
         setUrgentUpdate("");
         setErrormsg("");
+        setDate("");
       }
     }
   };
@@ -626,15 +627,21 @@ function Banner() {
               </InputLabel>
               <FormControl sx={{ mb: 0, p: 1 }} variant="standard">
                 <Select
+                required
                   id="demo-customized-select-native"
                   value={AppVersion}
+                  displayEmpty
                   onChange={(e) => setAppVersion(e.target.value)}
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
+                  label="Select Version"
                   style={{
                     width: "100%",
                   }}
                 >
+                  <MenuItem value="">
+                   <em>None</em>
+                    </MenuItem>
                   {version.map((version) => (
                     <MenuItem key={version} value={version}>
                       {version}
@@ -642,6 +649,7 @@ function Banner() {
                   ))}
                 </Select>
               </FormControl>
+
               <TextField
                 required
                 id="outlined-required"
@@ -814,6 +822,20 @@ function Banner() {
                   <MenuItem value={false}>no</MenuItem>
                 </Select>
               </FormControl>
+              <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
               <Button
                 type="submit"
                 variant="contained"
@@ -835,8 +857,8 @@ function Banner() {
                   textAlign: "center",
                 }}
               >
-                You can only add upto 10 rows of Banner, if you exceed limit of
-                10,
+                You can only add upto 100 rows of Banner, if you exceed limit of
+                100,
                 <br />
                 then oldest one will be deleted from this page.
               </small>
@@ -1072,6 +1094,20 @@ function Banner() {
                 <MenuItem value={false}>no</MenuItem>
               </Select>
             </FormControl>
+            <InputLabel
+                htmlFor="demo-customized-select-native"
+                sx={{ pl: 1 }}
+              >
+                Date
+              </InputLabel>
+              <TextField
+                // id="outlined-input"
+                // label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
             <Button
               type="submit"
               variant="contained"

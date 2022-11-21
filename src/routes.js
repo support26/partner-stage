@@ -1,10 +1,17 @@
-import Dashboard from "./layouts/dashboard";
-import Tables from "./layouts/tables";
-import Opportunities from "./layouts/opportunities";
-import Banner from "./layouts/banner/index";
-import Anouncement from "./layouts/anouncement";
+import React from "react";
+// import Dashboard from "./layouts/dashboard";
+// import Tables from "./layouts/tables";
+// // import Opportunities from "./layouts/opportunities";
+// import Banner from "./layouts/banner/index";
+// import Anouncement from "./layouts/anouncement";
 // @mui icons
 import Icon from "@mui/material/Icon";
+
+const Dashboard = React.lazy(() => import('./layouts/dashboard'));
+const Tables = React.lazy(() => import('./layouts/tables'));
+const Opportunities = React.lazy(() => import('./layouts/opportunities'));
+const Banner = React.lazy(() => import('./layouts/banner/index'));
+const Anouncement = React.lazy(() => import('./layouts/anouncement'));
 
 const routes = [
   {
