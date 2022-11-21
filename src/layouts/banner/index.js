@@ -42,7 +42,7 @@ const MenuProps = {
   },
 };
 
-const version = [ 
+const version = [
   "20.1"
 ];
 
@@ -627,15 +627,21 @@ function Banner() {
               </InputLabel>
               <FormControl sx={{ mb: 0, p: 1 }} variant="standard">
                 <Select
+                required
                   id="demo-customized-select-native"
                   value={AppVersion}
+                  displayEmpty
                   onChange={(e) => setAppVersion(e.target.value)}
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
+                  label="Select Version"
                   style={{
                     width: "100%",
                   }}
                 >
+                  <MenuItem value="">
+                   <em>None</em>
+                    </MenuItem>
                   {version.map((version) => (
                     <MenuItem key={version} value={version}>
                       {version}
@@ -643,6 +649,7 @@ function Banner() {
                   ))}
                 </Select>
               </FormControl>
+
               <TextField
                 required
                 id="outlined-required"

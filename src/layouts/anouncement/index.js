@@ -360,6 +360,7 @@ function Anouncementbanner() {
                 required
                   id="demo-customized-select-native"
                   value={AppVersion}
+                  displayEmpty
                   onChange={(e) => setAppVersion(e.target.value)}
                   input={<BootstrapInput />}
                   MenuProps={MenuProps}
@@ -367,6 +368,9 @@ function Anouncementbanner() {
                     width: "100%",
                   }}
                 >
+                  <MenuItem value="">
+                   <em>None</em>
+                    </MenuItem>
                   {version.map((version) => (
                     <MenuItem key={version} value={version}>
                       {version}
