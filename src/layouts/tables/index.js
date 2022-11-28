@@ -314,7 +314,6 @@ function Tables() {
         );
       },
     },
-    { field: "id", headerName: "ID", width: 68 },
 
     // {
     //   field: "Image",
@@ -366,6 +365,18 @@ function Tables() {
       headerName: "GPS address",
       type: "text",
       width: 130,
+    },
+    {
+      field: "created_at",
+      headerName: "Created At",
+      type: "text",
+      width: 183,
+    },
+    {
+      field: "App_version",
+      headerName: "App Version",
+      type: "text",
+      width: 120,
     },
     {
       field: "acct_holder_name",
