@@ -1,180 +1,274 @@
-import { useState } from "react";
+import * as React from "react";
 import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Dialog from "@mui/material/Dialog";
-import MDTypography from "components/MDTypography";
-
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import Typography from "@mui/material/Typography";
-
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+// @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import CardMedia from "@mui/material/CardMedia";
-import TextField from "@mui/material/TextField";
-import MDInput from "components/MDInput";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-
-const Opportunities = () => {
-  const [open, setOpen] = useState(false);
-  const [maxWidth, setMaxWidth] = useState("sm");
-
-  const [item, setItem] = useState("");
-  const [desc, setDesc] = useState("");
-  const [image, setImage] = useState("");
-  const [newItem, setNewItem] = useState([]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const firstEvent = (event) => {
-    setItem(event.target.value);
-  };
-  const descEvent = (event) => {
-    setDesc(event.target.value);
-  };
-
-  const imageEvent = (event) => {
-    setImage(event.target.file);
-  };
+import Form from "./Form";
 
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "520px",
+  maxWidth: "90%",
+  height: "550px",
+  bgcolor: 'background.paper',
+  borderRadius: '10px',
+  boxShadow: 24,
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+};
 
-  const secondEvent = () => {
-    setNewItem((prev) => {
-      setOpen(false);
-      return [...prev, item];
-    });
 
-    setItem("");
-    setDesc("");
-    setImage("");
-  };
-
-  const thirdEvent = () => {
-    setNewItem([]);
-  };
-
+function Opportunities() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <DashboardLayout>
       <DashboardNavbar />
-
-      <MDBox mt={1} mb={1} sx={{ float: "left" }}>
-        {/* onClick={secondEvent} */}
-
-        <AddCircleRoundedIcon onClick={handleClickOpen} fontSize="large" />
-      </MDBox>
-      <MDBox mt={1} mb={1} sx={{ float: "left" }}>
-        <Grid
-          container
-          spacing={0}
-          justifyContent="center"
-          sx={{ float: "left" }}
-        >
-          <Grid item xs={12} sx={{ display: "flex" }}>
-            {newItem.map((title, body, image) => {
-              // return <TextField value={val} />;
-              return (
-                <Grid container spacing={0} justifyContent="center">
-                  <Card sx={{ width:'300px' ,height:'300px'}}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={image}
-                      alt="green iguana"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {body}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Edit</Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-
-            <Button className="delBtn" onClick={thirdEvent}>
-              <DeleteIcon />
-              Delete All
-            </Button>
+      <div style ={{float: "right", margin: "7px 10px 0px 0px"}}>
+        <Button onClick={handleOpen} style={{backgroundColor: "#33a2b5", padding: "7px 10px", border: "none", borderRadius: "10px", color: "#fff"}} >
+          Add New Opportunity
+        </Button>
+      </div>
+      <MDBox pt={1} mx={1}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6} lg={4} mt={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320}}>
+                <CardMedia
+                sx={{maxHeight: 160}}
+                  component="img"
+                  image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
           </Grid>
-        </Grid>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardMedia
+                sx={{maxHeight: 160}}
+                  component="img"
+                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    {" "}
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardMedia
+                  component="img"
+                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    {" "}
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardMedia
+                  component="img"
+                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    {" "}
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardMedia
+                  component="img"
+                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    {" "}
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
+            <MDBox mb={0}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardMedia
+                  component="img"
+                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
+                  alt="opt image"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="div">
+                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
+                    पैसे कमाएं।
+                  </Typography>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    {" "}
+                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}>
+                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
+                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                  </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                </CardContent>
+                <CardActions sx={{ marginTop: -3 }}>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Preview</Button>
+                </CardActions>
+              </Card>
+            </MDBox>
+          </Grid>
+        </Grid>  
       </MDBox>
-      {/* pop up */}
-      <Dialog maxWidth={maxWidth} open={open} onClose={handleClose}>
-        <div>
+      
+
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        // onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+          <div style={{marginTop: "0px"}}>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={handleClose}
             aria-label="close"
-            style={{ float: "right" }}
+            style={{display: "block", float: "right", marginTop: "-18px", marginRight: "-10px" }}
+            onClick={handleClose}
           >
             <CloseIcon />
           </IconButton>
         </div>
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            maxWidth,
-          }}
-        >  <MDTypography align="center" variant="h3" sx={{ pb: "5px" }}>
-            Opportunity
-            </MDTypography>
-          <Card sx={{ px: 5, py:   0, pb: 2, width: "100%" }}>
-          
-            <TextField
-              type="text"
-              label="Title..."
-              value={item}
-              onChange={firstEvent}
-              required
-            />
-            <br />
-            <MDInput
-              label="Type here..."
-              multiline
-              rows={5}
-              style={{
-                minWidth: "auto",
-                maxWidth: "400px",
-                marginBottom: "10px",
-              }}
-              value = {desc}
-              onChange = {descEvent}
-              required
-            />
-            <TextField helperText="Image " type="file" value={image} onChange = {imageEvent}/> <br />
-            <Button
-              variant="contained"
-              style={{ background: "#33A2B5", color: "white" }}
-             onClick={secondEvent}
-            >
-              Send
-            </Button>
-          </Card>
-        </Box>
-      </Dialog>
+        <div>
+        <Form/>
+        </div>
+          </Box>
+        </Fade>
+      </Modal>
     </DashboardLayout>
   );
-};
-
+}
 export default Opportunities;
