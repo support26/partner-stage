@@ -9,7 +9,7 @@
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-siziUploang: border-box;
+  box-sizing: border-box;
   font-size: 14px;
 }
 

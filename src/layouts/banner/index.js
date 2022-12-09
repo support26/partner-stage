@@ -208,13 +208,7 @@ function Banner() {
               ? false
               : null
           );
-          setGif_Url_to_be_opened(
-            params.row.Gif_Url_to_be_opened === 1
-              ? true
-              : params.row.Gif_Url_to_be_opened === 0
-              ? false
-              : null
-          );
+          setGif_Url_to_be_opened(params.row.Gif_Url_to_be_opened);
           setDate(params.row.date === null ? "" : params.row.date);
           setButtonColor(params.row.ButtonColor);
           setBackgroundColor(params.row.BackgroundColor);
@@ -312,21 +306,21 @@ function Banner() {
     {
       field: "Gif_Url_to_be_opened",
       headerName: "Gif Url to be opened ",
-      width: 110,
-      renderCell: function (params) {
-        if (params.row.Gif_Url_to_be_opened === 1) {
-          return <Button sx={{ color: "green" }}>Yes</Button>;
-        } else if (params.row.Gif_Url_to_be_opened === 0) {
-          return <Button sx={{ color: "red" }}>No</Button>;
-        } else {
-          return;
-        }
+      width: 150,
+      // renderCell: function (params) {
+      //   if (params.row.Gif_Url_to_be_opened === 1) {
+      //     return <Button sx={{ color: "green" }}>Yes</Button>;
+      //   } else if (params.row.Gif_Url_to_be_opened === 0) {
+      //     return <Button sx={{ color: "red" }}>No</Button>;
+      //   } else {
+      //     return;
+      //   }
         // return params.row.Gif_Url_to_be_opened === 1 ? (
         //   <Button sx={{ color: "green" }}>Yes</Button>
         // ) : (
         //   <Button sx={{ color: "red" }}>No</Button>
         // );
-      },
+      // },
     },
     {
       field: "ButtonColor",
@@ -657,17 +651,21 @@ function Banner() {
                 onChange={(e) => seturl(e.target.value)}
                 label="Url"
               />
-              <TextField
-                id="outlined"
+              <TextField              
+                id="outlined-multiline-static"
                 label="Description Hindi"
+                multiline
+                rows={6}
                 value={Description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
               <TextField
-                id="outlined-input"
+                id="outlined-multiline-static"
                 label="Description English"
                 type="text"
+                multiline
+                rows={6}
                 required
                 value={DescriptionIsEnglish}
                 onChange={(e) => setDescriptionIsEnglish(e.target.value)}
@@ -743,8 +741,13 @@ function Banner() {
                   <MenuItem value={false}>no</MenuItem>
                 </Select>
               </FormControl>
-
-              <InputLabel
+                <TextField
+                id="Gif_Url_to_be_opened"
+                label="Gif Url to be opened"
+                value={Gif_Url_to_be_opened}
+                onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
+              />
+              {/* <InputLabel
                 htmlFor="demo-customized-select-native"
                 sx={{ pl: 1 }}
               >
@@ -761,7 +764,7 @@ function Banner() {
                   <MenuItem value={true}>yes</MenuItem>
                   <MenuItem value={false}>no</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
 
               <Grid container spacing={0}>
                 <Grid item xs={12} md={6} lg={4} mt={0}>
@@ -932,14 +935,18 @@ function Banner() {
               label="Url"
             />
             <TextField
-              id="outlined"
+              id="outlined-multiline-static"
+              multiline
+              rows={6}
               label="Description Hindi"
               value={Description}
               onChange={(e) => setDescription(e.target.value)}
               required
             />
             <TextField
-              id="outlined-input"
+              id="outlined-multiline-static"
+              multiline
+              rows={6}
               label="Description English"
               type="text"
               required
@@ -1020,8 +1027,14 @@ function Banner() {
                 <MenuItem value={false}>no</MenuItem>
               </Select>
             </FormControl>
+            <TextField
+                id="Gif_Url_to_be_opened"
+                label="Gif Url to be opened"
+                value={Gif_Url_to_be_opened}
+                onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
+              />
 
-            <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
+            {/* <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
               Gif Url Open
             </InputLabel>
             <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
@@ -1035,7 +1048,7 @@ function Banner() {
                 <MenuItem value={true}>yes</MenuItem>
                 <MenuItem value={false}>no</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
             <Grid container spacing={0}>
               <Grid item xs={12} md={6} lg={4} mt={0}>
                 <MDBox mb={0}>

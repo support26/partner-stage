@@ -356,7 +356,31 @@ function Tables() {
     {
       field: "phone_number",
       headerName: "Number  ",
-      type: "number",
+      type: "text",
+      width: 120,
+    },
+    {
+      field: "age",
+      headerName: "Age",
+      type: "text",
+      width: 50,
+    },
+    {
+      field: "dob",
+      headerName: "DOB",
+      type: "text",
+      width: 110,
+    },
+    {
+      field: "gender",
+      headerName: "Gender",
+      type: "text",
+      width: 70,
+    },
+    {
+      field: "education",
+      headerName: "Education",
+      type: "text",
       width: 120,
     },
 
@@ -365,6 +389,18 @@ function Tables() {
       headerName: "GPS address",
       type: "text",
       width: 130,
+    },
+    {
+      field: "latlong",
+      headerName: "GPS",
+      type: "text",
+      width: 200,
+    },
+    {
+      field: "last_active",
+      headerName: "Last Active",
+      type: "text",
+      width: 183,
     },
     {
       field: "created_at",
