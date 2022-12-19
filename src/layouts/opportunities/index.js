@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useEffect, useState} from "react";
+import useAdmin from "../../hooks/useAdmin";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -17,6 +18,8 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
+import EditForm from "./EditForm";
+import { tab } from "@testing-library/user-event/dist/tab";
 
 
 const style = {
@@ -39,9 +42,43 @@ const style = {
 
 
 function Opportunities() {
-  const [open, setOpen] = React.useState(false);
+  const {GetAllOpportunity} = useAdmin();
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [opportunities, setOpportunities] = useState("")
+  const [opportunity, setOpportunity] = useState("")
   const handleOpen = () => setOpen(true);
+  const handleOpen1 = (id) => {
+    let opt = opportunities.find((opportunity) => opportunity.id === id);
+    opt.location = opt.tags.location;
+    setOpportunity(opt);
+    setOpen1(true);
+  }
   const handleClose = () => setOpen(false);
+  const handleClose1 = () => setOpen1(false);
+ const getAllOpportunity = () => {
+  var getallopportunity = GetAllOpportunity();
+  getallopportunity.then((response) => {
+    parseData(response.data.data);
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+  }
+const parseData = (opportunities) => {
+  opportunities.map((opportunity, index) => {
+    let data = [...opportunities]
+    data[index].tags = JSON.parse(opportunity.tags);
+    data[index].project_details = JSON.parse(opportunity.project_details);
+    data[index].extra_details = JSON.parse(opportunity.extra_details);
+    setOpportunities(data)
+  })
+}
+  useEffect(() => {
+    getAllOpportunity();
+
+  }, [])
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -52,187 +89,38 @@ function Opportunities() {
       </div>
       <MDBox pt={1} mx={1}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={6} lg={4} mt={0}>
+          {opportunities && opportunities.map((opportunity, key) => (
+          <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
             <MDBox mb={0}>
               <Card sx={{ maxWidth: 320}}>
                 <CardMedia
                 sx={{maxHeight: 160}}
                   component="img"
-                  image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+                  image={opportunity.title_image}
                   alt="opt image"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
+                    {opportunity.title}
                   </Typography>
                   <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
+                    <strong>Created at -</strong> {new Date(opportunity.tags.created).toLocaleString()}
                   </p>
                   <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
+                    <strong>Location -</strong> {opportunity.tags.location}
                   </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
+                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> {opportunity.likes} </p>
                 </CardContent>
                 <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
+                  <Button onClick={() => handleOpen1(opportunity.id)} size="small">Edit</Button>
+                  <Button onClick={() => {
+                    window.open(opportunity.page_url, "_blank");
+                  }} size="small">Preview</Button>
                 </CardActions>
               </Card>
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
-            <MDBox mb={0}>
-              <Card sx={{ maxWidth: 320 }}>
-                <CardMedia
-                sx={{maxHeight: 160}}
-                  component="img"
-                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
-                  alt="opt image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
-                  </Typography>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    {" "}
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
-                </CardContent>
-                <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
-                </CardActions>
-              </Card>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
-            <MDBox mb={0}>
-              <Card sx={{ maxWidth: 320 }}>
-                <CardMedia
-                  component="img"
-                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
-                  alt="opt image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
-                  </Typography>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    {" "}
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
-                </CardContent>
-                <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
-                </CardActions>
-              </Card>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
-            <MDBox mb={0}>
-              <Card sx={{ maxWidth: 320 }}>
-                <CardMedia
-                  component="img"
-                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
-                  alt="opt image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
-                  </Typography>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    {" "}
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
-                </CardContent>
-                <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
-                </CardActions>
-              </Card>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
-            <MDBox mb={0}>
-              <Card sx={{ maxWidth: 320 }}>
-                <CardMedia
-                  component="img"
-                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
-                  alt="opt image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
-                  </Typography>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    {" "}
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
-                </CardContent>
-                <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
-                </CardActions>
-              </Card>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} mt={0} ml={0}>
-            <MDBox mb={0}>
-              <Card sx={{ maxWidth: 320 }}>
-                <CardMedia
-                  component="img"
-                  image="https://anaxeeprojects.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9ce4191a-f76c-4d72-9865-65d84f8e94fb%2Fewew-01.jpg?table=block&id=365f41ac-1522-47eb-8d37-3ef8f42e2009&spaceId=e73aa0c5-43fd-4176-9fe9-2cc1215510fb&width=2000&userId=&cache=v2g"
-                  alt="opt image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    Escorts Tractor Survey | Tractor Owner की जानकारी लाएँ और
-                    पैसे कमाएं।
-                  </Typography>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    {" "}
-                    <strong>Created at -</strong> August 11, 2021 5:39 PM
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}>
-                    <strong>Location -</strong> यह काम मध्य प्रदेश, उत्तर प्रदेश
-                    एवं महाराष्ट्र की कुछ डिस्ट्रिक्ट मे किया जाना है।
-                  </p>
-                  <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> 10 </p>
-                </CardContent>
-                <CardActions sx={{ marginTop: -3 }}>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Preview</Button>
-                </CardActions>
-              </Card>
-            </MDBox>
-          </Grid>
+          ))}
         </Grid>  
       </MDBox>
       
@@ -263,7 +151,40 @@ function Opportunities() {
           </IconButton>
         </div>
         <div>
-        <Form/>
+          {/* <EditForm/> */}
+        <Form getAllOpportunity={getAllOpportunity} handleClose={handleClose}/>
+        </div>
+          </Box>
+        </Fade>
+      </Modal>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open1}
+        // onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open1}>
+          <Box sx={style}>
+          <div style={{marginTop: "0px"}}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="close"
+            style={{display: "block", float: "right", marginTop: "-18px", marginRight: "-10px" }}
+            onClick={handleClose1}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <div>
+          <EditForm opportunity={opportunity} getAllOpportunity={getAllOpportunity} handleClose={handleClose1} />
+        {/* <Form getAllOpportunity={getAllOpportunity} handleClose={handleClose}/> */}
         </div>
           </Box>
         </Fade>

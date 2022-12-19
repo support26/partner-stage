@@ -1,6 +1,7 @@
-import { Label } from '@mui/icons-material';
-import { style } from '@mui/system';
 import React, {useState} from 'react'
+import Compressor from 'compressorjs';
+import UserRepository from "api/UsersRepository";
+import useAdmin from '../../hooks/useAdmin';
 // import FormInput from "./FormInput";
 // import './form.css'
 
@@ -42,7 +43,8 @@ const styles = {
   },
 };
 
-const Form = () => {
+const Form = ({getAllOpportunity, handleClose}) => {
+  const { AddOpportunity } = useAdmin();
     const [values, setValues] = useState({
         icon: "",
         title: "",
@@ -74,7 +76,7 @@ const Form = () => {
           placeholder: "Enter icon url...",
           errorMessage: "Url is not valid",
           label: "Icon Url",
-          // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
+          pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
           required: true,
         },
         {
@@ -89,13 +91,13 @@ const Form = () => {
         },
         {
           id: 3,
-          name: "title_image",
+          name: "location",
           type: "text",
-          placeholder: "Enter image url",
-          label: "Title Image",
-          errorMessage: "Url is not valid",
-          // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
-          required: true
+          placeholder: "Enter Location",
+          errorMessage: "It should be not more than 50 words",
+          label: "Location",
+          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+          required: true,
         },
         {
           id: 4,
@@ -111,29 +113,42 @@ const Form = () => {
           id: 5,
           name: "apply_link",
           type: "text",
-          placeholder: "Enter Apply Link",
+          placeholder: "Enter Apply Link", 
           errorMessage: "Url is not valid",
           label: "Apply Link",
-          // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
-          required: true,
-        },
-        {
-          id: 6,
-          name: "location",
-          type: "text",
-          placeholder: "Enter Location",
-          errorMessage: "It should be not more than 50 words",
-          label: "Location",
-          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+          pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
           required: true,
         },
       ];
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(values);
-        console.log(projectDetails);
-        console.log(extraDetails);
+        var data = {
+          icon: values.icon,
+          title: values.title,
+          title_image: values.title_image,
+          video_link: values.video_link,
+          apply_link: values.apply_link,
+          tags : {
+            location: values.location,
+            created : new Date(),
+          },
+          projectDetails: projectDetails,
+          extraDetails: extraDetails,
+        };
+        var addOpportunity =  AddOpportunity(data);
+        addOpportunity.then((res) => {
+          // console.log(res);
+          getAllOpportunity();
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+          
+        // console.log(values);
+        // console.log(projectDetails);
+        // console.log(extraDetails);
       };
     
       const onChange = (e) => {
@@ -142,9 +157,52 @@ const Form = () => {
       const onChange1 = (e) => {
         setProjectDetails({ ...projectDetails, [e.target.name]: e.target.value  })
       }
-      const onChange2 = (e) => {
-        setExtraDetails({ ...extraDetails, [e.target.name]: e.target.value  })
-      }
+      let file;
+  let form_data = new FormData();
+      const onChangeImage = (e) => {
+        file = e.target.files[0];
+        new Compressor(file, {
+          quality: 0.8,
+          success(result) {
+            file = result;      
+    form_data.append("file", file);
+    UserRepository.UploadImageFile(form_data)
+      .then((response) => {
+        console.log(response.data);
+        setValues({ ...values, [e.target.name]: response.data.data.fileUrl});
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    },
+    error(err) {
+      console.log(err.message);
+    },
+  });
+};
+
+      const onChangeImage1 = (e) => {
+        file = e.target.files[0];
+        new Compressor(file, {
+          quality: 0.8,
+          success(result) {
+            file = result;
+            form_data.append("file", file);
+            UserRepository.UploadImageFile(form_data)
+              .then((response) => {
+                console.log(response.data);
+                setProjectDetails({ ...projectDetails, [e.target.name]: response.data.data.fileUrl});
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          },
+          error(err) {
+            console.log(err.message);
+          },
+        });
+      };
+
   return (
     <div className="xyz">
       <form onSubmit={handleSubmit}>
@@ -164,6 +222,18 @@ const Form = () => {
             />
           </div>
         ))}
+
+        <label style={{ fontSize: "14px" }}> Title Image</label>
+        <input
+          type="file"
+          name="title_image"
+          // value={values.title_image}
+          onChange={onChangeImage}
+          placeholder="Upload image"
+          style={styles.input}
+          required
+          accept="image/*"
+        />
         <hr/>
 
         <h5 style={{ textAlign: "center", margin: "5px"}} >Project Details</h5>
@@ -192,13 +262,14 @@ const Form = () => {
           />
           <label style={{ fontSize: "14px" }}>Project Image</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            value={projectDetails.image}
-            onChange={onChange1}
+            // value={projectDetails.image}
+            onChange={onChangeImage1}
             placeholder="Enter project image url"
             style={styles.input}
             required
+            accept='image/*'
           />
         </div>
         <hr/>
@@ -218,7 +289,6 @@ const Form = () => {
                 }}
                 placeholder="Enter title"
                 style={styles.input}
-                required
               />
               <label style={{ fontSize: "14px" }}>Description</label>
               <textarea
@@ -231,23 +301,37 @@ const Form = () => {
                 }}
                 placeholder="Enter description"
                 style={styles.input}
-                required
                 rows="10"
                 cols="24"
               />
               <label style={{ fontSize: "14px" }}>Image</label>
               <input
-                type="text"
+                type="file"
                 name="image"
-                value={detail.image}
+                // value={detail.image}
                 onChange={(e) => {
-                  const values = [...extraDetails];
-                  values[index].image = e.target.value;
-                  setExtraDetails(values);
+                  file = e.target.files[0];
+                  new Compressor(file, {
+                    quality: 0.8,
+                    success(result) {
+                      file = result;
+                      form_data.append("file", file);
+                      UserRepository.UploadImageFile(form_data)
+                        .then((response) => {
+                          console.log(response.data);
+                          const values = [...extraDetails];
+                          values[index].image = response.data.data.fileUrl;
+                          setExtraDetails(values);
+                        })
+                        .catch((e) => {
+                          console.log(e);
+                        });
+                    }
+                  });
                 }}
-                placeholder="Enter image url"
+                placeholder="Upload Image"
                 style={styles.input}
-                required
+                accept='image/*'
               />
               <button
                 type="button"

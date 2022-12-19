@@ -322,5 +322,63 @@ class AdminRepository {
       },
     });
   }
+ 
+  //get all opportunity
+  async getAllOpportunity() {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.get(`${baseUrl}opt/webapp/opportunities`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  // add new opportunity
+  async addOpportunity(data) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.post(`${baseUrl}opt/webapp/addOpportunity`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      }
+      );
+    return reponse;
+  }
+
+  //update opportunity
+  async updateOpportunity(data, id) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}opt/webapp/updateOpportunity/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
 }
 export default new AdminRepository();
