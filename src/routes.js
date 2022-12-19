@@ -9,7 +9,6 @@ import Icon from "@mui/material/Icon";
 
 const Dashboard = React.lazy(() => import('./layouts/dashboard'));
 const Tables = React.lazy(() => import('./layouts/tables'));
-const Opportunities = React.lazy(() => import('./layouts/opportunities'));
 const Banner = React.lazy(() => import('./layouts/banner/index'));
 const Anouncement = React.lazy(() => import('./layouts/anouncement'));
 
@@ -48,8 +47,8 @@ const routes = [
   },
   // {
   //   type: "collapse",
-  //   name: "Opportunity",
-  //   key: "opportunity",
+  //   name: "Opportunities",
+  //   key: "opportunities",
   //   icon: <Icon fontSize="medium">assignment</Icon>,
   //   route: "/opportunities",
   //   component: <Opportunities />,

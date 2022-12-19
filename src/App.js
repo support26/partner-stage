@@ -30,6 +30,7 @@ import anaxee_logo from "assets/images/icons/Ellipse 1.png";
 const ResetPassword = React.lazy(() => import('./layouts/authentication/reset-password/cover/index'));
 const AddUsers = React.lazy(() => import('./layouts/AddUsers'));
 const Notifications = React.lazy(() => import('./layouts/notifications'));
+const Opportunities = React.lazy(() => import('./layouts/opportunities'));
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -141,6 +142,13 @@ export default function App() {
           <Route path="/notifications" element={
             <Suspense fallback={<Loader/>}>
               <Notifications />
+            </Suspense>
+          } />
+        )}
+        {Cookies.get('token') && roleId == 0 && (
+          <Route path="/opportunities" element={
+            <Suspense fallback={<Loader/>}>
+              <Opportunities />
             </Suspense>
           } />
         )}

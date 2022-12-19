@@ -202,6 +202,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 active={"notifications" === collapseName}
               />
             </NavLink>
+            <NavLink to={"/opportunities"} key={"opportunities"}>
+              <SidenavCollapse
+                name={"Opportunities"}
+                icon={<Icon fontSize="medium">assignment</Icon>}
+                active={"opportunities" === collapseName}
+              />
+            </NavLink>
             <NavLink to={"/users"} key={"users"}>
               <SidenavCollapse
                 name={"Support Users"}

@@ -267,5 +267,32 @@ export default function useAdmin() {
       }
       return responseData;
     },
+
+    //get all opportunity
+    GetAllOpportunity: async () => {
+      var responseData = await AdminRepository.getAllOpportunity();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
+
+    //add opportunity
+    AddOpportunity: async (data) => {
+      var responseData = await AdminRepository.addOpportunity(data);
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return false;
+    },
+
+    //update opportunity
+    UpdateOpportunity: async (data, userId) => {
+      var responseData = await AdminRepository.updateOpportunity(data, userId);
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+      }
+      return responseData;
+    },
   };
 }
