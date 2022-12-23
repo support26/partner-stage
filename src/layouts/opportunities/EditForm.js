@@ -98,7 +98,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       errorMessage: "Url is not valid",
       label: "Icon Url",
       //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-      required: true,
+      required: false,
     },
     {
       id: 2,
@@ -108,7 +108,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       errorMessage: "It should be not more than 50 words",
       // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
       label: "Title",
-      required: true,
+      required: false,
     },
     {
       id: 3,
@@ -118,7 +118,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       errorMessage: "It should be not more than 50 words",
       label: "Location",
       // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
-      required: true,
+      required: false,
     },
     {
       id: 4,
@@ -128,7 +128,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       errorMessage: "Url is not valid",
       label: "Video Link",
       // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
-      required: true,
+      required: false,
     },
     {
       id: 5,
@@ -138,7 +138,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       errorMessage: "Url is not valid",
       label: "Apply Link",
       //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-      required: true,
+      required: false,
     },
   ];
   let file;
@@ -235,7 +235,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     <>
       <div className="xyz">
         <form onSubmit={handleSubmit}>
-          <h4 style={{ textAlign: "center" }}>Edit Oppprtunity</h4>
+          <h4 style={{ textAlign: "center" }}>Edit Opportunity</h4>
           {inputs.map((input) => (
             <div key={input.id}>
               <label style={{ fontSize: "14px" }}>{input.label}</label>
@@ -300,7 +300,6 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
           <div>
             <label style={{ fontSize: "14px" }}>Project Title</label>
             <input
-              required
               type="text"
               id="title"
               name="title"
@@ -316,7 +315,6 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               onChange={onChange1}
               placeholder="Enter project description"
               style={styles.input}
-              required
               rows="10"
               cols="24"
             />
