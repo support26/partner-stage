@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserRepository from "api/UsersRepository";
 import Compressor from "compressorjs";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from '@mui/icons-material/Delete';
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
@@ -183,7 +184,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
         form_data.append("file", file);
         UserRepository.UploadImageFile(form_data)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProjectDetails({
               ...projectDetails,
               [e.target.name]: response.data.data.fileUrl,
@@ -338,7 +339,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               />
               <IconButton
                 style={{
-                  marginTop: "-123px",
+                  marginTop: "-165px",
                   marginLeft: "228px",
                   fontSize: "20px",
                   color: "white",
@@ -350,12 +351,32 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               >
                 <input
                   hidden
-                  name="title_image"
+                  name="image"
                   accept="image/*"
                   type="file"
                   onChange={onChangeImage1}
                 />
                 <FileUploadIcon />
+              </IconButton>
+              <IconButton
+                style={{
+                  marginTop: "-140px",
+                  marginLeft: "228px",
+                  fontSize: "20px",
+                  color: "white",
+                  backgroundColor: "#33A2B5",
+                }}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                onClick={() => {
+                  setProjectDetails({
+                    ...projectDetails,
+                    ["image"]: "",
+                  });
+                }}
+                >
+                <DeleteIcon/>
               </IconButton>
             </div>
           </div>
@@ -439,7 +460,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                   />
                   <IconButton
                     style={{
-                      marginTop: "-123px",
+                      marginTop: "-165px",
                       marginLeft: "228px",
                       fontSize: "20px",
                       color: "white",
@@ -451,7 +472,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                   >
                     <input
                       hidden
-                      name="title_image"
+                      name="image"
                       accept="image/*"
                       type="file"
                       onChange={(e) => {
@@ -478,6 +499,25 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                     />
                     <FileUploadIcon />
                   </IconButton>
+                  <IconButton
+                style={{
+                  marginTop: "-140px",
+                  marginLeft: "228px",
+                  fontSize: "20px",
+                  color: "white",
+                  backgroundColor: "#33A2B5",
+                }}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                onClick={() => {
+                  const values = [...extraDetails];
+                  values[index].image = "";
+                  setExtraDetails(values);
+                }}
+                >
+                <DeleteIcon/>
+              </IconButton>
                 </div>
                 <button
                   type="button"
