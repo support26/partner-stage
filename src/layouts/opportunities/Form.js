@@ -77,7 +77,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           errorMessage: "Url is not valid",
           label: "Icon Url",
           pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-          required: true,
+          required: false,
         },
         {
           id: 2,
@@ -87,7 +87,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           errorMessage: "It should be not more than 50 words",
           // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
           label: "Title",
-          required: true,
+          required: false,
         },
         {
           id: 3,
@@ -97,7 +97,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           errorMessage: "It should be not more than 50 words",
           label: "Location",
           // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
-          required: true,
+          required: false,
         },
         {
           id: 4,
@@ -107,7 +107,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           errorMessage: "Url is not valid",
           label: "Video Link",
           // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
-          required: true,
+          required: false,
         },
         {
           id: 5,
@@ -117,7 +117,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           errorMessage: "Url is not valid",
           label: "Apply Link",
           pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-          required: true,
+          required: false,
         },
       ];
 
@@ -231,7 +231,6 @@ const Form = ({getAllOpportunity, handleClose}) => {
           onChange={onChangeImage}
           placeholder="Upload image"
           style={styles.input}
-          required
           accept="image/*"
         />
         <hr/>
@@ -240,7 +239,6 @@ const Form = ({getAllOpportunity, handleClose}) => {
         <div>
           <label style={{ fontSize: "14px" }}>Project Title</label>
           <input
-            required
             type="text"
             id="title"
             name="title"
@@ -256,7 +254,6 @@ const Form = ({getAllOpportunity, handleClose}) => {
             onChange={onChange1}
             placeholder="Enter project description"
             style={styles.input}
-            required
             rows="10"
             cols="24"
           />
@@ -268,7 +265,6 @@ const Form = ({getAllOpportunity, handleClose}) => {
             onChange={onChangeImage1}
             placeholder="Enter project image url"
             style={styles.input}
-            required
             accept='image/*'
           />
         </div>
