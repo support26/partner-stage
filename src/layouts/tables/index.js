@@ -82,7 +82,7 @@ function Tables() {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarExport csvOptions={{ fields: ['name', 'email', 'phone_number', 'latlong_address', 'acct_holder_name', 'bank_name', 'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'] }} />
+        <GridToolbarExport csvOptions={{ fields: ['isUserActiveOrNot', 'name', 'email', 'phone_number', 'age', 'dob', 'gender', 'education',  'latlong_address', 'latlong', 'last_active', 'created_at', 'App_version', 'acct_holder_name', 'bank_name', 'bank_acct_no',  'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'] }} />
       </GridToolbarContainer>
     );
   }
@@ -333,7 +333,8 @@ function Tables() {
     //   },
     // },
     {
-      field: "Status",
+      field: "isUserActiveOrNot",
+      headerName: "Status",
       type: "text",
       width: 60,
       renderCell: (params) => {
