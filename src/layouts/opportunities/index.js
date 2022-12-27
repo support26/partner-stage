@@ -12,6 +12,7 @@ import Fade from '@mui/material/Fade';
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import InfoIcon from '@mui/icons-material/Info';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -19,6 +20,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
+import Icon from '@mui/material/Icon';
 import { tab } from "@testing-library/user-event/dist/tab";
 
 
@@ -86,6 +88,10 @@ const parseData = (opportunities) => {
         <Button onClick={handleOpen} style={{backgroundColor: "#33a2b5", padding: "7px 10px", border: "none", borderRadius: "10px", color: "#fff"}} >
           Add New Opportunity
         </Button>
+        <Button style={{ fontSize: "10px", backgroundColor: "#33a2b5", color: "white", marginLeft: "3px", padding: "0px"}}>
+    <InfoIcon /> help
+        </Button>
+        {/* <Icon>star</Icon> */}
       </div>
       <MDBox pt={1} mx={1}>
         <Grid container spacing={4}>

@@ -49,9 +49,9 @@ const MenuProps = {
   },
 };
 
-const version = [
-  "20.1"
-];
+// const version = [
+//   "20.1"
+// ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -69,13 +69,14 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 function Anouncementbanner() {
-  const { GetAnouncements, UpdateAnouncement, AddAnouncements} =
+  const { GetAnouncements, UpdateAnouncement, AddAnouncements, GetVersionList} =
     useAdmin();
 
   const [user_id, setUser_id] = useState("");
 
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
+  const [version, setVersion] = useState([]);
 
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
@@ -116,6 +117,14 @@ function Anouncementbanner() {
       if (response.status === 200) {
         setLoading(false);
         setUsers(response.data.data);
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+    var getVersionList = GetVersionList();
+    getVersionList.then((response) => {
+      if (response.status === 200) {
+        setVersion(response.data.data);
       }
     }).catch((e) => {
       console.log(e);
