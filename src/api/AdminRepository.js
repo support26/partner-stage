@@ -380,5 +380,23 @@ class AdminRepository {
       });
     return reponse;
   }
+
+  // get version list
+  async getVersionList() {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.get(`${baseUrl}admin/versions`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
 }
 export default new AdminRepository();

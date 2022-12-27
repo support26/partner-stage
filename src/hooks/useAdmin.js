@@ -294,5 +294,14 @@ export default function useAdmin() {
       }
       return responseData;
     },
+
+    //get version list
+    GetVersionList: async () => {
+      var responseData = await AdminRepository.getVersionList();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    }
   };
 }

@@ -42,9 +42,9 @@ const MenuProps = {
   },
 };
 
-const version = [
-  "20.1"
-];
+// const version = [
+//   "20.1"
+// ];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -61,14 +61,14 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 function Banner() {
-  const { GetBanner, AddBanner, UpdateBanner } = useAdmin();
+  const { GetBanner, AddBanner, UpdateBanner, GetVersionList } = useAdmin();
   const [user_id, setUser_id] = useState("");
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [banneropen, setBannerOpen] = useState(false);
   const [url, seturl] = useState("");
-
+  const [version, setVersion] = useState([]);
   const [Description, setDescription] = useState("");
   const [DescriptionIsEnglish, setDescriptionIsEnglish] = useState("");
   const [AppVersion, setAppVersion] = useState("");
@@ -145,6 +145,16 @@ function Banner() {
         if (response.status === 200) {
           setLoading(false);
           setUsers(response.data.data);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+      var getVersionList = GetVersionList();
+      getVersionList
+      .then((response) => {
+        if (response.status === 200) {
+          setVersion(response.data.data);
         }
       })
       .catch((e) => {
