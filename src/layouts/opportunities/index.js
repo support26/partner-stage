@@ -48,7 +48,7 @@ const style1 = {
   top: '25%',
   right: '4%',
   // transform: 'translate(-50%, -50%)',
-  width: "300px",
+  width: "320px",
   maxWidth: "80%",
   // height: "550px",
   bgcolor: 'background.paper',
@@ -248,7 +248,7 @@ const parseData = (opportunities) => {
             <br />
             <div>
               <h4>Link--</h4>
-              <p>Use <strong>&lt;a href="www.anaxee.com"&gt;visit anaxee&lt;/a&gt;</strong> to make text a link</p>
+              <p>Use <strong>&lt;a href = "https://www.google.com" &gt; click here&lt;/a&gt;</strong> to make text a link</p>
             </div>
             {/* <div>
               <h4>Image</h4>
