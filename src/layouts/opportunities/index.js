@@ -41,15 +41,36 @@ const style = {
     display: "none",
   },
 };
+const style1 = {
+  position: 'relative',
+  float: "right",
+  // marginRight: "30px",
+  top: '25%',
+  right: '4%',
+  // transform: 'translate(-50%, -50%)',
+  width: "300px",
+  maxWidth: "80%",
+  // height: "550px",
+  bgcolor: 'background.paper',
+  borderRadius: '10px',
+  boxShadow: 24,
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+};
 
 
 function Opportunities() {
   const {GetAllOpportunity} = useAdmin();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [opportunities, setOpportunities] = useState("")
   const [opportunity, setOpportunity] = useState("")
   const handleOpen = () => setOpen(true);
+  const handleOpen2 = () => setOpen2(true);
   const handleOpen1 = (id) => {
     let opt = opportunities.find((opportunity) => opportunity.id === id);
     opt.location = opt.tags.location;
@@ -58,6 +79,7 @@ function Opportunities() {
   }
   const handleClose = () => setOpen(false);
   const handleClose1 = () => setOpen1(false);
+  const handleClose2 = () => setOpen2(false);
  const getAllOpportunity = () => {
   var getallopportunity = GetAllOpportunity();
   getallopportunity.then((response) => {
@@ -88,7 +110,7 @@ const parseData = (opportunities) => {
         <Button onClick={handleOpen} style={{backgroundColor: "#33a2b5", padding: "7px 10px", border: "none", borderRadius: "10px", color: "#fff"}} >
           Add New Opportunity
         </Button>
-        <Button style={{ fontSize: "10px", backgroundColor: "#33a2b5", color: "white", marginLeft: "3px", padding: "0px"}}>
+        <Button onClick={handleOpen2} style={{ fontSize: "10px", backgroundColor: "#33a2b5", color: "white", marginLeft: "3px", padding: "0px"}}>
     <InfoIcon /> help
         </Button>
         {/* <Icon>star</Icon> */}
@@ -194,6 +216,47 @@ const parseData = (opportunities) => {
         </div>
           </Box>
         </Fade>
+      </Modal>
+
+      <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      open={open2}
+      onClose={handleClose2}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+      >
+        <Fade in={open2}>
+          <Box sx={style1}>
+            <div style={{fontSize: "14px" }}>
+            <div>
+              <h4>Bold--</h4>
+              <p>Use <b>&lt;b&gt;some text here&lt;/b&gt;</b> to make text bold</p>
+            </div>
+            <br />
+            <hr />
+            <br />
+            <div>
+              <h4>Italic--</h4>
+              <p>Use <i>&lt;i&gt;some text here&lt;/i&gt;</i> to make text Italic</p>
+            </div>
+            <br />
+            <hr />
+            <br />
+            <div>
+              <h4>Link--</h4>
+              <p>Use <strong>&lt;a href="www.anaxee.com"&gt;visit anaxee&lt;/a&gt;</strong> to make text a link</p>
+            </div>
+            {/* <div>
+              <h4>Image</h4>
+              <p>Use <strong>![alt text](image link)</strong> to add an image</p>
+            </div> */}
+            </div>
+          </Box>
+          </Fade>
       </Modal>
     </DashboardLayout>
   );
