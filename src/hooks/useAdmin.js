@@ -302,6 +302,18 @@ export default function useAdmin() {
         return responseData;
       }
       return responseData;
+    },
+
+    //change opportunity status
+    ChangeOpportunityStatus: async (id, status) => {
+      var responseData = await AdminRepository.changeOpportunityStatus(
+        id,
+        status
+      );
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+      }
+      return responseData;
     }
   };
 }

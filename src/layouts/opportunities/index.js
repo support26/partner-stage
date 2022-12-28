@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
+import CircularProgress from '@mui/material/CircularProgress';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -20,8 +21,6 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
-import Icon from '@mui/material/Icon';
-import { tab } from "@testing-library/user-event/dist/tab";
 
 
 const style = {
@@ -63,7 +62,7 @@ const style1 = {
 
 
 function Opportunities() {
-  const {GetAllOpportunity} = useAdmin();
+  const {GetAllOpportunity, ChangeOpportunityStatus} = useAdmin();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -80,6 +79,17 @@ function Opportunities() {
   const handleClose = () => setOpen(false);
   const handleClose1 = () => setOpen1(false);
   const handleClose2 = () => setOpen2(false);
+  const handleStatus = (event, id) => {
+    var changeopportunitystatus = ChangeOpportunityStatus(id, event.target.value)
+    changeopportunitystatus
+    .then((response) => {
+      console.log(response)
+      getAllOpportunity();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
  const getAllOpportunity = () => {
   var getallopportunity = GetAllOpportunity();
   getallopportunity.then((response) => {
@@ -118,6 +128,7 @@ const parseData = (opportunities) => {
       <MDBox pt={1} mx={1}>
         <Grid container spacing={4}>
           {opportunities && opportunities.map((opportunity, key) => (
+            // opportunity.load = false,
           <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
             <MDBox mb={0}>
               <Card sx={{ maxWidth: 320}}>
@@ -144,6 +155,23 @@ const parseData = (opportunities) => {
                   <Button onClick={() => {
                     window.open(opportunity.page_url, "_blank");
                   }} size="small">Preview</Button>
+                  <select
+         value={opportunity.status}
+            style={{
+              width: "60px",
+              height: "30px",
+              borderRadius: "5px",
+              border: "1px solid #1A73E8",
+              marginLeft: "25px",
+              outline: "none",
+            }}
+            onChange={(event) => handleStatus(event, opportunity.id)}
+          >
+            <option value={1}>Show</option>
+            <option value={0}>Draft</option>
+          </select>
+          {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
+          } */}
                 </CardActions>
               </Card>
             </MDBox>

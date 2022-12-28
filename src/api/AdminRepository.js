@@ -398,5 +398,28 @@ class AdminRepository {
       });
     return reponse;
   }
+
+  //change opportunity status
+  async changeOpportunityStatus(id, status) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}opt/webapp/changeOpportunityStatus/${id}`,
+      { status },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      }
+      )
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      }
+      );
+    return reponse;
+  }
 }
 export default new AdminRepository();
