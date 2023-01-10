@@ -175,6 +175,24 @@ export default function useAdmin() {
       }
       return responseData;
     },
+    //delete announcement
+    DeleteAnouncement: async (announcementId) => {
+      var responseData = await AdminRepository.deleteAnouncement(announcementId);
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+      }
+      return responseData;
+    },
+
+    //delete banner
+    DeleteBanner: async (bannerId) => {
+      var responseData = await AdminRepository.deleteBanner(bannerId);
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+      }
+      return responseData;
+    },
+
     //get state list
     GetStateList: async () => {
       var responseData = await AdminRepository.getStateList();
@@ -314,6 +332,35 @@ export default function useAdmin() {
         // console.log(responseData.data);
       }
       return responseData;
+    },
+
+
+    //opportunities sequence list
+    OpportunitySequenceList: async () => {
+      var responseData = await AdminRepository.getOpportunitiesSequenceList();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
+
+    //get direct application list
+    GetDirectApplicationList: async () => {
+      var responseData = await AdminRepository.getDirectApplicationList();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
+
+    //get opportunity card clicks list
+    GetCardClicks: async () => {
+      var responseData = await AdminRepository.getCardClicks();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
     }
+
   };
 }

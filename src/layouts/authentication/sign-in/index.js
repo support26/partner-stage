@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import ReactDOM from "react-dom";
 // import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import LoadingButton from '@mui/lab/LoadingButton';
 import Hide from 'assets/images/hide1.png';
 import Show from 'assets/images/eye.png';
 // @mui material components
@@ -57,13 +57,18 @@ function Basic () {
 
   // const [msg, setMsg] = useState()
   const {login, isLogin} = useAdmin()
+  const [loading, setLoading] = useState(false)
  
     const {msg}= useSelector((state)=>state.auth)
      const dispatch = useDispatch();
   const handleSubmit = event => {
     event.preventDefault();
-  
-    login({admin_name, password})
+    setLoading(true)
+    var Login = login({admin_name, password})
+    Login
+    .then((response) => {
+      setLoading(false)
+    })
     setadmin_name('')
     setPassword('')
   }
@@ -193,7 +198,7 @@ function Basic () {
               <small style={{ color: "red", fontSize: "15px" }}>{msg}</small>
             </MDBox>
             <MDBox mb={0} px={3}>
-              <MDButton
+              {/* <MDButton
                 className="sign-button"
                 type="submit"
                 value="Submit"
@@ -201,7 +206,14 @@ function Basic () {
                 // onClick={createPost}
               >
                 Sign in
-              </MDButton>{" "}
+              </MDButton>{" "} */}
+              <LoadingButton
+              className="sign-button"
+              type="submit"
+          loading={loading}
+        >
+          Sign in
+        </LoadingButton>
               <MDTypography
                 my={2}
                 fontSize="small"

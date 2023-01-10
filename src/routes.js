@@ -11,6 +11,7 @@ const Dashboard = React.lazy(() => import('./layouts/dashboard'));
 const Tables = React.lazy(() => import('./layouts/tables'));
 const Banner = React.lazy(() => import('./layouts/banner/index'));
 const Anouncement = React.lazy(() => import('./layouts/anouncement'));
+const DirectApplications = React.lazy(() => import('./layouts/direct_applications'));
 
 const routes = [
   {
@@ -45,14 +46,14 @@ const routes = [
     route: "/anouncement",
     component: <Anouncement />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Opportunities",
-  //   key: "opportunities",
-  //   icon: <Icon fontSize="medium">assignment</Icon>,
-  //   route: "/opportunities",
-  //   component: <Opportunities />,
-  // },
+  {
+    type: "collapse",
+    name: "Direct Applications",
+    key: "applications",
+    icon: <Icon fontSize="medium">groups</Icon>,
+    route: "/applications",
+    component: <DirectApplications />,
+  },
   
 ];
 

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -62,12 +62,15 @@ const style1 = {
 
 
 function Opportunities() {
-  const {GetAllOpportunity, ChangeOpportunityStatus} = useAdmin();
+  const {GetAllOpportunity, ChangeOpportunityStatus,
+    //  OpportunitySequenceList
+    } = useAdmin();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [opportunities, setOpportunities] = useState("")
   const [opportunity, setOpportunity] = useState("")
+  // const [sequenceList, setSequenceList] = useState([])
   const handleOpen = () => setOpen(true);
   const handleOpen2 = () => setOpen2(true);
   const handleOpen1 = (id) => {
@@ -83,7 +86,7 @@ function Opportunities() {
     var changeopportunitystatus = ChangeOpportunityStatus(id, event.target.value)
     changeopportunitystatus
     .then((response) => {
-      console.log(response)
+      // console.log(response)
       getAllOpportunity();
     })
     .catch((e) => {
@@ -98,6 +101,14 @@ function Opportunities() {
   .catch((e) => {
     console.log(e);
   });
+  // var opportunitysequencelist = OpportunitySequenceList();
+  // opportunitysequencelist.then((response) => {
+  //   // console.log(response)
+  //   setSequenceList(response.data.data);
+  // })
+  // .catch((e) => {
+  //   console.log(e);
+  // });
   }
 const parseData = (opportunities) => {
   opportunities.map((opportunity, index) => {
@@ -151,8 +162,8 @@ const parseData = (opportunities) => {
                   <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> {opportunity.likes} </p>
                 </CardContent>
                 <CardActions sx={{ marginTop: -3 }}>
-                  <Button onClick={() => handleOpen1(opportunity.id)} size="small">Edit</Button>
-                  <Button onClick={() => {
+                  <Button style={{padding: 0, margin: 0 }} onClick={() => handleOpen1(opportunity.id)} size="small">Edit</Button>
+                  <Button style={{padding: 0, margin: 0 }} onClick={() => {
                     window.open(opportunity.page_url, "_blank");
                   }} size="small">Preview</Button>
                   <select
@@ -161,8 +172,10 @@ const parseData = (opportunities) => {
               width: "60px",
               height: "30px",
               borderRadius: "5px",
+              position: "absolute",
+              right: "5%",
               border: "1px solid #1A73E8",
-              marginLeft: "25px",
+              // marginLeft: "18px",
               outline: "none",
             }}
             onChange={(event) => handleStatus(event, opportunity.id)}
@@ -170,6 +183,22 @@ const parseData = (opportunities) => {
             <option value={1}>Show</option>
             <option value={0}>Draft</option>
           </select>
+          {/* <select
+         value={opportunity.sequence}
+            style={{
+              width: "50px",
+              height: "30px",
+              borderRadius: "5px",
+              border: "1px solid #1A73E8",
+              marginLeft: "15px",
+              outline: "none",
+            }}
+            // onChange={(event) => handleStatus(event, opportunity.id)}
+          >
+            {sequenceList && sequenceList.map((sequence) => (
+              <option key={sequence} value={sequence}>{sequence}</option>
+            ))}
+          </select> */}
           {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
           } */}
                 </CardActions>
