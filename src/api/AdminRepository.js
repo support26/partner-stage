@@ -188,6 +188,47 @@ class AdminRepository {
     return reponse;
   }
 
+  //delete announcement api
+  async deleteAnouncement(announcementId) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.delete(
+      `${baseUrl}admin/deleteAnnouncement/${announcementId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //delete banner api
+  async deleteBanner(bannerId) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.delete(
+      `${baseUrl}admin/deleteBanner/${bannerId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+  
+
   // get notification api
   async getNotification() {
     const token = localStorage.getItem("token");
@@ -385,6 +426,83 @@ class AdminRepository {
   async getVersionList() {
     const token = localStorage.getItem("token");
     const reponse = await Api.get(`${baseUrl}admin/versions`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //change opportunity status
+  async changeOpportunityStatus(id, status) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}opt/webapp/changeOpportunityStatus/${id}`,
+      { status },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      }
+      )
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      }
+      );
+    return reponse;
+  }
+
+  //opportunities sequence list
+  async getOpportunitiesSequenceList() {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.get(`${baseUrl}opt/webapp/opportunitiesSequence`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //get direct application list
+  async getDirectApplicationList() {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.get(`${baseUrl}opt/webapp/directApplications`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+  //get opportunity card clicks list
+  async getCardClicks() {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.get(`${baseUrl}opt/webapp/opportunityCardClicks`, {
       headers: {
         Authorization: "Bearer " + token,
       },

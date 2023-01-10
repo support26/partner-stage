@@ -9,8 +9,9 @@ import AdminRepository from "api/AdminRepository";
 import { useSelector } from "react-redux";
 //material UI
 import Icon from "@mui/material/Icon";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import Alert from "@mui/material/Alert";
+import EditIcon from '@mui/icons-material/Edit';
 import Snackbar from "@mui/material/Snackbar";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -134,21 +135,14 @@ function AddUsers() {
       field: "action",
       type: "actions",
       headerName: "Action",
+      width: 70,
       renderCell: function (params) {
         const onClick = function (e) {
           e.stopPropagation(); // don't select this row after clicking
-          const api = params.api;
-          const thisRow = {};
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== "__check__" && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-            );
-          setUser_type(thisRow.roleId);
+          setUser_type(params.row.roleId);
           setUser_id(params.id);
-          setUsers_name(thisRow.users_name);
-          setUsers_email(thisRow.users_email);
+          setUsers_name(params.row.users_name);
+          setUsers_email(params.row.users_email);
           // setIs_active(params.row.is_active);
           setEmployee_name(params.row.employee_name);
           setEditUserModal(true);
@@ -156,20 +150,12 @@ function AddUsers() {
           // console.log(thisRow);
         };
         return (
-          <Button
+          <GridActionsCellItem
+          style={{ color: "#1c68eb" }}
+            icon={<EditIcon />}
+            label="Edit"
             onClick={onClick}
-            variant="contained"
-            sx={{
-              color:'#fff',
-              backgroundColor: "#33A2B5",
-              "&:hover": {
-                backgroundColor: "#378c9b",
-                focus: { backgroundColor: "red" },
-              },
-            }}
-          >
-            Edit
-          </Button>
+          />
         );
       },
     },
@@ -224,10 +210,6 @@ function AddUsers() {
         );
       },
     },
-  ];
-  const columns1 = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Employee Name", width: 150 },
   ];
   const data = {
     users_name: users_name,
@@ -530,7 +512,7 @@ function AddUsers() {
           Add Users
         </button>
       </div>
-      <div style={{ height: 500, width: "100%", marginTop: "55px" }}>
+      <div style={{ height: 460, width: "100%", marginTop: "55px" }}>
         <DataGrid
           sx={{
             boxShadow: 2,

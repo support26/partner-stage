@@ -8,7 +8,9 @@ import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
 //material UI
 import Card from "@mui/material/Card";
-import { DataGrid } from "@mui/x-data-grid";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -26,6 +28,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
+import { Popconfirm } from "antd";
 // import ListItemText from '@mui/material/ListItemText';
 // import Checkbox from '@mui/material/Checkbox';
 // import ListItemIcon from '@mui/material/ListItemIcon';
@@ -61,7 +64,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 function Banner() {
-  const { GetBanner, AddBanner, UpdateBanner, GetVersionList } = useAdmin();
+  const { GetBanner, AddBanner, UpdateBanner, DeleteBanner, GetVersionList } = useAdmin();
   const [user_id, setUser_id] = useState("");
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
@@ -91,6 +94,69 @@ function Banner() {
 
   const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
   const [editUserModal, setEditUserModal] = useState(false);
+
+  // const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const showPopconfirm = (id) => {
+    // close another popconfirm if any open before opening this one
+    const test = users.map((item) => {
+      if (item.delete === true) {
+        item.delete = false;
+      }
+      return item;
+    });
+    setUsers(test);
+    const updatedData = users.map((item) => {
+      if (item.id === id) {
+        item.delete = true;
+      }
+      return item;
+    });
+    setUsers(updatedData);
+  };
+ 
+  const handleOk = (id) => {
+    setConfirmLoading(true);
+    var deletebanner = DeleteBanner(id);
+    deletebanner.then((res) => {
+      if (res.status === 200) {
+        setConfirmLoading(false);
+        // const updatedData = users.map((item) => {
+        //       if (item.id === id) {
+        //         item.delete = false;
+        //       }
+        //       return item;
+        //     });
+        //     setUsers(updatedData);
+        GetBannerData();
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+
+      
+    // setTimeout(() => {
+    //   setConfirmLoading(false);
+    //   const updatedData = users.map((item) => {
+    //     if (item.id === id) {
+    //       item.delete = false;
+    //     }
+    //     return item;
+    //   });
+    //   setUsers(updatedData);
+    // }, 2000);
+  };
+  const handleCancel = (id) => {
+    const updatedData = users.map((item) => {
+      if (item.id === id) {
+        item.delete = false;
+      }
+      return item;
+    });
+    setUsers(updatedData);
+  };
   const closeEditUserModal = () => {
     setEditUserModal(false);
     seturl("");
@@ -144,7 +210,13 @@ function Banner() {
       .then((response) => {
         if (response.status === 200) {
           setLoading(false);
-          setUsers(response.data.data);
+          //add delete key in response
+          var data = response.data.data;
+          data.map((item) => {
+            item["delete"] = false;
+            return item;
+          });
+          setUsers(data);
         }
       })
       .catch((e) => {
@@ -172,11 +244,17 @@ function Banner() {
         console.log(err);
       });
   };
-
   useEffect(() => {
     GetBannerData();
   }, []);
 
+  function CustomToolbar( ) {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarQuickFilter style={{ position: "relative", maxWidth: "150px" }} />
+      </GridToolbarContainer>
+    );
+  }
   const handleChange = (event) => {
     const value = event.target.value;
 
@@ -189,20 +267,13 @@ function Banner() {
       field: "action",
       type: "actions",
       headerName: "Action",
+      width: 70,
       renderCell: function (params) {
         const onClick = function (e) {
           e.stopPropagation(); // don't select this row after clicking
-          const api = params.api;
-          const thisRow = {};
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== "__check__" && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-            );
           setUser_id(params.id);
-          seturl(thisRow.url);
-          setDescription(thisRow.Description);
+          seturl(params.row.url);
+          setDescription(params.row.Description);
           setDescriptionIsEnglish(params.row.DescriptionIsEnglish);
           setAppVersion(params.row.AppVersion);
           setButtonText(params.row.ButtonText);
@@ -232,24 +303,37 @@ function Banner() {
           );
           setEditUserModal(true);
           return;
-          //  console.log(thisRow);
-        };
+        };        
         return (
-          <Button
+          <>
+          <GridActionsCellItem
+          disabled={disabled}
+          style={{ color: disabled ? "grey" : "#1c68eb" }}
+          icon={<EditIcon />}
+            label="Edit"
             onClick={onClick}
-            variant="contained"
-            disabled={disabled}
-            sx={{
-              color: "#fff",
-              backgroundColor: "#33A2B5",
-              "&:hover": {
-                backgroundColor: "#378c9b",
-                focus: { backgroundColor: "red" },
-              },
+          />
+          <Popconfirm
+            title="Are you sure to delete this banner?"
+            placement="topLeft"
+            open={params.row.delete}
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleOk(params.id)}
+            okButtonProps={{
+              loading: confirmLoading,
             }}
-          >
-            Edit
-          </Button>
+            onCancel={() => handleCancel(params.id)}
+            >
+          <GridActionsCellItem
+          disabled={disabled}
+          style={{ color: disabled ? "grey" : "#1c68eb" }}
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => showPopconfirm(params.id)}
+          />
+          </Popconfirm>
+          </>
         );
       },
     },
@@ -286,6 +370,7 @@ function Banner() {
     {
       field: "date",
       headerName: "Date",
+      type: "date",
       width: 110,
       renderCell: function (params) {
         return params.row.date === null ? "" : (
@@ -429,7 +514,11 @@ function Banner() {
     {
       field: "created_at",
       headerName: "Created At",
-      width: 200,
+      width: 180,
+      type: 'date',
+      valueFormatter: (params) => {
+        return new Date(params.value).toLocaleString();
+      }
     },
     {
       field: "updated_by",
@@ -439,7 +528,11 @@ function Banner() {
     {
       field: "updated_at",
       headerName: "Updated At",
-      width: 200,
+      width: 180,
+      type: 'date',
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleString() : "";
+      }
     },
   ];
 
@@ -556,6 +649,12 @@ function Banner() {
           admin_email,
           date,
         };
+        if(data_1.Gif_Visibility === ""){
+          delete data_1.Gif_Visibility;
+        }
+        if(data_1.UrgentUpdate === ""){
+          delete data_1.UrgentUpdate;
+        }
 
         // console.log(data_1);
         var addBanners = AddBanner(data_1);
@@ -588,6 +687,7 @@ function Banner() {
       }
     }
   };
+    
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -1149,7 +1249,6 @@ function Banner() {
           variant="contained"
           style={{
             background: "#33A2B5",
-            color: "white",
             margin: "10px",
             color: "#fff",
           }}
@@ -1160,7 +1259,7 @@ function Banner() {
         </Button>
       </div>
       <br />
-      <div style={{ height: 500, width: "100%", marginTop: "55px" }}>
+      <div style={{ height: 460, width: "100%", marginTop: "35px" }}>
         <DataGrid
           sx={{
             boxShadow: 2,
@@ -1179,6 +1278,9 @@ function Banner() {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[10, 20, 50]}
           loading={loading}
+          components={{ 
+            Toolbar: column => <CustomToolbar {...column} />,
+        }}
         />
       </div>
     </DashboardLayout>

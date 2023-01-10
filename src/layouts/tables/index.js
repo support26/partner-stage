@@ -1,3 +1,4 @@
+import * as React from "react";
 import UserRepository from "api/UsersRepository";
 import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
@@ -6,18 +7,19 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import useUsers from "../../hooks/useUsers";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 // import { useHistory } from "react-router";
-import * as React from "react";
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
+  GridToolbarQuickFilter,
+  GridActionsCellItem
 } from "@mui/x-data-grid";
 // @mui material components
+import EditIcon from '@mui/icons-material/Edit';
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import { useState, useEffect } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 //import React, { useState ,useEffect} from "react";
 
 //  React components
@@ -82,7 +84,8 @@ function Tables() {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarExport csvOptions={{ fields: ['isUserActiveOrNot', 'name', 'email', 'phone_number', 'age', 'dob', 'gender', 'education',  'latlong_address', 'latlong', 'last_active', 'created_at', 'App_version', 'acct_holder_name', 'bank_name', 'bank_acct_no',  'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'] }} />
+        <GridToolbarExport csvOptions={{ fields: ['isUserActiveOrNot', 'name', 'email', 'phone_number', 'age', 'dob', 'gender', 'education',  'latlong_address', 'latlong', 'last_active', 'created_at', 'App_version', 'acct_holder_name', 'bank_name', 'bank_acct_no',  'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'], fileName: 'runnersData' }} />
+        <GridToolbarQuickFilter style={{ position: "absolute", right: "1%", maxWidth: "150px" }} />
       </GridToolbarContainer>
     );
   }
@@ -220,19 +223,11 @@ function Tables() {
       field: "action",
       headerName: "Action",
       sortable: false,
+      type: "actions",
+      width: 70,
       renderCell: function (params) {
         var handleClickOpen = function (e) {
           e.stopPropagation(); // don't select this row after clicking
-          var api = params.api;
-          var thisRow = {};
-          api
-            .getAllColumns()
-            .filter(function (c) {
-              return c.field !== "__check__" && !!c;
-            })
-            .forEach(function (c) {
-              return (thisRow[c.field] = params.getValue(params.id, c.field));
-            });
           setID(params.id);
           setFirstName(params.row.name);
           setEmail(params.row.email);
@@ -257,11 +252,6 @@ function Tables() {
           setaddress(params.row.address);
           seteducation(params.row.education);
           setgender(params.row.gender);
-
-          //  setPancardImages(params.row.pancard_image);
-          //  setother_Id_proof_image(params.row.other_Id_proof_image);
-          // console.log(params.row.profileImage)
-
           //pancard
           if (params.row.bank_passbook_photo == null) {
             setbank_passbook_photo(
@@ -302,251 +292,210 @@ function Tables() {
           // console.log(id);
           //<div className='hello'>{alert(JSON.stringify(thisRow, null, 4))}</div>;
         };
-
         return (
-          <Button
-            style={{ color: "#fff", backgroundColor: "#33A2B5" }}
+          <GridActionsCellItem
+          disabled={disabled}
+          style={{ color: disabled ? "grey" : "#1c68eb" }}
+            icon={<EditIcon />}
+            label="Edit"
             onClick={handleClickOpen}
-            disabled={disabled}
-          >
-            Edit
-          </Button>
+          />
         );
       },
     },
-
-    // {
-    //   field: "Image",
-    //   headerName: "profileImage",
-    //  width:80,
-
-    //   renderCell: (params) => {
-    //           return params.row.profileImage==null ? <img src = {profile}width="40px"
-    //           height="40px"
-    //           style={{ borderRadius: "50%"}} />  :
-    //    <img
-    //       src={params.row.profileImage}
-    //       width="40px"
-    //       height="40px"
-    //       style={{ borderRadius: "50%"}}
-    //     />
-    //   },
-    // },
-    {
-      field: "isUserActiveOrNot",
-      headerName: "Status",
-      type: "text",
-      width: 60,
-      renderCell: (params) => {
-        return params.row.isUserActiveOrNot == null ||
-          params.row.isUserActiveOrNot == "n" ? (
-          <CircleIcon style={{ color: "red", marginLeft: "10px" }} />
-        ) : (
-          <CircleIcon style={{ color: "green", marginLeft: "10px" }} />
-        );
-      },
-    },
-    { field: "name", headerName: "Name", width: 130 },
+    { field: "name", headerName: "Name", width: 130, type: "string" },
 
     {
       field: "email",
       headerName: "Email",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "phone_number",
       headerName: "Number  ",
-      type: "text",
+      type: "string",
       width: 120,
     },
     {
       field: "age",
       headerName: "Age",
-      type: "text",
+      type: "string",
       width: 50,
     },
     {
       field: "dob",
       headerName: "DOB",
-      type: "text",
+      type: "string",
       width: 110,
     },
     {
       field: "gender",
       headerName: "Gender",
-      type: "text",
+      type: "string",
       width: 70,
     },
     {
       field: "education",
       headerName: "Education",
-      type: "text",
+      type: "string",
       width: 120,
     },
 
     {
       field: "latlong_address",
       headerName: "GPS address",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "latlong",
       headerName: "GPS",
-      type: "text",
+      type: "string",
       width: 200,
     },
     {
       field: "last_active",
       headerName: "Last Active",
-      type: "text",
-      width: 183,
+      type: "date",
+      width: 180,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleString() : "";
+      }
     },
     {
       field: "created_at",
       headerName: "Created At",
-      type: "text",
-      width: 183,
+      type: "date",
+      width: 180,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleString() : "";
+      }
     },
     {
       field: "App_version",
       headerName: "App Version",
-      type: "text",
+      type: "string",
       width: 120,
     },
     {
       field: "acct_holder_name",
       headerName: "Account Holder Name",
-      type: "text",
+      type: "string",
       width: 130,
     },
-
     {
       field: "bank_name",
       headerName: "Bank Name",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "bank_acct_no",
       headerName: "Account Number",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "bank_ifsc_code",
       headerName: "IFSC Code",
-      type: "text",
+      type: "string",
       width: 120,
     },
     {
       field: "pancard_no",
       headerName: "Pancard Number",
-      type: "text",
+      type: "string",
       width: 130,
     },
 
     {
       field: "other_id_proof_no",
       headerName: "Other ID Proof Number",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "runner_state",
       headerName: "Runner State",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "runner_district",
       headerName: "Runner District",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "runner_taluka",
       headerName: "Runner Taluka",
-      type: "text",
+      type: "string",
       width: 130,
     },
     {
       field: "runner_village",
       headerName: "Runner Village",
-      type: "text",
+      type: "string",
       width: 130,
+    },
+    
+    {
+      field: "updated_by",
+      headerName: "Updated By",
+      type: "string",
+      width: 160,
+    },
+    {
+      field: "updated_at",
+      headerName: "Updated At",
+      type: "date",
+      width: 180,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleString() : "";
+      }
     },
     {
       field: "isUserDisabled",
       headerName: "Active Status",
       width: 120,
-      sortable: false,
-      // type:'text'
-      renderCell: function (params) {
-        const handelSelect = (e) => {
-          setSelectvalue(e.target.value);
-          // console.log(selectvalue);
-          setReason(params.row.reason);
+      renderCell: (params) => {       
+        return (
+            <select
+            style={{
+              width: "70px",
+              height: "30px",
+              borderRadius: "5px",
+              border: "1px solid #33A2B5",
+              outline: "none",
+            }}
+            disabled={disabled}
+              value={params.row.isUserDisabled === "n" || params.row.isUserDisabled === null ? "n" : "y"}
+              onChange={(e) => {
+                setSelectvalue(e.target.value);
+                setReason(params.row.reason);
 
-          setID(params.row.id);
-          handleAllOpen();
-        };
-        // console.log(id);
-        return params.row.isUserDisabled === "n" ||
-          params.row.isUserDisabled === null ? (
-          <Select
-            value={"n"}
-            size="small"
-            onChange={handelSelect}
-            sx={{ height: 0.5 }}
-            native
-            autoFocus
-            disabled={disabled}
-          >
-            <option value={"n"}> Active</option>
-            <option value={"y"}>Disabled</option>
-          </Select>
-        ) : (
-          <Select
-            disabled={disabled}
-            value={"y"}
-            size="small"
-            onChange={handelSelect}
-            sx={{ height: 0.5 }}
-            native
-            autoFocus
-          >
-            <option value={"n"}> Active</option>
-            <option value={"y"}>Disabled</option>
-          </Select>
+                setID(params.row.id);
+                handleAllOpen();
+              }}
+            >
+              <option value={"n"}> Active</option>
+              <option value={"y"}>Disabled</option>
+            </select>
         );
-      },
+      }
     },
     {
       field: "reason",
       headerName: "Reason",
-      type: "text",
-      width: 230,
-    },
-    {
-      field: "updated_by",
-      headerName: "Update By",
-      type: "text",
-      width: 160,
-    },
-    {
-      field: "updated_at",
-      headerName: "Update At",
-      type: "text",
+      type: "string",
       width: 150,
     },
   ];
-
   const updated_by = localStorage.getItem("user_email");
   var data = {
     name: name,
-    acct_holder_name: acct_holder_name,
+    // acct_holder_name: acct_holder_name,
     bank_name: bank_name,
     acct_holder_name: acct_holder_name,
     bank_acct_no: bank_acct_no,
@@ -659,7 +608,7 @@ function Tables() {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              <div style={{ height: 550, width: "100%" }}>
+              <div style={{ height: 470, width: "100%" }}>
                 <DataGrid
                   sx={{
                     boxShadow: 2,
@@ -674,12 +623,13 @@ function Tables() {
                   pageSize={pageSize}
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                   rowsPerPageOptions={[10, 20, 50, 100]}
-                  // checkboxSelection
                   loading={tableLoading}
-                  disableSelectionOnClick
+                  // disableSelectionOnClick
                   components={{
                     Toolbar: CustomToolbar,
                   }}
+                  columnBuffer={2}
+                  columnThreshold={2}
                 />
               </div>
             </Card>

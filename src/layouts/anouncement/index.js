@@ -9,10 +9,12 @@ import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
 import Card from "@mui/material/Card";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 //material UI
 // import Icon from "@mui/material/Icon";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
 // import Alert from "@mui/material/Alert";
 // import Snackbar from "@mui/material/Snackbar";
 // import Backdrop from "@mui/material/Backdrop";
@@ -33,6 +35,7 @@ import MDTypography from "components/MDTypography";
 // import { Fullscreen } from "@mui/icons-material";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
+import { Popconfirm } from "antd";
 // import ListItemText from '@mui/material/ListItemText';
 // import Checkbox from '@mui/material/Checkbox';
 // import ListItemIcon from '@mui/material/ListItemIcon';
@@ -69,7 +72,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 function Anouncementbanner() {
-  const { GetAnouncements, UpdateAnouncement, AddAnouncements, GetVersionList} =
+  const { GetAnouncements, UpdateAnouncement, AddAnouncements, DeleteAnouncement, GetVersionList} =
     useAdmin();
 
   const [user_id, setUser_id] = useState("");
@@ -77,6 +80,7 @@ function Anouncementbanner() {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [version, setVersion] = useState([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const [editUserModal, setEditUserModal] = useState(false);
   const closeEditUserModal = () => {
@@ -102,6 +106,55 @@ function Anouncementbanner() {
   const [anounceopen, setAnounceOpen] = useState(false);
   const [date, setDate] = useState("");
 
+  const showPopconfirm = (id) => {
+    // close another popconfirm if any open before opening this one
+    const test = users.map((item) => {
+      if (item.delete === true) {
+        item.delete = false;
+      }
+      return item;
+    });
+    setUsers(test);
+    const updatedData = users.map((item) => {
+      if (item.id === id) {
+        item.delete = true;
+      }
+      return item;
+    });
+    setUsers(updatedData);
+  };
+
+  const handleOk = (id) => {
+    setConfirmLoading(true);
+    var deleteAnouncement = DeleteAnouncement(id);
+    deleteAnouncement.then((res) => {
+      if (res.status === 200) {
+        setConfirmLoading(false);
+        // const updatedData = users.map((item) => {
+        //       if (item.id === id) {
+        //         item.delete = false;
+        //       }
+        //       return item;
+        //     });
+        //     setUsers(updatedData);
+        GetAnounce();
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  };
+
+    const handleCancel = (id) => {
+      const updatedData = users.map((item) => {
+        if (item.id === id) {
+          item.delete = false;
+        }
+        return item;
+      });
+      setUsers(updatedData);
+    };
+
   const handleAnounceOpen = () => {
     setAnounceOpen(true);
   };
@@ -116,7 +169,12 @@ function Anouncementbanner() {
     AllAdminUsers.then((response) => {
       if (response.status === 200) {
         setLoading(false);
-        setUsers(response.data.data);
+        var data = response.data.data;
+        data.map((item) => {
+          item.delete = false;
+          return item;
+        });
+        setUsers(data);
       }
     }).catch((e) => {
       console.log(e);
@@ -204,6 +262,14 @@ function Anouncementbanner() {
       GetAnounce();
   }, []);
 
+  function CustomToolbar( ) {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarQuickFilter style={{ position: "relative", maxWidth: "150px" }} />
+      </GridToolbarContainer>
+    );
+  }
+
   const handleChange = (event) => {
     event.preventDefault();
     const value = event.target.value;
@@ -217,21 +283,13 @@ function Anouncementbanner() {
       field: "action",
       type: "actions",
       headerName: "Action",
+      width: 70,
       renderCell: function (params) {
         const onClick = function (e) {
           e.stopPropagation(); // don't select this row after clicking
-          const api = params.api;
-          const thisRow = {};
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== "__check__" && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-            );
-
           setUser_id(params.id);
-          setAnnouncementText(thisRow.AnnouncementText);
-          setAnnouncementIsEnglish(thisRow.AnnouncementIsEnglish);
+          setAnnouncementText(params.row.AnnouncementText);
+          setAnnouncementIsEnglish(params.row.AnnouncementIsEnglish);
           setDate(params.row.date === null ? "" : params.row.date);
           setDisplayAnnouncementTextOrNot(
             params.row.DisplayAnnouncementTextOrNot === 1 ? true : false
@@ -240,24 +298,52 @@ function Anouncementbanner() {
 
           setEditUserModal(true);
           return;
-          // console.log(thisRow);
         };
         return (
-          <Button
-            onClick={onClick}
-            variant="contained"
-            disabled={disabled}
-            sx={{
-              color: "#fff",
-              backgroundColor: "#33A2B5",
-              "&:hover": {
-                backgroundColor: "#378c9b",
-                focus: { backgroundColor: "red" },
-              },
+          // <Button
+          //   onClick={onClick}
+          //   variant="contained"
+          //   disabled={disabled}
+          //   sx={{
+          //     color: "#fff",
+          //     backgroundColor: "#33A2B5",
+          //     "&:hover": {
+          //       backgroundColor: "#378c9b",
+          //       focus: { backgroundColor: "red" },
+          //     },
+          //   }}
+          // >
+          //   Edit
+          // </Button>
+          <>
+          <GridActionsCellItem
+          style={{ color: disabled ? "grey" : "#1c68eb" }}
+          disabled={disabled}
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={onClick}
+        />
+        <Popconfirm
+            title="Are you sure to delete this announcement?"
+            placement="topLeft"
+            open={params.row.delete}
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleOk(params.id)}
+            okButtonProps={{
+              loading: confirmLoading,
             }}
-          >
-            Edit
-          </Button>
+            onCancel={() => handleCancel(params.id)}
+            >
+          <GridActionsCellItem
+          style={{ color: disabled ? "grey" : "#1c68eb" }}
+          disabled={disabled}
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => showPopconfirm(params.id)}
+          />
+          </Popconfirm>
+          </>
         );
       },
     },
@@ -293,6 +379,7 @@ function Anouncementbanner() {
     {
       field: "date",
       headerName: "Date",
+      type: "date",
       width: 110,
       renderCell: function (params) {
         return params.row.date === null ? "" : (
@@ -308,7 +395,11 @@ function Anouncementbanner() {
     {
       field: "created_at",
       headerName: "Created At",
-      width: 200,
+      width: 180,
+      type: "date",
+      valueFormatter: (params) => {
+        return new Date(params.value).toLocaleString();
+      }
     },
     {
       field: "updated_by",
@@ -318,7 +409,10 @@ function Anouncementbanner() {
     {
       field: "updated_at",
       headerName: "Updated At",
-      width: 200,
+      width: 180,
+      valueFormatter: (params) => {
+        return params.value ? new Date(params.value).toLocaleString() : "";
+      }
     },
   ];
 
@@ -597,7 +691,7 @@ function Anouncementbanner() {
         </Button>
       </div>
       <br />
-      <div style={{ height: 420, width: "100%", marginTop: "55px" }}>
+      <div style={{ height: 460, width: "100%", marginTop: "35px" }}>
         <DataGrid
           sx={{
             boxShadow: 2,
@@ -616,6 +710,9 @@ function Anouncementbanner() {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[10, 20, 50]}
           loading={loading}
+          components={{ 
+            Toolbar: column => <CustomToolbar {...column} />,
+        }}
         />
       </div>
     </DashboardLayout>
