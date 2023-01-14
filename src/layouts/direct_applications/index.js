@@ -98,7 +98,7 @@ const DirectApplications = () => {
         { field: "applied_at", headerName: "Applied At", width: 180, type: 'date',
         valueFormatter: (params) => {
           // console.log(params)
-          return new Date(params.value).toLocaleString();
+          return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
         } },
         ];
         const columns1 = [
@@ -107,15 +107,15 @@ const DirectApplications = () => {
           { field: "runner_number", headerName: "Number", width: 130 },
           { field: "card_clicked_at", headerName: "Card Clicked at", width: 180, type: 'date',
           valueFormatter: (params) => {
-            return new Date(params.value).toLocaleString();
+            return new Date(new Date(params.value).getTime() - 19800000).toLocaleString();
           }},
           { field: "video_clicked_at", headerName: "Video Clicked at", width: 180, type: 'date',
           valueFormatter: (params) => {
-            return params.value ? new Date(params.value).toLocaleString() : "";
+            return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
           }},
           { field: "apply_link_clicked_at", headerName: "Apply Link Clicked at", width: 180, type: 'date',
           valueFormatter: (params) => {
-            return params.value ? new Date(params.value).toLocaleString() : "";
+            return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
           }},
           ];
   return (
