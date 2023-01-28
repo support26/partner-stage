@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
-import rootReducer from './store/rootReducer'
+import rootReducer from "store/rootReducer";
 import { MaterialUIControllerProvider } from "context";
 const App = lazy(() => import("./App"));
 
