@@ -69,7 +69,60 @@ const DirectApplications = () => {
         console.log(err);
       });
     }
-
+    // const SSE = () => {
+    //   const source = new EventSource('http://localhost:8001/opt/webapp/opportunityCardClicksSSE');
+    //     const source2 = new EventSource('http://localhost:8001/opt/webapp/opportunityApplySSE');
+    // source.onmessage = (event) => {
+    //   // Handle the event here
+    //   console.log("click data aaya",JSON.parse(event.data));
+    //   if(event.data.length > 0){
+    //     const clickdata = JSON.parse(event.data);
+    //     if(clickdata.fields){
+    //       setClickData(prevObjects => {
+    //         // Find the object with the matching id
+    //         const objectToUpdate = prevObjects.find(object => object.id === clickdata.id);
+    //         // Create a copy of the object with the updated key value
+    //         const updatedObject = { ...objectToUpdate, ...clickdata.fields };
+    //         // Create a new array with the updated object
+    //         const updatedObjects = prevObjects.map(object =>
+    //           object.id === clickdata.id ? updatedObject : object
+    //         );
+    //         return updatedObjects;
+    //       });  
+    //     }
+    //     else{
+    //     // add data to the first row
+    //     setClickData((old) => [JSON.parse(event.data), ...old]);
+    //     }
+    //   }
+    // }
+    // source2.onmessage = (event) => {
+    //   // Handle the event here
+    //   // console.log("apply like data aaya",JSON.parse(event.data));
+    //   if(event.data.length > 0){
+    //     const dataa = JSON.parse(event.data);
+    //     console.log("dataa",dataa)
+    //     if(dataa.fields){
+    //       setApplyData(prevObjects => {
+    //         // Find the object with the matching id
+    //         const objectToUpdate = prevObjects.find(object => object.id === dataa.id);
+    //         // Create a copy of the object with the updated key value
+    //         const updatedObject = { ...objectToUpdate, ...dataa.fields };
+    //         // Create a new array with the updated object
+    //         const updatedObjects = prevObjects.map(object =>
+    //           object.id === dataa.id ? updatedObject : object
+    //         );
+    //         return updatedObjects;
+    //       });
+    //     }
+    //     else{
+    //       console.log("id not exists")               
+    //     setApplyData((old) => [JSON.parse(event.data), ...old]);
+    //     console.log("applyData",[...applyData])
+    //     }
+    //   }
+    // }
+    // }
     
     useEffect(() => {
         fetchApplications();
@@ -95,6 +148,8 @@ const DirectApplications = () => {
         { field: "project_name", headerName: "Project", width: 270 },
         { field: "tehsil", headerName: "Tehsil", width: 110 },
         { field: "district", headerName: "District", width: 110 },
+        {field: "is_liked", headerName: "Like", width: 50},
+        {field: "is_applied", headerName: "Apply", width: 50},
         { field: "applied_at", headerName: "Applied At", width: 180, type: 'date',
         valueFormatter: (params) => {
           // console.log(params)

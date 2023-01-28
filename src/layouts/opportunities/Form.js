@@ -52,6 +52,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
         video_link: "",
         apply_link: "",
         location: "",
+        description: "",
       });
     
     const [projectDetails, setProjectDetails] = useState({
@@ -129,6 +130,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           title_image: values.title_image,
           video_link: values.video_link,
           apply_link: values.apply_link,
+          description: values.description,
           tags : {
             location: values.location,
             created : new Date(),
@@ -233,6 +235,16 @@ const Form = ({getAllOpportunity, handleClose}) => {
           style={styles.input}
           accept="image/*"
         />
+        <label style={{ fontSize: "14px" }}>Description</label>
+          <textarea
+            name="description"
+            value={values.description}
+            onChange={onChange}
+            placeholder="Enter description"
+            style={styles.input}
+            rows="6"
+            cols="24"
+          />
         <hr/>
 
         <h5 style={{ textAlign: "center", margin: "5px"}} >Project Details</h5>
