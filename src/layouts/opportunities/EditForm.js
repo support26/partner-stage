@@ -61,6 +61,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     video_link: "",
     apply_link: "",
     location: "",
+    description: "",
   });
   const [projectDetails, setProjectDetails] = useState({
     title: "",
@@ -211,6 +212,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       title_image: values.title_image,
       video_link: values.video_link,
       apply_link: values.apply_link,
+      description: values.description,
       tags: {
         location: values.location,
         created: tags.created,
@@ -293,6 +295,16 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               <FileUploadIcon />
             </IconButton>
           </div>
+          <label style={{ fontSize: "14px" }}>Description</label>
+          <textarea
+            name="description"
+            value={values.description !== null ? values.description : ""}
+            onChange={onChange}
+            placeholder="Enter description"
+            style={styles.input}
+            rows="6"
+            cols="24"
+          />
           <hr />
 
           <h5 style={{ textAlign: "center", margin: "5px" }}>

@@ -360,7 +360,7 @@ function Tables() {
       type: "date",
       width: 180,
       valueFormatter: (params) => {
-        return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
+        return params.value ? new Date(params.value).toLocaleString() : "";
       }
     },
     {
@@ -369,7 +369,7 @@ function Tables() {
       type: "date",
       width: 180,
       valueFormatter: (params) => {
-        return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
+        return params.value ? new Date(params.value).toLocaleString() : "";
       }
     },
     {
@@ -452,7 +452,7 @@ function Tables() {
       type: "date",
       width: 180,
       valueFormatter: (params) => {
-        return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
+        return params.value ? new Date(params.value).toLocaleString() : "";
       }
     },
     {

@@ -517,7 +517,7 @@ function Banner() {
       width: 180,
       type: 'date',
       valueFormatter: (params) => {
-        return new Date(new Date(params.value).getTime() - 19800000).toLocaleString();
+        return new Date(params.value).toLocaleString();
       }
     },
     {
@@ -531,7 +531,7 @@ function Banner() {
       width: 180,
       type: 'date',
       valueFormatter: (params) => {
-        return params.value ? new Date(new Date(params.value).getTime() - 19800000).toLocaleString() : "";
+        return params.value ? new Date(params.value).toLocaleString() : "";
       }
     },
   ];
