@@ -85,6 +85,14 @@ SendForgetNotification: async (email) => {
     return responseData;
   },
 
+  //enable disable partner app profile updation
+  EnableDisablePartnerAppProfileUpdation: async (id, data) => {
+    var responseData = await UsersRepository.enableOrDisablePartnerAppProfileUpdation(id,data);
+    if (responseData.status === 200) {
+      return responseData;
+    }
+    return responseData;
+  },
 
   };
 }

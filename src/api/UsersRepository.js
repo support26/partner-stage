@@ -116,6 +116,27 @@ class UsersRepository {
     return reponse;
   }
 
+  //enable or disable partner app profile updation by id
+  async enableOrDisablePartnerAppProfileUpdation(id, data) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}users/enableProfileUpdate/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        // return error.response;
+      });
+    return reponse;
+  }
+
 
 }
 

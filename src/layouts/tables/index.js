@@ -67,7 +67,6 @@ import "../AddUsers/style.css";
 // import nophoto from "assets/images/no-image-available.png";
 // import profile from "assets/images/profile.png";
 // import Switch from "@mui/material/Switch";
-import CircleIcon from "@mui/icons-material/Circle";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -89,7 +88,7 @@ function Tables() {
       </GridToolbarContainer>
     );
   }
-  const { ChangeRunnerDisable, GetAllRunner, UpdateRunners } = useUsers();
+  const { ChangeRunnerDisable, GetAllRunner, UpdateRunners, EnableDisablePartnerAppProfileUpdation } = useUsers();
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -403,6 +402,15 @@ function Tables() {
       width: 120,
     },
     {
+      field: "is_crm_bank_details",
+      headerName: "Is CRM Bank Details",
+      type: "boolean",
+      width: 100,
+      valueFormatter: (params) => {
+        return params.value == "Y" ? true : false;
+      }
+    },
+    {
       field: "pancard_no",
       headerName: "Pancard Number",
       type: "string",
@@ -454,6 +462,49 @@ function Tables() {
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleString() : "";
       }
+    },
+    {
+      field: "is_profile_updatable",
+      headerName: "Is Profile Updatable",
+      width: 80,
+      renderCell: (params) => {
+        return (
+          <input
+          name="is_profile_updatable"
+          type="checkbox"
+          checked={params.row.is_profile_updatable === "Y" ? true : false}
+          onChange={(e) => chnage(e, params.id)}
+          />
+          );
+    }
+    },
+    {
+      field: "is_bank_updatable",
+      headerName: "Is Bank Detalis Updatable",
+      width: 80,
+      renderCell: (params) => {
+        return (
+        <input
+        name="is_bank_updatable"
+        type="checkbox" checked={params.row.is_bank_updatable === "Y" ? true : false}
+        onChange={(e) => chnage(e, params.id)}
+        />
+        );
+    }
+    },
+    {
+      field: "is_village_updatable",
+      headerName: "Is location Updatable",
+      width: 80,
+      renderCell: (params) => {
+        return (
+        <input
+        name="is_village_updatable"
+        type="checkbox" checked={params.row.is_village_updatable === "Y" ? true : false}
+        onChange={(e) => chnage(e, params.id)}
+        />
+        );
+    }
     },
     {
       field: "isUserDisabled",
@@ -532,6 +583,39 @@ function Tables() {
   //       console.log(error);
   //     });
   // };
+const changeProfileUpdatable = (e, id) => {
+  console.log(localStorage.getItem("user_email"));
+    const data = {
+      [e.target.name]: e.target.checked ? "Y" : "N",
+      updated_by: localStorage.getItem("user_email")
+    }
+    // console.log(data, id)
+    var updateaOption = EnableDisablePartnerAppProfileUpdation(id, data);
+    updateaOption.then((response) => {
+    // console.log("response@@@", response)
+    }).catch((e) => {
+      console.log(e);
+    });
+  }
+  const updateState = (key, value, id) => {
+    setAPIData(prevObjects => {
+      // Find the object with the matching id
+      const objectToUpdate = prevObjects.find(object => object.id === id);
+      // Create a copy of the object with the updated key value
+      const updatedObject = { ...objectToUpdate, [key]: value ? "Y" : "N" };
+      // Create a new array with the updated object
+      const updatedObjects = prevObjects.map(object => object.id === id ? updatedObject : object);
+      return updatedObjects;
+    })
+   }
+
+  const chnage = (e, id) => {
+      changeProfileUpdatable(e, id)
+      updateState(e.target.name, e.target.checked, id)
+  };
+
+
+
 
   const updateAPIData = (event) => {
     event.preventDefault();
