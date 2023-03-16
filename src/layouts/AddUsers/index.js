@@ -17,8 +17,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
+// import Button from "@mui/material/Button";
+// import Switch from "@mui/material/Switch";
 
 // mui custom style
 const style = {
@@ -63,7 +63,7 @@ function AddUsers() {
   const [user_id, setUser_id] = useState("");
   const [is_active, setIs_active] = useState("");
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
@@ -529,7 +529,7 @@ function AddUsers() {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageOptions={[50, 100]}
           loading={loading}
         />
       </div>

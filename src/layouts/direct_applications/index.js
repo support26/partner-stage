@@ -22,8 +22,8 @@ const DirectApplications = () => {
     const [clickData, setClickData] = useState([])
     const [loading, setLoading] = useState(false);
     const [loading1, setLoading1] = useState(false);
-  const [pageSize, setPageSize] = useState(20);
-  const [pageSize1, setPageSize1] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
+  const [pageSize1, setPageSize1] = useState(100);
 
   const directApplications = () => {
     setLoading(true);
@@ -194,7 +194,7 @@ const DirectApplications = () => {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[20, 50, 100]}
+          rowsPerPageOptions={[50, 100]}
           loading={loading}
             components={{ 
                 Toolbar: column => <CustomToolbar {...column} />,
@@ -219,7 +219,7 @@ const DirectApplications = () => {
           columns={columns1}
           pageSize={pageSize1}
           onPageSizeChange={(newPageSize) => setPageSize1(newPageSize)}
-          rowsPerPageOptions={[20, 50, 100]}
+          rowsPerPageOptions={[50, 100]}
           loading={loading1}
             components={{ 
                 Toolbar: column => <CustomToolbar {...column} />,

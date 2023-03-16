@@ -67,7 +67,7 @@ function Banner() {
   const { GetBanner, AddBanner, UpdateBanner, DeleteBanner, GetVersionList } = useAdmin();
   const [user_id, setUser_id] = useState("");
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   const [loading, setLoading] = useState(false);
   const [banneropen, setBannerOpen] = useState(false);
   const [url, seturl] = useState("");
@@ -1276,7 +1276,7 @@ function Banner() {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 20, 50]}
+          rowsPerPageOptions={[50, 100]}
           loading={loading}
           components={{ 
             Toolbar: column => <CustomToolbar {...column} />,

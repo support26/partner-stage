@@ -53,6 +53,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
         apply_link: "",
         location: "",
         description: "",
+        course_id: "",
       });
     
     const [projectDetails, setProjectDetails] = useState({
@@ -70,18 +71,18 @@ const Form = ({getAllOpportunity, handleClose}) => {
     ]);
 
       const inputs = [
+        // {
+        //   id: 1,
+        //   name: "icon",
+        //   type: "file",
+        //   placeholder: "Upload icon...",
+        //   errorMessage: "Url is not valid",
+        //   label: "Project Icon",
+        //   // pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
+        //   required: false,
+        // },
         {
           id: 1,
-          name: "icon",
-          type: "text",
-          placeholder: "Enter icon url...",
-          errorMessage: "Url is not valid",
-          label: "Icon Url",
-          pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-          required: false,
-        },
-        {
-          id: 2,
           name: "title",
           type: "text",
           placeholder: "Enter title of the project",
@@ -91,7 +92,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           required: false,
         },
         {
-          id: 3,
+          id: 2,
           name: "location",
           type: "text",
           placeholder: "Enter Location",
@@ -101,7 +102,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           required: false,
         },
         {
-          id: 4,
+          id: 3,
           name: "video_link",
           type: "text",
           placeholder: "Enter video url",
@@ -111,7 +112,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           required: false,
         },
         {
-          id: 5,
+          id: 4,
           name: "apply_link",
           type: "text",
           placeholder: "Enter Apply Link", 
@@ -120,6 +121,16 @@ const Form = ({getAllOpportunity, handleClose}) => {
           pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
           required: false,
         },
+        {
+          id: 5,
+          name: "course_id",
+          type: "text",
+          placeholder: "Enter Spayee Course Id",
+          errorMessage: "It should be not more than 50 words",
+          label: "Course Id",
+          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+          required: false,
+        }
       ];
 
       const handleSubmit = (e) => {
@@ -130,6 +141,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
           title_image: values.title_image,
           video_link: values.video_link,
           apply_link: values.apply_link,
+          course_id: values.course_id,
           description: values.description,
           tags : {
             location: values.location,
@@ -170,7 +182,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
     form_data.append("file", file);
     UserRepository.UploadImageFile(form_data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setValues({ ...values, [e.target.name]: response.data.data.fileUrl});
       })
       .catch((e) => {
@@ -207,8 +219,31 @@ const Form = ({getAllOpportunity, handleClose}) => {
 
   return (
     <div className="xyz">
-      <form onSubmit={handleSubmit}>
-      <h4 style={{textAlign: 'center' }}>Add New Oppprtunity</h4>
+      {/* <div style={{position: "sticky", top: "-25px", zIndex: "1", backgroundColor: "#fff", padding: "0px 0px", margin: "0px -7px", borderRadius: "10px 10px 10px 10px"}}>            
+          <div style={{marginTop: "-6px"}}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="close"
+            style={{display: "block", float: "right", marginTop: "-5px", marginRight: "-10px" }}
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <h4 id="transition-modal-title" style={{textAlign: "center", marginTop: "0px"}}>Add New Opportunity</h4>
+        </div> */}
+        <form onSubmit={handleSubmit}>
+        <label style={{ fontSize: "14px" }}>Project Icon</label>
+        <input
+          type="file"
+          name="icon"
+          // value={values.title_image}
+          onChange={onChangeImage}
+          placeholder="Upload icon"
+          style={styles.input}
+          accept="image/*"
+        />
       { inputs.map((input) => (
           <div key={input.id}>
             <label style={{ fontSize: "14px" }} >{input.label}</label>
@@ -219,13 +254,13 @@ const Form = ({getAllOpportunity, handleClose}) => {
               onChange={onChange}
               placeholder={input.placeholder}
               style={styles.input}
-              pattern={input.pattern}
+              pattern={input?.pattern}
               required={input.required}
             />
           </div>
         ))}
 
-        <label style={{ fontSize: "14px" }}> Title Image</label>
+        <label style={{ fontSize: "14px" }}>Title Image</label>
         <input
           type="file"
           name="title_image"
@@ -235,12 +270,12 @@ const Form = ({getAllOpportunity, handleClose}) => {
           style={styles.input}
           accept="image/*"
         />
-        <label style={{ fontSize: "14px" }}>Description</label>
+        <label style={{ fontSize: "14px" }}>Share Description</label>
           <textarea
             name="description"
             value={values.description}
             onChange={onChange}
-            placeholder="Enter description"
+            placeholder="Enter share description"
             style={styles.input}
             rows="6"
             cols="24"

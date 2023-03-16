@@ -78,7 +78,7 @@ function Anouncementbanner() {
   const [user_id, setUser_id] = useState("");
 
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   const [version, setVersion] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -708,7 +708,7 @@ function Anouncementbanner() {
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 20, 50]}
+          rowsPerPageOptions={[50, 100]}
           loading={loading}
           components={{ 
             Toolbar: column => <CustomToolbar {...column} />,
