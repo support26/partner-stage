@@ -17,6 +17,8 @@ const styles = {
     padding: "20px",
     border: "1px solid #eee",
     borderRadius: "5px",
+    // boxShadow: "none", // add this property to remove the blur effect 
+    // outline: "none", // add this property to remove the default outline
   },
   input: {
     width: "100%",
@@ -24,6 +26,8 @@ const styles = {
     border: "1px solid gray",
     borderRadius: "5px",
     marginBottom: "8px",
+    // boxShadow: "none", // add this property to remove the blur effect 
+    // outline: "none", // add this property to remove the default outline
   },
   button: {
     width: "100%",
@@ -62,6 +66,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     apply_link: "",
     location: "",
     description: "",
+    course_id: "",
   });
   const [projectDetails, setProjectDetails] = useState({
     title: "",
@@ -92,18 +97,18 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     setValues(opportunity);
   }, []);
   const inputs = [
+    // {
+    //   id: 1,
+    //   name: "icon",
+    //   type: "text",
+    //   placeholder: "Enter icon url...",
+    //   errorMessage: "Url is not valid",
+    //   label: "Icon Url",
+    //   //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
+    //   required: false,
+    // },
     {
       id: 1,
-      name: "icon",
-      type: "text",
-      placeholder: "Enter icon url...",
-      errorMessage: "Url is not valid",
-      label: "Icon Url",
-      //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-      required: false,
-    },
-    {
-      id: 2,
       name: "title",
       type: "text",
       placeholder: "Enter title of the project",
@@ -113,7 +118,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       required: false,
     },
     {
-      id: 3,
+      id: 2,
       name: "location",
       type: "text",
       placeholder: "Enter Location",
@@ -123,7 +128,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       required: false,
     },
     {
-      id: 4,
+      id: 3,
       name: "video_link",
       type: "text",
       placeholder: "Enter video url",
@@ -133,7 +138,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       required: false,
     },
     {
-      id: 5,
+      id: 4,
       name: "apply_link",
       type: "text",
       placeholder: "Enter Apply Link",
@@ -142,6 +147,16 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
       required: false,
     },
+    {
+      id: 5,
+      name: "course_id",
+      type: "text",
+      placeholder: "Enter Spayee Course Id",
+      errorMessage: "It should be not more than 50 words",
+      label: "Course Id",
+      // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+      required: false,
+    }
   ];
   let file;
   let form_data = new FormData();
@@ -160,7 +175,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
         form_data.append("file", file);
         UserRepository.UploadImageFile(form_data)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setValues({
               ...values,
               [e.target.name]: response.data.data.fileUrl,
@@ -212,6 +227,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       title_image: values.title_image,
       video_link: values.video_link,
       apply_link: values.apply_link,
+      course_id: values.course_id,
       description: values.description,
       tags: {
         location: values.location,
@@ -238,7 +254,64 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     <>
       <div className="xyz">
         <form onSubmit={handleSubmit}>
-          <h4 style={{ textAlign: "center" }}>Edit Opportunity</h4>
+          {/* <h4 style={{ textAlign: "center" }}>Edit Opportunity</h4> */}
+          <label style={{ fontSize: "14px" }}>Project Icon</label>
+          <div style={{lineHeight: "1.3"}}>
+            <Box
+              component="img"
+              sx={{
+                height: 100,
+                width: 200,
+                ml: 3.5,
+                mt: 2.5,
+                borderRadius: "10px",
+                boxShadow: 1,
+              }}
+              onClick={() => handleImageOpen(values.icon)}
+              alt="No image.."
+              src={values.icon}
+              display="flex"
+              // / src={URL.createObjectURL(profileImage)}
+            />
+            <IconButton
+              style={{
+                marginTop: "-165px",
+                marginLeft: "228px",
+                fontSize: "20px",
+                color: "white",
+                backgroundColor: "#33A2B5",
+              }}
+              // color="primary"
+              aria-label="upload picture"
+              component="label"
+            >
+              <input
+                hidden
+                name="icon"
+                accept="image/*"
+                type="file"
+                onChange={onChangeImage}
+              />
+              <FileUploadIcon />
+            </IconButton>
+            <IconButton
+                style={{
+                  marginTop: "-140px",
+                  marginLeft: "228px",
+                  fontSize: "20px",
+                  color: "white",
+                  backgroundColor: "#33A2B5",
+                }}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                onClick={() => {
+                  setValues({ ...values, icon: "" });
+                }}
+                >
+                <DeleteIcon/>
+              </IconButton>
+          </div>
           {inputs.map((input) => (
             <div key={input.id}>
               <label style={{ fontSize: "14px" }}>{input.label}</label>
@@ -249,13 +322,13 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 onChange={onChange}
                 placeholder={input.placeholder}
                 style={styles.input}
-                pattern={input.pattern}
+                pattern={input?.pattern}
                 required={input.required}
               />
             </div>
           ))}
 
-          <label style={{ fontSize: "14px" }}> Title Image</label>
+          <label style={{ fontSize: "14px" }}>Title Image</label>
           <div>
             <Box
               component="img"
@@ -268,7 +341,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 boxShadow: 1,
               }}
               onClick={() => handleImageOpen(values.title_image)}
-              alt="The upload image."
+              alt="No image.."
               src={values.title_image}
               display="flex"
               // / src={URL.createObjectURL(profileImage)}
@@ -281,7 +354,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 color: "white",
                 backgroundColor: "#33A2B5",
               }}
-              color="primary"
+              // color="primary"
               aria-label="upload picture"
               component="label"
             >
@@ -295,7 +368,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               <FileUploadIcon />
             </IconButton>
           </div>
-          <label style={{ fontSize: "14px" }}>Description</label>
+          <label style={{ fontSize: "14px" }}>Share Description</label>
           <textarea
             name="description"
             value={values.description !== null ? values.description : ""}
@@ -344,7 +417,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                   boxShadow: 1,
                 }}
                 onClick={() => handleImageOpen(projectDetails.image)}
-                alt="No image."
+                alt="No image.."
                 src={projectDetails.image}
                 display="flex"
                 // / src={URL.createObjectURL(profileImage)}
@@ -395,7 +468,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
           <hr />
           <h5 style={{ textAlign: "center", margin: "5px" }}>Extra Details</h5>
           <div>
-            {extraDetails.map((detail, index) => (
+             {extraDetails.map((detail, index) => (
               <div key={index}>
                 <label style={{ fontSize: "14px" }}>Title</label>
                 <input
@@ -543,15 +616,12 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                   Remove
                 </button>
               </div>
-            ))}
+            ))} 
             <button
               style={styles.addButton}
               type="button"
               onClick={() => {
-                setExtraDetails([
-                  ...extraDetails,
-                  { title: "", description: "", image: "" },
-                ]);
+                setExtraDetails([...extraDetails, { title: "", description: "", image: "" }]);
               }}
             >
               Add more

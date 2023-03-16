@@ -95,7 +95,7 @@ function Tables() {
   };
   const [runnerdata, setrunnerdata] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
 
   const [imgopen, setimgOpen] = useState(false);
   const imageshandleOpen = () => setimgOpen(true);
@@ -471,6 +471,7 @@ function Tables() {
         return (
           <input
           name="is_profile_updatable"
+          disabled={disabled}
           type="checkbox"
           checked={params.row.is_profile_updatable === "Y" ? true : false}
           onChange={(e) => chnage(e, params.id)}
@@ -486,6 +487,7 @@ function Tables() {
         return (
         <input
         name="is_bank_updatable"
+        disabled={disabled}
         type="checkbox" checked={params.row.is_bank_updatable === "Y" ? true : false}
         onChange={(e) => chnage(e, params.id)}
         />
@@ -500,6 +502,7 @@ function Tables() {
         return (
         <input
         name="is_village_updatable"
+        disabled={disabled}
         type="checkbox" checked={params.row.is_village_updatable === "Y" ? true : false}
         onChange={(e) => chnage(e, params.id)}
         />
@@ -688,11 +691,11 @@ const changeProfileUpdatable = (e, id) => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
+      <MDBox pt={1} pb={2}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              <div style={{ height: 470, width: "100%" }}>
+              <div style={{ height: 510, width: "100%" }}>
                 <DataGrid
                   sx={{
                     boxShadow: 2,
@@ -706,7 +709,7 @@ const changeProfileUpdatable = (e, id) => {
                   columns={columns}
                   pageSize={pageSize}
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                  rowsPerPageOptions={[10, 20, 50, 100]}
+                  rowsPerPageOptions={[50, 100]}
                   loading={tableLoading}
                   // disableSelectionOnClick
                   components={{

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
-// import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
@@ -83,7 +83,15 @@ function Opportunities() {
   const handleClose1 = () => setOpen1(false);
   const handleClose2 = () => setOpen2(false);
   const handleStatus = (event, id) => {
+    const update = opportunities.map((opportunity) => {
+      if (opportunity.id === id) {
+        opportunity.load = true;
+      }
+      return opportunity;
+    });
+    setOpportunities(update);
     var changeopportunitystatus = ChangeOpportunityStatus(id, event.target.value)
+    setTimeout(() => {
     changeopportunitystatus
     .then((response) => {
       // console.log(response)
@@ -92,6 +100,7 @@ function Opportunities() {
     .catch((e) => {
       console.log(e);
     });
+  }, 800);
   }
  const getAllOpportunity = () => {
   var getallopportunity = GetAllOpportunity();
@@ -112,12 +121,14 @@ function Opportunities() {
   }
 const parseData = (opportunities) => {
   opportunities.map((opportunity, index) => {
+    // opportunity.load = true;
     let data = [...opportunities]
     data[index].tags = JSON.parse(opportunity.tags);
     data[index].project_details = JSON.parse(opportunity.project_details);
     data[index].extra_details = JSON.parse(opportunity.extra_details);
-    setOpportunities(data)
+    data[index].load = false;
   })
+  setOpportunities(opportunities);
 }
   useEffect(() => {
     getAllOpportunity();
@@ -139,7 +150,6 @@ const parseData = (opportunities) => {
       <MDBox pt={1} mx={1}>
         <Grid container spacing={4}>
           {opportunities && opportunities.map((opportunity, key) => (
-            // opportunity.load = false,
           <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
             <MDBox mb={0}>
               <Card sx={{ maxWidth: 320}}>
@@ -166,23 +176,27 @@ const parseData = (opportunities) => {
                   <Button style={{padding: 0, margin: 0 }} onClick={() => {
                     window.open(opportunity.page_url, "_blank");
                   }} size="small">Preview</Button>
+                  {opportunity.load ? (
+                    <CircularProgress size={20} style={{marginLeft: "auto", marginRight: "30px", color: "blue"}} />
+                  ) : (
                   <select
-         value={opportunity.status}
-            style={{
-              width: "60px",
-              height: "30px",
-              borderRadius: "5px",
-              position: "absolute",
-              right: "5%",
-              border: "1px solid #1A73E8",
-              // marginLeft: "18px",
-              outline: "none",
-            }}
-            onChange={(event) => handleStatus(event, opportunity.id)}
-          >
-            <option value={1}>Show</option>
-            <option value={0}>Draft</option>
-          </select>
+                  value={opportunity.status}
+                  style={{
+                  width: "60px",
+                  height: "30px",
+                  borderRadius: "5px",
+                  position: "absolute",
+                  right: "6%",
+                  border: "1px solid #1A73E8",
+                  // marginLeft: "18px",
+                  outline: "none",
+                  }}
+                  onChange={(event) => handleStatus(event, opportunity.id)}
+                  >
+                  <option value={1}>Show</option>
+                  <option value={0}>Draft</option>
+                  </select>
+                  )}
           {/* <select
          value={opportunity.sequence}
             style={{
@@ -224,16 +238,19 @@ const parseData = (opportunities) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-          <div style={{marginTop: "0px"}}>
+          <div style={{position: "sticky", top: "-25px", zIndex: "1", backgroundColor: "#fff", padding: "0px 0px", margin: "0px -7px", borderRadius: "10px 10px 10px 10px"}}>            
+          <div style={{marginTop: "-6px"}}>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="close"
-            style={{display: "block", float: "right", marginTop: "-18px", marginRight: "-10px" }}
+            style={{display: "block", float: "right", marginTop: "-5px", marginRight: "-10px" }}
             onClick={handleClose}
           >
             <CloseIcon />
           </IconButton>
+        </div>
+        <h4 id="transition-modal-title" style={{textAlign: "center", marginTop: "0px"}}>Add New Opportunity</h4>
         </div>
         <div>
           {/* <EditForm/> */}
@@ -256,16 +273,19 @@ const parseData = (opportunities) => {
       >
         <Fade in={open1}>
           <Box sx={style}>
-          <div style={{marginTop: "0px"}}>
+          <div style={{position: "sticky", top: "-25px", zIndex: "1", backgroundColor: "#fff", padding: "0px 0px", margin: "0px -7px", borderRadius: "10px 10px 10px 10px"}}>            
+          <div style={{marginTop: "-6px"}}>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="close"
-            style={{display: "block", float: "right", marginTop: "-18px", marginRight: "-10px" }}
+            style={{display: "block", float: "right", marginTop: "-5px", marginRight: "-10px" }}
             onClick={handleClose1}
           >
             <CloseIcon />
           </IconButton>
+        </div>
+        <h4 id="transition-modal-title" style={{textAlign: "center", marginTop: "0px"}}>Edit Opportunity</h4>
         </div>
         <div>
           <EditForm opportunity={opportunity} getAllOpportunity={getAllOpportunity} handleClose={handleClose1} />
