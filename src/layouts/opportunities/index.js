@@ -140,6 +140,7 @@ function Opportunities() {
 
   // filter section logic
   const handleFilter = (e) => {
+    console.log(e);
     if (e.target.value == ' ') {
       setOpportunities(searchApiData);
     } else {
@@ -149,7 +150,7 @@ function Opportunities() {
         item.tags.created.includes(new Date(e.target.value).toLocaleString())
       );
       setOpportunities(Filter);
-      
+
     }
     setFilter(e.target.value);
   };
@@ -170,7 +171,7 @@ function Opportunities() {
 
 
 
-      <div style={{float: "right", margin: "7px 10px 0px 0px" }}>
+      <div style={{ float: "right", margin: "7px 10px 0px 0px" }}>
         <Button onClick={handleOpen} style={{ backgroundColor: "#33a2b5", padding: "7px 10px", border: "none", borderRadius: "10px", color: "#fff" }} >
           Add New Opportunity
         </Button>
@@ -185,7 +186,7 @@ function Opportunities() {
             opportunities.map((opportunity, key) => (
               <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
                 <MDBox mb={0}>
-                  <Card sx={{ position: "relative", maxWidth: 320, maxHeight: 380, minHeight: 380 }}>
+                  <Card sx={{ position: "relative", maxWidth: 320, maxHeight: 400, minHeight: 400 }}>
                     <CardMedia
                       sx={{ maxHeight: 150, minHeight: 150 }}
                       component="img"
@@ -204,37 +205,37 @@ function Opportunities() {
                       </p>
                       <p style={{ fontSize: "15px", color: "gray" }}><strong>Likes -</strong> {opportunity.likes} </p>
                     </CardContent>
-                    
-                    <div sx={{position: "absolute", bottom: 50, flex: 10, justifyContent: "space-between", justifyContent: "flex-end", bottom: 0 }}>
-                    <CardActions sx={{ marginTop: -3   }}>
-                      <Button style={{ position: "absolute", bottom: 50, flex: 10, justifyContent: "space-between", justifyContent: "flex-end", bottom: 0 }} onClick={() => handleOpen1(opportunity.id)} size="small">Edit</Button>
-                      <Button style={{ paddingLeft:"70px",position: "absolute", bottom: 0,  }} onClick={() => {
-                        window.open(opportunity.page_url, "_blank");
-                      }} size="small">Preview</Button>
-                      {opportunity.load ? (
-                        <CircularProgress size={20} style={{ marginLeft: "auto", marginRight: "30px", color: "blue" }} />
-                      ) : (
-                        <select
-                          value={opportunity.status}
-                          style={{
-                            width: "60px",
-                            height: "30px",
-                            borderRadius: "5px",
-                            position: "absolute",
-                            bottom: 0,
-                            right: "6%",
-                            border: "1px solid #1A73E8",
-                            // marginLeft: "18px",
-                            marginBottom:"5px",
-                            outline: "none",
-                          }}
-                          onChange={(event) => handleStatus(event, opportunity.id)}
-                        >
-                          <option value={1}>Show</option>
-                          <option value={0}>Draft</option>
-                        </select>
-                      )}
-                                                      {/* <select
+
+                    <div sx={{ position: "absolute", bottom: 50, flex: 10, justifyContent: "space-between", justifyContent: "flex-end", bottom: 0 }}>
+                      <CardActions sx={{ marginTop: -3 }}>
+                        <div style={{margin:"0px 2px 2px 00px"}}><Button style={{ position: "absolute", bottom: 0, flex: 0, justifyContent: "space-between", justifyContent: "flex-end" }} onClick={() => handleOpen1(opportunity.id)} size="small">Edit</Button></div>
+                        <div style={{margin:"0px 2px 2px 50px"}}><Button style={{  position: "absolute", bottom: 0, }} onClick={() => {
+                          window.open(opportunity.page_url, "_blank");
+                        }} size="small">Preview</Button></div>
+                        {opportunity.load ? (
+                          <CircularProgress size={20} style={{ marginLeft: "auto", marginRight: "30px", color: "blue" }} />
+                        ) : (
+                          <select
+                            value={opportunity.status}
+                            style={{
+                              width: "60px",
+                              height: "30px",
+                              borderRadius: "5px",
+                              position: "absolute",
+                              bottom: 0,
+                              right: "6%",
+                              border: "1px solid #1A73E8",
+                              // marginLeft: "18px",
+                              marginBottom: "5px",
+                              outline: "none",
+                            }}
+                            onChange={(event) => handleStatus(event, opportunity.id)}
+                          >
+                            <option value={1}>Show</option>
+                            <option value={0}>Draft</option>
+                          </select>
+                        )}
+                        {/* <select
                                                       value={opportunity.sequence}
                                                           style={{
                                                             width: "50px",
@@ -250,31 +251,31 @@ function Opportunities() {
                                                             <option key={sequence} value={sequence}>{sequence}</option>
                                                           ))}
                                                         </select> */}
-                      {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
+                        {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
                                                         } */}
-                    </CardActions>
-  
+                      </CardActions>
+
                     </div>
-  
+
                   </Card>
                 </MDBox>
               </Grid>
             ))
 
-          ):(
+          ) : (
             <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              paddingTop: "20vh",
-              fontSize: "30px",
-            }}
-          >
-            <span>No Result's found !!!!</span>
-          </div>
-            ) 
-            }
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "20vh",
+                fontSize: "30px",
+              }}
+            >
+              <span>No Result's found !!!!</span>
+            </div>
+          )
+          }
         </Grid>
       </MDBox>
 
