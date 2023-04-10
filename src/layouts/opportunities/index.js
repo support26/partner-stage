@@ -145,10 +145,15 @@ function Opportunities() {
       setOpportunities(searchApiData);
     } else {
       const Filter = searchApiData.filter((item) =>
+      
         item.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
         item.tags.location.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.tags.created.includes(new Date(e.target.value).toLocaleString())
+         new Date(item.tags.created).toLocaleString().includes(e.target.value)
+        // item.tags.created.includes((e.target.value))
+
       );
+      console.log(Filter);
+
       setOpportunities(Filter);
 
     }
