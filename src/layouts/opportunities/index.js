@@ -65,6 +65,27 @@ const style1 = {
   },
 };
 
+
+
+const styleCustom = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "350px",
+  padding: "35px",
+  height: "488px",
+  borderRadius: "15px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+};
+
+
+
+
+
+
 function Opportunities() {
   const {
     GetAllOpportunity,
@@ -666,16 +687,19 @@ function Opportunities() {
           </Box>
         </Fade>
       </Modal>
-      <div>
-        <Dialog
+      <div >
+        <Dialog 
+          
           open={opening}
           // onClose={handleStatus}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
+          
+          <DialogTitle id="alert-dialog-title v">
+            <Typography  gutterBottom variant="h6" component="div">
             {`Are you sure you want to delete `} {deleteTitle} {"??"}
-
+            </Typography>
           </DialogTitle>
 
 
@@ -683,7 +707,7 @@ function Opportunities() {
             <Button name="disagree" onClick={handleClosees}>
               No
             </Button>
-            <Button
+            <Button style={{backgroundColor:"#33a2b5",color:"white"}}
               name="agree"
               onClick={handleClosees}
               autoFocus
@@ -691,6 +715,7 @@ function Opportunities() {
               Yes
             </Button>
           </DialogActions>
+          
 
         </Dialog>
       </div>
