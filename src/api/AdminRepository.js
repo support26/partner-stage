@@ -227,7 +227,29 @@ class AdminRepository {
       });
     return reponse;
   }
-  
+
+
+  //delete Opportunitycard api
+  async deleteOpportunityCard (id) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.delete(
+      `${baseUrl}opt/webapp/deleteOpportunity/${id}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
+
 
   // get notification api
   async getNotification() {
