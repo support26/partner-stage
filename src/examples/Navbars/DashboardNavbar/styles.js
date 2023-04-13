@@ -33,6 +33,7 @@ function navbar(theme, ownerState) {
     minHeight: pxToRem(75),
     display: "grid",
     alignItems: "center",
+    
     borderRadius: borderRadius.xl,
     paddingTop: pxToRem(8),
     paddingBottom: pxToRem(8),
@@ -89,6 +90,7 @@ const navbarRow = ({ breakpoints }, { isMini }) => ({
     justifyContent: "stretch !important",
     width: "max-content !important",
   },
+  
 });
 
 const navbarIconButton = ({ typography: { size }, breakpoints }) => ({

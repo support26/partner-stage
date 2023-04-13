@@ -1,4 +1,5 @@
 import { useState, useEffect, Suspense } from "react";
+// import io from 'socket.io-client';
 import Loader from "Loader";
 import UserRepository from "api/UsersRepository";
 import AdminRepository from "api/AdminRepository";
@@ -11,6 +12,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
+// import {message} from 'antd';
 // import { logout } from "store/auth/action";
 
 function Dashboard() {
@@ -20,6 +22,26 @@ function Dashboard() {
   const [total, setTotal] = useState([]);
   const [state, setState] = useState([]);
 
+// const socket = io('http://localhost:8001');
+  // const socket = io("https://android-mapping-backend.el.r.appspot.com", {
+  //   transports: ["websocket"],
+  // });
+  // socket.on("connect", () => {
+  //   console.log("connected");
+  // });
+  // socket.on("disconnect", () => {
+  //   console.log("disconnected");
+  // });
+  
+  // const [messageApi, contextHolder] = message.useMessage();
+  // const info = (name) => {
+  //   // messageApi.info('Hello, Ant Design!');
+  //   messageApi.open({
+  //     type: 'info',
+  //     content: `${name} has just logged in`,
+  //     duration: 8,
+  //   });
+  // };
   const partner_app_users = () => {
         // state graph
         UserRepository.usersByState()
@@ -74,6 +96,17 @@ function Dashboard() {
   };
   useEffect(() => {
     partner_app_users();
+    // console.log("socket",socket);
+    // socket.on('userByEmailV1Client', (data) => {
+    //   console.log("datsgsergesr",data);
+    // }
+    // );
+    // socket.emit('userByEmailV1', {email: 'fnknserke'});
+    // socket.on('userByEmailV1Client', (data) => {
+      // console.table(data);
+      // alert(`${data.name} has just logged in`);
+    //   info(data.name);
+    // });    
   }, []);
 
   const verticalBarChartData = {
@@ -90,6 +123,7 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      {/* {contextHolder} */}
       <MDBox pt={5} mx={1}>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6} lg={4} mt={0}>

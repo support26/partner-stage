@@ -1,5 +1,5 @@
 import axios from "axios";
-import cookies from "js-cookie";
+// import cookies from "js-cookie";
 
 // for live testing
 //export const mainUrl = `https://still-depths-36066.herokuapp.com`;
@@ -13,17 +13,17 @@ const baseDomain = `${mainUrl}/`;
 // const baseDomain = 'http://127.0.0.1:8001/'; // API for products
 
 
-function getToken() {
-    const userID = cookies.get('token');
-    if (userID) {
-        return (userID);
-    } else {
-        return null;
-    }
-}
+// function getToken() {
+//     const userID = cookies.get('token');
+//     if (userID) {
+//         return (userID);
+//     } else {
+//         return null;
+//     }
+// }
 
 
-var token = getToken();
+// var token = getToken();
 export const customHeaders = {
     "Content-Type": "application/json",
     'Accept': "application/json",

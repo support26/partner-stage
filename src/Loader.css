@@ -2,7 +2,7 @@
     width: 48px;
     height: 48px;
     margin: auto;
-    position: absolute;
+    position: absolute; 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
