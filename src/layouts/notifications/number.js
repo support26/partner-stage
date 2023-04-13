@@ -9,6 +9,8 @@ import UserRepository from "api/UsersRepository";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import useAdmin from "../../hooks/useAdmin";
+import { render } from "@testing-library/react";
+import { Await } from "react-router";
 
 // mui custom style
 
@@ -22,6 +24,12 @@ function Number() {
   const [sendBtn, setSendBtn] = useState("send");
   const [loading, setLoading] = useState(false);
   const { SendNotificationByNumber } = useAdmin();
+
+
+  // default status false
+  const [isEnabledInputFieldExcel, setIsEnabledInputFieldExecl] = useState(true);
+  const [isEnablPhoneField, setIsEnabledPhoneField]= useState(true)
+  const [inputValue, setInputValue] = useState("");
 
   // const [open, setOpen] = useState(false);
   // const handleClickOpen = () => {
@@ -52,6 +60,7 @@ function Number() {
   };
 
   const onChange = (e) => {
+    setIsEnabledPhoneField(false)
     const [file] = e.target.files;
     const reader = new FileReader();
 
@@ -72,6 +81,16 @@ function Number() {
     reader.readAsBinaryString(file);
   };
 
+  // new field for getting/ sending the number
+  const getSingleNumber = (evt) => {
+    setIsEnabledInputFieldExecl(false)
+
+    //get number
+    // evt.preventDefault();
+    const numberValue = parseFloat(inputValue);
+    console.log("The number value is:", numberValue);
+    setPhone_number(evt.target.value);
+  };
   const sendNotification = (event) => {
     event.preventDefault();
     if (phone_number.length <= 0) {
@@ -109,33 +128,81 @@ function Number() {
     }
   };
 
+  // const handleClick = (event) => {
+  //   event.preventDefault();
+  //   setIsEnabled(!isEnabled);
+  //   console.log(event);
+  //   console.log(error);
+  // };
+
+
+  // to do check how to pass values in usestates() for other function
+  const handleInputChange = (name) => {
+      
+  
+       console.log(name.target.name)
+
+       if(name.target.name==="excel"){
+        setIsEnabledInputFieldExecl(true)
+        setIsEnabledPhoneField(false)
+      }
+      else if (name.target.name==="phone") {
+        setIsEnabledPhoneField(true)
+        setIsEnabledInputFieldExecl(false)
+         
+
+       }
+   
+  };
+
   return (
     <Card sx={{ px: 5, py: 1, width: "100%" }}>
       <MDTypography align="center" variant="h3">
         Send By Number
       </MDTypography>
+
+      
       <TextField
+        name="excel"
         helperText="Upload a excel file "
         type={"file"}
+        disabled={!isEnabledInputFieldExcel}
+        onFocus={handleInputChange}        
         inputProps={{ accept: ".csv, .xls, .xlsx" }}
         onChange={onChange}
-        sx={{py:1}}
+        sx={{ py: 1  }}
       />
+
+      
+      <TextField
+      name="phone"
+        label="Enter Mobile Number"
+        type="text"
+        disabled={!isEnablPhoneField}
+        // onFocus={handleInputChange} 
+        onChange={getSingleNumber}
+        sx={{ py: 0 ,marginTop:"-1px"}}
+      />
+      
+
+      <br />
+
       <TextField
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         type="text"
         label="Title..."
-        />
-        <br/>
-      
+        sx={{ py: 0 ,marginTop:"-18px"}}
+      />
+      <br />
+
       <MDInput
         label="Type here your message..."
         value={body}
         onChange={(e) => setBody(e.target.value)}
         multiline
         rows={5}
-        style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px" }}
+        style={{ minWidth: "auto", maxWidth: "400px", marginBottom: "10px",marginTop:"-15px" }}
       />
       {error && (
         <small style={{ color: "red", fontSize: "15px" }}>{error}</small>
