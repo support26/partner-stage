@@ -21,6 +21,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
+import { Translate } from "@mui/icons-material";
+import transitions from "@material-ui/core/styles/transitions";
 
 const style = {
   position: "absolute",
@@ -350,7 +352,7 @@ function Opportunities() {
                             >
                               Edit
                             </Button>
-                          </div>
+                          </div >
                           <div style={{ margin: "0px 2px 2px 50px" }}>
                             <Button
                               style={{ position: "absolute", bottom: 0.5 }}
@@ -362,29 +364,36 @@ function Opportunities() {
                               Preview
                             </Button>
                           </div>
+                          
 
                           {opportunity.load ? (
                             <CircularProgress
                               size={20}
-                              style={{
-                                marginLeft: "auto",
-                                marginRight: "30px",
+                              style={{                                                              
+                                position: "absolute",                             
+                                bottom: 0,
+                                right: "12%", 
+                                marginBottom: "9px",
                                 color: "blue",
+
                               }}
                             />
-                          ) : (
+                           
+                          )  : (
+                           
                             <select
                               value={opportunity.status}
                               style={{
                                 width: "60px",
                                 height: "30px",
                                 borderRadius: "5px",
-                                position: "absolute",
+                                position: "absolute",                             
                                 bottom: 0,
                                 right: "6%",
                                 border: "1px solid #1A73E8",
                                 // marginLeft: "18px",
                                 marginBottom: "5px",
+                                
                                 outline: "none",
                               }}
                               onChange={(event) => handleStatus(event, opportunity.id, opportunity.title)}
@@ -396,7 +405,9 @@ function Opportunities() {
                                 Delete
                               </option>
                             </select>
-                          )}
+                            
+                          ) }
+                          
                           {/* <select
                                                       value={opportunity.sequence}
                                                           style={{
