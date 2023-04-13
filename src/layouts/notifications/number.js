@@ -167,7 +167,7 @@ function Number() {
         helperText="Upload a excel file "
         type={"file"}
         disabled={!isEnabledInputFieldExcel}
-        onFocus={handleInputChange}        
+        // onFocus={handleInputChange}        
         inputProps={{ accept: ".csv, .xls, .xlsx" }}
         onChange={onChange}
         sx={{ py: 1  }}
