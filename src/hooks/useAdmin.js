@@ -193,6 +193,20 @@ export default function useAdmin() {
       return responseData;
     },
 
+
+    //delete opportunityCard
+    DeleteOpportunityCard: async (id) =>{
+      var responseData = await AdminRepository.deleteOpportunityCard(id);
+      if(responseData.status==200)
+      {
+        console.log(responseData.data);
+      }
+      return responseData;
+    },
+
+
+
+
     //get state list
     GetStateList: async () => {
       var responseData = await AdminRepository.getStateList();

@@ -179,9 +179,9 @@ function Number() {
         label="Enter Mobile Number"
         type="text"
         disabled={!isEnablPhoneField}
-        onFocus={handleInputChange} 
+        // onFocus={handleInputChange} 
         onChange={getSingleNumber}
-        sx={{ py: 0 ,marginTop:"-10px"}}
+        sx={{ py: 0 ,marginTop:"-1px"}}
       />
       
 
