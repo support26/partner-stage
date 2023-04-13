@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAdmin from "../../hooks/useAdmin";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -21,16 +21,6 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
-import Loader from "Loader";
-
-
 
 const style = {
   position: "absolute",
@@ -109,8 +99,6 @@ function Opportunities() {
   const [deleteTitle, setDeleteTittle] = useState('')
   const [deleteId, setDeleteId] = useState('');
 
-  const [opening, setOpenening] = React.useState(false);
-
   const [loading, setLoading] = useState(true);
 
   const [openModal, setOpenModal] = useState(false);
@@ -138,29 +126,29 @@ function Opportunities() {
 
       // setShowDialoge(true);
     }
-    //  else {
-    //   const update = opportunities.map((opportunity) => {
-    //     if (opportunity.id === id) {
-    //       opportunity.load = true;
-    //     }
-    //     return opportunity;
-    //   });
-    //   setOpportunities(update);
-    //   var changeopportunitystatus = ChangeOpportunityStatus(
-    //     id,
-    //     event.target.value
-    //   );
-    //   setTimeout(() => {
-    //     changeopportunitystatus
-    //       .then((response) => {
-    //         // console.log(response)
-    //         getAllOpportunity();
-    //       })
-    //       .catch((e) => {
-    //         console.log(e);
-    //       });
-    //   }, 800);
-    // }
+     else {
+      const update = opportunities.map((opportunity) => {
+        if (opportunity.id === id) {
+          opportunity.load = true;
+        }
+        return opportunity;
+      });
+      setOpportunities(update);
+      var changeopportunitystatus = ChangeOpportunityStatus(
+        id,
+        event.target.value
+      );
+      setTimeout(() => {
+        changeopportunitystatus
+          .then((response) => {
+            // console.log(response)
+            getAllOpportunity();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }, 800);
+    }
   };
   const getAllOpportunity = () => {
     var getallopportunity = GetAllOpportunity();
@@ -213,15 +201,9 @@ function Opportunities() {
           new Date(item.tags.created).toLocaleString().includes(e.target.value)
         // item.tags.created.includes((e.target.value))
       );
-      
-
       setOpportunities(Filter);
     }
     setFilter(e.target.value);
-  };
-  
-  const handleClickOpen = () => {
-    setOpenening(true);
   };
 
   const handleClosees = () => {
@@ -237,13 +219,8 @@ function Opportunities() {
       .catch((e) => {
         console.log(e);
         console.log("not deleted");
-      });
-     
-      
-      
-      setOpenModal(false);
-      
-    
+      });       
+      setOpenModal(false);    
   };
 
   const handleNo = ()=>{
@@ -329,8 +306,8 @@ function Opportunities() {
                       <CardMedia
                         sx={{ maxHeight: 150, minHeight: 150 }}
                         component="img"
-                        image={opportunity.title_image}
-                        alt="opt image"
+                        image={opportunity.title_image ? opportunity.title_image : "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"}
+                        alt=""
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h6" component="div">
