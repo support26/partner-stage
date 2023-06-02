@@ -27,7 +27,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "850px",
+  width: "900px",
   maxWidth: "90%",
   height: "750px",
   bgcolor: "background.paper",
@@ -81,13 +81,10 @@ function Ticket() {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [showImage, setShowImage] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [tickets, setTickets] = useState([]);
-  const [selectedTicket, setSelectedTicket] = useState(null);
 
-  const handleSave = () => {
-    alert("details successfully saved");
-  };
   const [extraDetails, setExtraDetails] = useState([
     {
       remarks: "",
@@ -101,9 +98,11 @@ function Ticket() {
     setShowImage(false);
   };
 
-  const handleClose = () => setOpen(false);
   const handleClose1 = () => setOpen1(false);
 
+  const handleSave = () => {
+    alert("details successfully saved");
+  };
   const getAllTickets = () => {
     setLoading(true);
     var getalltickets = GetAllTickets();
@@ -125,17 +124,16 @@ function Ticket() {
       });
   };
 
+  useEffect(() => {
+    getAllTickets();
+  }, []);
+
   const handleOpen1 = (ticketId) => {
     console.log("Selected Ticket ID:", ticketId);
     const selected = tickets.find((ticket) => ticket.ticketId === ticketId);
     setSelectedTicket(selected);
     setOpen1(true);
   };
-
-  useEffect(() => {
-    getAllTickets();
-  }, []);
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -208,9 +206,7 @@ function Ticket() {
                       sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
                       component="img"
                       image={
-                        ticket.title_image
-                          ? ticket.title_image
-                          : "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
                       }
                       alt=""
                       position="relative"
@@ -301,15 +297,14 @@ function Ticket() {
                         <Button
                           style={{
                             width: "100px",
-                            height: "25px",
+                            height: "30px",
                             borderRadius: "5px",
                             position: "absolute",
                             bottom: 0,
                             right: "5%",
-                            border: "1px solid #000",
-                            backgroundColor: "#1ebea5",
-                            color: "#fff",
-                            fontSize: "13px",
+                            border: "1px solid #1A73E8",
+                            marginBottom: "5px",
+                            outline: "none",
                           }}
                           onClick={() => handleOpen1(ticket.ticketId)}
                         >
@@ -376,8 +371,8 @@ function Ticket() {
                   style={{
                     display: "block",
                     float: "right",
-                    marginTop: "-5px",
-                    marginRight: "-10px",
+                    marginTop: "-25px",
+                    marginRight: "-25px",
                   }}
                 >
                   <CloseIcon />
@@ -389,6 +384,7 @@ function Ticket() {
                   textAlign: "center",
                   marginTop: "0px",
                   position: "sticky",
+                  widht: "100%",
                 }}
               >
                 Query Raised
@@ -396,7 +392,7 @@ function Ticket() {
             </div>
             <div>
               <div>
-                {selectedTicket && showImage && (
+                {showImage && (
                   <div
                     style={{
                       position: "fixed",
@@ -425,226 +421,199 @@ function Ticket() {
                     />
                   </div>
                 )}
-                <div className="xyz">
-                  <MDBox pt={1} mx={1}>
-                    <Grid>
-                      {tickets.length !== 0 ? (
-                        tickets.map((ticket, key) => (
-                          <Card
-                            sx={{
-                              position: "relative",
-                              maxWidth: "100%",
-                              maxHeight: 600,
-                            }}
-                          >
-                            <CardMedia
-                              sx={{ height: 100, width: 100 }}
-                              component="img"
-                              image="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                            ></CardMedia>
-                            <CardContent>
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  marginTop: "-100px",
-                                  marginLeft: "20%",
-                                }}
-                                // name="name"
-                              >
-                                <strong>Name- </strong> {selectedTicket.name}
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  marginLeft: "60%",
-                                  marginTop: "-25px",
-                                }}
-                                // name="name"
-                              >
-                                <span name="phone">
-                                  <strong>Phone No- </strong>{" "}
-                                  {selectedTicket.phoneNumber}
-                                </span>
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  marginLeft: "20%",
-                                  marginTop: "3%",
-                                }}
-                              >
-                                <strong>Ticket No- </strong>{" "}
-                                {selectedTicket.ticketId}
-                              </p>
+                {selectedTicket && (
+                  <div className="xyz">
+                    <MDBox pt={1} mx={1}>
+                        
+                            <Card
+                              sx={{
+                                position: "relative",
+                                maxWidth: "100%",
+                                maxHeight: 600,
+                              }}
+                            >
+                              <CardMedia
+                                sx={{ height: 100, width: 100 }}
+                                component="img"
+                                image="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                              ></CardMedia>
+                              <CardContent>
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    marginTop: "-100px",
+                                    marginLeft: "20%",
+                                  }}
+                                >
+                                  <strong>Name- </strong> {selectedTicket.name}
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    marginLeft: "60%",
+                                    marginTop: "-25px",
+                                  }}
+                                  // name="name"
+                                >
+                                  <span>
+                                    <strong>Phone No- </strong>{" "}
+                                    {selectedTicket.phoneNumber}
+                                  </span>
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    marginLeft: "20%",
+                                    marginTop: "3%",
+                                  }}
+                                >
+                                  <strong>Ticket No- </strong>{" "}
+                                  {selectedTicket.ticketId}
+                                </p>
 
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  marginLeft: "60%",
-                                  marginTop: "-3%",
-                                }}
-                              >
-                                <strong>Ticket Raised Date- </strong>{" "}
-                                {selectedTicket.date}
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  marginLeft: "20%",
-                                  marginTop: "0",
-                                }}
-                              >
-                                <strong>Ticket Subject- </strong>{" "}
-                                {selectedTicket.subject}
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: "15px",
-                                  color: "gray",
-                                  border: "2px solid gray",
-                                  height: "100px",
-                                  marginBottom: "10px",
-                                  borderRadius: "10px",
-                                  marginTop: "20px",
-                                }}
-                              >
-                                {selectedTicket.message}
-                              </p>
-                              {/* <CardMedia
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    marginLeft: "60%",
+                                    marginTop: "-3%",
+                                  }}
+                                >
+                                  <strong>Ticket Raised Date- </strong>{" "}
+                                  {selectedTicket.date}
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    marginLeft: "20%",
+                                    marginTop: "0",
+                                  }}
+                                >
+                                  <strong>Ticket Subject- </strong>{" "}
+                                  {selectedTicket.subject}
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "gray",
+                                    border: "2px solid gray",
+                                    height: "100px",
+                                    marginBottom: "10px",
+                                    borderRadius: "10px",
+                                    marginTop: "20px",
+                                  }}
+                                >
+                                  {selectedTicket.message}
+                                </p>
+                                {/* <CardMedia
                 sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
                 component="img"
                 image={
                   "https://storage.googleapis.com/android-mapping-backend.appspot.com/1683205156389.blob"
                 }
               ></CardMedia> */}
-                            </CardContent>
-                          </Card>
-                        ))
-                      ) : (
-                        <div
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            paddingTop: "20vh",
-                            fontSize: "30px",
-                          }}
-                        >
-                          {loading ? (
-                            <Box sx={{ display: "flex" }}>
-                              <CircularProgress />
-                            </Box>
-                          ) : (
-                            <span>No Result's found !!!!</span>
-                          )}
-                        </div>
-                      )}
-                    </Grid>
-                  </MDBox>
+                              </CardContent>
+                            </Card>
+                          
+                      
+                    </MDBox>
 
-                  <br />
-                  <hr />
-                  <h5 style={{ textAlign: "center", margin: "5px" }}>
-                    Support Provided
-                  </h5>
-                  <div>
-                    {extraDetails.map((detail, index) => (
-                      <div key={index}>
-                        <label style={{ fontSize: "14px" }}>Remarks</label>
-                        <textarea
-                          // name="remarks"
-                          placeholder="Remarks.."
-                          style={styles.input}
-                          rows="5"
-                          cols="24"
-                          required
-                          // value={detail.remarks}
-                          onChange={(e) => {
-                            const values = [...extraDetails];
-                            values[index].title = e.target.value;
-                            setExtraDetails(values);
-                          }}
-                        />
-                        <label style={{ fontSize: "14px" }}>
-                          {" "}
-                          Resolved date:
-                        </label>
-                        <DatePicker
-                          // name="res_date"
-                          placeholder="Enter the ticket resolved date"
-                          style={styles.input}
-                          dateFormat="dd/MM/yyyy"
-                          selected={selectedDate}
-                          onChange={(date) => setSelectedDate(date)}
-                          popperPlacement="auto-start"
-                          popperModifiers={{
-                            preventOverflow: {
-                              enabled: true,
-                              escapeWithReference: false,
-                              boundariesElement: "viewport",
-                            },
-                          }}
-                          customInput={
-                            <input className="react-datepicker-ignore-onclickoutside" />
-                          }
-                          renderInput={(props) => (
-                            <div className="react-datepicker-wrapper">
-                              <input {...props} />
-                              <CalendarIcon
-                                className="react-datepicker-icon"
-                                onClick={props.onClick}
-                              />
-                            </div>
-                          )}
-                          // {selectedTicket && (
-                          //   <div>
-                          //     <p>Ticket Name: {selectedTicket.name}</p>
-                          //     <p>Ticket Phone Number: {selectedTicket.phoneNumber}</p>
-                          //     <p>Ticket ID: {selectedTicket.ticketId}</p>
-                          //     {/* Render other ticket details as needed */}
-                          //   </div>
-                        />
-                        <br />
-                        <label
-                          style={{ fontSize: "14px" }}
-                          // name="status"
-                          onChange={(e) => {
-                            const values = [...extraDetails];
-                            values[index].title = e.target.value;
-                            setExtraDetails(values);
-                          }}
-                        >
-                          Status:{" "}
-                        </label>
-                        <select
-                          style={{
-                            width: "135px",
-                            height: "35px",
-                            borderRadius: "5px",
-                            marginLeft: "55px",
-                            background: "white",
-                          }}
-                        >
-                          <option value={1}>Open</option>
-                          <option value={2}>In Process</option>
-                          <option value={3}>Closed</option>
-                        </select>
-                      </div>
-                    ))}
+                    <br />
+                    <hr />
+                    <h5 style={{ textAlign: "center", margin: "5px" }}>
+                      Support Provided
+                    </h5>
+                    <div>
+                      {extraDetails.map((detail, index) => (
+                        <div key={index}>
+                          <label style={{ fontSize: "14px" }}>Remarks</label>
+                          <textarea
+                            // name="remarks"
+                            placeholder="Remarks.."
+                            style={styles.input}
+                            rows="5"
+                            cols="24"
+                            required
+                            // value={detail.remarks}
+                            onChange={(e) => {
+                              const values = [...extraDetails];
+                              values[index].title = e.target.value;
+                              setExtraDetails(values);
+                            }}
+                          />
+                          <label style={{ fontSize: "14px" }}>
+                            {" "}
+                            Resolved date:
+                          </label>
+                          <DatePicker
+                            // name="res_date"
+                            placeholder="Enter the ticket resolved date"
+                            style={styles.input}
+                            dateFormat="dd/MM/yyyy"
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            popperPlacement="auto-start"
+                            popperModifiers={{
+                              preventOverflow: {
+                                enabled: true,
+                                escapeWithReference: false,
+                                boundariesElement: "viewport",
+                              },
+                            }}
+                            customInput={
+                              <input className="react-datepicker-ignore-onclickoutside" />
+                            }
+                            renderInput={(props) => (
+                              <div className="react-datepicker-wrapper">
+                                <input {...props} />
+                                <CalendarIcon
+                                  className="react-datepicker-icon"
+                                  onClick={props.onClick}
+                                />
+                              </div>
+                            )}
+                          />
+                          <br />
+                          <label
+                            style={{ fontSize: "14px" }}
+                            // name="status"
+                            onChange={(e) => {
+                              const values = [...extraDetails];
+                              values[index].title = e.target.value;
+                              setExtraDetails(values);
+                            }}
+                          >
+                            Status:{" "}
+                          </label>
+                          <select
+                            style={{
+                              width: "135px",
+                              height: "35px",
+                              borderRadius: "5px",
+                              marginLeft: "55px",
+                              background: "white",
+                            }}
+                          >
+                            <option value={1}>Open</option>
+                            <option value={2}>In Process</option>
+                            <option value={3}>Closed</option>
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="submit"
+                      style={styles.button}
+                      onClick={handleSave}
+                    >
+                      Save
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    style={styles.button}
-                    onClick={handleSave}
-                  >
-                    Save
-                  </button>
-                </div>
+                )}
               </div>
             </div>
           </Box>
