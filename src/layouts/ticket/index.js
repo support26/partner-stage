@@ -78,6 +78,7 @@ const styles = {
 
 function Ticket() {
   const { GetAllTickets } = useAdmin();
+  const { UpdateTickets } = useAdmin();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -87,9 +88,11 @@ function Ticket() {
 
   const [extraDetails, setExtraDetails] = useState([
     {
-      remarks: "",
-      res_date: "",
+      supportMessage: "",
+      updated_by:"support47",
+      updated_at: "",
       status: "",
+      
     },
   ]);
   const [loading, setLoading] = useState(true);
@@ -100,9 +103,6 @@ function Ticket() {
 
   const handleClose1 = () => setOpen1(false);
 
-  const handleSave = () => {
-    alert("details successfully saved");
-  };
   const getAllTickets = () => {
     setLoading(true);
     var getalltickets = GetAllTickets();
@@ -128,12 +128,48 @@ function Ticket() {
     getAllTickets();
   }, []);
 
+
   const handleOpen1 = (ticketId) => {
     console.log("Selected Ticket ID:", ticketId);
     const selected = tickets.find((ticket) => ticket.ticketId === ticketId);
     setSelectedTicket(selected);
     setOpen1(true);
   };
+  const updatetickets = async (ticketId, updatedDetails) => {
+    try {
+      const response = await fetch(`http://localhost:8001/ticket/webapp/V1/updateTicket/${ticketId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedDetails),
+      });
+      if (response.ok) {
+        alert("Updated");
+        updatedDetails({
+          supportMessage: "",
+          updated_at: "",
+          status: "",
+          updated_by:"support47"
+         })
+      
+      } else {
+        throw new Error('Failed to update ticket details');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const handleSave = (e) => {
+  e.preventDefault();
+  const data = {
+    extraDetails: extraDetails,
+  };
+  updatetickets(selectedTicket.ticketId, data);
+  handleClose1();
+};
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -424,102 +460,100 @@ function Ticket() {
                 {selectedTicket && (
                   <div className="xyz">
                     <MDBox pt={1} mx={1}>
-                        
-                            <Card
-                              sx={{
-                                position: "relative",
-                                maxWidth: "100%",
-                                maxHeight: 600,
-                              }}
-                            >
-                              <CardMedia
-                                sx={{ height: 100, width: 100 }}
-                                component="img"
-                                image="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                              ></CardMedia>
-                              <CardContent>
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    marginTop: "-100px",
-                                    marginLeft: "20%",
-                                  }}
-                                >
-                                  <strong>Name- </strong> {selectedTicket.name}
-                                </p>
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    marginLeft: "60%",
-                                    marginTop: "-25px",
-                                  }}
-                                  // name="name"
-                                >
-                                  <span>
-                                    <strong>Phone No- </strong>{" "}
-                                    {selectedTicket.phoneNumber}
-                                  </span>
-                                </p>
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    marginLeft: "20%",
-                                    marginTop: "3%",
-                                  }}
-                                >
-                                  <strong>Ticket No- </strong>{" "}
-                                  {selectedTicket.ticketId}
-                                </p>
+                      <Card
+                        sx={{
+                          position: "relative",
+                          maxWidth: "100%",
+                          maxHeight: 600,
+                        }}
+                      >
+                        <CardMedia
+                          sx={{ height: 100, width: 100 }}
+                          component="img"
+                          image="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        ></CardMedia>
+                        <CardContent>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginTop: "-100px",
+                              marginLeft: "20%",
+                            }}
+                          >
+                            <strong>Name- </strong> {selectedTicket.name}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-25px",
+                            }}
+                            // name="name"
+                          >
+                            <span>
+                              <strong>Phone No- </strong>
+                              {selectedTicket.phoneNumber}
+                            </span>
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "20%",
+                              marginTop: "3%",
+                            }}
+                          >
+                            <strong>Ticket No- </strong>
+                            {selectedTicket.ticketId}
+                          </p>
 
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    marginLeft: "60%",
-                                    marginTop: "-3%",
-                                  }}
-                                >
-                                  <strong>Ticket Raised Date- </strong>{" "}
-                                  {selectedTicket.date}
-                                </p>
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    marginLeft: "20%",
-                                    marginTop: "0",
-                                  }}
-                                >
-                                  <strong>Ticket Subject- </strong>{" "}
-                                  {selectedTicket.subject}
-                                </p>
-                                <p
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "gray",
-                                    border: "2px solid gray",
-                                    height: "auto",
-                                    marginBottom: "10px",
-                                    borderRadius: "10px",
-                                    marginTop: "20px",
-                                  }}
-                                >
-                                  {selectedTicket.message}
-                                </p>
-                                {/* <CardMedia
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-3%",
+                            }}
+                          >
+                            <strong>Ticket Raised Date- </strong>
+                            {selectedTicket.date}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "20%",
+                              marginTop: "0",
+                            }}
+                          >
+                            <strong>Ticket Subject- </strong>
+                            {selectedTicket.subject}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              border: "2px solid gray",
+                              height: "auto",
+                              marginBottom: "10px",
+                              borderRadius: "10px",
+                              marginTop: "20px",
+                            }}
+                          >
+                            {selectedTicket.message}
+                          </p>
+                          {/* <CardMedia
                 sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
                 component="img"
                 image={
                   "https://storage.googleapis.com/android-mapping-backend.appspot.com/1683205156389.blob"
                 }
               ></CardMedia> */}
-                              </CardContent>
-                            </Card>
+                        </CardContent>
+                      </Card>
                     </MDBox>
-
                     <br />
                     <hr />
                     <h5 style={{ textAlign: "center", margin: "5px" }}>
@@ -528,13 +562,13 @@ function Ticket() {
                     <div>
                       {extraDetails.map((detail, index) => (
                         <div key={index}>
-                          <label style={{ fontSize: "14px" }}>Remarks</label>
+                          <label style={{ fontSize: "14px" }}>Support Remarks</label>
                           <textarea
                             // name="remarks"
                             placeholder="Remarks.."
                             style={styles.input}
-                            rows="5"
-                            cols="24"
+                            rows="auto"
+                            cols="auto"
                             required
                             // value={detail.remarks}
                             onChange={(e) => {
@@ -543,8 +577,8 @@ function Ticket() {
                               setExtraDetails(values);
                             }}
                           />
-                          <label style={{ fontSize: "14px" }}>
-                            {" "}
+                            
+                          <label style={{ fontSize: "14px" }}>                  
                             Resolved date:
                           </label>
                           <DatePicker
@@ -575,7 +609,6 @@ function Ticket() {
                               </div>
                             )}
                           />
-                          <br />
                           <label
                             style={{ fontSize: "14px" }}
                             // name="status"
@@ -585,7 +618,7 @@ function Ticket() {
                               setExtraDetails(values);
                             }}
                           >
-                            Status:{" "}
+                            Status:{selectedTicket.status}
                           </label>
                           <select
                             style={{

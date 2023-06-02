@@ -558,16 +558,10 @@ class AdminRepository {
     return response;
   }
 
-  async updateTickets(data, ticketId) {
+  async updateTickets(data, selectedTicket) {
     const token = localStorage.getItem("token");
     const reponse = await Api.put(
-      `${baseUrl}webapp/V1/updateTicket/${ticketId}`,
-      data,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
+      `${baseUrl}ticket/webapp/V1/updateTicket/${selectedTicket}`)
       .then((response) => {
         return response;
       })
