@@ -1,0 +1,25 @@
+
+.react-datepicker-wrapper {
+    display: inline-block;
+    position: relative;
+    width: 50%;
+    margin: 10px;
+  }
+  
+  .react-datepicker-ignore-onclickoutside {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+
+  .react-datepicker-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  

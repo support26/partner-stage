@@ -27,6 +27,7 @@ import {
 } from "context";
 
 import anaxee_logo from "assets/images/icons/Ellipse 1.png";
+import Ticket from "layouts/ticket";
 const ResetPassword = React.lazy(() => import('./layouts/authentication/reset-password/cover/index'));
 const AddUsers = React.lazy(() => import('./layouts/AddUsers'));
 const Notifications = React.lazy(() => import('./layouts/notifications'));
@@ -149,6 +150,13 @@ export default function App() {
           <Route path="/opportunities" element={
             <Suspense fallback={<Loader/>}>
               <Opportunities />
+            </Suspense>
+          } />
+        )}
+        {Cookies.get('token') && roleId == 0 && (
+          <Route path="/ticket" element={
+            <Suspense fallback={<Loader/>}>
+              <Ticket/>
             </Suspense>
           } />
         )}
