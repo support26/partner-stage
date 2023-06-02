@@ -501,7 +501,7 @@ function Ticket() {
                                     fontSize: "15px",
                                     color: "gray",
                                     border: "2px solid gray",
-                                    height: "100px",
+                                    height: "auto",
                                     marginBottom: "10px",
                                     borderRadius: "10px",
                                     marginTop: "20px",
@@ -518,8 +518,6 @@ function Ticket() {
               ></CardMedia> */}
                               </CardContent>
                             </Card>
-                          
-                      
                     </MDBox>
 
                     <br />
