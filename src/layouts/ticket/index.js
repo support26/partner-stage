@@ -561,8 +561,8 @@ function Ticket() {
                             // name="remarks"
                             placeholder="Remarks.."
                             style={styles.input}
-                            rows="auto"
-                            cols="auto"
+                            rows="10"
+                            cols="5"
                             required
                             // value={detail.remarks}
                             onChange={(e) => {
