@@ -309,3 +309,339 @@
 // }
 
 // export default Details;
+import React, { useEffect, useState } from "react";
+import useAdmin from "../../hooks/useAdmin";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import MDBox from "components/MDBox";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "900px",
+  maxWidth: "90%",
+  height: "750px",
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  background: "lightgray",
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+};
+
+const styles = {
+  form: {
+    width: "100%",
+    margin: "0 auto",
+    padding: "20px",
+    border: "1px solid #eee",
+    borderRadius: "5px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    border: "1px solid gray",
+    borderRadius: "5px",
+    marginBottom: "8px",
+  },
+  button: {
+    width: "100%",
+    padding: "10px",
+    margin: "10px 0 0 0",
+    border: "none",
+    borderRadius: "10px",
+    backgroundColor: "#33a2b5",
+    color: "#fff",
+    cursor: "pointer",
+  },
+  addButton: {
+    padding: "6px 12px",
+    border: "none",
+    borderRadius: "8px",
+    backgroundColor: "#33a2b5",
+    color: "#fff",
+    cursor: "pointer",
+  },
+};
+
+function Ticket() {
+  const { GetAllTickets, UpdateTickets } = useAdmin();
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [supportRemarks, setSupportRemarks] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleCloseImage = () => {
+    setShowImage(false);
+  };
+
+  const handleClose1 = () => setOpen1(false);
+
+  const getAllTickets = () => {
+    setLoading(true);
+    var getalltickets = GetAllTickets();
+    getalltickets
+      .then((res) => {
+        const ticketData = res.data.map((ticket) => ({
+          name: ticket.name,
+          phoneNumber: ticket.phone_number,
+          ticketId: ticket.ticketId,
+          date: ticket.date,
+          remarks: ticket.remarks,
+          status: ticket.status,
+        }));
+        setTickets(ticketData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getAllTickets();
+  }, []);
+
+  const handleOpen = (ticket) => {
+    setOpen(true);
+    setSelectedTicket(ticket);
+    setSelectedDate(ticket.date);
+  };
+
+  const handleUpdateTicket = () => {
+    const ticket = selectedTicket;
+    const updatedTicket = {
+      ...ticket,
+      remarks: supportRemarks,
+      status: status,
+    };
+
+    const updateTicket = UpdateTickets(updatedTicket);
+    updateTicket
+      .then((res) => {
+        handleClose();
+        getAllTickets();
+        console.log("Ticket updated successfully");
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  };
+
+  const handleChange = (event) => {
+    setStatus(event.target.value);
+  };
+
+  const handleRemarkChange = (event) => {
+    setSupportRemarks(event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedTicket(null);
+    setSelectedDate(null);
+  };
+
+  const handleOpenImage = () => {
+    setShowImage(true);
+  };
+
+  return (
+    <DashboardLayout>
+      <DashboardNavbar />
+      <MDBox py={6}>
+        <Grid container spacing={3}>
+          {loading ? (
+            <Grid item xs={12}>
+              <CircularProgress />
+            </Grid>
+          ) : (
+            tickets.map((ticket) => (
+              <Grid item xs={12} sm={6} md={4} key={ticket.ticketId}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={ticket.imageUrl}
+                    alt="Ticket Image"
+                  />
+                  <CardContent>
+                    <h3>{ticket.name}</h3>
+                    <p>{ticket.phoneNumber}</p>
+                    <p>Date: {ticket.date}</p>
+                    <p>Status: {ticket.status}</p>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => handleOpen(ticket)}
+                    >
+                      View Details
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          )}
+        </Grid>
+      </MDBox>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <IconButton
+              aria-label="close"
+              style={{ position: "absolute", right: 10, top: 10 }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <h2 id="transition-modal-title">Ticket Details</h2>
+            {selectedTicket && (
+              <div>
+                <h3>Ticket ID: {selectedTicket.ticketId}</h3>
+                <p>Name: {selectedTicket.name}</p>
+                <p>Phone Number: {selectedTicket.phoneNumber}</p>
+                <p>Date: {selectedDate}</p>
+                <p>Status: {selectedTicket.status}</p>
+                <p>Remarks: {selectedTicket.remarks}</p>
+                <Button
+                  variant="contained"
+                  onClick={handleOpenImage}
+                  style={{ marginBottom: 10 }}
+                >
+                  View Image
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => setOpen1(true)}
+                  style={{ marginBottom: 10, marginLeft: 10 }}
+                >
+                  Update Ticket
+                </Button>
+              </div>
+            )}
+          </Box>
+        </Fade>
+      </Modal>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open1}
+        onClose={handleClose1}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open1}>
+          <Box sx={style}>
+            <IconButton
+              aria-label="close"
+              style={{ position: "absolute", right: 10, top: 10 }}
+              onClick={handleClose1}
+            >
+              <CloseIcon />
+            </IconButton>
+            <h2 id="transition-modal-title">Update Ticket</h2>
+            <form style={styles.form}>
+              <textarea
+                name="remarks"
+                placeholder="Enter Support Remarks"
+                style={styles.input}
+                rows="4"
+                onChange={handleRemarkChange}
+              ></textarea>
+              <select
+                name="status"
+                style={styles.input}
+                onChange={handleChange}
+              >
+                <option value="">Select Status</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Closed">Closed</option>
+              </select>
+              <button
+                type="button"
+                onClick={handleUpdateTicket}
+                style={styles.button}
+              >
+                Update
+              </button>
+            </form>
+          </Box>
+        </Fade>
+      </Modal>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={showImage}
+        onClose={handleCloseImage}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showImage}>
+          <Box sx={style}>
+            <IconButton
+              aria-label="close"
+              style={{ position: "absolute", right: 10, top: 10 }}
+              onClick={handleCloseImage}
+            >
+              <CloseIcon />
+            </IconButton>
+            <img
+              src={selectedTicket && selectedTicket.imageUrl}
+              alt="Ticket Image"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Box>
+        </Fade>
+      </Modal>
+    </DashboardLayout>
+  );
+}
+
+export default Ticket;

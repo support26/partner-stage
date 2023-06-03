@@ -72,21 +72,15 @@ const styles = {
 
 function Ticket() {
   const { GetAllTickets } = useAdmin();
-  const { UpdateTickets } = useAdmin();
-  const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [tickets, setTickets] = useState([]);
 
   const [extraDetails, setExtraDetails] = useState([
     {
       supportMessage: "",
-      updated_by:"",
-      updated_at: "",
       status: "",
-      
     },
   ]);
   const [loading, setLoading] = useState(true);
@@ -109,6 +103,7 @@ function Ticket() {
           date: ticket.raisedDate,
           subject: ticket.ticketSubject,
           message: ticket.ticketMessage,
+          status: ticket.ticketStatus,
         }));
         setTickets(ticketData);
         setLoading(false);
@@ -122,7 +117,6 @@ function Ticket() {
     getAllTickets();
   }, []);
 
-
   const handleOpen1 = (ticketId) => {
     console.log("Selected Ticket ID:", ticketId);
     const selected = tickets.find((ticket) => ticket.ticketId === ticketId);
@@ -131,38 +125,38 @@ function Ticket() {
   };
   const updatetickets = async (ticketId, updatedDetails) => {
     try {
-      const response = await fetch(`http://localhost:8001/ticket/webapp/V1/updateTicket/${ticketId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedDetails),
-      });
+      const response = await fetch(
+        `http://localhost:8001/ticket/webapp/V1/updateTicket/${ticketId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedDetails),
+        }
+      );
       if (response.ok) {
         alert("Updated");
         updatedDetails({
           supportMessage: "",
-          updated_at: "",
           status: "",
-          updated_by:""
-         })
-      
+        });
       } else {
-        throw new Error('Failed to update ticket details');
+        throw new Error("Failed to update ticket details");
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   const handleSave = (e) => {
-  e.preventDefault();
-  const data = {
-    extraDetails: extraDetails,
+    e.preventDefault();
+    const data = {
+      extraDetails: extraDetails,
+    };
+    updatetickets(selectedTicket.ticketId, data);
+    handleClose1();
   };
-  updatetickets(selectedTicket.ticketId, data);
-  handleClose1();
-};
 
   return (
     <DashboardLayout>
@@ -261,7 +255,6 @@ function Ticket() {
                           marginTop: "-25px",
                           marginLeft: "40%",
                         }}
-                        // name="phone"
                       >
                         <span>
                           <strong>Phone No- </strong> {ticket.phoneNumber}
@@ -274,10 +267,10 @@ function Ticket() {
                           marginTop: "-25px",
                           marginLeft: "70%",
                         }}
-                        // name="ticketno"
                       >
                         <strong>Ticket No- {ticket.ticketId}</strong>
                       </p>
+
                       <p
                         style={{
                           fontSize: "15px",
@@ -285,7 +278,6 @@ function Ticket() {
                           marginTop: "5px",
                           marginLeft: "10%",
                         }}
-                        // name="subject"
                       >
                         <strong>Subject- </strong> {ticket.subject}
                       </p>
@@ -318,10 +310,9 @@ function Ticket() {
                               border: "1px solid #1A73E8",
                               marginBottom: "5px",
                               outline: "none",
-                              // name: "status",
                             }}
                           >
-                            Open
+                            {ticket.status}
                           </Button>
                         </div>
                         <Button
@@ -514,6 +505,7 @@ function Ticket() {
                             <strong>Ticket Raised Date- </strong>
                             {selectedTicket.date}
                           </p>
+
                           <p
                             style={{
                               fontSize: "15px",
@@ -553,25 +545,27 @@ function Ticket() {
                     <h5 style={{ textAlign: "center", margin: "5px" }}>
                       Support Provided
                     </h5>
-                    <div>
+                    <form style={styles.form} onSubmit={handleSave}>
                       {extraDetails.map((detail, index) => (
                         <div key={index}>
-                          <label style={{ fontSize: "14px" }}>Support Remarks</label>
+                          <label style={{ fontSize: "14px" }}>
+                            Support Remarks
+                          </label>
                           <textarea
                             // name="remarks"
                             placeholder="Remarks.."
                             style={styles.input}
                             rows="10"
                             cols="5"
-                            required
                             // value={detail.remarks}
                             onChange={(e) => {
                               const values = [...extraDetails];
                               values[index].title = e.target.value;
                               setExtraDetails(values);
                             }}
+                            required
                           />
-                          
+
                           <label
                             style={{ fontSize: "14px" }}
                             // name="status"
@@ -580,8 +574,9 @@ function Ticket() {
                               values[index].title = e.target.value;
                               setExtraDetails(values);
                             }}
+                            value={selectedTicket.status}
                           >
-                            Status:{selectedTicket.status}
+                            Status:
                           </label>
                           <select
                             style={{
@@ -597,15 +592,13 @@ function Ticket() {
                             <option value={3}>Closed</option>
                           </select>
                         </div>
+                        
                       ))}
-                    </div>
-                    <button
-                      type="submit"
-                      style={styles.button}
-                      onClick={handleSave}
-                    >
+                      <button type="submit" style={styles.button}>
                       Save
                     </button>
+                    </form>
+                    
                   </div>
                 )}
               </div>
