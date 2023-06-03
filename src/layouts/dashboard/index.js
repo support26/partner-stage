@@ -14,6 +14,7 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
 // import {message} from 'antd';
 // import { logout } from "store/auth/action";
+import "../../client"
 
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState("0");
