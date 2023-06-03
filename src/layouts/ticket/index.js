@@ -16,12 +16,6 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Details from "./details";
-import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined";
-import "./datepicker.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -89,7 +83,7 @@ function Ticket() {
   const [extraDetails, setExtraDetails] = useState([
     {
       supportMessage: "",
-      updated_by:"support47",
+      updated_by:"",
       updated_at: "",
       status: "",
       
@@ -150,7 +144,7 @@ function Ticket() {
           supportMessage: "",
           updated_at: "",
           status: "",
-          updated_by:"support47"
+          updated_by:""
          })
       
       } else {
@@ -577,38 +571,7 @@ function Ticket() {
                               setExtraDetails(values);
                             }}
                           />
-                            
-                          <label style={{ fontSize: "14px" }}>                  
-                            Resolved date:
-                          </label>
-                          <DatePicker
-                            // name="res_date"
-                            placeholder="Enter the ticket resolved date"
-                            style={styles.input}
-                            dateFormat="dd/MM/yyyy"
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
-                            popperPlacement="auto-start"
-                            popperModifiers={{
-                              preventOverflow: {
-                                enabled: true,
-                                escapeWithReference: false,
-                                boundariesElement: "viewport",
-                              },
-                            }}
-                            customInput={
-                              <input className="react-datepicker-ignore-onclickoutside" />
-                            }
-                            renderInput={(props) => (
-                              <div className="react-datepicker-wrapper">
-                                <input {...props} />
-                                <CalendarIcon
-                                  className="react-datepicker-icon"
-                                  onClick={props.onClick}
-                                />
-                              </div>
-                            )}
-                          />
+                          
                           <label
                             style={{ fontSize: "14px" }}
                             // name="status"
