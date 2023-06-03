@@ -327,7 +327,7 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
+import { Api } from "@mui/icons-material";
 const style = {
   position: "absolute",
   top: "50%",
@@ -345,6 +345,16 @@ const style = {
   "&::-webkit-scrollbar": {
     display: "none",
   },
+  statusButton: {
+    width: "100px",
+    height: "30px",
+    borderRadius: "5px",
+    position: "absolute",
+    bottom: 0,
+    right: "14%",
+    marginBottom: "5px",
+    outline: "none",
+  },
 };
 
 const styles = {
@@ -358,7 +368,7 @@ const styles = {
   input: {
     width: "100%",
     padding: "10px",
-    border: "1px solid gray",
+    border: "1px solid black",
     borderRadius: "5px",
     marginBottom: "8px",
   },
@@ -384,23 +394,32 @@ const styles = {
 
 function Ticket() {
   const { GetAllTickets, UpdateTickets } = useAdmin();
-  const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
-  const [supportRemarks, setSupportRemarks] = useState("");
-  const [status, setStatus] = useState("");
+  const [extraDetails, setExtraDetails] = useState([
+    {
+      supportMessage: "",
+      status: "",
+    },
+  ]);
+  const [loading, setLoading] = useState(true);
 
   const handleCloseImage = () => {
     setShowImage(false);
   };
 
   const handleClose1 = () => setOpen1(false);
+  const [tickets, setTickets] = useState([]);
 
+  useEffect(() => {
+    getAllTickets();
+  }, []);
   const getAllTickets = () => {
     setLoading(true);
     var getalltickets = GetAllTickets();
@@ -410,104 +429,323 @@ function Ticket() {
           name: ticket.name,
           phoneNumber: ticket.phone_number,
           ticketId: ticket.ticketId,
-          date: ticket.date,
-          remarks: ticket.remarks,
-          status: ticket.status,
+          date: new Date(ticket.raisedDate).toLocaleDateString("en-GB"),
+          subject: ticket.ticketSubject,
+          message: ticket.ticketMessage,
+          status: ticket.ticketStatus,
+          supportMessage: ticket.supportMessage,
         }));
-        setTickets(ticketData);
+
+        const filteredTickets = ticketData.filter(
+          (ticket) =>
+            ticket.name.includes(searchQuery) ||
+            ticket.phoneNumber.includes(searchQuery) ||
+            ticket.ticketId.includes(searchQuery) ||
+            ticket.subject.includes(searchQuery)
+        );
+
+        setTickets(filteredTickets);
         setLoading(false);
       })
-      .catch((error) => {
-        console.log("Error:", error);
-        setLoading(false);
+      .catch((e) => {
+        console.log(e);
       });
   };
 
-  useEffect(() => {
-    getAllTickets();
-  }, []);
 
-  const handleOpen = (ticket) => {
-    setOpen(true);
-    setSelectedTicket(ticket);
-    setSelectedDate(ticket.date);
+  const handleOpen1 = (ticketId) => {
+    console.log("Selected Ticket ID:", ticketId);
+    const selected = tickets.find((ticket) => ticket.ticketId === ticketId);
+    setSelectedTicket(selected);
+    setOpen1(true);
   };
+  // const updatetickets = async (ticketId, updatedDetails) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await Api.put(
+  //       `http://localhost:8001/ticket/webapp/V1/updateTicket/${ticketId}`,
+  //       {
+  //         headers: {
+  //           Authorization:"Bearer" + token,
+            
+  //         },
+  //         body: JSON.stringify(updatedDetails),
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       alert("Updated");
+  //       updatedDetails({
+  //         supportMessage: "",
+  //         status: "",
+  //       });
+  //     } else {
+  //       throw new Error("Failed to update ticket details");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const handleUpdateTicket = () => {
-    const ticket = selectedTicket;
-    const updatedTicket = {
-      ...ticket,
-      remarks: supportRemarks,
-      status: status,
+  const handleSave = (e) => {
+    e.preventDefault();
+    const data = {
+      extraDetails: extraDetails,
     };
-
-    const updateTicket = UpdateTickets(updatedTicket);
+    var updateTicket = UpdateTickets(data, selectedTicket.ticketId);
     updateTicket
-      .then((res) => {
-        handleClose();
-        getAllTickets();
-        console.log("Ticket updated successfully");
+      .then((response) => {
+        // console.log(response);
+        if (response.status === 200) {
+          getAllTickets();
+          handleClose1();
+        }
       })
-      .catch((error) => {
-        console.log("Error:", error);
+      .catch((e) => {
+        console.log(e);
       });
-  };
-
-  const handleChange = (event) => {
-    setStatus(event.target.value);
-  };
-
-  const handleRemarkChange = (event) => {
-    setSupportRemarks(event.target.value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedTicket(null);
-    setSelectedDate(null);
-  };
-
-  const handleOpenImage = () => {
-    setShowImage(true);
   };
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox py={6}>
-        <Grid container spacing={3}>
-          {loading ? (
-            <Grid item xs={12}>
-              <CircularProgress />
-            </Grid>
-          ) : (
-            tickets.map((ticket) => (
-              <Grid item xs={12} sm={6} md={4} key={ticket.ticketId}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={ticket.imageUrl}
-                    alt="Ticket Image"
-                  />
-                  <CardContent>
-                    <h3>{ticket.name}</h3>
-                    <p>{ticket.phoneNumber}</p>
-                    <p>Date: {ticket.date}</p>
-                    <p>Status: {ticket.status}</p>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      color="primary"
-                      onClick={() => handleOpen(ticket)}
+      {showImage && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 999,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={handleCloseImage}
+        >
+          {/* <img
+            src={
+              ticket.title_image
+                ? ticket.title_image
+                : "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"
+            }
+            alt=""
+            style={{ maxWidth: "80%", maxHeight: "80%", objectFit: "contain" }}
+          /> */}
+        </div>
+      )}
+      <div
+        style={{
+          float: "left",
+          marginLeft: "-2px",
+          padding: "0px",
+          margin: "7px  0px 10px",
+          width: "222px",
+        }}
+      >
+        <input
+          style={{
+            margin: "7px 10px 0px 10px",
+            padding: "6px 10px",
+            borderColor: "#33a2b5",
+            borderRadius: "10px",
+            width: "142%",
+            height: "6vh",
+            outline: "none",
+            border: "2px solid #33a2b5",
+          }}
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </div>
+
+      <MDBox pt={1} mx={1}>
+        <Grid container spacing={1}>
+          {tickets.length !== 0 ? (
+            tickets.map((ticket, key) => (
+              <Grid key={key} item xs={12} mt={0}>
+                <MDBox mb={0}>
+                  <Card
+                    sx={{
+                      position: "relative",
+                      maxWidth: "100%",
+                      maxHeight: 600,
+                    }}
+                  >
+                    <CardMedia
+                      sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
+                      component="img"
+                      image={
+                        "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                      }
+                      alt=""
+                      position="relative"
+                    />
+
+                    <CardContent>
+                      <p
+                        style={{
+                          fontSize: "15px",
+                          color: "gray",
+                          marginTop: "-50px",
+                          marginLeft: "10%",
+                        }}
+                        // name="name"
+                      >
+                        <span style={{ color: "black" }}>Name- </span>{" "}
+                        {ticket.name}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "15px",
+                          color: "gray",
+                          marginTop: "-25px",
+                          marginLeft: "40%",
+                        }}
+                      >
+                        <span>
+                          <span style={{ color: "black" }}>Phone No- </span>{" "}
+                          {ticket.phoneNumber}
+                        </span>
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "15px",
+                          color: "gray",
+                          marginTop: "-25px",
+                          marginLeft: "70%",
+                        }}
+                      >
+                        <span style={{ color: "black" }}>Ticket No- </span>{" "}
+                        {ticket.ticketId}
+                      </p>
+
+                      <p
+                        style={{
+                          fontSize: "15px",
+                          color: "gray",
+                          marginTop: "5px",
+                          marginLeft: "10%",
+                        }}
+                      >
+                        <span style={{ color: "black" }}>Subject- </span>{" "}
+                        {ticket.subject}
+                      </p>
+                    </CardContent>
+                    <div
+                      sx={{
+                        position: "absolute",
+                        bottom: 50,
+                        flex: 10,
+                        justifyContent: "space-between",
+                        justifyContent: "flex-end",
+                        bottom: 0,
+                      }}
                     >
-                      View Details
-                    </Button>
-                  </CardActions>
-                </Card>
+                      <CardActions sx={{ marginTop: -3 }}>
+                        {/* Add the following conditional rendering for each status button */}
+                        {ticket.status === "Open" && (
+                          <div
+                            style={{
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "green",
+                                border: "1px solid green",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.status}
+                            </Button>
+                          </div>
+                        )}
+                        {ticket.status === "In Progress" && (
+                          <div
+                            style={{
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "yellow",
+                                border: "1px solid yellow",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.status}
+                            </Button>
+                          </div>
+                        )}
+                        {ticket.status === "Closed" && (
+                          <div
+                            style={{
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "red",
+                                border: "1px solid red",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.status}
+                            </Button>
+                          </div>
+                        )}
+                        <Button
+                          style={{
+                            width: "100px",
+                            height: "30px",
+                            borderRadius: "5px",
+                            position: "absolute",
+                            bottom: 0,
+                            right: "5%",
+                            border: "1px solid #1A73E8",
+                            marginBottom: "5px",
+                            outline: "none",
+                            backgroundColor: "#33a2b5",
+                            color: "white",
+                          }}
+                          onClick={() => handleOpen1(ticket.ticketId)}
+                        >
+                          View Details
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </Card>
+                </MDBox>
               </Grid>
             ))
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "20vh",
+                fontSize: "30px",
+              }}
+            >
+              {loading ? (
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <span>No Result's found !!!!</span>
+              )}
+            </div>
           )}
         </Grid>
       </MDBox>
@@ -515,57 +753,8 @@ function Ticket() {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <IconButton
-              aria-label="close"
-              style={{ position: "absolute", right: 10, top: 10 }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-            <h2 id="transition-modal-title">Ticket Details</h2>
-            {selectedTicket && (
-              <div>
-                <h3>Ticket ID: {selectedTicket.ticketId}</h3>
-                <p>Name: {selectedTicket.name}</p>
-                <p>Phone Number: {selectedTicket.phoneNumber}</p>
-                <p>Date: {selectedDate}</p>
-                <p>Status: {selectedTicket.status}</p>
-                <p>Remarks: {selectedTicket.remarks}</p>
-                <Button
-                  variant="contained"
-                  onClick={handleOpenImage}
-                  style={{ marginBottom: 10 }}
-                >
-                  View Image
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => setOpen1(true)}
-                  style={{ marginBottom: 10, marginLeft: 10 }}
-                >
-                  Update Ticket
-                </Button>
-              </div>
-            )}
-          </Box>
-        </Fade>
-      </Modal>
-
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
         open={open1}
-        onClose={handleClose1}
+        // onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -574,74 +763,262 @@ function Ticket() {
       >
         <Fade in={open1}>
           <Box sx={style}>
-            <IconButton
-              aria-label="close"
-              style={{ position: "absolute", right: 10, top: 10 }}
-              onClick={handleClose1}
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
             >
-              <CloseIcon />
-            </IconButton>
-            <h2 id="transition-modal-title">Update Ticket</h2>
-            <form style={styles.form}>
-              <textarea
-                name="remarks"
-                placeholder="Enter Support Remarks"
-                style={styles.input}
-                rows="4"
-                onChange={handleRemarkChange}
-              ></textarea>
-              <select
-                name="status"
-                style={styles.input}
-                onChange={handleChange}
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  onClick={handleClose1}
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-25px",
+                    marginRight: "-25px",
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{
+                  textAlign: "center",
+                  marginTop: "0px",
+                  position: "sticky",
+                  widht: "100%",
+                }}
               >
-                <option value="">Select Status</option>
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Closed">Closed</option>
-              </select>
-              <button
-                type="button"
-                onClick={handleUpdateTicket}
-                style={styles.button}
-              >
-                Update
-              </button>
-            </form>
-          </Box>
-        </Fade>
-      </Modal>
+                Query Raised
+              </h4>
+            </div>
+            <div>
+              <div>
+                {showImage && (
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      zIndex: 999,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={handleCloseImage}
+                  >
+                    <img
+                      src={
+                        "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"
+                      }
+                      alt=""
+                      style={{
+                        maxWidth: "80%",
+                        maxHeight: "80%",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
+                )}
+                {selectedTicket && (
+                  <div className="xyz">
+                    <MDBox pt={1} mx={1}>
+                      <Card
+                        sx={{
+                          position: "relative",
+                          maxWidth: "100%",
+                          maxHeight: 600,
+                        }}
+                      >
+                        <CardMedia
+                          sx={{ height: 100, width: 100 }}
+                          component="img"
+                          image="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        ></CardMedia>
+                        <CardContent>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginTop: "-100px",
+                              marginLeft: "20%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>Name- </span>{" "}
+                            {selectedTicket.name}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-25px",
+                            }}
+                            // name="name"
+                          >
+                            <span>
+                              <span style={{ color: "black" }}>Phone No- </span>
+                              {selectedTicket.phoneNumber}
+                            </span>
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "20%",
+                              marginTop: "2%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>Ticket No- </span>
+                            {selectedTicket.ticketId}
+                          </p>
 
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={showImage}
-        onClose={handleCloseImage}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={showImage}>
-          <Box sx={style}>
-            <IconButton
-              aria-label="close"
-              style={{ position: "absolute", right: 10, top: 10 }}
-              onClick={handleCloseImage}
-            >
-              <CloseIcon />
-            </IconButton>
-            <img
-              src={selectedTicket && selectedTicket.imageUrl}
-              alt="Ticket Image"
-              style={{ width: "100%", height: "100%" }}
-            />
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-3%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>
+                              Ticket Raised Date-{" "}
+                            </span>
+                            {selectedTicket.date}
+                          </p>
+
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "20%",
+                              marginTop: "2%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>
+                              Ticket Subject-{" "}
+                            </span>
+                            {selectedTicket.subject}
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              border: "2px solid black",
+                              height: "auto",
+                              marginBottom: "10px",
+                              borderRadius: "10px",
+                              marginTop: "20px",
+                            }}
+                          >
+                            {selectedTicket.message}
+                          </p>
+                          <div>
+                            <label style={{ fontSize: "14px", color: "black" }}>
+                              Support Remarks
+                            </label>
+                            <p
+                              style={{
+                                fontSize: "15px",
+                                color: "black",
+                                border: "2px solid black",
+                                height: "40px",
+                                marginBottom: "10px",
+                                borderRadius: "10px",
+                                marginTop: "20px",
+                              }}
+                            >
+                              {selectedTicket.supportMessage}
+                            </p>
+                          </div>
+                          {/* <CardMedia
+                sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
+                component="img"
+                image={
+                  "https://storage.googleapis.com/android-mapping-backend.appspot.com/1683205156389.blob"
+                }
+              ></CardMedia> */}
+                        </CardContent>
+                      </Card>
+                    </MDBox>
+                    <br />
+                    <hr />
+                    <h5 style={{ textAlign: "center", margin: "5px" }}>
+                      Support Provided
+                    </h5>
+                    <form style={styles.form} onSubmit={handleSave}>
+                      {extraDetails.map((detail, index) => (
+                        <div key={index}>
+                          <label style={{ fontSize: "14px" }}>
+                            Support Remarks
+                          </label>
+                          <textarea
+                            // name="remarks"
+                            placeholder="Remarks.."
+                            style={styles.input}
+                            rows="5"
+                            cols="5"
+                            // value={detail.remarks}
+                            onChange={(e) => {
+                              const values = [...extraDetails];
+                              values[index].title = e.target.value;
+                              setExtraDetails(values);
+                            }}
+                            required
+                          />
+
+                          <label
+                            style={{ fontSize: "14px" }}
+                            // name="status"
+                            onChange={(e) => {
+                              const values = [...extraDetails];
+                              values[index].title = e.target.value;
+                              setExtraDetails(values);
+                            }}
+                            value={selectedTicket.status}
+                          >
+                            Status:
+                          </label>
+                          <select
+                            style={{
+                              width: "135px",
+                              height: "35px",
+                              borderRadius: "5px",
+                              marginLeft: "55px",
+                              background: "white",
+                            }}
+                          >
+                            <option value={1}>Open</option>
+                            <option value={2}>In Process</option>
+                            <option value={3}>Closed</option>
+                          </select>
+                        </div>
+                      ))}
+                      <button type="submit" style={styles.button}>
+                        Save
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </div>
           </Box>
         </Fade>
       </Modal>
     </DashboardLayout>
   );
 }
-
 export default Ticket;

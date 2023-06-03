@@ -33,6 +33,16 @@ const style = {
   "&::-webkit-scrollbar": {
     display: "none",
   },
+  statusButton:{
+    width:"100px",
+    height:"30px",
+    borderRadius:"5px",
+    position:"absolute",
+    bottom:0,
+    right:"14%",
+    marginBottom:"5px",
+    outline:"none"
+  }
 };
 
 const styles = {
@@ -46,7 +56,7 @@ const styles = {
   input: {
     width: "100%",
     padding: "10px",
-    border: "1px solid gray",
+    border: "1px solid black",
     borderRadius: "5px",
     marginBottom: "8px",
   },
@@ -71,7 +81,7 @@ const styles = {
 };
 
 function Ticket() {
-  const { GetAllTickets } = useAdmin();
+  const { GetAllTickets, UpdateTickets } = useAdmin();
   const [open1, setOpen1] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -100,10 +110,11 @@ function Ticket() {
           name: ticket.name,
           phoneNumber: ticket.phone_number,
           ticketId: ticket.ticketId,
-          date: ticket.raisedDate,
+          date: new Date(ticket.raisedDate).toLocaleDateString("en-GB"),
           subject: ticket.ticketSubject,
           message: ticket.ticketMessage,
           status: ticket.ticketStatus,
+          supportMessage: ticket.supportMessage
         }));
         setTickets(ticketData);
         setLoading(false);
@@ -123,39 +134,23 @@ function Ticket() {
     setSelectedTicket(selected);
     setOpen1(true);
   };
-  const updatetickets = async (ticketId, updatedDetails) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/ticket/webapp/V1/updateTicket/${ticketId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedDetails),
-        }
-      );
-      if (response.ok) {
-        alert("Updated");
-        updatedDetails({
-          supportMessage: "",
-          status: "",
-        });
-      } else {
-        throw new Error("Failed to update ticket details");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleSave = (e) => {
     e.preventDefault();
     const data = {
       extraDetails: extraDetails,
     };
-    updatetickets(selectedTicket.ticketId, data);
-    handleClose1();
+    var updateTicket = UpdateTickets(data, selectedTicket.ticketId);
+    updateTicket
+      .then((response) => {
+        // console.log(response);
+        if (response.status === 200) {
+          getAllTickets();
+          handleClose1();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -226,6 +221,7 @@ function Ticket() {
                       maxHeight: 600,
                     }}
                   >
+                    
                     <CardMedia
                       sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
                       component="img"
@@ -246,7 +242,7 @@ function Ticket() {
                         }}
                         // name="name"
                       >
-                        <strong>Name- </strong> {ticket.name}
+                        <span style={{color:"black"}}>Name- </span> {ticket.name}
                       </p>
                       <p
                         style={{
@@ -257,7 +253,7 @@ function Ticket() {
                         }}
                       >
                         <span>
-                          <strong>Phone No- </strong> {ticket.phoneNumber}
+                          <span style={{color:"black"}}>Phone No- </span> {ticket.phoneNumber}
                         </span>
                       </p>
                       <p
@@ -268,7 +264,7 @@ function Ticket() {
                           marginLeft: "70%",
                         }}
                       >
-                        <strong>Ticket No- {ticket.ticketId}</strong>
+                        <span style={{color:"black"}}>Ticket No- </span> {ticket.ticketId}
                       </p>
 
                       <p
@@ -279,7 +275,7 @@ function Ticket() {
                           marginLeft: "10%",
                         }}
                       >
-                        <strong>Subject- </strong> {ticket.subject}
+                        <span style={{color:"black"}}>Subject- </span> {ticket.subject}
                       </p>
                     </CardContent>
                     <div
@@ -292,7 +288,28 @@ function Ticket() {
                         bottom: 0,
                       }}
                     >
-                      <CardActions sx={{ marginTop: -3 }}>
+                     <CardActions sx={{ marginTop: -3 }}>
+                      {/* Add the following conditional rendering for each status button */}
+                      {ticket.status === "Open" && (
+                        <div
+                          style={{
+                            margin: "0px 2px 2px 00px",
+                            cursor: "pointer",
+                          }}
+                        >
+                            <Button
+                            style={{
+                              ...style.statusButton,
+                              backgroundColor: "green",
+                              border: "1px solid green",
+                              color:"white"
+                            }}
+                          >
+                            {ticket.status}
+                          </Button>
+                        </div>
+                      )}
+                      {ticket.status === "In Progress" && (
                         <div
                           style={{
                             margin: "0px 2px 2px 00px",
@@ -301,20 +318,35 @@ function Ticket() {
                         >
                           <Button
                             style={{
-                              width: "100px",
-                              height: "30px",
-                              borderRadius: "5px",
-                              position: "absolute",
-                              bottom: 0,
-                              right: "14%",
-                              border: "1px solid #1A73E8",
-                              marginBottom: "5px",
-                              outline: "none",
+                              ...style.statusButton,
+                              backgroundColor: "yellow",
+                              border: "1px solid yellow",
+                              color:"white"
                             }}
                           >
                             {ticket.status}
                           </Button>
                         </div>
+                      )}
+                      {ticket.status === "Closed" && (
+                        <div
+                          style={{
+                            margin: "0px 2px 2px 00px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Button
+                            style={{
+                              ...style.statusButton,
+                              backgroundColor: "red",
+                              border: "1px solid red",
+                              color:"white"
+                            }}
+                          >
+                            {ticket.status}
+                          </Button>
+                        </div>
+                      )}
                         <Button
                           style={{
                             width: "100px",
@@ -326,6 +358,8 @@ function Ticket() {
                             border: "1px solid #1A73E8",
                             marginBottom: "5px",
                             outline: "none",
+                            backgroundColor:"#33a2b5",
+                            color:"white"
                           }}
                           onClick={() => handleOpen1(ticket.ticketId)}
                         >
@@ -466,7 +500,7 @@ function Ticket() {
                               marginLeft: "20%",
                             }}
                           >
-                            <strong>Name- </strong> {selectedTicket.name}
+                            <span style={{color:"black"}}>Name- </span> {selectedTicket.name}
                           </p>
                           <p
                             style={{
@@ -478,7 +512,7 @@ function Ticket() {
                             // name="name"
                           >
                             <span>
-                              <strong>Phone No- </strong>
+                            <span style={{color:"black"}}>Phone No- </span>
                               {selectedTicket.phoneNumber}
                             </span>
                           </p>
@@ -487,10 +521,10 @@ function Ticket() {
                               fontSize: "15px",
                               color: "gray",
                               marginLeft: "20%",
-                              marginTop: "3%",
+                              marginTop: "2%",
                             }}
                           >
-                            <strong>Ticket No- </strong>
+                            <span style={{color:"black"}}>Ticket No- </span>
                             {selectedTicket.ticketId}
                           </p>
 
@@ -502,7 +536,7 @@ function Ticket() {
                               marginTop: "-3%",
                             }}
                           >
-                            <strong>Ticket Raised Date- </strong>
+                          <span style={{color:"black"}}>Ticket Raised Date- </span>
                             {selectedTicket.date}
                           </p>
 
@@ -511,17 +545,17 @@ function Ticket() {
                               fontSize: "15px",
                               color: "gray",
                               marginLeft: "20%",
-                              marginTop: "0",
+                              marginTop: "2%",
                             }}
                           >
-                            <strong>Ticket Subject- </strong>
+                            <span style={{color:"black"}}>Ticket Subject- </span>
                             {selectedTicket.subject}
                           </p>
                           <p
                             style={{
                               fontSize: "15px",
                               color: "gray",
-                              border: "2px solid gray",
+                              border: "2px solid black",
                               height: "auto",
                               marginBottom: "10px",
                               borderRadius: "10px",
@@ -530,6 +564,24 @@ function Ticket() {
                           >
                             {selectedTicket.message}
                           </p>
+                          <div>
+                          <label style={{ fontSize: "14px", color:"black" }}>
+                            Support Remarks
+                          </label>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "black",
+                              border: "2px solid black",
+                              height: "40px",
+                              marginBottom: "10px",
+                              borderRadius: "10px",
+                              marginTop: "20px",
+                            }}
+                          >
+                            {selectedTicket.supportMessage}
+                          </p>
+                          </div>
                           {/* <CardMedia
                 sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
                 component="img"
@@ -555,12 +607,13 @@ function Ticket() {
                             // name="remarks"
                             placeholder="Remarks.."
                             style={styles.input}
-                            rows="10"
+                            rows="5"
                             cols="5"
+                            value={detail.supportMessage}
                             // value={detail.remarks}
                             onChange={(e) => {
                               const values = [...extraDetails];
-                              values[index].title = e.target.value;
+                              values[index].supportMessage = e.target.value;
                               setExtraDetails(values);
                             }}
                             required
@@ -568,13 +621,6 @@ function Ticket() {
 
                           <label
                             style={{ fontSize: "14px" }}
-                            // name="status"
-                            onChange={(e) => {
-                              const values = [...extraDetails];
-                              values[index].title = e.target.value;
-                              setExtraDetails(values);
-                            }}
-                            value={selectedTicket.status}
                           >
                             Status:
                           </label>
@@ -585,6 +631,11 @@ function Ticket() {
                               borderRadius: "5px",
                               marginLeft: "55px",
                               background: "white",
+                            }}
+                            onChange={(e) => {
+                              const values = [...extraDetails];
+                              values[index].status = e.target.value;
+                              setExtraDetails(values);
                             }}
                           >
                             <option value={1}>Open</option>
