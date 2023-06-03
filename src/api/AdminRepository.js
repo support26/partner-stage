@@ -538,5 +538,39 @@ class AdminRepository {
       });
     return reponse;
   }
+
+  async getAllTickets(data) {
+    const token = localStorage.getItem("token");
+    const response = await Api.get(`${baseUrl}ticket/webapp/V1/getAllTickets`, 
+    data,
+    {
+      headers:{
+        Authorization:"Bearer" + token,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.log(error.response);
+      return error.response;
+    });
+    return response;
+  }
+
+  async updateTickets(data, selectedTicket) {
+    const token = localStorage.getItem("token");
+    const reponse = await Api.put(
+      `${baseUrl}ticket/webapp/V1/updateTicket/${selectedTicket}`)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        return error.response;
+      });
+    return reponse;
+  }
+
 }
 export default new AdminRepository();

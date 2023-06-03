@@ -6,6 +6,7 @@ import React from "react";
 // import Anouncement from "./layouts/anouncement";
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Ticket from "layouts/ticket";
 
 const Dashboard = React.lazy(() => import('./layouts/dashboard'));
 const Tables = React.lazy(() => import('./layouts/tables'));
@@ -54,7 +55,22 @@ const routes = [
     route: "/applications",
     component: <DirectApplications />,
   },
+  {
+    type: "collapse",
+    name: "Tickets",
+    key: "tickets",
+    icon: <Icon fontSize="medium">confirmation_number</Icon>,
+    route :"/ticket",
+    component: <Ticket />
+  }
   
 ];
 
 export default routes;
+// {Cookies.get('token') && roleId == 0 && (
+//   <Route path="/ticket" element={
+//     <Suspense fallback={<Loader/>}>
+//       <Ticket/>
+//     </Suspense>
+//   } />
+// )}

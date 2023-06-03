@@ -374,7 +374,26 @@ export default function useAdmin() {
         return responseData;
       }
       return responseData;
-    }
+    },
+
+    //get Tickets raised by users
+    GetAllTickets: async () => {
+      var responseData = await AdminRepository.getAllTickets();
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
+
+    //Update tickets
+    UpdateTickets: async (data, ticketId) => {
+      var responseData = await AdminRepository.updateTickets(data, ticketId);
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+        return responseData;
+      }
+      return responseData;
+    },
 
   };
 }
