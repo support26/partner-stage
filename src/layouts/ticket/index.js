@@ -27,7 +27,7 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
-  background: "lightgray",
+  background: "#cfe8ef",
   p: 3,
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
@@ -117,6 +117,8 @@ function Ticket() {
           message: ticket.ticketMessage,
           ticketStatus: ticket.ticketStatus,
           supportMessage: ticket.supportMessage,
+          updated_by: ticket.updated_by,
+          updated_at: new Date(ticket.updated_at).toLocaleDateString("en-GB"),
         }));
         setTickets(ticketData);
         setLoading(false);
@@ -155,7 +157,6 @@ function Ticket() {
         console.log(e);
       });
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -397,6 +398,10 @@ function Ticket() {
             </div>
           )}
         </Grid>
+        <br/>
+      
+           
+             
       </MDBox>
 
       <Modal
@@ -562,18 +567,51 @@ function Ticket() {
                             </span>
                             {selectedTicket.subject}
                           </p>
-                          <p 
+                          <p
                             style={{
                               fontSize: "15px",
                               color: "gray",
                               marginLeft: "60%",
-                              marginTop: "-4%",
-                            }}>
-                          <span style={{ color: "black" }}>
-                              Status- <span style={{color:"gray"}}>{selectedTicket.ticketStatus}</span>
+                              marginTop: "-3%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>
+                              Status-{" "}
+                              <span style={{ color: "gray" }}>
+                                {selectedTicket.ticketStatus}
+                              </span>
                             </span>
-                        
-                            </p>
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "20%",
+                              marginTop: "2%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>
+                              Last Updated By-{" "}
+                              <span style={{ color: "gray" }}>
+                                {selectedTicket.updated_by}
+                              </span>
+                            </span>
+                          </p>
+                          <p
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-3%",
+                            }}
+                          >
+                            <span style={{ color: "black" }}>
+                              Last Updated At-{" "}
+                              <span style={{ color: "gray" }}>
+                                {selectedTicket.updated_at}
+                              </span>
+                            </span>
+                          </p>
                           <p
                             style={{
                               fontSize: "15px",
@@ -605,8 +643,7 @@ function Ticket() {
                               {selectedTicket.supportMessage}
                             </p>
                           </div>
-                         
-                          
+
                           {/* <CardMedia
                 sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
                 component="img"
@@ -623,38 +660,39 @@ function Ticket() {
                       Support Provided
                     </h5>
                     <form style={styles.form} onSubmit={handleSave}>
-                     
-                          <label style={{ fontSize: "14px" }}>
-                            Support Remarks
-                          </label>
-                          <textarea
-                            name="supportMessage"
-                            value={selectedTicket.supportMessage}
-                            onChange={onChange}
-                            placeholder="Enter description"
-                            style={styles.input}
-                            rows="6"
-                            cols="24"
-                          />
+                      <label style={{ fontSize: "14px" }}>
+                        Support Remarks
+                      </label>
+                      <textarea
+                        name="supportMessage"
+                        onChange={onChange}
+                        placeholder="Enter description"
+                        style={styles.input}
+                        rows="6"
+                        cols="24"
+                        required
+                      />
 
-                          <label style={{ fontSize: "14px" }}>Status:</label>
-                          <select
-                            style={{
-                              width: "135px",
-                              height: "35px",
-                              borderRadius: "5px",
-                              marginLeft: "55px",
-                              background: "white",
-                            }}
-                            name="ticketStatus"
-                            onChange={onChange}
-                          value={selectedTicket.selectedStatus}
-                          >
-                            <option value={"Open"}>Open</option>
-                            <option value={"In Process"}>In Process</option>
-                            <option value={"Closed"}>Closed</option>
-                          </select>
-                     
+                      <label style={{ fontSize: "14px" }}>Status:</label>
+                      <select
+                        style={{
+                          width: "200px",
+                          height: "50px",
+                          borderRadius: "5px",
+                          marginLeft: "55px",
+                          background: "white",
+                        }}
+                        name="ticketStatus"
+                        onChange={onChange}
+                        required
+                        defaultValue={selectedTicket.ticketStatus}
+                      >
+                        <option value="" disabled >-- Select Status --</option>
+                        <option value={"Open"}>Open</option>
+                        <option value={"In Process"}>In Process</option>
+                        <option value={"Closed"}>Closed</option>
+                      </select>
+
                       <button type="submit" style={styles.button}>
                         Save
                       </button>
@@ -662,6 +700,7 @@ function Ticket() {
                   </div>
                 )}
               </div>
+             
             </div>
           </Box>
         </Fade>
