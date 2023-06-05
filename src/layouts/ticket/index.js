@@ -23,7 +23,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "900px",
+  width: "950px",
   maxWidth: "90%",
   height: "750px",
   bgcolor: "background.paper",
@@ -63,9 +63,9 @@ const styles = {
     marginBottom: "8px",
   },
   button: {
-    width: "100%",
+    width: "20%",
     padding: "10px",
-    margin: "10px 0 0 0",
+    margin: "10px 0 0 340px",
     border: "none",
     borderRadius: "10px",
     backgroundColor: "#33a2b5",
@@ -510,7 +510,7 @@ function Ticket() {
                   textAlign: "center",
                   marginTop: "0px",
                   position: "sticky",
-                  widht: "100%",
+                  // width: "50px",
                 }}
               >
                 Query Raised
@@ -733,7 +733,7 @@ function Ticket() {
                         onChange={onChange}
                         placeholder="Enter description"
                         style={styles.input}
-                        rows="6"
+                        rows="5"
                         cols="24"
                         required
                       />
