@@ -29,7 +29,7 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
-  background: "#cfe8ef",
+  background: "rgb(230, 228, 228)",
   p: 3,
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
