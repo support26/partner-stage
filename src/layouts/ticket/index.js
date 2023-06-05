@@ -33,16 +33,16 @@ const style = {
   "&::-webkit-scrollbar": {
     display: "none",
   },
-  statusButton:{
-    width:"100px",
-    height:"30px",
-    borderRadius:"5px",
-    position:"absolute",
-    bottom:0,
-    right:"14%",
-    marginBottom:"5px",
-    outline:"none"
-  }
+  statusButton: {
+    width: "100px",
+    height: "30px",
+    borderRadius: "5px",
+    position: "absolute",
+    bottom: 0,
+    right: "14%",
+    marginBottom: "5px",
+    outline: "none",
+  },
 };
 
 const styles = {
@@ -87,10 +87,10 @@ function Ticket() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
 
-  const [extraDetails, setExtraDetails] = useState([
+  const [values, setValues] = useState([
     {
       supportMessage: "",
-      status: "",
+      ticketStatus: "",
     },
   ]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +100,9 @@ function Ticket() {
   };
 
   const handleClose1 = () => setOpen1(false);
-
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
   const getAllTickets = () => {
     setLoading(true);
     var getalltickets = GetAllTickets();
@@ -113,8 +115,8 @@ function Ticket() {
           date: new Date(ticket.raisedDate).toLocaleDateString("en-GB"),
           subject: ticket.ticketSubject,
           message: ticket.ticketMessage,
-          status: ticket.ticketStatus,
-          supportMessage: ticket.supportMessage
+          ticketStatus: ticket.ticketStatus,
+          supportMessage: ticket.supportMessage,
         }));
         setTickets(ticketData);
         setLoading(false);
@@ -137,7 +139,8 @@ function Ticket() {
   const handleSave = (e) => {
     e.preventDefault();
     const data = {
-      extraDetails: extraDetails,
+      supportMessage: values.supportMessage,
+      ticketStatus: values.ticketStatus,
     };
     var updateTicket = UpdateTickets(data, selectedTicket.ticketId);
     updateTicket
@@ -221,7 +224,6 @@ function Ticket() {
                       maxHeight: 600,
                     }}
                   >
-                    
                     <CardMedia
                       sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
                       component="img"
@@ -242,7 +244,8 @@ function Ticket() {
                         }}
                         // name="name"
                       >
-                        <span style={{color:"black"}}>Name- </span> {ticket.name}
+                        <span style={{ color: "black" }}>Name- </span>{" "}
+                        {ticket.name}
                       </p>
                       <p
                         style={{
@@ -253,7 +256,8 @@ function Ticket() {
                         }}
                       >
                         <span>
-                          <span style={{color:"black"}}>Phone No- </span> {ticket.phoneNumber}
+                          <span style={{ color: "black" }}>Phone No- </span>{" "}
+                          {ticket.phoneNumber}
                         </span>
                       </p>
                       <p
@@ -264,7 +268,8 @@ function Ticket() {
                           marginLeft: "70%",
                         }}
                       >
-                        <span style={{color:"black"}}>Ticket No- </span> {ticket.ticketId}
+                        <span style={{ color: "black" }}>Ticket No- </span>{" "}
+                        {ticket.ticketId}
                       </p>
 
                       <p
@@ -275,7 +280,8 @@ function Ticket() {
                           marginLeft: "10%",
                         }}
                       >
-                        <span style={{color:"black"}}>Subject- </span> {ticket.subject}
+                        <span style={{ color: "black" }}>Subject- </span>{" "}
+                        {ticket.subject}
                       </p>
                     </CardContent>
                     <div
@@ -288,65 +294,65 @@ function Ticket() {
                         bottom: 0,
                       }}
                     >
-                     <CardActions sx={{ marginTop: -3 }}>
-                      {/* Add the following conditional rendering for each status button */}
-                      {ticket.status === "Open" && (
-                        <div
-                          style={{
-                            margin: "0px 2px 2px 00px",
-                            cursor: "pointer",
-                          }}
-                        >
+                      <CardActions sx={{ marginTop: -3 }}>
+                        {/* Add the following conditional rendering for each status button */}
+                        {ticket.ticketStatus === "Open" && (
+                          <div
+                            style={{
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
+                            }}
+                          >
                             <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "green",
+                                border: "1px solid green",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.ticketStatus}
+                            </Button>
+                          </div>
+                        )}
+                        {ticket.ticketStatus === "In Process" && (
+                          <div
                             style={{
-                              ...style.statusButton,
-                              backgroundColor: "green",
-                              border: "1px solid green",
-                              color:"white"
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
                             }}
                           >
-                            {ticket.status}
-                          </Button>
-                        </div>
-                      )}
-                      {ticket.status === "In Progress" && (
-                        <div
-                          style={{
-                            margin: "0px 2px 2px 00px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Button
+                            <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "orange",
+                                border: "1px solid yellow",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.ticketStatus}
+                            </Button>
+                          </div>
+                        )}
+                        {ticket.ticketStatus === "Closed" && (
+                          <div
                             style={{
-                              ...style.statusButton,
-                              backgroundColor: "yellow",
-                              border: "1px solid yellow",
-                              color:"white"
+                              margin: "0px 2px 2px 00px",
+                              cursor: "pointer",
                             }}
                           >
-                            {ticket.status}
-                          </Button>
-                        </div>
-                      )}
-                      {ticket.status === "Closed" && (
-                        <div
-                          style={{
-                            margin: "0px 2px 2px 00px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Button
-                            style={{
-                              ...style.statusButton,
-                              backgroundColor: "red",
-                              border: "1px solid red",
-                              color:"white"
-                            }}
-                          >
-                            {ticket.status}
-                          </Button>
-                        </div>
-                      )}
+                            <Button
+                              style={{
+                                ...style.statusButton,
+                                backgroundColor: "red",
+                                border: "1px solid red",
+                                color: "white",
+                              }}
+                            >
+                              {ticket.ticketStatus}
+                            </Button>
+                          </div>
+                        )}
                         <Button
                           style={{
                             width: "100px",
@@ -358,8 +364,8 @@ function Ticket() {
                             border: "1px solid #1A73E8",
                             marginBottom: "5px",
                             outline: "none",
-                            backgroundColor:"#33a2b5",
-                            color:"white"
+                            backgroundColor: "#33a2b5",
+                            color: "white",
                           }}
                           onClick={() => handleOpen1(ticket.ticketId)}
                         >
@@ -500,7 +506,8 @@ function Ticket() {
                               marginLeft: "20%",
                             }}
                           >
-                            <span style={{color:"black"}}>Name- </span> {selectedTicket.name}
+                            <span style={{ color: "black" }}>Name- </span>{" "}
+                            {selectedTicket.name}
                           </p>
                           <p
                             style={{
@@ -512,7 +519,7 @@ function Ticket() {
                             // name="name"
                           >
                             <span>
-                            <span style={{color:"black"}}>Phone No- </span>
+                              <span style={{ color: "black" }}>Phone No- </span>
                               {selectedTicket.phoneNumber}
                             </span>
                           </p>
@@ -524,7 +531,7 @@ function Ticket() {
                               marginTop: "2%",
                             }}
                           >
-                            <span style={{color:"black"}}>Ticket No- </span>
+                            <span style={{ color: "black" }}>Ticket No- </span>
                             {selectedTicket.ticketId}
                           </p>
 
@@ -536,7 +543,9 @@ function Ticket() {
                               marginTop: "-3%",
                             }}
                           >
-                          <span style={{color:"black"}}>Ticket Raised Date- </span>
+                            <span style={{ color: "black" }}>
+                              Ticket Raised Date-{" "}
+                            </span>
                             {selectedTicket.date}
                           </p>
 
@@ -548,9 +557,23 @@ function Ticket() {
                               marginTop: "2%",
                             }}
                           >
-                            <span style={{color:"black"}}>Ticket Subject- </span>
+                            <span style={{ color: "black" }}>
+                              Ticket Subject-{" "}
+                            </span>
                             {selectedTicket.subject}
                           </p>
+                          <p 
+                            style={{
+                              fontSize: "15px",
+                              color: "gray",
+                              marginLeft: "60%",
+                              marginTop: "-4%",
+                            }}>
+                          <span style={{ color: "black" }}>
+                              Status- <span style={{color:"gray"}}>{selectedTicket.ticketStatus}</span>
+                            </span>
+                        
+                            </p>
                           <p
                             style={{
                               fontSize: "15px",
@@ -565,23 +588,25 @@ function Ticket() {
                             {selectedTicket.message}
                           </p>
                           <div>
-                          <label style={{ fontSize: "14px", color:"black" }}>
-                            Support Remarks
-                          </label>
-                          <p
-                            style={{
-                              fontSize: "15px",
-                              color: "black",
-                              border: "2px solid black",
-                              height: "40px",
-                              marginBottom: "10px",
-                              borderRadius: "10px",
-                              marginTop: "20px",
-                            }}
-                          >
-                            {selectedTicket.supportMessage}
-                          </p>
+                            <label style={{ fontSize: "14px", color: "black" }}>
+                              Support Remarks
+                            </label>
+                            <p
+                              style={{
+                                fontSize: "15px",
+                                color: "black",
+                                border: "2px solid black",
+                                height: "40px",
+                                marginBottom: "10px",
+                                borderRadius: "10px",
+                                marginTop: "20px",
+                              }}
+                            >
+                              {selectedTicket.supportMessage}
+                            </p>
                           </div>
+                         
+                          
                           {/* <CardMedia
                 sx={{ maxHeight: "400px", minHeight: 100, maxWidth: "400px", alignItems:"center", marginLeft:"22%" }}
                 component="img"
@@ -598,32 +623,21 @@ function Ticket() {
                       Support Provided
                     </h5>
                     <form style={styles.form} onSubmit={handleSave}>
-                      {extraDetails.map((detail, index) => (
-                        <div key={index}>
+                     
                           <label style={{ fontSize: "14px" }}>
                             Support Remarks
                           </label>
                           <textarea
-                            // name="remarks"
-                            placeholder="Remarks.."
+                            name="supportMessage"
+                            value={selectedTicket.supportMessage}
+                            onChange={onChange}
+                            placeholder="Enter description"
                             style={styles.input}
-                            rows="5"
-                            cols="5"
-                            value={detail.supportMessage}
-                            // value={detail.remarks}
-                            onChange={(e) => {
-                              const values = [...extraDetails];
-                              values[index].supportMessage = e.target.value;
-                              setExtraDetails(values);
-                            }}
-                            required
+                            rows="6"
+                            cols="24"
                           />
 
-                          <label
-                            style={{ fontSize: "14px" }}
-                          >
-                            Status:
-                          </label>
+                          <label style={{ fontSize: "14px" }}>Status:</label>
                           <select
                             style={{
                               width: "135px",
@@ -632,24 +646,19 @@ function Ticket() {
                               marginLeft: "55px",
                               background: "white",
                             }}
-                            onChange={(e) => {
-                              const values = [...extraDetails];
-                              values[index].status = e.target.value;
-                              setExtraDetails(values);
-                            }}
+                            name="ticketStatus"
+                            onChange={onChange}
+                          value={selectedTicket.selectedStatus}
                           >
-                            <option value={1}>Open</option>
-                            <option value={2}>In Process</option>
-                            <option value={3}>Closed</option>
+                            <option value={"Open"}>Open</option>
+                            <option value={"In Process"}>In Process</option>
+                            <option value={"Closed"}>Closed</option>
                           </select>
-                        </div>
-                        
-                      ))}
+                     
                       <button type="submit" style={styles.button}>
-                      Save
-                    </button>
+                        Save
+                      </button>
                     </form>
-                    
                   </div>
                 )}
               </div>
