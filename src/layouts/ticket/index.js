@@ -133,24 +133,26 @@ function Ticket() {
   };
 
   const handleFilter = (e) => {
-    setLoading(false)
-    if (e.target.value == " ") {
+    setLoading(false);
+    if (e.target.value === "") {
       setTickets(searchApiData);
     } else {
-      const Filter = searchApiData.filter(
-        (item) =>
-          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-          item.subject
-            .toLowerCase()
-            .includes(e.target.value.toLowerCase()) ||
-          
-          item.phoneNumber.toLowerCase().includes(e.target.value.toLowerCase()) ||
-          item.ticketStatus.toLowerCase().includes(e.target.value.toLowerCase()) 
-      );
-      setTickets(Filter);
+      const filteredData = searchApiData.filter((item) => {
+        const lowerCaseValue = e.target.value.toLowerCase();
+        return (
+          item.name.toLowerCase().includes(lowerCaseValue) ||
+          item.subject.toLowerCase().includes(lowerCaseValue) ||
+          item.ticketId.toString().includes(e.target.value) ||
+          item.phoneNumber.toLowerCase().includes(lowerCaseValue) ||
+          item.ticketStatus.toLowerCase().includes(lowerCaseValue) ||
+          item.numericProperty === parseInt(e.target.value)
+        );
+      });
+      setTickets(filteredData);
     }
     setFilter(e.target.value);
   };
+  
 
   useEffect(() => {
     getAllTickets();
