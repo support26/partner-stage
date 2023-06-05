@@ -87,12 +87,15 @@ function Ticket() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
 
+  const [searchApiData, setSearchApiData] = useState([]);
+  const [filter, setFilter] = useState([]);
   const [values, setValues] = useState([
     {
       supportMessage: "",
       ticketStatus: "",
     },
   ]);
+ 
   const [loading, setLoading] = useState(true);
 
   const handleCloseImage = () => {
@@ -121,11 +124,32 @@ function Ticket() {
           updated_at: new Date(ticket.updated_at).toLocaleDateString("en-GB"),
         }));
         setTickets(ticketData);
+        setSearchApiData(ticketData);
         setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const handleFilter = (e) => {
+    setLoading(false)
+    if (e.target.value == " ") {
+      setTickets(searchApiData);
+    } else {
+      const Filter = searchApiData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          item.subject
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          
+          item.phoneNumber.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          item.ticketStatus.toLowerCase().includes(e.target.value.toLowerCase()) 
+      );
+      setTickets(Filter);
+    }
+    setFilter(e.target.value);
   };
 
   useEffect(() => {
@@ -209,6 +233,7 @@ function Ticket() {
           }}
           type="text"
           placeholder="Search..."
+          onInput={(e) => handleFilter(e)}
         />
       </div>
 
