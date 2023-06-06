@@ -152,6 +152,7 @@ export default function App() {
             </Suspense>
           } />
         )}
+      
         {/* below line first check that token is present than show routes*/}
         {Cookies.get('token') && getRoutes(routes)}
       </Routes>
