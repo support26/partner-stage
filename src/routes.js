@@ -13,6 +13,7 @@ const Tables = React.lazy(() => import('./layouts/tables'));
 const Banner = React.lazy(() => import('./layouts/banner/index'));
 const Anouncement = React.lazy(() => import('./layouts/anouncement'));
 const DirectApplications = React.lazy(() => import('./layouts/direct_applications'));
+const Tickets = React.lazy(()=> import('./layouts/ticket'));
 
 const routes = [
   {

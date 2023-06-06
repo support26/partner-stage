@@ -16,18 +16,20 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import "./styles.css";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "900px",
+  width: "950px",
   maxWidth: "90%",
   height: "750px",
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
-  background: "#cfe8ef",
+  background: "rgb(230, 228, 228)",
   p: 3,
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
@@ -61,9 +63,9 @@ const styles = {
     marginBottom: "8px",
   },
   button: {
-    width: "100%",
+    width: "20%",
     padding: "10px",
-    margin: "10px 0 0 0",
+    margin: "10px 0 0 340px",
     border: "none",
     borderRadius: "10px",
     backgroundColor: "#33a2b5",
@@ -89,13 +91,18 @@ function Ticket() {
 
   const [searchApiData, setSearchApiData] = useState([]);
   const [filter, setFilter] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const ticketsPerPage = 10;
+  const offset = currentPage * ticketsPerPage;
+  const currentTickets = tickets.slice(offset, offset + ticketsPerPage);
+
   const [values, setValues] = useState([
     {
       supportMessage: "",
       ticketStatus: "",
     },
   ]);
- 
+
   const [loading, setLoading] = useState(true);
 
   const handleCloseImage = () => {
@@ -152,12 +159,17 @@ function Ticket() {
     }
     setFilter(e.target.value);
   };
-  
 
   useEffect(() => {
     getAllTickets();
   }, []);
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
 
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
   const handleOpen1 = (ticketId) => {
     console.log("Selected Ticket ID:", ticketId);
     const selected = tickets.find((ticket) => ticket.ticketId === ticketId);
@@ -241,8 +253,8 @@ function Ticket() {
 
       <MDBox pt={1} mx={1}>
         <Grid container spacing={1}>
-          {tickets.length !== 0 ? (
-            tickets.map((ticket, key) => (
+          {currentTickets.length !== 0 ? (
+            currentTickets.map((ticket, key) => (
               <Grid key={key} item xs={12} mt={0}>
                 <MDBox mb={0}>
                   <Card
@@ -250,6 +262,7 @@ function Ticket() {
                       position: "relative",
                       maxWidth: "100%",
                       maxHeight: 600,
+                      backgroundColor: "whitesmoke",
                     }}
                   >
                     <CardMedia
@@ -323,7 +336,6 @@ function Ticket() {
                       }}
                     >
                       <CardActions sx={{ marginTop: -3 }}>
-                        {/* Add the following conditional rendering for each status button */}
                         {ticket.ticketStatus === "Open" && (
                           <div
                             style={{
@@ -425,12 +437,33 @@ function Ticket() {
             </div>
           )}
         </Grid>
-        <br/>
-      
-           
-             
-      </MDBox>
 
+        <br />
+      </MDBox>
+      {tickets.length > ticketsPerPage && (
+        <div className="pagination-container">
+          <p>
+            Rows Per Page: 10
+          <IconButton
+            disabled={currentPage === 0}
+            onClick={handlePreviousPage}
+          >
+            <ChevronLeft />
+          </IconButton>
+        
+          {/* ... */}
+          <IconButton
+            disabled={
+              currentPage >= Math.ceil(tickets.length / ticketsPerPage) - 1
+            }
+            onClick={handleNextPage}
+          >
+            <ChevronRight />
+          </IconButton>
+          </p>
+        </div>
+      )}
+          
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -477,7 +510,7 @@ function Ticket() {
                   textAlign: "center",
                   marginTop: "0px",
                   position: "sticky",
-                  widht: "100%",
+                  // width: "50px",
                 }}
               >
                 Query Raised
@@ -639,6 +672,9 @@ function Ticket() {
                               </span>
                             </span>
                           </p>
+                          <label style={{ fontSize: "14px", color: "black" }}>
+                            User Message
+                          </label>
                           <p
                             style={{
                               fontSize: "15px",
@@ -647,14 +683,15 @@ function Ticket() {
                               height: "auto",
                               marginBottom: "10px",
                               borderRadius: "10px",
-                              marginTop: "20px",
+                              marginTop: "10px",
+                              padding: "5px",
                             }}
                           >
                             {selectedTicket.message}
                           </p>
                           <div>
                             <label style={{ fontSize: "14px", color: "black" }}>
-                              Support Remarks
+                              Previous Support Remarks
                             </label>
                             <p
                               style={{
@@ -664,7 +701,8 @@ function Ticket() {
                                 height: "40px",
                                 marginBottom: "10px",
                                 borderRadius: "10px",
-                                marginTop: "20px",
+                                marginTop: "10px",
+                                padding: "5px",
                               }}
                             >
                               {selectedTicket.supportMessage}
@@ -695,7 +733,7 @@ function Ticket() {
                         onChange={onChange}
                         placeholder="Enter description"
                         style={styles.input}
-                        rows="6"
+                        rows="5"
                         cols="24"
                         required
                       />
@@ -714,7 +752,9 @@ function Ticket() {
                         required
                         defaultValue={selectedTicket.ticketStatus}
                       >
-                        <option value="" disabled >-- Select Status --</option>
+                        <option value="" disabled>
+                          -- Select Status --
+                        </option>
                         <option value={"Open"}>Open</option>
                         <option value={"In Process"}>In Process</option>
                         <option value={"Closed"}>Closed</option>
@@ -727,7 +767,6 @@ function Ticket() {
                   </div>
                 )}
               </div>
-             
             </div>
           </Box>
         </Fade>

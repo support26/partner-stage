@@ -573,6 +573,7 @@ class AdminRepository {
       })
       .catch((error) => {
         console.log(error.response);
+        alert(error.response.data.message)
         return error.response;
       });
     return reponse;
