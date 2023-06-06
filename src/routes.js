@@ -59,7 +59,7 @@ const routes = [
   {
     type: "collapse",
     name: "Tickets",
-    key: "tickets",
+    key: "ticket",
     icon: <Icon fontSize="medium">confirmation_number</Icon>,
     route :"/ticket",
     component: <Ticket />
