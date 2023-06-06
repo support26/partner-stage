@@ -129,6 +129,7 @@ function Ticket() {
           supportMessage: ticket.supportMessage,
           updated_by: ticket.updated_by,
           updated_at: new Date(ticket.updated_at).toLocaleDateString("en-GB"),
+          profile: ticket.profilePhoto,
         }));
         setTickets(ticketData);
         setSearchApiData(ticketData);
@@ -269,7 +270,7 @@ function Ticket() {
                       sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
                       component="img"
                       image={
-                        "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                      ticket.profile ? ticket.profile: "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
                       }
                       alt=""
                       position="relative"
