@@ -360,7 +360,7 @@ function Ticket() {
                   <Card
                     sx={{
                       position: "relative",
-                      width: "100%",
+                      width: "90%",
                       height: "100%",
                       backgroundColor: "whitesmoke",
                       display: "flex",
@@ -500,11 +500,21 @@ function Ticket() {
                 zIndex: "1",
                 backgroundColor: "#fff",
                 padding: "0px 0px",
-                margin: "10px 5px",
-                borderRadius: "10px 10px 10px 10px",
+                margin: "5px 5px",
+                borderRadius: "10px",
                 // width:"80%"
               }}
             >
+              <h4
+                // id="transition-modal-title"
+                style={{
+                  textAlign: "center",
+                  marginTop: "2px",
+                  position: "relative",
+                }}
+              >
+                Query Raised
+              </h4>
               <div style={{ marginTop: "-6px" }}>
                 <IconButton
                   edge="start"
@@ -512,57 +522,18 @@ function Ticket() {
                   aria-label="close"
                   onClick={handleClose1}
                   style={{
-                    display: "block",
+                    display: "fixed",
                     float: "right",
                     marginTop: "-40px",
-                    marginRight: "-25px",
+                    marginRight: "-30px",
                   }}
                 >
                   <CloseIcon />
                 </IconButton>
               </div>
-              <h4
-                // id="transition-modal-title"
-                style={{
-                  textAlign: "center",
-                  marginTop: "20px",
-                  position: "sticky",
-                }}
-              >
-                Query Raised
-              </h4>
             </div>
             <div>
               <div>
-                {showImage && (
-                  <div
-                    style={{
-                      position: "fixed",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
-                      zIndex: 999,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    onClick={handleCloseImage}
-                  >
-                    <img
-                      src={
-                        "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"
-                      }
-                      alt=""
-                      style={{
-                        maxWidth: "80%",
-                        maxHeight: "80%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </div>
-                )}
                 {selectedTicket && (
                   <div className="xyz">
                     <MDBox pt={1} mx={1}>
@@ -575,8 +546,8 @@ function Ticket() {
                       >
                         <CardMedia
                           sx={{
-                            display: "flex",
-                          
+                            display: "absolute",
+                            marginLeft: "45%",
                             height: 100,
                             width: 100,
                           }}
@@ -590,73 +561,114 @@ function Ticket() {
 
                         <CardContent>
                           <Grid item xs={6} mt={0}>
-                            <Item sx={{width:"50%", display:"flex"}}>
+                            <Item sx={{ width: "50%", display: "flex" }}>
                               <span style={{ color: "black" }}>Name- </span>{" "}
                               {selectedTicket.name}
                             </Item>
-                            <Item sx={{width:"50%", display:"flex", marginTop:"-42px", marginLeft:"50%", overflow:"hidden"}}>
-                              <span style={{ color: "black" }}>
-                                Phone-{" "}
-                              </span>{" "}
+                            <Item
+                              sx={{
+                                width: "50%",
+                                display: "flex",
+                                marginTop: "-42px",
+                                marginLeft: "50%",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <span style={{ color: "black" }}>Phone- </span>{" "}
                               {selectedTicket.phoneNumber}
                             </Item>
-                            <Item sx={{width:"50%", display:"flex"}}>
+                            <Item sx={{ width: "50%", display: "flex" }}>
                               <span style={{ color: "black" }}>
                                 Ticket Id-{" "}
                               </span>{" "}
                               {selectedTicket.ticketId}
                             </Item>
-                            <Item sx={{width:"50%", display:"flex", marginTop:"-42px", marginLeft:"50%", overflow:"hidden"}}>
+                            <Item
+                              sx={{
+                                width: "50%",
+                                display: "flex",
+                                marginTop: "-42px",
+                                marginLeft: "50%",
+                                overflow: "hidden",
+                              }}
+                            >
                               <span style={{ color: "black" }}>Date- </span>{" "}
                               {selectedTicket.date}
                             </Item>
-                            <Item sx={{width:"50%", display:"flex"}}>
+                            <Item sx={{ width: "50%", display: "flex" }}>
                               <span style={{ color: "black" }}>Subject- </span>{" "}
                               {selectedTicket.subject}
                             </Item>
-                            <Item sx={{width:"50%", display:"flex", marginTop:"-42px", marginLeft:"50%"}}>
+                            <Item
+                              sx={{
+                                width: "50%",
+                                display: "flex",
+                                marginTop: "-42px",
+                                marginLeft: "50%",
+                              }}
+                            >
                               <span style={{ color: "black" }}>Status- </span>{" "}
                               {selectedTicket.ticketStatus}
                             </Item>
                             {selectedTicket.updated_by && (
-                            <Item sx={{width:"50%", display:"flex"}}>
-                              <span style={{ color: "black" }}>
-                                Updated by-{" "}
-                              </span>{" "}
-                              {selectedTicket.updated_by}
-                            </Item>
+                              <Item sx={{ width: "50%", display: "flex" }}>
+                                <span style={{ color: "black" }}>
+                                  Updated by-{" "}
+                                </span>{" "}
+                                {selectedTicket.updated_by}
+                              </Item>
                             )}
                             {selectedTicket.updated_at !== "01/01/1970" && (
-                            <Item sx={{width:"50%", display:"flex", marginTop:"-42px", marginLeft:"50%"}}>
-                              <span style={{ color: "black" }}>
-                                Updated At-{" "}
-                              </span>{" "}
-                              {selectedTicket.updated_at}
-                            </Item>
+                              <Item
+                                sx={{
+                                  width: "50%",
+                                  display: "flex",
+                                  marginTop: "-42px",
+                                  marginLeft: "50%",
+                                }}
+                              >
+                                <span style={{ color: "black" }}>
+                                  Updated At-{" "}
+                                </span>{" "}
+                                {selectedTicket.updated_at}
+                              </Item>
                             )}
-                            <br/>
                             <label style={{ fontSize: "14px", color: "black" }}>
                               User Message
-                          </label>
-                              <Item sx={{width:"100%", display:"flex"}}>
-                              {selectedTicket.message}
+                            </label>
+                            <Item sx={{ textAlign: "left" }}>
+                              <span
+                                style={{
+                                  paddingLeft: "5px",
+                                  color: "gray",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                {selectedTicket.message}
+                              </span>
                             </Item>
                             {selectedTicket.supportMessage && (
-
                               <div>
-                            <br/>
-
-                            <label style={{ fontSize: "14px", color: "black" }}>
-                              Previous Support Remarks
-                            </label>
-                            <Item sx={{width:"100%", display:"flex"}}>
-                              {selectedTicket.supportMessage}
-                            </Item>
-                            </div>
+                                <br />
+                                <label
+                                  style={{ fontSize: "14px", color: "black" }}
+                                >
+                                  Previous Support Remarks
+                                </label>
+                                <Item sx={{ textAlign: "left" }}>
+                                  <span
+                                    style={{
+                                      paddingLeft: "5px",
+                                      color: "gray",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {selectedTicket.supportMessage}
+                                  </span>
+                                </Item>
+                              </div>
                             )}
                           </Grid>
-                          <br />
-                         
                         </CardContent>
                       </Card>
 
@@ -678,6 +690,7 @@ function Ticket() {
                         <label style={{ fontSize: "14px" }}>
                           Support Remarks
                         </label>
+
                         <textarea
                           name="supportMessage"
                           onChange={onChange}
