@@ -94,9 +94,10 @@ function Ticket() {
   const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
-
+const [searchValue, setSearchValue] = useState("");
   const [searchApiData, setSearchApiData] = useState([]);
   const [filter, setFilter] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(0);
   const ticketsPerPage = 10;
   const offset = currentPage * ticketsPerPage;
@@ -151,8 +152,9 @@ function Ticket() {
         console.log(e);
       });
   };
-
   const handleFilter = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
     setLoading(false);
     if (e.target.value === "") {
       setTickets(searchApiData);
@@ -171,36 +173,46 @@ function Ticket() {
     }
     setFilter(e.target.value);
   };
-
+  
+  
   const handleStatus = (e) => {
-    setLoading(false);
-    if (e.target.value === "All") {
-      setTickets(searchApiData);
+    const status = e.target.value;
+    
+    if (status === "All") {
+      setTickets(searchApiData.filter((item) =>
+        item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+        item.ticketId.toString().includes(searchValue) ||
+        item.phoneNumber.toLowerCase().includes(searchValue.toLowerCase())
+      ));
     } else {
-      const filteredData = searchApiData.filter((item) => {
-        return (
-          item.ticketStatus.toLowerCase() === "open" || "in process" || "closed"
-        );
-      });
-      setTickets(filteredData);
+      setTickets(searchApiData.filter((item) =>
+        item.ticketStatus.toLowerCase() === status.toLowerCase() &&
+        (item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+        item.ticketId.toString().includes(searchValue) ||
+        item.phoneNumber.toLowerCase().includes(searchValue.toLowerCase()))
+      ));
     }
   };
+  
+  
 
-  const handleStatusOpen = (e) => {
+  const handleStatusOpen = () => {
     setLoading(false);
     const filteredData = searchApiData.filter((item) => {
       return item.ticketStatus.toLowerCase() === "open";
     });
     setTickets(filteredData);
   };
-  const handleStatusInprocess = (e) => {
+  const handleStatusInprocess = () => {
     setLoading(false);
     const filteredData = searchApiData.filter((item) => {
       return item.ticketStatus.toLowerCase() === "in process";
     });
     setTickets(filteredData);
   };
-  const handleStatusClose = (e) => {
+  const handleStatusClose = () => {
     setLoading(false);
     const filteredData = searchApiData.filter((item) => {
       return item.ticketStatus.toLowerCase() === "closed";
@@ -282,73 +294,78 @@ function Ticket() {
           }}
           type="text"
           placeholder="Search..."
-          onInput={(e) => handleFilter(e)}
+          onInput={handleFilter}
+          // value={searchValue}
+  // onChange={handleFilter}
         />
-        <Select
-          style={{
-            margin: "7px 10px 0px 10px",
-            padding: "6px 10px",
-            borderColor: "#33a2b5",
-            borderRadius: "10px",
-            width: "20%",
-            height: "6vh",
-            outline: "none",
-            border: "2px solid #33a2b5",
-            background: "#fff",
-            color: "black",
-            fontSize: "14px",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right 8px center",
-            backgroundSize: "10px 5px",
-          }}
-          defaultValue={"All"}
-        >
-          <MenuItem
-            onClick={handleStatus}
+       
+          <Select
             style={{
-              border: "2px solid lightgray",
-              height: "40px",
-              marginTop: "5px",
+              margin: "7px 10px 0px 10px",
+              padding: "6px 10px",
+              borderColor: "#33a2b5",
+              borderRadius: "10px",
+              width: "20%",
+              height: "6vh",
+              outline: "none",
+              border: "2px solid #33a2b5",
+              background: "#fff",
+              color: "black",
+              fontSize: "14px",
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 8px center",
+              backgroundSize: "10px 5px",
             }}
-            value={"All"}
+            defaultValue={"All"}
+            onChange={handleStatus}
           >
-            All
-          </MenuItem>
-          <MenuItem
-            onClick={handleStatusOpen}
-            style={{
-              border: "2px solid lightgray",
-              height: "40px",
-              marginTop: "2px",
-            }}
-            value={"Open"}
-          >
-            Open
-          </MenuItem>
-          <MenuItem
-            onClick={handleStatusInprocess}
-            style={{
-              border: "2px solid lightgray",
-              height: "40px",
-              marginTop: "2px",
-            }}
-            value={"In Process"}
-          >
-            In Process
-          </MenuItem>
-          <MenuItem
-            onClick={handleStatusClose}
-            style={{
-              border: "2px solid lightgray",
-              height: "40px",
-              marginTop: "2px",
-            }}
-            value={"Closed"}
-          >
-            Closed
-          </MenuItem>
-        </Select>
+            <MenuItem
+             
+              style={{
+                border: "2px solid lightgray",
+                height: "40px",
+                marginTop: "5px",
+              }}
+              value={"All"}
+            >
+              All
+            </MenuItem>
+            <MenuItem
+              onClick={handleStatusOpen}
+              style={{
+                border: "2px solid lightgray",
+                height: "40px",
+                marginTop: "2px",
+              }}
+              value={"Open"}
+            >
+              Open
+            </MenuItem>
+            <MenuItem
+              onClick={handleStatusInprocess}
+              style={{
+                border: "2px solid lightgray",
+                height: "40px",
+                marginTop: "2px",
+              }}
+              value={"In Process"}
+            >
+              In Process
+            </MenuItem>
+            <MenuItem
+              onClick={handleStatusClose}
+              style={{
+                border: "2px solid lightgray",
+                height: "40px",
+                marginTop: "2px",
+              }}
+              value={"Closed"}
+            >
+              Closed
+            </MenuItem>
+          </Select>
+       
       </div>
 
       <MDBox pt={1} mx={1}>
@@ -702,26 +719,60 @@ function Ticket() {
                         />
 
                         <label style={{ fontSize: "14px" }}>Status:</label>
-                        <select
+                        <Select
                           style={{
-                            width: "auto",
-                            height: "40px",
-                            borderRadius: "5px",
-                            marginLeft: "55px",
-                            background: "white",
+                            margin: "7px 10px 0px 10px",
+                            padding: "6px 10px",
+                            borderColor: "#33a2b5",
+                            borderRadius: "10px",
+                            width: "17%",
+                            height: "5vh",
+                            outline: "none",
+                            // border: "2px solid #33a2b5",
+                            background: "#fff",
+                            color: "black",
+                            fontSize: "14px",
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 8px center",
+                            backgroundSize: "10px 5px",
                           }}
                           name="ticketStatus"
                           onChange={onChange}
                           required
                           defaultValue={selectedTicket.ticketStatus}
                         >
-                          <option value="" disabled>
-                            -- Select Status --
-                          </option>
-                          <option value={"Open"}>Open</option>
-                          <option value={"In Process"}>In Process</option>
-                          <option value={"Closed"}>Closed</option>
-                        </select>
+                          <MenuItem
+                            value={"Open"}
+                            style={{
+                              border: "2px solid lightgray",
+                              height: "40px",
+                              marginTop: "2px",
+                            }}
+                          >
+                            Open
+                          </MenuItem>
+                          <MenuItem
+                            value={"In Process"}
+                            style={{
+                              border: "2px solid lightgray",
+                              height: "40px",
+                              marginTop: "2px",
+                            }}
+                          >
+                            In Process
+                          </MenuItem>
+                          <MenuItem
+                            value={"Closed"}
+                            style={{
+                              border: "2px solid lightgray",
+                              height: "40px",
+                              marginTop: "2px",
+                            }}
+                          >
+                            Closed
+                          </MenuItem>
+                        </Select>
                         <br />
                         <div
                           style={{
