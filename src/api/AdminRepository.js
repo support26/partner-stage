@@ -539,13 +539,12 @@ class AdminRepository {
     return reponse;
   }
 
-  async getAllTickets(data) {
+  async getAllTickets() {
     const token = localStorage.getItem("token");
-    const response = await Api.get(`${baseUrl}ticket/webapp/V1/getAllTickets`, 
-    data,
+    const response = await Api.get(`${baseUrl}ticket/webapp/V1/getAllTickets`,
     {
       headers:{
-        Authorization:"Bearer" + token,
+        Authorization:"Bearer " + token,
       },
     })
     .then((response) => {
