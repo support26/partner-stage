@@ -36,8 +36,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "55%",
-  maxWidth: "60%",
+  width: "900px",
+  maxWidth: "98%",
   maxHeight: "75%",
   bgcolor: "background.paper",
   borderRadius: "10px",
@@ -76,7 +76,7 @@ const styles = {
     marginBottom: "8px",
   },
   button: {
-    width: "15vh",
+    maxWidth: "15vh",
     height: "5vh",
     padding: "10px",
     margin: "0 0 0 5px",
@@ -94,7 +94,7 @@ function Ticket() {
   const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
-const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [searchApiData, setSearchApiData] = useState([]);
   const [filter, setFilter] = useState([]);
 
@@ -173,30 +173,35 @@ const [searchValue, setSearchValue] = useState("");
     }
     setFilter(e.target.value);
   };
-  
-  
+
   const handleStatus = (e) => {
     const status = e.target.value;
-    
+
     if (status === "All") {
-      setTickets(searchApiData.filter((item) =>
-        item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.ticketId.toString().includes(searchValue) ||
-        item.phoneNumber.toLowerCase().includes(searchValue.toLowerCase())
-      ));
+      setTickets(
+        searchApiData.filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+            item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+            item.ticketId.toString().includes(searchValue) ||
+            item.phoneNumber.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      );
     } else {
-      setTickets(searchApiData.filter((item) =>
-        item.ticketStatus.toLowerCase() === status.toLowerCase() &&
-        (item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.ticketId.toString().includes(searchValue) ||
-        item.phoneNumber.toLowerCase().includes(searchValue.toLowerCase()))
-      ));
+      setTickets(
+        searchApiData.filter(
+          (item) =>
+            item.ticketStatus.toLowerCase() === status.toLowerCase() &&
+            (item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+              item.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+              item.ticketId.toString().includes(searchValue) ||
+              item.phoneNumber
+                .toLowerCase()
+                .includes(searchValue.toLowerCase()))
+        )
+      );
     }
   };
-  
-  
 
   const handleStatusOpen = () => {
     setLoading(false);
@@ -278,7 +283,7 @@ const [searchValue, setSearchValue] = useState("");
           marginLeft: "-2px",
           padding: "0px",
           margin: "7px  0px 10px",
-          width: "90%",
+          width: "100%",
         }}
       >
         <input
@@ -296,88 +301,86 @@ const [searchValue, setSearchValue] = useState("");
           placeholder="Search..."
           onInput={handleFilter}
           // value={searchValue}
-  // onChange={handleFilter}
+          // onChange={handleFilter}
         />
-       
-          <Select
+
+        <Select
+          style={{
+            margin: "7px 10px 0px 10px",
+            padding: "6px 10px",
+            borderColor: "#33a2b5",
+            borderRadius: "10px",
+            width: "20%",
+            height: "6vh",
+            outline: "none",
+            border: "2px solid #33a2b5",
+            background: "#fff",
+            color: "black",
+            fontSize: "14px",
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 8px center",
+            backgroundSize: "10px 5px",
+          }}
+          defaultValue={"All"}
+          onChange={handleStatus}
+        >
+          <MenuItem
             style={{
-              margin: "7px 10px 0px 10px",
-              padding: "6px 10px",
-              borderColor: "#33a2b5",
-              borderRadius: "10px",
-              width: "20%",
-              height: "6vh",
-              outline: "none",
-              border: "2px solid #33a2b5",
-              background: "#fff",
-              color: "black",
-              fontSize: "14px",
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "right 8px center",
-              backgroundSize: "10px 5px",
+              border: "2px solid lightgray",
+              height: "40px",
+              marginTop: "5px",
             }}
-            defaultValue={"All"}
-            onChange={handleStatus}
+            value={"All"}
           >
-            <MenuItem
-             
-              style={{
-                border: "2px solid lightgray",
-                height: "40px",
-                marginTop: "5px",
-              }}
-              value={"All"}
-            >
-              All
-            </MenuItem>
-            <MenuItem
-              onClick={handleStatusOpen}
-              style={{
-                border: "2px solid lightgray",
-                height: "40px",
-                marginTop: "2px",
-              }}
-              value={"Open"}
-            >
-              Open
-            </MenuItem>
-            <MenuItem
-              onClick={handleStatusInprocess}
-              style={{
-                border: "2px solid lightgray",
-                height: "40px",
-                marginTop: "2px",
-              }}
-              value={"In Process"}
-            >
-              In Process
-            </MenuItem>
-            <MenuItem
-              onClick={handleStatusClose}
-              style={{
-                border: "2px solid lightgray",
-                height: "40px",
-                marginTop: "2px",
-              }}
-              value={"Closed"}
-            >
-              Closed
-            </MenuItem>
-          </Select>
-       
+            All
+          </MenuItem>
+          <MenuItem
+            onClick={handleStatusOpen}
+            style={{
+              border: "2px solid lightgray",
+              height: "40px",
+              marginTop: "2px",
+            }}
+            value={"Open"}
+          >
+            Open
+          </MenuItem>
+          <MenuItem
+            onClick={handleStatusInprocess}
+            style={{
+              border: "2px solid lightgray",
+              height: "40px",
+              marginTop: "2px",
+            }}
+            value={"In Process"}
+          >
+            In Process
+          </MenuItem>
+          <MenuItem
+            onClick={handleStatusClose}
+            style={{
+              border: "2px solid lightgray",
+              height: "40px",
+              marginTop: "2px",
+            }}
+            value={"Closed"}
+          >
+            Closed
+          </MenuItem>
+        </Select>
       </div>
 
       <MDBox pt={1} mx={1}>
         <Grid container spacing={1}>
           {currentTickets.length !== 0 ? (
             currentTickets.map((ticket, key) => (
-              <Grid key={key} item xs={50} mt={0}>
+              <Grid key={key} item xs={12} mt={0}>
                 <MDBox mb={0}>
                   <Card
                     sx={{
                       position: "relative",
-                      width: "90%",
+                      width: "100%",
                       height: "100%",
                       backgroundColor: "whitesmoke",
                       display: "flex",
@@ -398,54 +401,51 @@ const [searchValue, setSearchValue] = useState("");
 
                     <CardContent>
                       <Stack
-                        style={{ justifyContent: "left" }}
-                        direction="row"
+                        direction={{ xs: "column", sm: "row" }}
                         spacing={2}
                         marginLeft="-8px"
                       >
-                        <Item style={{ width: "200px" }}>
-                          {" "}
-                          <strong>Name:</strong> {ticket.name}{" "}
+                        <Item style={{ maxWidth: "300px" }}>
+                          <strong>Name:</strong> {ticket.name}
                         </Item>
-                        <Item style={{ width: "300px" }}>
-                          {" "}
+                        <Item style={{ maxWidth: "300px" }}>
                           <strong>Phone Number:</strong> {ticket.phoneNumber}
                         </Item>
-                        <Item style={{ width: "200px" }}>
-                          {" "}
+                        <Item style={{ maxWidth: "200px" }}>
                           <strong>Ticket Id:</strong> {ticket.ticketId}
                         </Item>
-                        <Item style={{ width: "400px" }}>
-                          {" "}
+                        <Item style={{ maxWidth: "400px" }}>
                           <strong>Subject: </strong>
                           {ticket.subject}
                         </Item>
-                        <>
-                          <Button
-                            style={{
-                              backgroundColor: getStatusColor(
-                                ticket.ticketStatus
-                              ),
-                              width: "15vh",
-                              height: "5vh",
-                              padding: "10px",
-                              margin: "0 0 0 5px",
-                              border: "none",
-                              borderRadius: "10px",
-                              color: "#fff",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {ticket.ticketStatus}
-                          </Button>
-                          <Button
-                            onClick={() => handleOpen1(ticket.ticketId)}
-                            style={styles.button}
-                          >
-                            View Details
-                          </Button>
-                        </>
                       </Stack>
+                      <div
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <Button
+                          style={{
+                            backgroundColor: getStatusColor(
+                              ticket.ticketStatus
+                            ),
+                            maxWidth: "15vh",
+                            height: "5vh",
+                            padding: "10px",
+                            margin: "0 0 0 0%",
+                            border: "none",
+                            borderRadius: "10px",
+                            color: "#fff",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {ticket.ticketStatus}
+                        </Button>
+                        <Button
+                          onClick={() => handleOpen1(ticket.ticketId)}
+                          style={styles.button}
+                        >
+                          View Details
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </MDBox>
@@ -557,8 +557,8 @@ const [searchValue, setSearchValue] = useState("");
                       <Card
                         sx={{
                           position: "relative",
-                          maxWidth: "auto",
-                          maxHeight: "auto",
+                          maxWidth: "100%",
+                          maxHeight: "90%",
                         }}
                       >
                         <CardMedia
@@ -578,57 +578,41 @@ const [searchValue, setSearchValue] = useState("");
 
                         <CardContent>
                           <Grid item xs={6} mt={0}>
-                            <Item sx={{ width: "50%", display: "flex" }}>
+                            <Stack  direction={{ xs: "column", sm: "row" }} spacing={5} sx={{justifyContent:"center"}}>
+                            <Item>
                               <span style={{ color: "black" }}>Name- </span>{" "}
                               {selectedTicket.name}
                             </Item>
-                            <Item
-                              sx={{
-                                width: "50%",
-                                display: "flex",
-                                marginTop: "-42px",
-                                marginLeft: "50%",
-                                overflow: "hidden",
-                              }}
-                            >
+                            <Item>
                               <span style={{ color: "black" }}>Phone- </span>{" "}
                               {selectedTicket.phoneNumber}
                             </Item>
-                            <Item sx={{ width: "50%", display: "flex" }}>
+                           
+                            <Item>
                               <span style={{ color: "black" }}>
                                 Ticket Id-{" "}
                               </span>{" "}
                               {selectedTicket.ticketId}
                             </Item>
-                            <Item
-                              sx={{
-                                width: "50%",
-                                display: "flex",
-                                marginTop: "-42px",
-                                marginLeft: "50%",
-                                overflow: "hidden",
-                              }}
-                            >
+                            
+                            <Item >
                               <span style={{ color: "black" }}>Date- </span>{" "}
                               {selectedTicket.date}
                             </Item>
-                            <Item sx={{ width: "50%", display: "flex" }}>
+                            </Stack>
+                            <br/>
+                            <Stack direction={{ xs: "column", sm: "row" }} spacing={5} sx={{justifyContent:"center"}}>
+                            <Item>
                               <span style={{ color: "black" }}>Subject- </span>{" "}
                               {selectedTicket.subject}
                             </Item>
-                            <Item
-                              sx={{
-                                width: "50%",
-                                display: "flex",
-                                marginTop: "-42px",
-                                marginLeft: "50%",
-                              }}
-                            >
+                            <Item>
                               <span style={{ color: "black" }}>Status- </span>{" "}
                               {selectedTicket.ticketStatus}
                             </Item>
+                          
                             {selectedTicket.updated_by && (
-                              <Item sx={{ width: "50%", display: "flex" }}>
+                              <Item>
                                 <span style={{ color: "black" }}>
                                   Updated by-{" "}
                                 </span>{" "}
@@ -636,20 +620,14 @@ const [searchValue, setSearchValue] = useState("");
                               </Item>
                             )}
                             {selectedTicket.updated_at !== "01/01/1970" && (
-                              <Item
-                                sx={{
-                                  width: "50%",
-                                  display: "flex",
-                                  marginTop: "-42px",
-                                  marginLeft: "50%",
-                                }}
-                              >
+                              <Item>
                                 <span style={{ color: "black" }}>
                                   Updated At-{" "}
                                 </span>{" "}
                                 {selectedTicket.updated_at}
                               </Item>
                             )}
+                              </Stack>
                             <label style={{ fontSize: "14px", color: "black" }}>
                               User Message
                             </label>
