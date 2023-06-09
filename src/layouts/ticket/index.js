@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAdmin from "../../hooks/useAdmin";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
@@ -91,7 +90,6 @@ const styles = {
 function Ticket() {
   const { GetAllTickets, UpdateTickets } = useAdmin();
   const [open1, setOpen1] = useState(false);
-  const [showImage, setShowImage] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -117,10 +115,6 @@ function Ticket() {
     color: theme.palette.text.secondary,
   }));
   const [loading, setLoading] = useState(true);
-
-  const handleCloseImage = () => {
-    setShowImage(false);
-  };
 
   const handleClose1 = () => setOpen1(false);
   const onChange = (e) => {
@@ -517,7 +511,7 @@ function Ticket() {
                 zIndex: "1",
                 backgroundColor: "#fff",
                 padding: "0px 0px",
-                margin: "5px 5px",
+                margin: "-12px 5px 5px 5px",
                 borderRadius: "10px",
                 // width:"80%"
               }}
@@ -526,28 +520,27 @@ function Ticket() {
                 // id="transition-modal-title"
                 style={{
                   textAlign: "center",
-                  marginTop: "2px",
+                  // marginTop: "2px",
                   position: "relative",
                 }}
               >
                 Query Raised
               </h4>
-              <div style={{ marginTop: "-6px" }}>
+             
                 <IconButton
                   edge="start"
                   color="inherit"
                   aria-label="close"
                   onClick={handleClose1}
                   style={{
-                    display: "fixed",
                     float: "right",
-                    marginTop: "-40px",
-                    marginRight: "-30px",
+                    marginTop: "-50px",
+                    marginRight: "-35px",
                   }}
                 >
                   <CloseIcon />
                 </IconButton>
-              </div>
+             
             </div>
             <div>
               <div>
@@ -563,10 +556,13 @@ function Ticket() {
                       >
                         <CardMedia
                           sx={{
-                            display: "absolute",
-                            marginLeft: "45%",
+                            display: "flex",
+                            justifyContent: "center", 
+                            alignItems: "center", 
                             height: 100,
                             width: 100,
+                            mx: "auto", 
+                            my: 2,
                           }}
                           component="img"
                           image={
