@@ -696,14 +696,14 @@ function Ticket() {
                           required
                         />
 
-                        <label style={{ fontSize: "14px" }}>Status:</label>
+                        <label style={{width:"auto"}}>Status:</label>
                         <Select
                           style={{
                             margin: "7px 10px 0px 10px",
-                            padding: "6px 10px",
+                            padding: "6px 10px 6px 2px",
                             borderColor: "#33a2b5",
                             borderRadius: "10px",
-                            width: "17%",
+                            width: "auto",
                             height: "5vh",
                             outline: "none",
                             // border: "2px solid #33a2b5",
