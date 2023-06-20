@@ -29,14 +29,13 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-
 const style = {
   position: "relative",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "900px",
-  maxWidth: "98%",
+  maxWidth: "90%",
   maxHeight: "75%",
   bgcolor: "background.paper",
   borderRadius: "10px",
@@ -77,6 +76,7 @@ const styles = {
   button: {
     maxWidth: "15vh",
     height: "5vh",
+    width: "12vh",
     padding: "10px",
     margin: "0 0 0 5px",
     border: "none",
@@ -137,6 +137,7 @@ function Ticket() {
           updated_by: ticket.updated_by,
           updated_at: new Date(ticket.updated_at).toLocaleDateString("en-GB"),
           profile: ticket.profilePhoto,
+          mail: ticket.email,
         }));
         setTickets(ticketData);
         setSearchApiData(ticketData);
@@ -412,6 +413,10 @@ function Ticket() {
                           <strong>Subject: </strong>
                           {ticket.subject}
                         </Item>
+                        <Item style={{ maxWidth: "400px" }}>
+                          <strong>Mail Id: </strong>
+                          {ticket.mail}
+                        </Item>
                       </Stack>
                       <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
@@ -422,6 +427,7 @@ function Ticket() {
                               ticket.ticketStatus
                             ),
                             maxWidth: "15vh",
+                            width: "12vh",
                             height: "5vh",
                             padding: "10px",
                             margin: "0 0 0 0%",
@@ -516,7 +522,7 @@ function Ticket() {
                 // width:"80%"
               }}
             >
-              <h4
+              {/* <h4
                 // id="transition-modal-title"
                 style={{
                   textAlign: "center",
@@ -525,8 +531,8 @@ function Ticket() {
                 }}
               >
                 Query Raised
-              </h4>
-             
+              </h4> */}
+              <h1>
                 <IconButton
                   edge="start"
                   color="inherit"
@@ -534,13 +540,13 @@ function Ticket() {
                   onClick={handleClose1}
                   style={{
                     float: "right",
-                    marginTop: "-50px",
-                    marginRight: "-35px",
+                    marginTop: "-20px",
+                    marginRight: "-30px",
                   }}
                 >
                   <CloseIcon />
                 </IconButton>
-             
+              </h1>
             </div>
             <div>
               <div>
@@ -554,14 +560,16 @@ function Ticket() {
                           maxHeight: "90%",
                         }}
                       >
+                        <h5 style={{ textAlign: "center", fontSize:"18px" }}>Query Details</h5>
+
                         <CardMedia
                           sx={{
                             display: "flex",
-                            justifyContent: "center", 
-                            alignItems: "center", 
+                            justifyContent: "center",
+                            alignItems: "center",
                             height: 100,
                             width: 100,
-                            mx: "auto", 
+                            mx: "auto",
                             my: 2,
                           }}
                           component="img"
@@ -574,56 +582,66 @@ function Ticket() {
 
                         <CardContent>
                           <Grid item xs={6} mt={0}>
-                            <Stack  direction={{ xs: "column", sm: "row" }} spacing={5} sx={{justifyContent:"center"}}>
-                            <Item>
-                              <span style={{ color: "black" }}>Name- </span>{" "}
-                              {selectedTicket.name}
-                            </Item>
-                            <Item>
-                              <span style={{ color: "black" }}>Phone- </span>{" "}
-                              {selectedTicket.phoneNumber}
-                            </Item>
-                           
-                            <Item>
-                              <span style={{ color: "black" }}>
-                                Ticket Id-{" "}
-                              </span>{" "}
-                              {selectedTicket.ticketId}
-                            </Item>
-                            
-                            <Item >
-                              <span style={{ color: "black" }}>Date- </span>{" "}
-                              {selectedTicket.date}
-                            </Item>
+                            <Stack
+                              direction={{ xs: "column", sm: "row" }}
+                              spacing={5}
+                              sx={{ justifyContent: "center" }}
+                            >
+                              <Item>
+                                <span style={{ color: "black" }}>Name- </span>{" "}
+                                {selectedTicket.name}
+                              </Item>
+                              <Item>
+                                <span style={{ color: "black" }}>Phone- </span>{" "}
+                                {selectedTicket.phoneNumber}
+                              </Item>
+
+                              <Item>
+                                <span style={{ color: "black" }}>
+                                  Ticket Id-{" "}
+                                </span>{" "}
+                                {selectedTicket.ticketId}
+                              </Item>
+
+                              <Item>
+                                <span style={{ color: "black" }}>Date- </span>{" "}
+                                {selectedTicket.date}
+                              </Item>
                             </Stack>
-                            <br/>
-                            <Stack direction={{ xs: "column", sm: "row" }} spacing={5} sx={{justifyContent:"center"}}>
-                            <Item>
-                              <span style={{ color: "black" }}>Subject- </span>{" "}
-                              {selectedTicket.subject}
-                            </Item>
-                            <Item>
-                              <span style={{ color: "black" }}>Status- </span>{" "}
-                              {selectedTicket.ticketStatus}
-                            </Item>
-                          
-                            {selectedTicket.updated_by && (
+                            <br />
+                            <Stack
+                              direction={{ xs: "column", sm: "row" }}
+                              spacing={5}
+                              sx={{ justifyContent: "center" }}
+                            >
                               <Item>
                                 <span style={{ color: "black" }}>
-                                  Updated by-{" "}
+                                  Subject-{" "}
                                 </span>{" "}
-                                {selectedTicket.updated_by}
+                                {selectedTicket.subject}
                               </Item>
-                            )}
-                            {selectedTicket.updated_at !== "01/01/1970" && (
                               <Item>
-                                <span style={{ color: "black" }}>
-                                  Updated At-{" "}
-                                </span>{" "}
-                                {selectedTicket.updated_at}
+                                <span style={{ color: "black" }}>Status- </span>{" "}
+                                {selectedTicket.ticketStatus}
                               </Item>
-                            )}
-                              </Stack>
+
+                              {selectedTicket.updated_by && (
+                                <Item>
+                                  <span style={{ color: "black" }}>
+                                    Updated by-{" "}
+                                  </span>{" "}
+                                  {selectedTicket.updated_by}
+                                </Item>
+                              )}
+                              {selectedTicket.updated_at !== "01/01/1970" && (
+                                <Item>
+                                  <span style={{ color: "black" }}>
+                                    Updated At-{" "}
+                                  </span>{" "}
+                                  {selectedTicket.updated_at}
+                                </Item>
+                              )}
+                            </Stack>
                             <label style={{ fontSize: "14px", color: "black" }}>
                               User Message
                             </label>
@@ -691,8 +709,9 @@ function Ticket() {
                           cols="24"
                           required
                         />
-
-                        <label style={{width:"auto"}}>Status:</label>
+                        <label style={{ width: "auto", fontSize: "14px" }}>
+                          Status:
+                        </label>
                         <Select
                           style={{
                             margin: "7px 10px 0px 10px",
