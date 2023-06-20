@@ -136,7 +136,7 @@ function Ticket() {
           supportMessage: ticket.supportMessage,
           updated_by: ticket.updated_by,
           updated_at: new Date(ticket.updated_at).toLocaleDateString("en-GB"),
-          profile: ticket.profilePhoto,
+          profile: ticket.profileImage,
           mail: ticket.email,
         }));
         setTickets(ticketData);
@@ -541,7 +541,7 @@ function Ticket() {
                   style={{
                     float: "right",
                     marginTop: "-20px",
-                    marginRight: "-30px",
+                    marginRight: "-29px",
                   }}
                 >
                   <CloseIcon />
@@ -709,7 +709,15 @@ function Ticket() {
                           cols="24"
                           required
                         />
-                        <label style={{ width: "auto", fontSize: "14px" }}>
+
+                           <Grid item xs={6} mt={0}>
+                            <Stack
+                              direction={{ xs: "column", sm: "row" }}
+                              spacing={5}
+                              sx={{ justifyContent: "center" }}
+                            >
+                              <div>
+                        <label style={{ width: "auto", fontSize: "14px", paddingTop:"12%" }}>
                           Status:
                         </label>
                         <Select
@@ -766,11 +774,14 @@ function Ticket() {
                             Closed
                           </MenuItem>
                         </Select>
-                        <br />
+                        </div>
+                        <div style={{display:"flex", flex:4}}>
+                          
+                        </div>
                         <div
                           style={{
                             display: "flex",
-                            justifyContent: "flex-end",
+                            flex:1
                           }}
                         >
                           <button style={styles.button} onClick={handleClose1}>
@@ -780,6 +791,8 @@ function Ticket() {
                             Save
                           </button>
                         </div>
+                       </Stack>
+                       </Grid>
                       </form>
                     </div>
                   </div>
