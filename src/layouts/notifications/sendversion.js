@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @mui material components
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
@@ -31,7 +31,7 @@ const MenuProps = {
   },
 };
 
-const version = ["Version : 1.1","Version : 1.2","Version : 1.3", "1.6","1.7","1.8","Version : 17.0","Version : 17.1","Version : 17.2","Version : 17.3","Version : 17.4","Version : 17.5","Version : 17.6","Version : 17.7","Version : 17.8", "Version : 17.9", "Version : 18.4","Version : 20.0", "Version : 20.1", "Version : 20.2", "Version : 20.3", null];
+// const version = ["Version : 1.1","Version : 1.2","Version : 1.3", "1.6","1.7","1.8","Version : 17.0","Version : 17.1","Version : 17.2","Version : 17.3","Version : 17.4","Version : 17.5","Version : 17.6","Version : 17.7","Version : 17.8", "Version : 17.9", "Version : 18.4","Version : 20.0"];
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -57,7 +57,8 @@ function Version() {
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [sendBtn, setSendBtn] = useState("send");
   const [loading, setLoading] = useState(false);
-  const { SendNotificationByVersion } = useAdmin();
+  const { SendNotificationByVersion, GetVersionList } = useAdmin();
+  const [version, setVersion] = useState([]);
 
   // const [value, setValue] = useState(0);
   // let progressInterval = '0';
@@ -141,6 +142,19 @@ function Version() {
     setAppVersion(value);
     // console.log(AppVersion);
   };
+
+  useEffect(() => {
+    var getVersionList = GetVersionList();
+    getVersionList.then((response) => {
+      if (response.status === 200) {
+        // console.log(response.data.data);
+        setVersion(response.data.data);
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  }, [])
+  
 
   return (
     <div>
