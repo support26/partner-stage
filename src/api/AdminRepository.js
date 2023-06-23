@@ -578,5 +578,91 @@ class AdminRepository {
     return reponse;
   }
 
+  async getSliderImage(data){
+    const token = localStorage.getItem("token");
+    const response = await Api.get(
+      `${baseUrl}admin/slider`,
+      data,
+      {
+        headers:{
+          Authorization:"Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        alert(error.response.data.message)
+        return error.response;
+      });
+      return response;
+  }
+
+  async addSliderImage(data) {
+    const token = localStorage.getItem("token");
+    const response = await Api.post(
+      `${baseUrl}admin/addSlider`, 
+      data,
+      {
+        headers:{
+          Authorization:"Bearer " + token,
+        },
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        alert(error.response.data.message)
+        return error.response;
+      });
+    return response;
+  }
+
+    //change image status
+    async changeImageStatus(id, is_active) {
+      const token = localStorage.getItem("token");
+      const reponse = await Api.put(
+        `${baseUrl}admin/changeSliderStatus/${id}`,
+        { is_active },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          return response;
+        }
+        )
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        }
+        );
+      return reponse;
+    }
+
+    //Delete Image
+    async deleteImage (id) {
+      const token = localStorage.getItem("token");
+      const reponse = await Api.delete(
+        `${baseUrl}admin/deleteSlider/${id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          return error.response;
+        });
+      return reponse;
+    }
+  
+
 }
 export default new AdminRepository();

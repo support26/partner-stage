@@ -395,5 +395,44 @@ export default function useAdmin() {
       return responseData;
     },
 
+    GetSliderImage: async (data) => {
+      var responseData = await AdminRepository.getSliderImage(data);
+      if(responseData.status === 200){
+        return responseData;
+      }
+      return responseData;
+    }, 
+    //Add Slider
+    AddSliderImage: async (data) => {
+      var responseData = await AdminRepository.addSliderImage(data);
+      if(responseData.status === 200){
+        return responseData;
+      }
+      return responseData;
+    },
+
+    //Change Image Status
+    ChangeImageStatus: async (id, is_active) => {
+      var responseData = await AdminRepository.changeImageStatus(
+        id,
+        is_active
+      );
+      if (responseData.status === 200) {
+        // console.log(responseData.data);
+      }
+      return responseData;
+    },
+
+    //Delete Image
+    DeleteImage: async (id) =>{
+      var responseData = await AdminRepository.deleteImage(id);
+      if(responseData.status==200)
+      {
+        console.log(responseData.data);
+      }
+      return responseData;
+    }
+    
+
   };
 }
