@@ -420,7 +420,7 @@ function Ticket() {
                       </Stack>
                       
                       <div
-                        style={{ display: "flex", justifyContent: "flex-end", marginTop:"2%" }}
+                        style={{ display: "flex", marginTop:"2%", justifyContent: "flex-end" }}
                       >
                         <Button
                           style={{
