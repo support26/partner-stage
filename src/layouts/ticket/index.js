@@ -418,8 +418,9 @@ function Ticket() {
                           {ticket.mail}
                         </Item>
                       </Stack>
+                      
                       <div
-                        style={{ display: "flex", justifyContent: "flex-end" }}
+                        style={{ display: "flex", justifyContent: "flex-end", marginTop:"2%" }}
                       >
                         <Button
                           style={{
