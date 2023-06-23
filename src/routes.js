@@ -6,14 +6,13 @@ import React from "react";
 // import Anouncement from "./layouts/anouncement";
 // @mui icons
 import Icon from "@mui/material/Icon";
-import Ticket from "layouts/ticket";
 
 const Dashboard = React.lazy(() => import('./layouts/dashboard'));
 const Tables = React.lazy(() => import('./layouts/tables'));
 const Banner = React.lazy(() => import('./layouts/banner/index'));
 const Anouncement = React.lazy(() => import('./layouts/anouncement'));
 const DirectApplications = React.lazy(() => import('./layouts/direct_applications'));
-const Tickets = React.lazy(()=> import('./layouts/ticket'));
+const Ticket = React.lazy(()=> import('./layouts/ticket'));
 
 const routes = [
   {
@@ -68,10 +67,3 @@ const routes = [
 ];
 
 export default routes;
-// {Cookies.get('token') && roleId == 0 && (
-//   <Route path="/ticket" element={
-//     <Suspense fallback={<Loader/>}>
-//       <Ticket/>
-//     </Suspense>
-//   } />
-// )}

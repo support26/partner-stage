@@ -14,8 +14,8 @@ import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFi
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
-// import Modal from "@mui/material/Modal";
-// import Fade from "@mui/material/Fade";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,7 +28,11 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
+import Form from "./Form";
+import { Backdrop } from "@mui/material";
 import { Popconfirm } from "antd";
+import './index.css'
+import Imageslider from "./slider";
 // import ListItemText from '@mui/material/ListItemText';
 // import Checkbox from '@mui/material/Checkbox';
 // import ListItemIcon from '@mui/material/ListItemIcon';
@@ -64,7 +68,8 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 function Banner() {
-  const { GetBanner, AddBanner, UpdateBanner, DeleteBanner, GetVersionList } = useAdmin();
+  
+  const { GetBanner, GetSliderImage, AddSliderImage, AddBanner, UpdateBanner, DeleteBanner, GetVersionList } = useAdmin();
   const [user_id, setUser_id] = useState("");
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(50);
@@ -79,7 +84,10 @@ function Banner() {
   const [ShowButton, setShowButton] = useState("");
   const [DisplayBannerOrNot, setDisplayBannerOrNot] = useState("");
   const [date, setDate] = useState("");
-
+  const [values, setValues] = useState([]);
+  const [images, setImages] = useState([]);
+  const [header, setHeader] = useState("");
+  const handleClose = () => setOpen(false);
   //gif
   const [Gif_Url, setGif_Url] = useState(null);
   const [Gif_Visibility, setGif_Visibility] = useState(null);
@@ -88,6 +96,7 @@ function Banner() {
   const [BackgroundColor, setBackgroundColor] = useState(null);
   const [TextColor, setTextColor] = useState(null);
   const [UrgentUpdate, setUrgentUpdate] = useState(null);
+  const [open, setOpen] = useState(null);
 
   const [errormsg, setErrormsg] = useState(null);
   const roleId = localStorage.getItem("roleId");
@@ -95,9 +104,26 @@ function Banner() {
   const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
   const [editUserModal, setEditUserModal] = useState(false);
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    height:"auto",
+    transform: "translate(-50%, -50%)",
+    width: "520px",
+    maxWidth: "90%",
+    bgcolor: "background.paper",
+    borderRadius: "10px",
+    boxShadow: 24,
+    p: 3,
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  };
   // const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
+  const handleOpen = () => setOpen(true);
   const showPopconfirm = (id) => {
     // close another popconfirm if any open before opening this one
     const test = users.map((item) => {
@@ -174,6 +200,7 @@ function Banner() {
     setTextColor(null);
     setUrgentUpdate(null);
     setDate("");
+    setHeader("");
   };
 
   //popup
@@ -201,8 +228,27 @@ function Banner() {
     setUrgentUpdate("");
     setErrormsg("");
     setDate("");
+    setHeader("");
   };
 
+  const getSliderImage = () => {
+    var getSliderImage = GetSliderImage();
+    getSliderImage
+      .then((response) => {
+        parseData(response.data.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+   
+  };
+  const parseData = (images) => {
+    setImages(images);
+  };
+  useEffect(() => {
+    getSliderImage();
+  }, []);
+  
   const GetBannerData = () => {
     setLoading(true);
     var getBanners = GetBanner();
@@ -281,6 +327,7 @@ function Banner() {
           setDisplayBannerOrNot(
             params.row.DisplayBannerOrNot === 1 ? true : false
           );
+          setHeader(params.row.header);
           setGif_Url(params.row.Gif_Url);
           setGif_Visibility(
             params.row.Gif_Visibility === 1
@@ -339,6 +386,7 @@ function Banner() {
     },
     // { field: "id", headerName: "ID", width: 50 },
     { field: "url", headerName: "Url", width: 200 },
+    { field: "header", headerName: "Header", width: 200},
     { field: "Description", headerName: "Hindi", width: 200 },
     { field: "DescriptionIsEnglish", headerName: "English", width: 200 },
     { field: "AppVersion", headerName: "App Version", width: 100 },
@@ -555,6 +603,7 @@ function Banner() {
     UrgentUpdate: UrgentUpdate,
     admin_email: admin_email,
     date: date,
+    header: header,
   };
 // "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a-z]{2,6})|((\\d{1‌​,3}\\.){3}\\d{1,3}))‌​(:\\d{2,4})?((/|\\?)‌​(((%[0-9a-f]{2})|[-\‌​\w@\\+\\.~#\\?&/=])*‌​))?$"
   // update banner
@@ -601,6 +650,7 @@ function Banner() {
     setUrgentUpdate("");
     setErrormsg("");
     setDate("");
+    setHeader("");
   }
   };
 
@@ -613,6 +663,7 @@ function Banner() {
       AppVersion === "" ||
       ButtonText === "" ||
       ShowButton === "" ||
+      header === "" ||
       DisplayBannerOrNot === ""
     ) {
       setErrormsg("Please fill all the fields");
@@ -648,6 +699,7 @@ function Banner() {
           UrgentUpdate,
           admin_email,
           date,
+          header,
         };
         if(data_1.Gif_Visibility === ""){
           delete data_1.Gif_Visibility;
@@ -684,6 +736,7 @@ function Banner() {
         setUrgentUpdate("");
         setErrormsg("");
         setDate("");
+        setHeader("");
       }
     }
   };
@@ -760,6 +813,14 @@ function Banner() {
                 value={url}
                 onChange={(e) => seturl(e.target.value)}
                 label="Url"
+              />
+
+              <TextField 
+              required
+              id="outlined-required"
+              value={header}
+              onChange={(e) => setHeader(e.target.value)}
+              label="Header"
               />
               <TextField              
                 id="outlined-multiline-static"
@@ -1044,6 +1105,13 @@ function Banner() {
               onChange={(e) => seturl(e.target.value)}
               label="Url"
             />
+             <TextField
+              required
+              id="outlined-required"
+              value={header}
+              onChange={(e) => setHeader(e.target.value)}
+              label="Header"
+            />
             <TextField
               id="outlined-multiline-static"
               multiline
@@ -1144,21 +1212,6 @@ function Banner() {
                 onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
               />
 
-            {/* <InputLabel htmlFor="demo-customized-select-native" sx={{ pl: 1 }}>
-              Gif Url Open
-            </InputLabel>
-            <FormControl sx={{ m: 1, mb: 3 }} variant="standard">
-              <Select
-                id="demo-customized-select-native"
-                value={Gif_Url_to_be_opened}
-                onChange={(e) => setGif_Url_to_be_opened(e.target.value)}
-                input={<BootstrapInput />}
-              >
-                <MenuItem aria-label="None">Select</MenuItem>
-                <MenuItem value={true}>yes</MenuItem>
-                <MenuItem value={false}>no</MenuItem>
-              </Select>
-            </FormControl> */}
             <Grid container spacing={0}>
               <Grid item xs={12} md={6} lg={4} mt={0}>
                 <MDBox mb={0}>
@@ -1224,8 +1277,6 @@ function Banner() {
                 Date
               </InputLabel>
               <TextField
-                // id="outlined-input"
-                // label="Date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -1244,6 +1295,17 @@ function Banner() {
       </Dialog>
 
       <div style={{ float: "right", display: "flex" }}>
+
+      <Button
+          onClick={handleOpen}
+          style={{
+            background: "#33A2B5",
+            margin: "10px",
+            color: "#fff",
+          }}
+        >
+          Add App Slider Image
+        </Button>
         <Button
           type="submit"
           variant="contained"
@@ -1283,6 +1345,69 @@ function Banner() {
         }}
         />
       </div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        // onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                height: "auto",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+             Add App Slider Image
+              </h4>
+            </div>
+            <div>
+              <Form
+                addImage={getSliderImage}
+                handleClose={handleClose}
+              />
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
+
+<br/>
+      <div className="container">
+        <Imageslider/>
+      </div>
+
     </DashboardLayout>
   );
 }
