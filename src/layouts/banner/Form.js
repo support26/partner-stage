@@ -85,6 +85,7 @@ const Form = ({ addImage, handleClose }) => {
           placeholder="Upload image"
           style={styles.input}
           accept="image/*"
+          required
         />
         <button type="submit" style={styles.button}>
           Add
