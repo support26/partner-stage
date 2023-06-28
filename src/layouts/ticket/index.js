@@ -76,7 +76,7 @@ const styles = {
   button: {
     maxWidth: "15vh",
     height: "5vh",
-    width: "12vh",
+    width: "10vh",
     padding: "10px",
     margin: "0 0 0 5px",
     border: "none",
@@ -84,6 +84,7 @@ const styles = {
     backgroundColor: "#33a2b5",
     color: "#fff",
     cursor: "pointer",
+    fontSize:'10px'
   },
 };
 
@@ -97,7 +98,7 @@ function Ticket() {
   const [filter, setFilter] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const ticketsPerPage = 10;
+  const ticketsPerPage = 15;
   const offset = currentPage * ticketsPerPage;
   const currentTickets = tickets.slice(offset, offset + ticketsPerPage);
 
@@ -111,7 +112,7 @@ function Ticket() {
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
     padding: theme.spacing(1),
-    textAlign: "center",
+    textAlign: "left",
     color: theme.palette.text.secondary,
   }));
   const [loading, setLoading] = useState(true);
@@ -367,10 +368,11 @@ function Ticket() {
       </div>
 
       <MDBox pt={1} mx={1}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2} sx={{ flexDirection: { xs: "column", md: "row"} }}>
           {currentTickets.length !== 0 ? (
             currentTickets.map((ticket, key) => (
-              <Grid key={key} item xs={12} mt={0}>
+              <Grid key={key} item md={4} mt={1} xs={12}>
+              
                 <MDBox mb={0}>
                   <Card
                     sx={{
@@ -382,6 +384,7 @@ function Ticket() {
                       overflowX: "inherit",
                     }}
                   >
+                    <div style={{display:"flex"}}>
                     <CardMedia
                       sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
                       component="img"
@@ -392,31 +395,21 @@ function Ticket() {
                       }
                       alt=""
                       position="relative"
+                      
                     />
-
+                     <p style={{ maxWidth:"50%", marginLeft:"auto", fontSize:"14px", paddingRight:"30px", marginTop:"5%"}}> <strong>Ticket Id:  </strong>{ticket.ticketId}</p>
+                     </div>
                     <CardContent>
                       <Stack
-                        direction={{ xs: "column", sm: "row" }}
+                        direction="column"
                         spacing={2}
                         marginLeft="-8px"
+                        fontSize="14px"
                       >
-                        <Item style={{ maxWidth: "300px" }}>
-                          <strong>Name:</strong> {ticket.name}
-                        </Item>
-                        <Item style={{ maxWidth: "300px" }}>
-                          <strong>Phone Number:</strong> {ticket.phoneNumber}
-                        </Item>
-                        <Item style={{ maxWidth: "200px" }}>
-                          <strong>Ticket Id:</strong> {ticket.ticketId}
-                        </Item>
-                        <Item style={{ maxWidth: "400px" }}>
-                          <strong>Subject: </strong>
-                          {ticket.subject}
-                        </Item>
-                        <Item style={{ maxWidth: "400px" }}>
-                          <strong>Mail Id: </strong>
-                          {ticket.mail}
-                        </Item>
+                          <p> <strong>Name: </strong> {ticket.name}</p> 
+                          <p> <strong>Phone Number: </strong> {ticket.phoneNumber}</p>
+                          <p> <strong>Subject: </strong> {ticket.subject} </p>
+                          <p> <strong>Mail Id: </strong>  {ticket.mail}</p>
                       </Stack>
                       
                       <div
@@ -428,7 +421,7 @@ function Ticket() {
                               ticket.ticketStatus
                             ),
                             maxWidth: "15vh",
-                            width: "12vh",
+                            width: "10vh",
                             height: "5vh",
                             padding: "10px",
                             margin: "0 0 0 0%",
@@ -436,6 +429,7 @@ function Ticket() {
                             borderRadius: "10px",
                             color: "#fff",
                             cursor: "pointer",
+                            fontSize:"10px"
                           }}
                         >
                           {ticket.ticketStatus}
@@ -478,7 +472,7 @@ function Ticket() {
       {tickets.length > ticketsPerPage && (
         <div className="pagination-container">
           <p>
-            Rows Per Page: 10
+            Rows Per Page: 15
             <IconButton
               disabled={currentPage === 0}
               onClick={handlePreviousPage}
