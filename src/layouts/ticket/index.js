@@ -375,14 +375,14 @@ function Ticket() {
               
                 <MDBox mb={0}>
                   <Card
-                    sx={{
-                      position: "relative",
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: "whitesmoke",
-                      display: "flex",
-                      overflowX: "inherit",
-                    }}
+                   sx={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "whitesmoke",
+                    display: "flex",
+                    overflowX: "inherit"
+                  }}
                   >
                     <div style={{display:"flex"}}>
                     <CardMedia
@@ -405,13 +405,21 @@ function Ticket() {
                         spacing={2}
                         marginLeft="-8px"
                         fontSize="14px"
+                        sx={{
+                          overflowX: "auto",  // Enable horizontal scrolling
+                    whiteSpace: "nowrap",  // Keep all data in one line
+                    scrollbarWidth: "none",  // Hide the default scrollbar in Firefox
+                    msOverflowStyle: "none",  // Hide the default scrollbar in IE and Edge
+                    "&::-webkit-scrollbar": {
+                      display: "none",  // Hide the default scrollbar in Chrome and Safari
+                    }
+                        }}
                       >
                           <p> <strong>Name: </strong> {ticket.name}</p> 
                           <p> <strong>Phone Number: </strong> {ticket.phoneNumber}</p>
                           <p> <strong>Subject: </strong> {ticket.subject} </p>
-                          <p> <strong>Mail Id: </strong>  {ticket.mail}</p>
+                          <p> <strong>Mail Id: </strong> {ticket.mail} </p>
                       </Stack>
-                      
                       <div
                         style={{ display: "flex", marginTop:"2%", justifyContent: "flex-end" }}
                       >
