@@ -12,10 +12,10 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarQuickFilter,
-  GridActionsCellItem
+  GridActionsCellItem,
 } from "@mui/x-data-grid";
 // @mui material components
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -83,12 +83,52 @@ function Tables() {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarExport csvOptions={{ fields: ['isUserActiveOrNot', 'name', 'email', 'phone_number', 'age', 'dob', 'gender', 'education',  'latlong_address', 'latlong', 'last_active', 'created_at', 'App_version', 'acct_holder_name', 'bank_name', 'bank_acct_no',  'bank_ifsc_code', 'pancard_no', 'other_id_proof_no', 'runner_state', 'runner_district', 'runner_taluka', 'runner_village', 'isUserDisabled', 'reason', 'updated_by', 'updated_at'], fileName: 'runnersData' }} />
-        <GridToolbarQuickFilter style={{ position: "absolute", right: "1%", maxWidth: "150px" }} />
+        <GridToolbarExport
+          csvOptions={{
+            fields: [
+              "isUserActiveOrNot",
+              "name",
+              "email",
+              "phone_number",
+              "age",
+              "dob",
+              "gender",
+              "education",
+              "latlong_address",
+              "latlong",
+              "last_active",
+              "created_at",
+              "App_version",
+              "acct_holder_name",
+              "bank_name",
+              "bank_acct_no",
+              "bank_ifsc_code",
+              "pancard_no",
+              "other_id_proof_no",
+              "runner_state",
+              "runner_district",
+              "runner_taluka",
+              "runner_village",
+              "isUserDisabled",
+              "reason",
+              "updated_by",
+              "updated_at",
+            ],
+            fileName: "runnersData",
+          }}
+        />
+        <GridToolbarQuickFilter
+          style={{ position: "absolute", right: "1%", maxWidth: "150px" }}
+        />
       </GridToolbarContainer>
     );
   }
-  const { ChangeRunnerDisable, GetAllRunner, UpdateRunners, EnableDisablePartnerAppProfileUpdation } = useUsers();
+  const {
+    ChangeRunnerDisable,
+    GetAllRunner,
+    UpdateRunners,
+    EnableDisablePartnerAppProfileUpdation,
+  } = useUsers();
   const [loading, setLoading] = React.useState(true);
   const handleClickLoading = () => {
     setLoading((prevLoading) => !prevLoading);
@@ -170,7 +210,7 @@ function Tables() {
     });
     AdminRepository.checkUserActive()
       .then((res) => {
-        if (res.data.data.is_active === "N" ) {
+        if (res.data.data.is_active === "N") {
           window.location.href = "/";
           localStorage.clear();
           Cookies.remove("token");
@@ -182,7 +222,7 @@ function Tables() {
   };
 
   useEffect(() => {
-      GetRunner();
+    GetRunner();
   }, []);
 
   const handleClose = () => {
@@ -293,8 +333,8 @@ function Tables() {
         };
         return (
           <GridActionsCellItem
-          disabled={disabled}
-          style={{ color: disabled ? "grey" : "#1c68eb" }}
+            disabled={disabled}
+            style={{ color: disabled ? "grey" : "#1c68eb" }}
             icon={<EditIcon />}
             label="Edit"
             onClick={handleClickOpen}
@@ -360,7 +400,7 @@ function Tables() {
       width: 180,
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleString() : "";
-      }
+      },
     },
     {
       field: "created_at",
@@ -369,7 +409,7 @@ function Tables() {
       width: 180,
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleString() : "";
-      }
+      },
     },
     {
       field: "App_version",
@@ -408,7 +448,7 @@ function Tables() {
       width: 100,
       valueFormatter: (params) => {
         return params.value == "Y" ? true : false;
-      }
+      },
     },
     {
       field: "pancard_no",
@@ -447,7 +487,7 @@ function Tables() {
       type: "string",
       width: 130,
     },
-    
+
     {
       field: "updated_by",
       headerName: "Updated By",
@@ -461,7 +501,7 @@ function Tables() {
       width: 180,
       valueFormatter: (params) => {
         return params.value ? new Date(params.value).toLocaleString() : "";
-      }
+      },
     },
     {
       field: "is_profile_updatable",
@@ -470,14 +510,14 @@ function Tables() {
       renderCell: (params) => {
         return (
           <input
-          name="is_profile_updatable"
-          disabled={disabled}
-          type="checkbox"
-          checked={params.row.is_profile_updatable === "Y" ? true : false}
-          onChange={(e) => chnage(e, params.id)}
+            name="is_profile_updatable"
+            disabled={disabled}
+            type="checkbox"
+            checked={params.row.is_profile_updatable === "Y" ? true : false}
+            onChange={(e) => chnage(e, params.id)}
           />
-          );
-    }
+        );
+      },
     },
     {
       field: "is_bank_updatable",
@@ -485,14 +525,15 @@ function Tables() {
       width: 80,
       renderCell: (params) => {
         return (
-        <input
-        name="is_bank_updatable"
-        disabled={disabled}
-        type="checkbox" checked={params.row.is_bank_updatable === "Y" ? true : false}
-        onChange={(e) => chnage(e, params.id)}
-        />
+          <input
+            name="is_bank_updatable"
+            disabled={disabled}
+            type="checkbox"
+            checked={params.row.is_bank_updatable === "Y" ? true : false}
+            onChange={(e) => chnage(e, params.id)}
+          />
         );
-    }
+      },
     },
     {
       field: "is_village_updatable",
@@ -500,22 +541,23 @@ function Tables() {
       width: 80,
       renderCell: (params) => {
         return (
-        <input
-        name="is_village_updatable"
-        disabled={disabled}
-        type="checkbox" checked={params.row.is_village_updatable === "Y" ? true : false}
-        onChange={(e) => chnage(e, params.id)}
-        />
+          <input
+            name="is_village_updatable"
+            disabled={disabled}
+            type="checkbox"
+            checked={params.row.is_village_updatable === "Y" ? true : false}
+            onChange={(e) => chnage(e, params.id)}
+          />
         );
-    }
+      },
     },
     {
       field: "isUserDisabled",
       headerName: "Active Status",
       width: 120,
-      renderCell: (params) => {       
+      renderCell: (params) => {
         return (
-            <select
+          <select
             style={{
               width: "70px",
               height: "30px",
@@ -524,20 +566,25 @@ function Tables() {
               outline: "none",
             }}
             disabled={disabled}
-              value={params.row.isUserDisabled === "n" || params.row.isUserDisabled === null ? "n" : "y"}
-              onChange={(e) => {
-                setSelectvalue(e.target.value);
-                setReason(params.row.reason);
+            value={
+              params.row.isUserDisabled === "n" ||
+              params.row.isUserDisabled === null
+                ? "n"
+                : "y"
+            }
+            onChange={(e) => {
+              setSelectvalue(e.target.value);
+              setReason(params.row.reason);
 
-                setID(params.row.id);
-                handleAllOpen();
-              }}
-            >
-              <option value={"n"}> Active</option>
-              <option value={"y"}>Disabled</option>
-            </select>
+              setID(params.row.id);
+              handleAllOpen();
+            }}
+          >
+            <option value={"n"}> Active</option>
+            <option value={"y"}>Disabled</option>
+          </select>
         );
-      }
+      },
     },
     {
       field: "reason",
@@ -586,39 +633,40 @@ function Tables() {
   //       console.log(error);
   //     });
   // };
-const changeProfileUpdatable = (e, id) => {
-  console.log(localStorage.getItem("user_email"));
+  const changeProfileUpdatable = (e, id) => {
+    console.log(localStorage.getItem("user_email"));
     const data = {
       [e.target.name]: e.target.checked ? "Y" : "N",
-      updated_by: localStorage.getItem("user_email")
-    }
+      updated_by: localStorage.getItem("user_email"),
+    };
     // console.log(data, id)
     var updateaOption = EnableDisablePartnerAppProfileUpdation(id, data);
-    updateaOption.then((response) => {
-    // console.log("response@@@", response)
-    }).catch((e) => {
-      console.log(e);
-    });
-  }
+    updateaOption
+      .then((response) => {
+        // console.log("response@@@", response)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   const updateState = (key, value, id) => {
-    setAPIData(prevObjects => {
+    setAPIData((prevObjects) => {
       // Find the object with the matching id
-      const objectToUpdate = prevObjects.find(object => object.id === id);
+      const objectToUpdate = prevObjects.find((object) => object.id === id);
       // Create a copy of the object with the updated key value
       const updatedObject = { ...objectToUpdate, [key]: value ? "Y" : "N" };
       // Create a new array with the updated object
-      const updatedObjects = prevObjects.map(object => object.id === id ? updatedObject : object);
+      const updatedObjects = prevObjects.map((object) =>
+        object.id === id ? updatedObject : object
+      );
       return updatedObjects;
-    })
-   }
-
-  const chnage = (e, id) => {
-      changeProfileUpdatable(e, id)
-      updateState(e.target.name, e.target.checked, id)
+    });
   };
 
-
-
+  const chnage = (e, id) => {
+    changeProfileUpdatable(e, id);
+    updateState(e.target.name, e.target.checked, id);
+  };
 
   const updateAPIData = (event) => {
     event.preventDefault();
@@ -722,7 +770,7 @@ const changeProfileUpdatable = (e, id) => {
             </Card>
           </Grid>
         </Grid>
-        <Dialog open={open} TransitionComponent={Transition}>
+        <Dialog open={open} TransitionComponent={Transition} maxWidth={"xl"}>
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <IconButton
@@ -730,22 +778,23 @@ const changeProfileUpdatable = (e, id) => {
                 color="inherit"
                 onClick={handleClose}
                 aria-label="close"
+                style={{marginTop:"-80px"}}
               >
                 <CloseIcon />
               </IconButton>
-
+            
               <Typography
                 sx={{
-                  ml: 2,
+                  ml: -3.6,
                   flex: 1,
-                  fontSize: 20,
+                  fontSize: 25,
                   color: "#33A2B5",
                   textTransform: "capitalize",
                 }}
                 variant="h6"
                 component="div"
               >
-                {name}
+              {name} 
               </Typography>
 
               <Box
@@ -757,7 +806,7 @@ const changeProfileUpdatable = (e, id) => {
                   overflow: "hidden",
                   //ml: 3,
                   m: 2,
-                  border: "1px solid #0000005e",
+                  border: "2px solid #0000005e",
                 }}
                 onClick={imageshandleOpen}
                 alt="upload profile image"
@@ -824,7 +873,7 @@ const changeProfileUpdatable = (e, id) => {
               label="Email(Prefilled from Sign In)"
               type="mail"
               value={Email}
-              onChange={(e) => setEmail(e.target.vaue)}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               label="Age"
@@ -897,7 +946,7 @@ const changeProfileUpdatable = (e, id) => {
               onChange={(e) => setVillage(e.target.value)}
             />
 
-            <br />
+            <hr />
 
             <h3 style={{ color: "#33A2B5", marginLeft: "25px" }}>
               Bank Details
@@ -918,136 +967,217 @@ const changeProfileUpdatable = (e, id) => {
               onChange={(e) => setBankName(e.target.value)}
             />
 
+            <TextField
+              id="standard-disabled"
+              label="Bank Account no."
+              value={bank_acct_no}
+              onChange={(e) => setAccountno(e.target.value)}
+            />
+
+            <TextField
+              id="standard-disabled"
+              label="IFSC Code"
+              type="text"
+              value={bank_ifsc_code}
+              onChange={(e) => setbank_ifsc_code(e.target.value)}
+            />
+
             {/* bank_passbook_photo */}
-            <div style={{ display: "inline" }}>
-              <Box
-                component="img"
-                sx={{
-                  height: 100,
-                  width: 219,
-                  ml: 3.5,
-                  mt: 2.5,
-
-                  borderRadius: "10px",
-                  boxShadow: 1,
-                }}
-                onClick={imagespasshandleOpen}
-                alt="The upload image."
-                src={bank_passbook_photo}
-                display="flex"
-                // / src={URL.createObjectURL(profileImage)}
-              />{" "}
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <IconButton
-                  style={{
-                    marginTop: "-110px",
-                    marginLeft: "228px",
-                    fontSize: "20px",
-                    color: "white",
-                    backgroundColor: "#33A2B5",
+            <div style={{ display: "flex", flexDirection: window.innerWidth <= 800 ? "column" : "row" }}>
+              <div style={{ display: "inline" }}>
+                <Box
+                  component="img"
+                  sx={{
+                    height: 100,
+                    width: 219,
+                    ml: 3.5,
+                    mt: 2.5,
+                    borderRadius: "10px",
+                    boxShadow: 1,
                   }}
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
+                  onClick={imagespasshandleOpen}
+                  alt="The uploaded image."
+                  src={bank_passbook_photo}
+                  display="flex"
+                  // / src={URL.createObjectURL(profileImage)}
+                />{" "}
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <IconButton
+                    style={{
+                      marginTop: "-110px",
+                      marginLeft: "228px",
+                      fontSize: "20px",
+                      color: "white",
+                      backgroundColor: "#33A2B5",
+                    }}
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                  >
+                    <input //passbook image
+                      hidden
+                      accept=".png, .jpeg, .jpg"
+                      type="file"
+                      onChange={handleBank_passbook_photo}
+                    />
+                    <FileUploadIcon />
+                  </IconButton>
+                </Stack>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "80px",
+                    color: "hwb(0deg 0% 100% / 60%)",
+                  }}
                 >
-                  <input //passbook image
-                    hidden
-                    accept=".png, .jpeg, .jpg"
-                    type="file"
-                    onChange={handleBank_passbook_photo}
-                  />
-                  <FileUploadIcon />
-                </IconButton>
-              </Stack>
-              <span
-                style={{
-                  fontSize: "12px",
-                  marginLeft: "80px",
-                  color: "hwb(0deg 0% 100% / 60%)",
-                }}
-              >
-                Bank Bassbook Photo
-              </span>
-              <div className="mediaText">
-                <TextField
-                  id="standard-disabled"
-                  label="Bank Account no."
-                  value={bank_acct_no}
-                  onChange={(e) => setAccountno(e.target.value)}
-                />
-                <br />
-
-                <TextField
-                  id="standard-disabled"
-                  label="IFSC Code  "
-                  type="text"
-                  value={bank_ifsc_code}
-                  onChange={(e) => setbank_ifsc_code(e.target.value)}
-                />
+                  Bank Passbook Photo
+                </span>
               </div>
-            </div>
 
-            <Modal
-              open={imgpassopen}
-              onClose={imagespasshandleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <img src={bank_passbook_photo} width="500px" height="500px" />
-              </Box>
-            </Modal>
-
-            <div style={{}}>
-              <Box
-                component="img"
-                sx={{
-                  height: 100,
-                  width: 219,
-                  ml: 3.5,
-                  mt: 2.5,
-
-                  borderRadius: "10px",
-                  boxShadow: 1,
-                }}
-                onClick={imagespancardhandleOpen}
-                alt="The upload image."
-                src={pancard_image}
-                display="flex"
-                // / src={URL.createObjectURL(profileImage)}
-              />
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <IconButton
-                  style={{
-                    marginTop: "-110px",
-                    marginLeft: "228px",
-                    fontSize: "20px",
-                    color: "white",
-                    backgroundColor: "#33A2B5",
-                  }}
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input //passbook image
-                    hidden
-                    accept=".png, .jpeg, .jpg"
-                    type="file"
-                    onChange={handlePancardImages}
-                  />
-                  <FileUploadIcon />
-                </IconButton>
-              </Stack>
-              <span
-                style={{
-                  fontSize: "12px",
-                  marginLeft: "80px",
-                  color: "hwb(0deg 0% 100% / 60%)",
-                }}
+              <Modal
+                open={imgpassopen}
+                onClose={imagespasshandleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
               >
-                Pancard Card Photo
-              </span>
+                <Box sx={style}>
+                  <img src={bank_passbook_photo} width="500px" height="500px" />
+                </Box>
+              </Modal>
 
+              <div style={{}}>
+                <Box
+                  component="img"
+                  sx={{
+                    height: 100,
+                    width: 219,
+                    ml: 3.5,
+                    mt: 2.5,
+
+                    borderRadius: "10px",
+                    boxShadow: 1,
+                  }}
+                  onClick={imagespancardhandleOpen}
+                  alt="The uploaded image."
+                  src={pancard_image}
+                  display="flex"
+                  // / src={URL.createObjectURL(profileImage)}
+                />
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <IconButton
+                    style={{
+                      marginTop: "-110px",
+                      marginLeft: "228px",
+                      fontSize: "20px",
+                      color: "white",
+                      backgroundColor: "#33A2B5",
+                    }}
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                  >
+                    <input //passbook image
+                      hidden
+                      accept=".png, .jpeg, .jpg"
+                      type="file"
+                      onChange={handlePancardImages}
+                    />
+                    <FileUploadIcon />
+                  </IconButton>
+                </Stack>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "80px",
+                    color: "hwb(0deg 0% 100% / 60%)",
+                  }}
+                >
+                  Pancard Card Photo
+                </span>
+              </div>
+
+              <Modal
+                open={imgpancardopen}
+                onClose={imagespancardhandleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <img src={pancard_image} width="500px" height="500px" />
+                </Box>
+              </Modal>
+
+              <div style={{}}>
+                <Box
+                  component="img"
+                  sx={{
+                    height: 100,
+                    width: 219,
+                    ml: 3.5,
+                    mt: 2.5,
+                    backgroundSize: "300px",
+
+                    borderRadius: "10px",
+                    boxShadow: 1,
+                  }}
+                  onClick={otherhandleOpen}
+                  alt="Uploaded Photos."
+                  src={other_Id_proof_image}
+                  display="flex"
+
+                  // backgroundImage:URL('https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg')
+                  // / src={URL.createObjectURL(profileImage)}
+                />{" "}
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <IconButton
+                    style={{
+                      marginTop: "-110px",
+                      marginLeft: "228px",
+                      fontSize: "20px",
+                      color: "white",
+                      backgroundColor: "#33A2B5",
+                    }}
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                  >
+                    <input //passbook image
+                      hidden
+                      accept=".png, .jpeg, .jpg"
+                      type="file"
+                      onChange={handelother_Id_proof_image}
+                    />
+                    <FileUploadIcon />
+                  </IconButton>
+                </Stack>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "40px",
+                    color: "hwb(0deg 0% 100% / 60%)",
+                  }}
+                >
+                  Any ID Proof Photo(Aadhar/Voter ID)
+                </span>
+              </div>
+
+              <Modal
+                open={otheropen}
+                onClose={otherhandleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <img
+                    src={other_Id_proof_image}
+                    width="500px"
+                    height="500px"
+                  />
+                </Box>
+              </Modal>
+            </div>
+           
+            <div style={{ display: "flex", flexDirection: window.innerWidth <= 600 ? "column" : "row", marginTop:"110px" }}>
               <div className="mediaText">
                 <TextField
                   id="standard-disabled"
@@ -1056,71 +1186,6 @@ const changeProfileUpdatable = (e, id) => {
                   onChange={(e) => setPancardno(e.target.value)}
                 />
               </div>
-            </div>
-
-            <Modal
-              open={imgpancardopen}
-              onClose={imagespancardhandleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <img src={pancard_image} width="500px" height="500px" />
-              </Box>
-            </Modal>
-
-            <div style={{}}>
-              <Box
-                component="img"
-                sx={{
-                  height: 100,
-                  width: 219,
-                  ml: 3.5,
-                  mt: 2.5,
-                  backgroundSize: "300px",
-
-                  borderRadius: "10px",
-                  boxShadow: 1,
-                }}
-                onClick={otherhandleOpen}
-                alt="Upload Photos."
-                src={other_Id_proof_image}
-                display="flex"
-
-                // backgroundImage:URL('https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg')
-                // / src={URL.createObjectURL(profileImage)}
-              />{" "}
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <IconButton
-                  style={{
-                    marginTop: "-110px",
-                    marginLeft: "228px",
-                    fontSize: "20px",
-                    color: "white",
-                    backgroundColor: "#33A2B5",
-                  }}
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input //passbook image
-                    hidden
-                    accept=".png, .jpeg, .jpg"
-                    type="file"
-                    onChange={handelother_Id_proof_image}
-                  />
-                  <FileUploadIcon />
-                </IconButton>
-              </Stack>
-              <span
-                style={{
-                  fontSize: "12px",
-                  marginLeft: "40px",
-                  color: "hwb(0deg 0% 100% / 60%)",
-                }}
-              >
-                Any ID Proof Photo(Aadhar/Voter ID)
-              </span>
               <div className="mediaText">
                 <TextField
                   id="standard-helperText"
@@ -1130,27 +1195,13 @@ const changeProfileUpdatable = (e, id) => {
                 />
               </div>
             </div>
-            <Modal
-              open={otheropen}
-              onClose={otherhandleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <img src={other_Id_proof_image} width="500px" height="500px" />
-              </Box>
-            </Modal>
-
-            <div style={{ padding: 10 }}>
+            <div style={{ textAlign: "center", marginTop:"-6%" }}>
               <Button
                 sx={{
                   color: "#f0f2f5",
                   backgroundColor: "#33A2B5",
                   "&:hover": { backgroundColor: "#2A90A2", color: "white" },
-                  float: "right",
-
-                  my: 5,
-                  width: "100%",
+                  width: "20%",
                 }}
                 type="submit"
                 onClick={updateAPIData}
