@@ -395,8 +395,8 @@ export default function useAdmin() {
       return responseData;
     },
 
-    GetSliderImage: async (data) => {
-      var responseData = await AdminRepository.getSliderImage(data);
+    GetSliderImage: async () => {
+      var responseData = await AdminRepository.getSliderImage();
       if(responseData.status === 200){
         return responseData;
       }
