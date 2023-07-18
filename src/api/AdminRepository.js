@@ -578,14 +578,12 @@ class AdminRepository {
     return reponse;
   }
 
-  async getSliderImage(data){
+  async getSliderImage(){
     const token = localStorage.getItem("token");
     const response = await Api.get(
-      `${baseUrl}admin/slider`,
-      data,
-      {
-        headers:{
-          Authorization:"Bearer " + token,
+      `${baseUrl}admin/slider`, {
+        headers: {
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
