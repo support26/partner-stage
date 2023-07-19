@@ -43,3 +43,78 @@
   padding: 8px 0;
   background: #00a0e9;
 }
+
+.chat-container {
+  width: 100%;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+  height: 200px;
+}
+
+.chat-container::-webkit-scrollbar {display:none;}
+
+.chat-messages {
+  padding: 10px;
+}
+
+.user-message {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.user-message .message-content {
+  border-radius: 5px;
+  float: left;
+}
+
+.user-message .user-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 8px;
+}
+
+.admin-message {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.admin-message .message-content {
+  border-radius: 5px;
+  float: right;
+}
+
+.admin-message .admin-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  float: right;
+  margin-right: 8px;
+}
+
+.input-area {
+  margin-top: 10px;
+  display: flex;
+}
+
+.input-area input[type="text"] {
+  width: 90%;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.input-area a {
+  padding: 7px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 90px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  margin-left: 5px;
+  text-align: center;;
+}
