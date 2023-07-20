@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { read, write } from "./test";
+import { read, write } from "./utils";
 import "./styles.css";
 
 const ChatContainer = (props) => {
@@ -76,11 +76,11 @@ const ChatContainer = (props) => {
                 />
               )}*/}
               <div className="message-content">
-                <div style={{ backgroundColor: 'white', padding: "5px", borderRadius: '6px', marginTop: '8px' }}>
-                  <p style={{ fontSize: '12px', color: "gray", marginBottom: "2px" }}>{message.senderNumber !== adminEmail ? message.senderName : ""}</p>
+                <div style={{ backgroundColor: 'white', padding: "4px", borderRadius: message.senderNumber !== adminEmail ? "7px 7px 7px 0px" : '7px 7px 0px 7px', marginTop: '8px', maxWidth: "500px" }}>
+                  <p style={{ fontSize: '12px', color: "gray", marginBottom: "2px", marginLeft: "5px"}}>{message.senderNumber !== adminEmail ? message.senderName : ""}</p>
                   <p style={{ marginLeft: "5px", fontSize:"18px" }}>{message.message}</p>
                 </div>
-                <p style={{ fontSize: '12px', color: "gray", marginTop: "2px" }}>{formatDate(message.timestamp)}</p>
+                <p style={{ fontSize: '12px', color: "gray", marginTop: "2px", float: message.senderNumber !== adminEmail ? "left" : "right" }}>{formatDate(message.timestamp)}</p>
               </div>
             </div>
           ))}

@@ -21,8 +21,6 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
-import { Translate } from "@mui/icons-material";
-import transitions from "@material-ui/core/styles/transitions";
 
 const style = {
   position: "absolute",
@@ -191,7 +189,7 @@ function Opportunities() {
   const handleFilter = (e) => {
     setLoading(false)
     // console.log(e);
-    if (e.target.value == " ") {
+    if (e.target.value === " ") {
       setOpportunities(searchApiData);
     } else {
       const Filter = searchApiData.filter(
@@ -212,7 +210,7 @@ function Opportunities() {
       
       var deleteCardopprtunity=DeleteOpportunityCard(deleteId);
       deleteCardopprtunity.then((res)=>{
-        if(res.status==200){
+        if(res.status===200){
           console.log("deleted");
           getAllOpportunity();
         }
@@ -333,8 +331,8 @@ function Opportunities() {
                           bottom: 50,
                           flex: 10,
                           justifyContent: "space-between",
-                          justifyContent: "flex-end",
-                          bottom: 0,
+                          // justifyContent: "flex-end",
+                          // bottom: 0,
                         }}
                       >
                         <CardActions sx={{ marginTop: -3 }}>
@@ -345,7 +343,7 @@ function Opportunities() {
                                 bottom: 0.5,
                                 flex: 0,
                                 justifyContent: "space-between",
-                                justifyContent: "flex-end",
+                                // justifyContent: "flex-end",
                               }}
                               onClick={() => handleOpen1(opportunity.id)}
                               size="small"

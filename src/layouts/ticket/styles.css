@@ -50,7 +50,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: auto;
-  height: 200px;
+  height: 300px;
 }
 
 .chat-container::-webkit-scrollbar {display:none;}
