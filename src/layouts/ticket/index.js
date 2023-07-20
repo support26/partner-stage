@@ -20,6 +20,7 @@ import "./styles.css";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import ChatContainer from "./ChatContainer";
 
 import {
   Select,
@@ -84,7 +85,7 @@ const styles = {
     backgroundColor: "#33a2b5",
     color: "#fff",
     cursor: "pointer",
-    fontSize:'10px'
+    fontSize: '10px'
   },
 };
 
@@ -296,8 +297,8 @@ function Ticket() {
           type="text"
           placeholder="Search..."
           onInput={handleFilter}
-          // value={searchValue}
-          // onChange={handleFilter}
+        // value={searchValue}
+        // onChange={handleFilter}
         />
 
         <Select
@@ -368,37 +369,37 @@ function Ticket() {
       </div>
 
       <MDBox pt={1} mx={1}>
-        <Grid container spacing={2} sx={{ flexDirection: { xs: "column", md: "row"} }}>
+        <Grid container spacing={2} sx={{ flexDirection: { xs: "column", md: "row" } }}>
           {currentTickets.length !== 0 ? (
             currentTickets.map((ticket, key) => (
               <Grid key={key} item md={4} mt={1} xs={12}>
-              
+
                 <MDBox mb={0}>
                   <Card
-                   sx={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "whitesmoke",
-                    display: "flex",
-                    overflowX: "inherit"
-                  }}
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "whitesmoke",
+                      display: "flex",
+                      overflowX: "inherit"
+                    }}
                   >
-                    <div style={{display:"flex"}}>
-                    <CardMedia
-                      sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
-                      component="img"
-                      image={
-                        ticket.profile
-                          ? ticket.profile
-                          : "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                      }
-                      alt=""
-                      position="relative"
-                      
-                    />
-                     <p style={{ maxWidth:"50%", marginLeft:"auto", fontSize:"14px", paddingRight:"30px", marginTop:"5%"}}> <strong>Ticket Id:  </strong>{ticket.ticketId}</p>
-                     </div>
+                    <div style={{ display: "flex" }}>
+                      <CardMedia
+                        sx={{ maxHeight: 50, minHeight: 50, maxWidth: 50 }}
+                        component="img"
+                        image={
+                          ticket.profile
+                            ? ticket.profile
+                            : "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        }
+                        alt=""
+                        position="relative"
+
+                      />
+                      <p style={{ maxWidth: "50%", marginLeft: "auto", fontSize: "14px", paddingRight: "30px", marginTop: "5%" }}> <strong>Ticket Id:  </strong>{ticket.ticketId}</p>
+                    </div>
                     <CardContent>
                       <Stack
                         direction="column"
@@ -407,21 +408,21 @@ function Ticket() {
                         fontSize="14px"
                         sx={{
                           overflowX: "auto",  // Enable horizontal scrolling
-                    whiteSpace: "nowrap",  // Keep all data in one line
-                    scrollbarWidth: "none",  // Hide the default scrollbar in Firefox
-                    msOverflowStyle: "none",  // Hide the default scrollbar in IE and Edge
-                    "&::-webkit-scrollbar": {
-                      display: "none",  // Hide the default scrollbar in Chrome and Safari
-                    }
+                          whiteSpace: "nowrap",  // Keep all data in one line
+                          scrollbarWidth: "none",  // Hide the default scrollbar in Firefox
+                          msOverflowStyle: "none",  // Hide the default scrollbar in IE and Edge
+                          "&::-webkit-scrollbar": {
+                            display: "none",  // Hide the default scrollbar in Chrome and Safari
+                          }
                         }}
                       >
-                          <p> <strong>Name: </strong> {ticket.name}</p> 
-                          <p> <strong>Phone Number: </strong> {ticket.phoneNumber}</p>
-                          <p> <strong>Subject: </strong> {ticket.subject} </p>
-                          <p> <strong>Mail Id: </strong> {ticket.mail} </p>
+                        <p> <strong>Name: </strong> {ticket.name}</p>
+                        <p> <strong>Phone Number: </strong> {ticket.phoneNumber}</p>
+                        <p> <strong>Subject: </strong> {ticket.subject} </p>
+                        <p> <strong>Mail Id: </strong> {ticket.mail} </p>
                       </Stack>
                       <div
-                        style={{ display: "flex", marginTop:"2%", justifyContent: "flex-end" }}
+                        style={{ display: "flex", marginTop: "2%", justifyContent: "flex-end" }}
                       >
                         <Button
                           style={{
@@ -437,7 +438,7 @@ function Ticket() {
                             borderRadius: "10px",
                             color: "#fff",
                             cursor: "pointer",
-                            fontSize:"10px"
+                            fontSize: "10px"
                           }}
                         >
                           {ticket.ticketStatus}
@@ -542,9 +543,10 @@ function Ticket() {
                   aria-label="close"
                   onClick={handleClose1}
                   style={{
+                    display: "block",
                     float: "right",
-                    marginTop: "-20px",
-                    marginRight: "-29px",
+                    marginTop: "-10px",
+                    marginRight: "-32px",
                   }}
                 >
                   <CloseIcon />
@@ -563,7 +565,7 @@ function Ticket() {
                           maxHeight: "90%",
                         }}
                       >
-                        <h5 style={{ textAlign: "center", fontSize:"18px" }}>Query Details</h5>
+                        <h5 style={{ textAlign: "center", fontSize: "18px" }}>Query Details</h5>
 
                         <CardMedia
                           sx={{
@@ -713,89 +715,90 @@ function Ticket() {
                           required
                         />
 
-                           <Grid item xs={6} mt={0}>
-                            <Stack
-                              direction={{ xs: "column", sm: "row" }}
-                              spacing={5}
-                              sx={{ justifyContent: "center" }}
+                        {selectedTicket.ticketStatus === "In Process" ? <ChatContainer ticketId={selectedTicket.ticketId} mail={selectedTicket.mail}/>: null}
+                        <Grid item xs={6} mt={0}>
+                          <Stack
+                            direction={{ xs: "column", sm: "row" }}
+                            spacing={5}
+                            sx={{ justifyContent: "center" }}
+                          >
+                            <div>
+                              <label style={{ width: "auto", fontSize: "14px", paddingTop: "12%" }}>
+                                Status:
+                              </label>
+                              <Select
+                                style={{
+                                  margin: "7px 10px 0px 10px",
+                                  padding: "6px 10px 6px 2px",
+                                  borderColor: "#33a2b5",
+                                  borderRadius: "10px",
+                                  width: "auto",
+                                  height: "5vh",
+                                  outline: "none",
+                                  // border: "2px solid #33a2b5",
+                                  background: "#fff",
+                                  color: "black",
+                                  fontSize: "14px",
+                                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
+                                  backgroundRepeat: "no-repeat",
+                                  backgroundPosition: "right 8px center",
+                                  backgroundSize: "10px 5px",
+                                }}
+                                name="ticketStatus"
+                                onChange={onChange}
+                                required
+                                defaultValue={selectedTicket.ticketStatus}
+                              >
+                                <MenuItem
+                                  value={"Open"}
+                                  style={{
+                                    border: "2px solid lightgray",
+                                    height: "40px",
+                                    marginTop: "2px",
+                                  }}
+                                >
+                                  Open
+                                </MenuItem>
+                                <MenuItem
+                                  value={"In Process"}
+                                  style={{
+                                    border: "2px solid lightgray",
+                                    height: "40px",
+                                    marginTop: "2px",
+                                  }}
+                                >
+                                  In Process
+                                </MenuItem>
+                                <MenuItem
+                                  value={"Closed"}
+                                  style={{
+                                    border: "2px solid lightgray",
+                                    height: "40px",
+                                    marginTop: "2px",
+                                  }}
+                                >
+                                  Closed
+                                </MenuItem>
+                              </Select>
+                            </div>
+                            <div style={{ display: "flex", flex: 4 }}>
+
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flex: 1
+                              }}
                             >
-                              <div>
-                        <label style={{ width: "auto", fontSize: "14px", paddingTop:"12%" }}>
-                          Status:
-                        </label>
-                        <Select
-                          style={{
-                            margin: "7px 10px 0px 10px",
-                            padding: "6px 10px 6px 2px",
-                            borderColor: "#33a2b5",
-                            borderRadius: "10px",
-                            width: "auto",
-                            height: "5vh",
-                            outline: "none",
-                            // border: "2px solid #33a2b5",
-                            background: "#fff",
-                            color: "black",
-                            fontSize: "14px",
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%2333a2b5' d='M0 0l5 4.998L10 0z'/%3E%3C/svg%3E")`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "right 8px center",
-                            backgroundSize: "10px 5px",
-                          }}
-                          name="ticketStatus"
-                          onChange={onChange}
-                          required
-                          defaultValue={selectedTicket.ticketStatus}
-                        >
-                          <MenuItem
-                            value={"Open"}
-                            style={{
-                              border: "2px solid lightgray",
-                              height: "40px",
-                              marginTop: "2px",
-                            }}
-                          >
-                            Open
-                          </MenuItem>
-                          <MenuItem
-                            value={"In Process"}
-                            style={{
-                              border: "2px solid lightgray",
-                              height: "40px",
-                              marginTop: "2px",
-                            }}
-                          >
-                            In Process
-                          </MenuItem>
-                          <MenuItem
-                            value={"Closed"}
-                            style={{
-                              border: "2px solid lightgray",
-                              height: "40px",
-                              marginTop: "2px",
-                            }}
-                          >
-                            Closed
-                          </MenuItem>
-                        </Select>
-                        </div>
-                        <div style={{display:"flex", flex:4}}>
-                          
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flex:1
-                          }}
-                        >
-                          <button style={styles.button} onClick={handleClose1}>
-                            Discard
-                          </button>
-                          <button type="submit" style={styles.button}>
-                            Save
-                          </button>
-                        </div>
-                       </Stack>
-                       </Grid>
+                              <button style={styles.button} onClick={handleClose1}>
+                                Discard
+                              </button>
+                              <button type="submit" style={styles.button}>
+                                Save
+                              </button>
+                            </div>
+                          </Stack>
+                        </Grid>
                       </form>
                     </div>
                   </div>
