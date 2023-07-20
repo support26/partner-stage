@@ -41,14 +41,15 @@ const ChatContainer = (props) => {
   };
 
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
+    const date = new Date(parseInt(timestamp));
+    //const date = new Date(timestamp);
     return date.toLocaleString(undefined);
   }
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSendMessage();
-      e.preventDefault(); // Prevent form submission (closing of the chat container)
+      e.preventDefault(); 
     }
   };
 
@@ -79,7 +80,7 @@ const ChatContainer = (props) => {
                   <p style={{ fontSize: '12px', color: "gray", marginBottom: "2px" }}>{message.senderNumber !== adminEmail ? message.senderName : ""}</p>
                   <p style={{ marginLeft: "5px", fontSize:"18px" }}>{message.message}</p>
                 </div>
-                <p style={{ fontSize: '12px', color: "gray", marginTop: "2px" }}>{formatDate(timestamp)}</p>
+                <p style={{ fontSize: '12px', color: "gray", marginTop: "2px" }}>{formatDate(message.timestamp)}</p>
               </div>
             </div>
           ))}
