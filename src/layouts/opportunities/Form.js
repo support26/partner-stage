@@ -1,10 +1,9 @@
-import React, {useState} from 'react'
-import Compressor from 'compressorjs';
+import React, { useState } from "react";
+import Compressor from "compressorjs";
 import UserRepository from "api/UsersRepository";
-import useAdmin from '../../hooks/useAdmin';
+import useAdmin from "../../hooks/useAdmin";
 // import FormInput from "./FormInput";
 // import './form.css'
-
 
 // add styles to the form
 const styles = {
@@ -43,179 +42,187 @@ const styles = {
   },
 };
 
-const Form = ({getAllOpportunity, handleClose}) => {
+const Form = ({ getAllOpportunity, handleClose }) => {
   const { AddOpportunity } = useAdmin();
-    const [values, setValues] = useState({
-        icon: "",
-        title: "",
-        title_image: "",
-        video_link: "",
-        apply_link: "",
-        location: "",
-        description: "",
-        course_id: "",
-      });
-    
-    const [projectDetails, setProjectDetails] = useState({
-        title: "",
-        description: "",
-        image: "",
-    });
-
-    const [extraDetails, setExtraDetails] = useState([
-      {
-        title: "",
-        description: "",
-        image: "",
-      }
-    ]);
-
-      const inputs = [
-        // {
-        //   id: 1,
-        //   name: "icon",
-        //   type: "file",
-        //   placeholder: "Upload icon...",
-        //   errorMessage: "Url is not valid",
-        //   label: "Project Icon",
-        //   // pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-        //   required: false,
-        // },
-        {
-          id: 1,
-          name: "title",
-          type: "text",
-          placeholder: "Enter title of the project",
-          errorMessage: "It should be not more than 50 words",
-          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
-          label: "Title",
-          required: false,
-        },
-        {
-          id: 2,
-          name: "location",
-          type: "text",
-          placeholder: "Enter Location",
-          errorMessage: "It should be not more than 50 words",
-          label: "Location",
-          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
-          required: false,
-        },
-        {
-          id: 3,
-          name: "video_link",
-          type: "text",
-          placeholder: "Enter video url",
-          errorMessage: "Url is not valid",
-          label: "Video Link",
-          // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
-          required: false,
-        },
-        {
-          id: 4,
-          name: "apply_link",
-          type: "text",
-          placeholder: "Enter Apply Link", 
-          errorMessage: "Url is not valid",
-          label: "Apply Link",
-          pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
-          required: false,
-        },
-        {
-          id: 5,
-          name: "course_id",
-          type: "text",
-          placeholder: "Enter Spayee Course Id",
-          errorMessage: "It should be not more than 50 words",
-          label: "Course Id",
-          // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
-          required: false,
-        }
-      ];
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        var data = {
-          icon: values.icon,
-          title: values.title,
-          title_image: values.title_image,
-          video_link: values.video_link,
-          apply_link: values.apply_link,
-          course_id: values.course_id,
-          description: values.description,
-          tags : {
-            location: values.location,
-            created : new Date(),
-          },
-          projectDetails: projectDetails,
-          extraDetails: extraDetails,
-        };
-        var addOpportunity =  AddOpportunity(data);
-        addOpportunity.then((res) => {
-          // console.log(res);
-          getAllOpportunity();
-          handleClose();
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-          
-        // console.log(values);
-        // console.log(projectDetails);
-        // console.log(extraDetails);
-      };
-    
-      const onChange = (e) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-      };
-      const onChange1 = (e) => {
-        setProjectDetails({ ...projectDetails, [e.target.name]: e.target.value  })
-      }
-      let file;
-  let form_data = new FormData();
-      const onChangeImage = (e) => {
-        file = e.target.files[0];
-        new Compressor(file, {
-          quality: 0.8,
-          success(result) {
-            file = result;      
-    form_data.append("file", file);
-    UserRepository.UploadImageFile(form_data)
-      .then((response) => {
-        // console.log(response.data);
-        setValues({ ...values, [e.target.name]: response.data.data.fileUrl});
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    },
-    error(err) {
-      console.log(err.message);
-    },
+  const [values, setValues] = useState({
+    icon: "",
+    title: "",
+    title_image: "",
+    video_link: "",
+    apply_link: "",
+    location: "",
+    description: "",
+    course_id: "",
   });
-};
 
-      const onChangeImage1 = (e) => {
-        file = e.target.files[0];
-        new Compressor(file, {
-          quality: 0.8,
-          success(result) {
-            file = result;
-            form_data.append("file", file);
-            UserRepository.UploadImageFile(form_data)
-              .then((response) => {
-                console.log(response.data);
-                setProjectDetails({ ...projectDetails, [e.target.name]: response.data.data.fileUrl});
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          },
-          error(err) {
-            console.log(err.message);
-          },
-        });
-      };
+  const [projectDetails, setProjectDetails] = useState({
+    title: "",
+    description: "",
+    image: "",
+  });
+
+  const [extraDetails, setExtraDetails] = useState([
+    {
+      title: "",
+      description: "",
+      image: "",
+    },
+  ]);
+
+  const inputs = [
+    // {
+    //   id: 1,
+    //   name: "icon",
+    //   type: "file",
+    //   placeholder: "Upload icon...",
+    //   errorMessage: "Url is not valid",
+    //   label: "Project Icon",
+    //   // pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
+    //   required: false,
+    // },
+    {
+      id: 1,
+      name: "title",
+      type: "text",
+      placeholder: "Enter title of the project",
+      errorMessage: "It should be not more than 50 words",
+      // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+      label: "Title",
+      required: false,
+    },
+    {
+      id: 2,
+      name: "location",
+      type: "text",
+      placeholder: "Enter Location",
+      errorMessage: "It should be not more than 50 words",
+      label: "Location",
+      // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+      required: false,
+    },
+    {
+      id: 3,
+      name: "video_link",
+      type: "text",
+      placeholder: "Enter video url",
+      errorMessage: "Url is not valid",
+      label: "Video Link",
+      // pattern: "/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g",
+      required: false,
+    },
+    {
+      id: 4,
+      name: "apply_link",
+      type: "text",
+      placeholder: "Enter Apply Link",
+      errorMessage: "Url is not valid",
+      label: "Apply Link",
+      pattern:
+        "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
+      required: false,
+    },
+    {
+      id: 5,
+      name: "course_id",
+      type: "text",
+      placeholder: "Enter Spayee Course Id",
+      errorMessage: "It should be not more than 50 words",
+      label: "Course Id",
+      // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+      required: false,
+    },
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    var data = {
+      icon: values.icon,
+      title: values.title,
+      title_image: values.title_image,
+      video_link: values.video_link,
+      apply_link: values.apply_link,
+      course_id: values.course_id,
+      description: values.description,
+      tags: {
+        location: values.location,
+        created: new Date(),
+      },
+      projectDetails: projectDetails,
+      extraDetails: extraDetails,
+    };
+    var addOpportunity = AddOpportunity(data);
+    addOpportunity
+      .then((res) => {
+        // console.log(res);
+        getAllOpportunity();
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // console.log(values);
+    // console.log(projectDetails);
+    // console.log(extraDetails);
+  };
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  const onChange1 = (e) => {
+    setProjectDetails({ ...projectDetails, [e.target.name]: e.target.value });
+  };
+  let file;
+  let form_data = new FormData();
+  const onChangeImage = (e) => {
+    file = e.target.files[0];
+    new Compressor(file, {
+      quality: 0.8,
+      success(result) {
+        file = result;
+        form_data.append("file", file);
+        UserRepository.UploadImageFile(form_data)
+          .then((response) => {
+            // console.log(response.data);
+            setValues({
+              ...values,
+              [e.target.name]: response.data.data.fileUrl,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
+  };
+
+  const onChangeImage1 = (e) => {
+    file = e.target.files[0];
+    new Compressor(file, {
+      quality: 0.8,
+      success(result) {
+        file = result;
+        form_data.append("file", file);
+        UserRepository.UploadImageFile(form_data)
+          .then((response) => {
+            console.log(response.data);
+            setProjectDetails({
+              ...projectDetails,
+              [e.target.name]: response.data.data.fileUrl,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
+  };
 
   return (
     <div className="xyz">
@@ -233,7 +240,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
         </div>
         <h4 id="transition-modal-title" style={{textAlign: "center", marginTop: "0px"}}>Add New Opportunity</h4>
         </div> */}
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label style={{ fontSize: "14px" }}>Project Icon</label>
         <input
           type="file"
@@ -244,11 +251,11 @@ const Form = ({getAllOpportunity, handleClose}) => {
           style={styles.input}
           accept="image/*"
         />
-      { inputs.map((input) => (
+        {inputs.map((input) => (
           <div key={input.id}>
-            <label style={{ fontSize: "14px" }} >{input.label}</label>
+            <label style={{ fontSize: "14px" }}>{input.label}</label>
             <input
-              type={input.type} 
+              type={input.type}
               name={input.name}
               value={values[input.name]}
               onChange={onChange}
@@ -271,18 +278,18 @@ const Form = ({getAllOpportunity, handleClose}) => {
           accept="image/*"
         />
         <label style={{ fontSize: "14px" }}>Share Description</label>
-          <textarea
-            name="description"
-            value={values.description}
-            onChange={onChange}
-            placeholder="Enter share description"
-            style={styles.input}
-            rows="6"
-            cols="24"
-          />
-        <hr/>
+        <textarea
+          name="description"
+          value={values.description}
+          onChange={onChange}
+          placeholder="Enter share description"
+          style={styles.input}
+          rows="6"
+          cols="24"
+        />
+        <hr />
 
-        <h5 style={{ textAlign: "center", margin: "5px"}} >Project Details</h5>
+        <h5 style={{ textAlign: "center", margin: "5px" }}>Project Details</h5>
         <div>
           <label style={{ fontSize: "14px" }}>Project Title</label>
           <input
@@ -293,7 +300,7 @@ const Form = ({getAllOpportunity, handleClose}) => {
             placeholder="Enter project title..."
             value={projectDetails.title}
             onChange={onChange1}
-              />
+          />
           <label style={{ fontSize: "14px" }}>Project Description</label>
           <textarea
             name="description"
@@ -312,11 +319,11 @@ const Form = ({getAllOpportunity, handleClose}) => {
             onChange={onChangeImage1}
             placeholder="Enter project image url"
             style={styles.input}
-            accept='image/*'
+            accept="image/*"
           />
         </div>
-        <hr/>
-        <h5 style={{ textAlign: "center", margin: "5px"}} >Extra Details</h5>
+        <hr />
+        <h5 style={{ textAlign: "center", margin: "5px" }}>Extra Details</h5>
         <div>
           {extraDetails.map((detail, index) => (
             <div key={index}>
@@ -369,12 +376,12 @@ const Form = ({getAllOpportunity, handleClose}) => {
                         .catch((e) => {
                           console.log(e);
                         });
-                    }
+                    },
                   });
                 }}
                 placeholder="Upload Image"
                 style={styles.input}
-                accept='image/*'
+                accept="image/*"
               />
               <button
                 type="button"
@@ -387,26 +394,27 @@ const Form = ({getAllOpportunity, handleClose}) => {
               >
                 Remove
               </button>
-              </div>
+            </div>
           ))}
-              <button
-              style={styles.addButton}
-                type="button"
-                onClick={() => {
-                  setExtraDetails([...extraDetails, { title: "", description: "", image: "" }]);
-                }}
-              >
-                Add more
-              </button>
-          </div>
-
+          <button
+            style={styles.addButton}
+            type="button"
+            onClick={() => {
+              setExtraDetails([
+                ...extraDetails,
+                { title: "", description: "", image: "" },
+              ]);
+            }}
+          >
+            Add more
+          </button>
+        </div>
         <button type="submit" style={styles.button}>
           Submit
         </button>
-
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;

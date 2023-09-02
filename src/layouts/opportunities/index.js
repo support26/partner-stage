@@ -21,6 +21,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Form from "./Form";
 import EditForm from "./EditForm";
+import RoleFroms from "./RoleFroms";
 
 const style = {
   position: "absolute",
@@ -59,8 +60,6 @@ const style1 = {
   },
 };
 
-
-
 const styleCustom = {
   position: "absolute",
   top: "50%",
@@ -73,14 +72,9 @@ const styleCustom = {
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 3,
-  maxHeight:"170px" , maxWidth:"320px"
-  
+  maxHeight: "170px",
+  maxWidth: "320px",
 };
-
-
-
-
-
 
 function Opportunities() {
   const {
@@ -96,13 +90,15 @@ function Opportunities() {
   const [opportunity, setOpportunity] = useState("");
   const [searchApiData, setSearchApiData] = useState([]);
   const [filter, setFilter] = useState("");
-  const [deleteTitle, setDeleteTittle] = useState('')
-  const [deleteId, setDeleteId] = useState('');
+  const [deleteTitle, setDeleteTittle] = useState("");
+  const [deleteId, setDeleteId] = useState("");
 
   const [loading, setLoading] = useState(true);
 
   const [openModal, setOpenModal] = useState(false);
 
+  const [openRoleModel, setOpenRoleModel] = useState(false);
+  const [projectIDForRoles, setProjectIDForRoles] = useState("");
   // const [sequenceList, setSequenceList] = useState([])
   const handleOpen = () => setOpen(true);
   const handleOpen2 = () => setOpen2(true);
@@ -112,32 +108,41 @@ function Opportunities() {
     setOpportunity(opt);
     setOpen1(true);
   };
+
+  const handleOpen3 = (id) => {
+    console.log("project id of the card", id);
+    let opt = opportunities.find((opportunity) => opportunity.id === id);
+    setProjectIDForRoles(opt.id);
+    setOpenRoleModel(true);
+  };
   const handleClose = () => setOpen(false);
   const handleClose1 = () => setOpen1(false);
   const handleClose2 = () => setOpen2(false);
+  const handleClose3 = () => setOpenRoleModel(false);
+
   const handleStatus = (event, id, title) => {
     if (event.target.value === "delete") {
       // setOpenening(true);
       setDeleteTittle(title);
-      setDeleteId(id)
-     
-      setOpenModal(true)
-      
+      setDeleteId(id);
+
+      setOpenModal(true);
 
       // setShowDialoge(true);
-    }
-     else {
+    } else {
       const update = opportunities.map((opportunity) => {
         if (opportunity.id === id) {
           opportunity.load = true;
         }
         return opportunity;
       });
+
       setOpportunities(update);
       var changeopportunitystatus = ChangeOpportunityStatus(
         id,
         event.target.value
       );
+
       setTimeout(() => {
         changeopportunitystatus
           .then((response) => {
@@ -168,6 +173,7 @@ function Opportunities() {
     //   console.log(e);
     // });
   };
+
   const parseData = (opportunities) => {
     opportunities.map((opportunity, index) => {
       // opportunity.load = true;
@@ -179,7 +185,6 @@ function Opportunities() {
     });
     setOpportunities(opportunities);
     setSearchApiData(opportunities);
-    
   };
   useEffect(() => {
     getAllOpportunity();
@@ -187,7 +192,7 @@ function Opportunities() {
 
   // filter section logic
   const handleFilter = (e) => {
-    setLoading(false)
+    setLoading(false);
     // console.log(e);
     if (e.target.value === " ") {
       setOpportunities(searchApiData);
@@ -207,27 +212,24 @@ function Opportunities() {
   };
 
   const handleClosees = () => {
-      
-      var deleteCardopprtunity=DeleteOpportunityCard(deleteId);
-      deleteCardopprtunity.then((res)=>{
-        if(res.status===200){
+    var deleteCardopprtunity = DeleteOpportunityCard(deleteId);
+    deleteCardopprtunity
+      .then((res) => {
+        if (res.status === 200) {
           console.log("deleted");
           getAllOpportunity();
         }
-
       })
       .catch((e) => {
         console.log(e);
         console.log("not deleted");
-      });       
-      setOpenModal(false);    
+      });
+    setOpenModal(false);
   };
 
-  const handleNo = ()=>{
+  const handleNo = () => {
     setOpenModal(false);
-  }
-
-  
+  };
 
   return (
     <DashboardLayout>
@@ -253,7 +255,6 @@ function Opportunities() {
             outline: "none",
             border: "2px solid #33a2b5",
           }}
-          
           type="text"
           value={filter}
           placeholder="Search Opportunities !!"
@@ -274,6 +275,7 @@ function Opportunities() {
         >
           Add New Opportunity
         </Button>
+
         <Button
           onClick={handleOpen2}
           style={{
@@ -290,123 +292,140 @@ function Opportunities() {
       </div>
       <MDBox pt={1} mx={1}>
         <Grid container spacing={1}>
-          {opportunities.length !== 0 ?
-            (
-              opportunities.map((opportunity, key) => (
-                <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
-                  <MDBox mb={0}>
-                    <Card
+          {opportunities.length !== 0 ? (
+            opportunities.map((opportunity, key) => (
+              <Grid key={key} item xs={12} md={6} lg={4} mt={0}>
+                <MDBox mb={0}>
+                  <Card
+                    sx={{
+                      position: "relative",
+                      maxWidth: 320,
+                      maxHeight: 400,
+                      minHeight: 400,
+                    }}
+                  >
+                    <CardMedia
+                      sx={{ maxHeight: 150, minHeight: 150 }}
+                      component="img"
+                      image={
+                        opportunity.title_image
+                          ? opportunity.title_image
+                          : "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"
+                      }
+                      alt=""
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h6" component="div">
+                        {opportunity.title}
+                      </Typography>
+                      <p style={{ fontSize: "15px", color: "gray" }}>
+                        <strong>Created at -</strong>{" "}
+                        {new Date(opportunity.tags.created).toLocaleString()}
+                      </p>
+                      <p style={{ fontSize: "15px", color: "gray" }}>
+                        <strong>Location -</strong> {opportunity.tags.location}
+                      </p>
+                      <p style={{ fontSize: "15px", color: "gray" }}>
+                        <strong>Likes -</strong> {opportunity.likes}{" "}
+                      </p>
+                    </CardContent>
+
+                    <div
                       sx={{
-                        position: "relative",
-                        maxWidth: 320,
-                        maxHeight: 400,
-                        minHeight: 400,
+                        position: "absolute",
+                        bottom: 50,
+                        flex: 10,
+                        justifyContent: "space-between",
+                        // justifyContent: "flex-end",
+                        // bottom: 0,
                       }}
                     >
-                      <CardMedia
-                        sx={{ maxHeight: 150, minHeight: 150 }}
-                        component="img"
-                        image={opportunity.title_image ? opportunity.title_image : "https://storage.googleapis.com/android-mapping-backend.appspot.com/1681362242026.blob"}
-                        alt=""
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h6" component="div">
-                          {opportunity.title}
-                        </Typography>
-                        <p style={{ fontSize: "15px", color: "gray" }}>
-                          <strong>Created at -</strong>{" "}
-                          {new Date(opportunity.tags.created).toLocaleString()}
-                        </p>
-                        <p style={{ fontSize: "15px", color: "gray" }}>
-                          <strong>Location -</strong> {opportunity.tags.location}
-                        </p>
-                        <p style={{ fontSize: "15px", color: "gray" }}>
-                          <strong>Likes -</strong> {opportunity.likes}{" "}
-                        </p>
-                      </CardContent>
+                      <CardActions sx={{ marginTop: -3 }}>
+                        <div style={{ margin: "0px 2px 2px 00px" }}>
+                          <Button
+                            style={{
+                              position: "absolute",
+                              bottom: 0.5,
+                              flex: 0,
+                              justifyContent: "space-between",
+                              // justifyContent: "flex-end",
+                            }}
+                            onClick={() => handleOpen1(opportunity.id)}
+                            size="small"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                        <div style={{ margin: "0px 2px 2px 50px" }}>
+                          <Button
+                            style={{ position: "absolute", bottom: 0.5 }}
+                            onClick={() => {
+                              window.open(opportunity.page_url, "_blank");
+                            }}
+                            size="small"
+                          >
+                            Preview
+                          </Button>
+                        </div>
 
-                      <div
-                        sx={{
-                          position: "absolute",
-                          bottom: 50,
-                          flex: 10,
-                          justifyContent: "space-between",
-                          // justifyContent: "flex-end",
-                          // bottom: 0,
-                        }}
-                      >
-                        <CardActions sx={{ marginTop: -3 }}>
-                          <div style={{ margin: "0px 2px 2px 00px" }}>
-                            <Button
-                              style={{
-                                position: "absolute",
-                                bottom: 0.5,
-                                flex: 0,
-                                justifyContent: "space-between",
-                                // justifyContent: "flex-end",
-                              }}
-                              onClick={() => handleOpen1(opportunity.id)}
-                              size="small"
-                            >
-                              Edit
-                            </Button>
-                          </div >
-                          <div style={{ margin: "0px 2px 2px 50px" }}>
-                            <Button
-                              style={{ position: "absolute", bottom: 0.5 }}
-                              onClick={() => {
-                                window.open(opportunity.page_url, "_blank");
-                              }}
-                              size="small"
-                            >
-                              Preview
-                            </Button>
-                          </div>
-                          
+                        <div style={{ margin: "0px 2px 2px 00px" }}>
+                          <Button
+                            style={{
+                              position: "absolute",
+                              bottom: 0,
+                              right: "29%",
+                              bottom: 0.5,
+                            }}
+                            onClick={() => handleOpen3(opportunity.id)}
+                            size="small"
+                          >
+                            add roles
+                          </Button>
+                        </div>
 
-                          {opportunity.load ? (
-                            <CircularProgress
-                              size={20}
-                              style={{                                                              
-                                position: "absolute",                             
-                                bottom: 0,
-                                right: "12%", 
-                                marginBottom: "9px",
-                                color: "blue",
+                        {opportunity.load ? (
+                          <CircularProgress
+                            size={20}
+                            style={{
+                              position: "absolute",
+                              bottom: 0,
+                              right: "12%",
+                              marginBottom: "9px",
+                              color: "blue",
+                            }}
+                          />
+                        ) : (
+                          <select
+                            value={opportunity.status}
+                            style={{
+                              width: "60px",
+                              height: "30px",
+                              borderRadius: "5px",
+                              position: "absolute",
+                              bottom: 0,
+                              right: "6%",
+                              border: "1px solid #1A73E8",
+                              // marginLeft: "18px",
+                              marginBottom: "5px",
 
-                              }}
-                            />
-                           
-                          )  : (
-                           
-                            <select
-                              value={opportunity.status}
-                              style={{
-                                width: "60px",
-                                height: "30px",
-                                borderRadius: "5px",
-                                position: "absolute",                             
-                                bottom: 0,
-                                right: "6%",
-                                border: "1px solid #1A73E8",
-                                // marginLeft: "18px",
-                                marginBottom: "5px",
-                                
-                                outline: "none",
-                              }}
-                              onChange={(event) => handleStatus(event, opportunity.id, opportunity.title)}
-                            >
-                              <option value={1}>Show</option>
-                              <option value={0}>Draft</option>
+                              outline: "none",
+                            }}
+                            onChange={(event) =>
+                              handleStatus(
+                                event,
+                                opportunity.id,
+                                opportunity.title
+                              )
+                            }
+                          >
+                            <option value={1}>Show</option>
+                            <option value={0}>Draft</option>
 
-                              <option value={"delete"}>
-                                Delete
-                              </option>
-                            </select>
-                            
-                          ) }
-                          
-                          {/* <select
+                            <option value={"delete"}>Delete</option>
+                          </select>
+                        )}
+
+                        {/* <select
                                                       value={opportunity.sequence}
                                                           style={{
                                                             width: "50px",
@@ -422,17 +441,16 @@ function Opportunities() {
                                                             <option key={sequence} value={sequence}>{sequence}</option>
                                                           ))}
                                                         </select> */}
-                          {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
+                        {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
                                                         } */}
-                        </CardActions>
-                      </div>
-                    </Card>
-                  </MDBox>
-                </Grid>
-              ))
-            ) : (
-               
-              <div
+                      </CardActions>
+                    </div>
+                  </Card>
+                </MDBox>
+              </Grid>
+            ))
+          ) : (
+            <div
               style={{
                 width: "100%",
                 display: "flex",
@@ -441,20 +459,15 @@ function Opportunities() {
                 fontSize: "30px",
               }}
             >
-              {
-                loading  ? (  
-                  <Box sx={{ display: 'flex' }}>
+              {loading ? (
+                <Box sx={{ display: "flex" }}>
                   <CircularProgress />
-                  </Box>) : 
-                  ( 
-                  <span>No Result's found !!!!</span>
-                  )
-              }
-             
+                </Box>
+              ) : (
+                <span>No Result's found !!!!</span>
+              )}
             </div>
-            
-             
-            )}
+          )}
         </Grid>
       </MDBox>
 
@@ -627,36 +640,42 @@ function Opportunities() {
           </Box>
         </Fade>
       </Modal>
-      <div style={{maxHeight:"170px" , maxWidth:"320px"}}>
-              <Modal  open={openModal}>
-                <Fade in={openModal}>
-                  <Box  sx={styleCustom } {...{minHeight:"170px",maxHeight:"170px" , maxWidth:"320px"}}>
-
-                  <Typography  gutterBottom variant="h6"  component="div">
-              {`Are you sure you want to delete `} {deleteTitle} {"??"}
-            </Typography>
-
-            <CardActions>
-            <Button style={{bottom:0,marginLeft:"120px"}}  name="disagree" onClick={()=>handleNo()}>
-              No
-            </Button>
-            
-            
-              <Button style={{ backgroundColor: "#33a2b5", color: "white" ,bottom:0}}
-              name="agree"
-              onClick={()=>handleClosees()}
-              autoFocus
+      <div style={{ maxHeight: "170px", maxWidth: "320px" }}>
+        <Modal open={openModal}>
+          <Fade in={openModal}>
+            <Box
+              sx={styleCustom}
+              {...{ minHeight: "170px", maxHeight: "170px", maxWidth: "320px" }}
             >
-              Yes
-            </Button>
-            </CardActions>
+              <Typography gutterBottom variant="h6" component="div">
+                {`Are you sure you want to delete `} {deleteTitle} {"??"}
+              </Typography>
 
-                  </Box>
-                </Fade>                
-                
-              </Modal>
+              <CardActions>
+                <Button
+                  style={{ bottom: 0, marginLeft: "120px" }}
+                  name="disagree"
+                  onClick={() => handleNo()}
+                >
+                  No
+                </Button>
 
-
+                <Button
+                  style={{
+                    backgroundColor: "#33a2b5",
+                    color: "white",
+                    bottom: 0,
+                  }}
+                  name="agree"
+                  onClick={() => handleClosees()}
+                  autoFocus
+                >
+                  Yes
+                </Button>
+              </CardActions>
+            </Box>
+          </Fade>
+        </Modal>
 
         {/* <Dialog 
 
@@ -690,6 +709,63 @@ function Opportunities() {
 
         </Dialog> */}
       </div>
+
+      {/* roles modal */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openRoleModel}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openRoleModel}>
+          <Box sx={style1}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleClose3}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+                add Roles
+              </h4>
+            </div>
+            <div>
+              <RoleFroms
+                projectIDForRoles={projectIDForRoles}
+                handleClose={handleClose3}
+              />
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
     </DashboardLayout>
   );
 }

@@ -177,7 +177,9 @@ export default function useAdmin() {
     },
     //delete announcement
     DeleteAnouncement: async (announcementId) => {
-      var responseData = await AdminRepository.deleteAnouncement(announcementId);
+      var responseData = await AdminRepository.deleteAnouncement(
+        announcementId
+      );
       if (responseData.status === 200) {
         // console.log(responseData.data);
       }
@@ -193,19 +195,14 @@ export default function useAdmin() {
       return responseData;
     },
 
-
     //delete opportunityCard
-    DeleteOpportunityCard: async (id) =>{
+    DeleteOpportunityCard: async (id) => {
       var responseData = await AdminRepository.deleteOpportunityCard(id);
-      if(responseData.status==200)
-      {
+      if (responseData.status == 200) {
         console.log(responseData.data);
       }
       return responseData;
     },
-
-
-
 
     //get state list
     GetStateList: async () => {
@@ -348,7 +345,6 @@ export default function useAdmin() {
       return responseData;
     },
 
-
     //opportunities sequence list
     OpportunitySequenceList: async () => {
       var responseData = await AdminRepository.getOpportunitiesSequenceList();
@@ -397,15 +393,15 @@ export default function useAdmin() {
 
     GetSliderImage: async () => {
       var responseData = await AdminRepository.getSliderImage();
-      if(responseData.status === 200){
+      if (responseData.status === 200) {
         return responseData;
       }
       return responseData;
-    }, 
+    },
     //Add Slider
     AddSliderImage: async (data) => {
       var responseData = await AdminRepository.addSliderImage(data);
-      if(responseData.status === 200){
+      if (responseData.status === 200) {
         return responseData;
       }
       return responseData;
@@ -413,10 +409,7 @@ export default function useAdmin() {
 
     //Change Image Status
     ChangeImageStatus: async (id, is_active) => {
-      var responseData = await AdminRepository.changeImageStatus(
-        id,
-        is_active
-      );
+      var responseData = await AdminRepository.changeImageStatus(id, is_active);
       if (responseData.status === 200) {
         // console.log(responseData.data);
       }
@@ -424,15 +417,20 @@ export default function useAdmin() {
     },
 
     //Delete Image
-    DeleteImage: async (id) =>{
+    DeleteImage: async (id) => {
       var responseData = await AdminRepository.deleteImage(id);
-      if(responseData.status==200)
-      {
+      if (responseData.status == 200) {
         console.log(responseData.data);
       }
       return responseData;
-    }
-    
+    },
 
+    AddUserRole: async (data) => {
+      var responseData = await AdminRepository.addSliderImage(data);
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
   };
 }
