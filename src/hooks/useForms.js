@@ -10,7 +10,6 @@ export default function useForms() {
     },
 
     ShowAllRoles: async (project_id) => {
-      console.log("project_id*****", project_id);
       let responseData = await FormRepository.showAllRolesByProjectId(
         project_id
       );

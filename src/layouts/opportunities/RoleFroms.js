@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import IconButton from "@mui/material/IconButton";
-import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import useForms from "../../hooks/useForms";
+import {
+  Backdrop,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
   const { AddRoles, ShowAllRoles, DeleteUserRole, EnableDisableUserRoles } =
     useForms();
   const [newRole, setNewRole] = useState("");
   const [input, setInput] = useState([]);
-  const [showNoUserRolesFound, setShowNoUserRolesFound] = useState(false);
+  const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const [isAlertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   // add styles to the form
   const styles = {
@@ -56,29 +61,22 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
   };
 
   const getAllRolesByProjectID = () => {
-    var getAll = ShowAllRoles(projectIDForRoles);
-    getAll
-      .then((response) => {
-        console.log("response", response);
-        setInput(response.data.data);
-        if (response.data.data.length === 0) {
-          setShowNoUserRolesFound(true);
-          setTimeout(() => {
-            setShowNoUserRolesFound(false);
-          }, 2000); // Hide message after 2 seconds
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    // var opportunitysequencelist = OpportunitySequenceList();
-    // opportunitysequencelist.then((response) => {
-    //   // console.log(response)
-    //   setSequenceList(response.data.data);
-    // })
-    // .catch((e) => {
-    //   console.log(e);
-    // });
+    try {
+      var getAll = ShowAllRoles(projectIDForRoles);
+      getAll
+        .then((response) => {
+          if (response.status === 400) {
+            console.log(response.data.message);
+          } else {
+            setInput(response.data.data);
+          }
+        })
+        .catch((e) => {
+          console.log("error form", e);
+        });
+    } catch (error) {
+      console.log("error form", error);
+    }
   };
   useEffect(() => {
     getAllRolesByProjectID();
@@ -104,15 +102,16 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
     var addRoles = EnableDisableUserRoles(updatedata);
     addRoles
       .then((res) => {
-        console.log("disabel", res);
         getAllRolesByProjectID();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setOverlayVisible(true);
     let data = {
       role_name: newRole,
       project_id: projectIDForRoles,
@@ -120,15 +119,22 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
     var addRoles = AddRoles(data);
     addRoles
       .then((res) => {
-        getAllRolesByProjectID();
-        setNewRole("");
+        setOverlayVisible(false);
+        if (res.status === 400) {
+          setAlertMessage(res.data.message);
+          setAlertOpen(true);
+          setNewRole("");
+        } else {
+          console.log("user added succesful");
+          getAllRolesByProjectID();
+          setNewRole("");
+        }
       })
       .catch((err) => {
         console.log(err);
+        setOverlayVisible(false);
       });
   };
-
-  // ... (previous code)
 
   return (
     <>
@@ -146,7 +152,23 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
         <button style={styles.addButton} onClick={handleSubmit} type="button">
           Add Role
         </button>
-        {showNoUserRolesFound && <p>No user roles found</p>}
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isOverlayVisible}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <Dialog open={isAlertOpen} onClose={() => setAlertOpen(false)}>
+          <DialogTitle>Alert</DialogTitle>
+          <DialogContent>
+            <p>{alertMessage}</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setAlertOpen(false)} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
         {Array.isArray(input)
           ? input.map((role) => (
               <div key={role.id}>
