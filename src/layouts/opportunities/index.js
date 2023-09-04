@@ -379,7 +379,7 @@ function Opportunities() {
                             onClick={() => handleOpen3(opportunity.id)}
                             size="small"
                           >
-                            add roles
+                            Add roles
                           </Button>
                         </div>
 
@@ -752,9 +752,9 @@ function Opportunities() {
               </div>
               <h4
                 id="transition-modal-title"
-                style={{ textAlign: "center", marginTop: "0px" }}
+                style={{ textAlign: "center", marginTop: "10px" }}
               >
-                add Roles
+                Add Roles
               </h4>
             </div>
             <div>

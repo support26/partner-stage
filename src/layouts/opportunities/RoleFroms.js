@@ -30,16 +30,15 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
       borderRadius: "5px",
     },
     input: {
-      width: "100%",
+      flex: "1",
       padding: "10px",
       border: "1px solid gray",
       borderRadius: "5px",
-      marginBottom: "8px",
+      marginRight: "8px",
+      lineHeight: "normal",
     },
     button: {
-      width: "100%",
-      padding: "10px",
-      margin: "10px 0 0 0",
+      padding: "10px 9px ",
       border: "none",
       borderRadius: "10px",
       backgroundColor: "#33a2b5",
@@ -60,6 +59,15 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
     setNewRole(e.target.value);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
   const getAllRolesByProjectID = () => {
     try {
       var getAll = ShowAllRoles(projectIDForRoles);
@@ -112,8 +120,10 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setOverlayVisible(true);
+    const capitalizedRoleName = capitalizeFirstLetter(newRole);
+
     let data = {
-      role_name: newRole,
+      role_name: capitalizedRoleName,
       project_id: projectIDForRoles,
     };
     var addRoles = AddRoles(data);
@@ -139,19 +149,39 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
   return (
     <>
       <div className="formDiv">
-        <label style={{ fontSize: "14px" }}>Users Role</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={newRole}
-          style={styles.input}
-          placeholder="Enter Role"
-          onChange={onChange}
-        />
-        <button style={styles.addButton} onClick={handleSubmit} type="button">
-          Add Role
-        </button>
+        <label
+          style={{ fontSize: "14px", marginRight: "8px", fontWeight: "bold" }}
+        >
+          Users Role :
+        </label>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={newRole}
+            style={styles.input}
+            placeholder="Enter Role"
+            onChange={onChange}
+            onKeyDown={handleKeyPress}
+          />
+          <button
+            style={{
+              flex: "1",
+              padding: "10px",
+              border: "1px solid gray",
+              backgroundColor: "#33a2b5",
+              color: "#fff",
+              borderRadius: "5px",
+              cursor: "pointer",
+              lineHeight: "normal",
+            }}
+            onClick={handleSubmit}
+            type="button"
+          >
+            Add
+          </button>
+        </div>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isOverlayVisible}
@@ -169,32 +199,62 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
             </Button>
           </DialogActions>
         </Dialog>
-        {Array.isArray(input)
-          ? input.map((role) => (
-              <div key={role.id}>
-                <label key={role.id}>
-                  {role.role_name}
-                  <button
-                    style={styles.addButton}
-                    onClick={() => handleDeleteButton(role.id)}
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                  <button
+        <div style={{ alignItems: "center", marginBlock: "10px" }}>
+          {Array.isArray(input) && input.length > 0 && (
+            <div
+              style={{
+                border: "1px solid #eee",
+                borderRadius: "5px",
+                padding: "10px",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              {input.map((role) => (
+                <div
+                  key={role.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <label
+                    key={role.id}
                     style={{
-                      ...styles.addButton,
-                      backgroundColor: role.is_active === 1 ? "#33a2b5" : "red",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "1px",
                     }}
-                    onClick={() => handleDisableButton(role)}
-                    type="button"
                   >
-                    {role.is_active === 1 ? "Disable" : "Enable"}
-                  </button>
-                </label>
-              </div>
-            ))
-          : null}
+                    {role.role_name.charAt(0).toUpperCase() +
+                      role.role_name.slice(1)}
+                  </label>
+                  <div>
+                    <button
+                      style={{ ...styles.addButton, marginRight: "4px" }}
+                      onClick={() => handleDeleteButton(role.id)}
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      style={{
+                        ...styles.addButton,
+                        backgroundColor:
+                          role.is_active === 1 ? "#33a2b5" : "red",
+                      }}
+                      onClick={() => handleDisableButton(role)}
+                      type="button"
+                    >
+                      {role.is_active === 1 ? "Disable" : "Enable"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
