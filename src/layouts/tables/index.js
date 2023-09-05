@@ -778,11 +778,11 @@ function Tables() {
                 color="inherit"
                 onClick={handleClose}
                 aria-label="close"
-                style={{marginTop:"-80px"}}
+                style={{ marginTop: "-80px" }}
               >
                 <CloseIcon />
               </IconButton>
-            
+
               <Typography
                 sx={{
                   ml: -3.6,
@@ -794,7 +794,7 @@ function Tables() {
                 variant="h6"
                 component="div"
               >
-              {name} 
+                {name}
               </Typography>
 
               <Box
@@ -983,7 +983,12 @@ function Tables() {
             />
 
             {/* bank_passbook_photo */}
-            <div style={{ display: "flex", flexDirection: window.innerWidth <= 800 ? "column" : "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: window.innerWidth <= 800 ? "column" : "row",
+              }}
+            >
               <div style={{ display: "inline" }}>
                 <Box
                   component="img"
@@ -1176,8 +1181,14 @@ function Tables() {
                 </Box>
               </Modal>
             </div>
-           
-            <div style={{ display: "flex", flexDirection: window.innerWidth <= 600 ? "column" : "row", marginTop:"110px" }}>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: window.innerWidth <= 600 ? "column" : "row",
+                marginTop: "110px",
+              }}
+            >
               <div className="mediaText">
                 <TextField
                   id="standard-disabled"
@@ -1195,7 +1206,7 @@ function Tables() {
                 />
               </div>
             </div>
-            <div style={{ textAlign: "center", marginTop:"-6%" }}>
+            <div style={{ textAlign: "center", marginTop: "-6%" }}>
               <Button
                 sx={{
                   color: "#f0f2f5",

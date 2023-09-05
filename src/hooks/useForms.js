@@ -35,7 +35,7 @@ export default function useForms() {
       return responseData;
     },
 
-    UpdateUserTrainingStatusById: async (data, ID) => {
+    UpdateUserTrainingStatusById: async (ID, data) => {
       let responseData = await FormRepository.updateUserTrainingStatusById(
         data,
         ID
@@ -45,7 +45,7 @@ export default function useForms() {
       }
       return responseData;
     },
-    ApproveUserById: async (data, ID) => {
+    ApproveUserById: async (ID, data) => {
       let responseData = await FormRepository.approveUserById(data, ID);
       if ((responseData.status = 200)) {
         // console.log(responseData.data);

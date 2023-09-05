@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserRepository from "api/UsersRepository";
 import Compressor from "compressorjs";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ const styles = {
     padding: "20px",
     border: "1px solid #eee",
     borderRadius: "5px",
-    // boxShadow: "none", // add this property to remove the blur effect 
+    // boxShadow: "none", // add this property to remove the blur effect
     // outline: "none", // add this property to remove the default outline
   },
   input: {
@@ -26,7 +26,7 @@ const styles = {
     border: "1px solid gray",
     borderRadius: "5px",
     marginBottom: "8px",
-    // boxShadow: "none", // add this property to remove the blur effect 
+    // boxShadow: "none", // add this property to remove the blur effect
     // outline: "none", // add this property to remove the default outline
   },
   button: {
@@ -66,6 +66,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     apply_link: "",
     location: "",
     description: "",
+    odk_project_id: "",
     course_id: "",
   });
   const [projectDetails, setProjectDetails] = useState({
@@ -149,6 +150,16 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     },
     {
       id: 5,
+      name: "odk_project_id",
+      type: "text",
+      placeholder: "Enter Odk Project Id",
+      errorMessage: "Project Id not defined",
+      label: "Project Id",
+      //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
+      required: false,
+    },
+    {
+      id: 6,
       name: "course_id",
       type: "text",
       placeholder: "Enter Spayee Course Id",
@@ -156,7 +167,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       label: "Course Id",
       // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
       required: false,
-    }
+    },
   ];
   let file;
   let form_data = new FormData();
@@ -216,6 +227,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     });
   };
 
+  console.log("******", values);
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(projectDetails);
@@ -227,6 +239,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       title_image: values.title_image,
       video_link: values.video_link,
       apply_link: values.apply_link,
+      odk_project_id: values.odk_project_id,
       course_id: values.course_id,
       description: values.description,
       tags: {
@@ -256,7 +269,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
         <form onSubmit={handleSubmit}>
           {/* <h4 style={{ textAlign: "center" }}>Edit Opportunity</h4> */}
           <label style={{ fontSize: "14px" }}>Project Icon</label>
-          <div style={{lineHeight: "1.3"}}>
+          <div style={{ lineHeight: "1.3" }}>
             <Box
               component="img"
               sx={{
@@ -295,22 +308,22 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               <FileUploadIcon />
             </IconButton>
             <IconButton
-                style={{
-                  marginTop: "-140px",
-                  marginLeft: "228px",
-                  fontSize: "20px",
-                  color: "white",
-                  backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-                onClick={() => {
-                  setValues({ ...values, icon: "" });
-                }}
-                >
-                <DeleteIcon/>
-              </IconButton>
+              style={{
+                marginTop: "-140px",
+                marginLeft: "228px",
+                fontSize: "20px",
+                color: "white",
+                backgroundColor: "#33A2B5",
+              }}
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+              onClick={() => {
+                setValues({ ...values, icon: "" });
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
           </div>
           {inputs.map((input) => (
             <div key={input.id}>
@@ -321,9 +334,16 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 value={values[input.name]}
                 onChange={onChange}
                 placeholder={input.placeholder}
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  pointerEvents:
+                    input.name === "odk_project_id" && values[input.name] !== ""
+                      ? "none"
+                      : "auto",
+                }}
                 pattern={input?.pattern}
                 required={input.required}
+                disabled={values[input.name === null ? false : true]}
               />
             </div>
           ))}
@@ -460,15 +480,15 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                     ["image"]: "",
                   });
                 }}
-                >
-                <DeleteIcon/>
+              >
+                <DeleteIcon />
               </IconButton>
             </div>
           </div>
           <hr />
           <h5 style={{ textAlign: "center", margin: "5px" }}>Extra Details</h5>
           <div>
-             {extraDetails.map((detail, index) => (
+            {extraDetails.map((detail, index) => (
               <div key={index}>
                 <label style={{ fontSize: "14px" }}>Title</label>
                 <input
@@ -585,24 +605,24 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                     <FileUploadIcon />
                   </IconButton>
                   <IconButton
-                style={{
-                  marginTop: "-140px",
-                  marginLeft: "228px",
-                  fontSize: "20px",
-                  color: "white",
-                  backgroundColor: "#33A2B5",
-                }}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-                onClick={() => {
-                  const values = [...extraDetails];
-                  values[index].image = "";
-                  setExtraDetails(values);
-                }}
-                >
-                <DeleteIcon/>
-              </IconButton>
+                    style={{
+                      marginTop: "-140px",
+                      marginLeft: "228px",
+                      fontSize: "20px",
+                      color: "white",
+                      backgroundColor: "#33A2B5",
+                    }}
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                    onClick={() => {
+                      const values = [...extraDetails];
+                      values[index].image = "";
+                      setExtraDetails(values);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </div>
                 <button
                   type="button"
@@ -616,12 +636,15 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                   Remove
                 </button>
               </div>
-            ))} 
+            ))}
             <button
               style={styles.addButton}
               type="button"
               onClick={() => {
-                setExtraDetails([...extraDetails, { title: "", description: "", image: "" }]);
+                setExtraDetails([
+                  ...extraDetails,
+                  { title: "", description: "", image: "" },
+                ]);
               }}
             >
               Add more
