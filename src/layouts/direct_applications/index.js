@@ -2,6 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+
 import {
   DataGrid,
   GridToolbarContainer,
@@ -37,7 +42,9 @@ const DirectApplications = () => {
   const roleId = localStorage.getItem("roleId");
   const [disabled, setDisabled] = useState(roleId == 1 ? true : false);
   const [allActiveRoles, setAllActiveRoles] = useState([]);
-  const [selectedRoleId, setSelectedRoleId] = useState(""); // Assuming you are using React
+  const [selectedRoleId, setSelectedRoleId] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const directApplications = () => {
     setLoading(true);
@@ -144,14 +151,22 @@ const DirectApplications = () => {
     };
     AssignRoleToUser(data)
       .then((res) => {
-        // console.log(res.data.data);
-        getAllActiveRoles();
+        // console.log("res.data.message".res.data.message);
+        openSuccessDialog(res.data.message);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
+  const openSuccessDialog = (message) => {
+    setSuccessMessage(message);
+    setDialogOpen(true);
+
+    setTimeout(() => {
+      setDialogOpen(false);
+    }, 800);
+  };
   // const SSE = () => {
   //   const source = new EventSource('http://localhost:8001/opt/webapp/opportunityCardClicksSSE');
   //     const source2 = new EventSource('http://localhost:8001/opt/webapp/opportunityApplySSE');
@@ -392,6 +407,9 @@ const DirectApplications = () => {
             Toolbar: (column) => <CustomToolbar {...column} />,
           }}
         />
+        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          <DialogContent>{successMessage}</DialogContent>
+        </Dialog>
       </div>
       <h3 style={{ marginTop: "25px" }}>Click Analysis</h3>
       <div style={{ height: 460, width: "100%", marginTop: "10px" }}>
