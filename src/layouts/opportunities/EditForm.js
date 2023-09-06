@@ -336,14 +336,12 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 placeholder={input.placeholder}
                 style={{
                   ...styles.input,
-                  pointerEvents:
-                    input.name === "odk_project_id" && values[input.name] !== ""
-                      ? "none"
-                      : "auto",
                 }}
                 pattern={input?.pattern}
                 required={input.required}
-                disabled={values[input.name === null ? false : true]}
+                disabled={
+                  input.name === "odk_project_id" && values.odk_project_id
+                }
               />
             </div>
           ))}

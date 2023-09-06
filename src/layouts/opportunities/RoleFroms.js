@@ -106,7 +106,6 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
       id: data.id,
       status: data.is_active === 1 ? 0 : 1,
     };
-    console.log("updateeeee", updatedata);
     var addRoles = EnableDisableUserRoles(updatedata);
     addRoles
       .then((res) => {
