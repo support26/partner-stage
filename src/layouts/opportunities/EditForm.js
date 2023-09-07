@@ -227,7 +227,6 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
     });
   };
 
-  console.log("******", values);
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(projectDetails);

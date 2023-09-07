@@ -10,7 +10,8 @@ import {
   Button,
 } from "@mui/material";
 
-const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
+const RoleFroms = ({ projectIDForRoles }) => {
+  console.log("*****", projectIDForRoles);
   const { AddRoles, ShowAllRoles, DeleteUserRole, EnableDisableUserRoles } =
     useForms();
   const [newRole, setNewRole] = useState("");
@@ -115,6 +116,10 @@ const RoleFroms = ({ projectIDForRoles, handleClose3 }) => {
         console.log(err);
       });
   };
+
+  setTimeout(() => {
+    setAlertOpen(false);
+  }, 6000);
 
   const handleSubmit = (e) => {
     e.preventDefault();
