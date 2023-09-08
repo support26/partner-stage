@@ -1,6 +1,6 @@
 pipelines:
   branches:
-   vishal:
+   main:
     - step: 
         name: Deploy to test
         deployment: test
