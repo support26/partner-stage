@@ -50,6 +50,7 @@ const DirectApplications = () => {
       .then((res) => {
         if (res.status === 200) {
           setApplyData(res.data.data);
+          getAllActiveRoles();
           setLoading(false);
         }
       })
@@ -126,9 +127,15 @@ const DirectApplications = () => {
     });
   };
 
-  const onChangeStatus = (e, id) => {
-    changeUserTrainingStatusById(e, id);
-    updateState(e.target.name, e.target.checked, id);
+  const onChangeStatus = (e, params) => {
+    if (e.target.name === "is_approved") {
+      if(params.row.role_id === null || params.row.role_id === ""){
+        openSuccessDialog("Please assign a role first before approving");
+        return;
+      }
+    }
+    changeUserTrainingStatusById(e, params.id);
+    updateState(e.target.name, e.target.checked, params.id);
   };
 
   const getAllActiveRoles = () => {
@@ -148,6 +155,7 @@ const DirectApplications = () => {
     };
     AssignRoleToUser(data)
       .then((res) => {
+        directApplications();
         // console.log("res.data.message".res.data.message);
         openSuccessDialog(res.data.message);
       })
@@ -162,7 +170,7 @@ const DirectApplications = () => {
 
     setTimeout(() => {
       setDialogOpen(false);
-    }, 800);
+    }, 1000);
   };
   // const SSE = () => {
   //   const source = new EventSource('http://localhost:8001/opt/webapp/opportunityCardClicksSSE');
@@ -219,9 +227,19 @@ const DirectApplications = () => {
   // }
   // }
 
+  const showAllActiveRoles = (project_id) => {
+    return allActiveRoles.map((role) => {
+      if (role.project_id === project_id) {
+        return (
+          <option key={role.id} value={role.id}>
+            {role.role_name}
+          </option>
+        )};
+    });
+  };
+
   useEffect(() => {
     fetchApplications();
-    getAllActiveRoles();
   }, []);
 
   function CustomToolbar() {
@@ -247,7 +265,7 @@ const DirectApplications = () => {
     { field: "is_applied", headerName: "Apply", width: 100 },
     {
       field: "zoom_meeting_status",
-      headerName: "zoom meeting",
+      headerName: "Zoom Meeting",
       width: 100,
       renderCell: (params) => {
         return (
@@ -256,14 +274,14 @@ const DirectApplications = () => {
             disabled={disabled}
             type="checkbox"
             checked={params.row.zoom_meeting_status === "Yes" ? true : false}
-            onChange={(e) => onChangeStatus(e, params.id)}
+            onChange={(e) => onChangeStatus(e, params)}
           />
         );
       },
     },
     {
       field: "training_status",
-      headerName: "training status",
+      headerName: "Training Status",
       width: 100,
       renderCell: (params) => {
         return (
@@ -272,23 +290,7 @@ const DirectApplications = () => {
             disabled={disabled}
             type="checkbox"
             checked={params.row.training_status === "Yes" ? true : false}
-            onChange={(e) => onChangeStatus(e, params.id)}
-          />
-        );
-      },
-    },
-    {
-      field: "is_approved",
-      headerName: "Is Approved",
-      width: 100,
-      renderCell: (params) => {
-        return (
-          <input
-            name="is_approved"
-            disabled={disabled}
-            type="checkbox"
-            checked={params.row.is_approved === "Yes" ? true : false}
-            onChange={(e) => onChangeStatus(e, params.id)}
+            onChange={(e) => onChangeStatus(e, params)}
           />
         );
       },
@@ -307,16 +309,28 @@ const DirectApplications = () => {
               border: "1px solid #33A2B5",
               outline: "none",
             }}
-            value={selectedRoleId}
+            value={params.row.role_id}
             onChange={(e) => onSelectList(e, params.id)}
           >
             <option value="">Select an option</option>
-            {allActiveRoles.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.role_name}
-              </option>
-            ))}
+            {showAllActiveRoles(params.row.project_id)}
           </select>
+        );
+      },
+    },
+    {
+      field: "is_approved",
+      headerName: "Is Approved",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <input
+            name="is_approved"
+            disabled={disabled}
+            type="checkbox"
+            checked={params.row.is_approved === "Yes" ? true : false}
+            onChange={(e) => onChangeStatus(e, params)}
+          />
         );
       },
     },
