@@ -330,7 +330,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
               <input
                 type={input.type}
                 name={input.name}
-                value={values[input.name]}
+                value={values[input.name] !== null ? values[input.name] : ""}
                 onChange={onChange}
                 placeholder={input.placeholder}
                 style={{
@@ -338,9 +338,9 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
                 }}
                 pattern={input?.pattern}
                 required={input.required}
-                disabled={
-                  input.name === "odk_project_id" && values.odk_project_id
-                }
+                // disabled={
+                //   input.name === "odk_project_id" && values.odk_project_id !== null && values.odk_project_id.length > 3
+                // }
               />
             </div>
           ))}
