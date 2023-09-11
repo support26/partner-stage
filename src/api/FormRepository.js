@@ -150,6 +150,44 @@ class FormRepository {
       });
     return resp;
   }
+
+  async uploadCasesfromXlxsFile(data) {
+    let token = localStorage.getItem("token");
+    const resp = await Api.post(`${baseUrl}forms/uploadUserDataSheet`, data, {
+      header: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.error(error.response);
+        return error.response;
+      });
+    return resp;
+  }
+
+  async uploadVillageDataSheetXlxsFile(data) {
+    let token = localStorage.getItem("token");
+    const resp = await Api.post(
+      `${baseUrl}forms/uploadVillageDataSheet`,
+      data,
+      {
+        header: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.error(error.response);
+        return error.response;
+      });
+    return resp;
+  }
 }
 
 export default new FormRepository();

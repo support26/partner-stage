@@ -76,6 +76,25 @@ const styleCustom = {
   maxWidth: "320px",
 };
 
+const styleBox = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "520px",
+  maxWidth: "90%",
+  borderRadius: "15px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  maxHeight: "670px", // Initial maxHeight value
+  maxWidth: "320px",
+};
+
 function Opportunities() {
   const {
     GetAllOpportunity,
@@ -426,23 +445,23 @@ function Opportunities() {
                         )}
 
                         {/* <select
-                                                      value={opportunity.sequence}
-                                                          style={{
-                                                            width: "50px",
-                                                            height: "30px",
-                                                            borderRadius: "5px",
-                                                            border: "1px solid #1A73E8",
-                                                            marginLeft: "15px",
-                                                            outline: "none",
-                                                          }}
-                                                          // onChange={(event) => handleStatus(event, opportunity.id)}
-                                                        >
-                                                          {sequenceList && sequenceList.map((sequence) => (
-                                                            <option key={sequence} value={sequence}>{sequence}</option>
-                                                          ))}
-                                                        </select> */}
+                                                        value={opportunity.sequence}
+                                                            style={{
+                                                              width: "50px",
+                                                              height: "30px",
+                                                              borderRadius: "5px",
+                                                              border: "1px solid #1A73E8",
+                                                              marginLeft: "15px",
+                                                              outline: "none",
+                                                            }}
+                                                            // onChange={(event) => handleStatus(event, opportunity.id)}
+                                                          >
+                                                            {sequenceList && sequenceList.map((sequence) => (
+                                                              <option key={sequence} value={sequence}>{sequence}</option>
+                                                            ))}
+                                                          </select> */}
                         {/* {opportunity.load && <CircularProgress size={20} style={{marginLeft: "10px", color: "blue"}} />
-                                                        } */}
+                                                          } */}
                       </CardActions>
                     </div>
                   </Card>
@@ -483,7 +502,7 @@ function Opportunities() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={styleCustom}>
             <div
               style={{
                 position: "sticky",
@@ -633,9 +652,9 @@ function Opportunities() {
                 </p>
               </div>
               {/* <div>
-              <h4>Image</h4>
-              <p>Use <strong>![alt text](image link)</strong> to add an image</p>
-            </div> */}
+                <h4>Image</h4>
+                <p>Use <strong>![alt text](image link)</strong> to add an image</p>
+              </div> */}
             </div>
           </Box>
         </Fade>
@@ -679,35 +698,35 @@ function Opportunities() {
 
         {/* <Dialog 
 
-          open={opening}
-          // onClose={handleStatus}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+            open={opening}
+            // onClose={handleStatus}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
 
-          <DialogTitle  id="alert-dialog-title v">
-            <Typography  gutterBottom variant="h6"  component="div">
-              {`Are you sure you want to delete `} {deleteTitle} {"??"}
-            </Typography>
-            
-          </DialogTitle>
-
-
-          <DialogActions>
-            <Button  name="disagree" onClick={handleClosees}>
-              No
-            </Button>
-            <Button style={{ backgroundColor: "#33a2b5", color: "white" }}
-              name="agree"
-              onClick={handleClosees}
-              autoFocus
-            >
-              Yes
-            </Button>
-          </DialogActions>
+            <DialogTitle  id="alert-dialog-title v">
+              <Typography  gutterBottom variant="h6"  component="div">
+                {`Are you sure you want to delete `} {deleteTitle} {"??"}
+              </Typography>
+              
+            </DialogTitle>
 
 
-        </Dialog> */}
+            <DialogActions>
+              <Button  name="disagree" onClick={handleClosees}>
+                No
+              </Button>
+              <Button style={{ backgroundColor: "#33a2b5", color: "white" }}
+                name="agree"
+                onClick={handleClosees}
+                autoFocus
+              >
+                Yes
+              </Button>
+            </DialogActions>
+
+
+          </Dialog> */}
       </div>
 
       {/* roles modal */}
@@ -722,7 +741,7 @@ function Opportunities() {
         }}
       >
         <Fade in={openRoleModel}>
-          <Box sx={style1}>
+          <Box sx={styleBox}>
             <div
               style={{
                 position: "sticky",
@@ -734,7 +753,7 @@ function Opportunities() {
                 borderRadius: "10px 10px 10px 10px",
               }}
             >
-              <div style={{ marginTop: "-6px" }}>
+              <div style={{ marginTop: "" }}>
                 <IconButton
                   edge="start"
                   color="inherit"

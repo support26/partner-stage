@@ -10,10 +10,18 @@ import {
   GridToolbarExport,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
+import Modal from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
 import useForms from "../../hooks/useForms";
+import { Button } from "antd";
+import CaseAndGeographyAssign from "./CaseAndGeographyAssign";
 // const style = {
 //     position: "absolute",
 //     top: "50%",
@@ -21,6 +29,22 @@ import useForms from "../../hooks/useForms";
 //     transform: "translate(-50%, -50%)",
 //     // width: 50,
 //   };
+const styleCustom = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "320px",
+  padding: "35px",
+  height: "170px",
+  borderRadius: "15px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  maxHeight: "170px",
+  maxWidth: "320px",
+};
+
 const DirectApplications = () => {
   const { GetDirectApplicationList, GetCardClicks } = useAdmin();
   const {
@@ -28,6 +52,7 @@ const DirectApplications = () => {
     GetAllActiveUserRoles,
     ApproveUserById,
     AssignRoleToUser,
+    UserCaseFileUpload,
   } = useForms();
   const [applyData, setApplyData] = useState([]);
   const [clickData, setClickData] = useState([]);
@@ -42,7 +67,11 @@ const DirectApplications = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
+  const [openModleCase, setModelCase] = useState(false);
+  const [openModleGeography, setModelGeography] = useState(false);
+  const [inputGeogrphy, setGeogrphyButton] = useState("");
+  const [inputCasebutton, setCaseButton] = useState("");
+  const passdata = { 1: "case", 2: "geography" };
   const directApplications = () => {
     setLoading(true);
     var getApplications = GetDirectApplicationList();
@@ -129,7 +158,7 @@ const DirectApplications = () => {
 
   const onChangeStatus = (e, params) => {
     if (e.target.name === "is_approved") {
-      if(params.row.role_id === null || params.row.role_id === ""){
+      if (params.row.role_id === null || params.row.role_id === "") {
         openSuccessDialog("Please assign a role first before approving");
         return;
       }
@@ -172,6 +201,31 @@ const DirectApplications = () => {
       setDialogOpen(false);
     }, 1000);
   };
+
+  const uploadFileData = () => {
+    UserCaseFileUpload()
+      .then((res) => {
+        console.log("res", res);
+        // setAllActiveRoles(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {});
+  };
+
+  const handleOpenCase = (e) => {
+    console.log("&&&&&&case", e.id);
+    setCaseButton(e);
+    setModelCase(true);
+  };
+  const handleOpenGeography = (e) => {
+    console.log("&&&&&&Geography", e);
+    setGeogrphyButton();
+    setModelGeography(true);
+  };
+
+  const handleCloseCase = () => setModelCase(false);
+  const handleCloseGeography = () => setModelGeography(false);
+
   // const SSE = () => {
   //   const source = new EventSource('http://localhost:8001/opt/webapp/opportunityCardClicksSSE');
   //     const source2 = new EventSource('http://localhost:8001/opt/webapp/opportunityApplySSE');
@@ -234,7 +288,8 @@ const DirectApplications = () => {
           <option key={role.id} value={role.id}>
             {role.role_name}
           </option>
-        )};
+        );
+      }
     });
   };
 
@@ -394,6 +449,142 @@ const DirectApplications = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <div style={{ float: "right", flex: 1, margin: "7px 10px 0px 0px" }}>
+        <Button
+          onClick={handleOpenCase}
+          style={{
+            backgroundColor: "#33a2b5",
+            padding: "7px 10px",
+            border: "none",
+            borderRadius: "10px",
+            color: "#fff",
+          }}
+        >
+          Cases Upload
+        </Button>
+        <Button
+          onClick={handleOpenGeography}
+          style={{
+            backgroundColor: "#33a2b5",
+            padding: "7px 10px",
+            border: "none",
+            borderRadius: "10px",
+            color: "#fff",
+          }}
+        >
+          Geography Upload
+        </Button>
+      </div>
+
+      {/* model use cases */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openModleCase}
+        //  onClose={handleCloseCase}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModleCase}>
+          <Box sx={styleCustom}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleCloseCase}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+                Geography assign
+              </h4>
+              <div>
+                <CaseAndGeographyAssign name={passdata[1]} />
+              </div>
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
+
+      {/* model Geography */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openModleGeography}
+        // onClose={handleCloseGeography}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModleGeography}>
+          <Box sx={styleCustom}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleCloseGeography}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+                User Cases
+              </h4>
+              <div>
+                <CaseAndGeographyAssign name={passdata[2]} />
+              </div>
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
       <h3 style={{ margin: "5px" }}>Direct Applications</h3>
       <div style={{ height: 460, width: "100%", marginTop: "10px" }}>
         <DataGrid

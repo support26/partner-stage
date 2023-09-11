@@ -123,6 +123,16 @@ const Form = ({ getAllOpportunity, handleClose }) => {
     },
     {
       id: 5,
+      name: "odk_project_id",
+      type: "text",
+      placeholder: "Enter Project Id",
+      errorMessage: "It not define",
+      label: "Project Id",
+      // pattern: "^(?:\b\w+\b[\s\r\n]*){1,50}$",
+      required: false,
+    },
+    {
+      id: 6,
       name: "course_id",
       type: "text",
       placeholder: "Enter Spayee Course Id",
@@ -141,6 +151,7 @@ const Form = ({ getAllOpportunity, handleClose }) => {
       title_image: values.title_image,
       video_link: values.video_link,
       apply_link: values.apply_link,
+      odk_project_id: values.odk_project_id,
       course_id: values.course_id,
       description: values.description,
       tags: {
