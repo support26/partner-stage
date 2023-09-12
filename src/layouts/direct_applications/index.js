@@ -127,18 +127,14 @@ const DirectApplications = () => {
     if (e.target.name === "is_approved") {
       var updateaOption = ApproveUserById(id, data);
       updateaOption
-        .then((response) => {
-          // console.log("response@@@", response);
-        })
+        .then((response) => {})
         .catch((e) => {
           console.log(e);
         });
     } else {
       var updateaOption = UpdateUserTrainingStatusById(id, data);
       updateaOption
-        .then((response) => {
-          // console.log("response@@@", response);
-        })
+        .then((response) => {})
         .catch((e) => {
           console.log(e);
         });
@@ -278,14 +274,15 @@ const DirectApplications = () => {
   // }
 
   const showAllActiveRoles = (project_id) => {
-    if(allActiveRoles.length !== 0){
+    if (allActiveRoles.length !== 0) {
       return allActiveRoles.map((role) => {
         if (role.project_id === project_id) {
           return (
             <option key={role.id} value={role.id}>
               {role.role_name}
             </option>
-          )};
+          );
+        }
       });
     }
   };
