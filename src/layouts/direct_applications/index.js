@@ -278,15 +278,16 @@ const DirectApplications = () => {
   // }
 
   const showAllActiveRoles = (project_id) => {
-    return allActiveRoles.map((role) => {
-      if (role.project_id === project_id) {
-        return (
-          <option key={role.id} value={role.id}>
-            {role.role_name}
-          </option>
-        );
-      }
-    });
+    if(allActiveRoles.length !== 0){
+      return allActiveRoles.map((role) => {
+        if (role.project_id === project_id) {
+          return (
+            <option key={role.id} value={role.id}>
+              {role.role_name}
+            </option>
+          )};
+      });
+    }
   };
 
   useEffect(() => {
@@ -360,7 +361,7 @@ const DirectApplications = () => {
               border: "1px solid #33A2B5",
               outline: "none",
             }}
-            value={params.row.role_id}
+            value={params.row.role_id ? params.row.role_id : ""}
             onChange={(e) => onSelectList(e, params.id)}
           >
             <option value="">Select an option</option>

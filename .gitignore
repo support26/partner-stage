@@ -49,3 +49,6 @@ Thumbs.db
 *.wmv
 
 /package-lock.json
+.env
+build
+env

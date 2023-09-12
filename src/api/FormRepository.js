@@ -85,7 +85,7 @@ class FormRepository {
       `${baseUrl}forms/updateUserTrainingStatus/${ID}`,
       data,
       {
-        header: {
+        headers: {
           Authorization: "Bearer " + token,
         },
       }
@@ -103,7 +103,7 @@ class FormRepository {
   async approveUserById(data, ID) {
     let token = localStorage.getItem("token");
     const resp = await Api.put(`${baseUrl}forms/approveUser/${ID}`, data, {
-      header: {
+      headers: {
         Authorization: "Bearer " + token,
       },
     })
@@ -120,7 +120,7 @@ class FormRepository {
   async assignRoleToUser(data) {
     let token = localStorage.getItem("token");
     const resp = Api.post(`${baseUrl}forms/assignRoleToUser`, data, {
-      header: {
+      headers: {
         Authorization: "Bearer " + token,
       },
     })
@@ -135,9 +135,9 @@ class FormRepository {
   }
 
   async getAllActiveUserRoles() {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const resp = await Api.get(`${baseUrl}forms/getAllActiveUserRoles`, {
-      header: {
+      headers: {
         Authorization: "Bearer " + token,
       },
     })
