@@ -20,7 +20,7 @@ import useAdmin from "../../hooks/useAdmin";
 import AdminRepository from "api/AdminRepository";
 import Cookies from "js-cookie";
 import useForms from "../../hooks/useForms";
-import { Button } from "antd";
+import Button from "@mui/material/Button";
 import CaseAndGeographyAssign from "./CaseAndGeographyAssign";
 // const style = {
 //     position: "absolute",
