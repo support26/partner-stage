@@ -154,7 +154,7 @@ const EditForm = ({ opportunity, getAllOpportunity, handleClose }) => {
       type: "text",
       placeholder: "Enter Odk Project Id",
       errorMessage: "Project Id not defined",
-      label: "Project Id",
+      label: "Form Project Id",
       //   pattern: "^(https?://)?(((www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z‌​0-9]{0,61}[a-z0-9]\\‌​.[a‌​-z]{2,6})|((\\d‌​{1,3}\\.){3}\\d{1,3}‌​))(:\\d{2,4})?((/|\\‌​?)[-\\w@\\+\\.~#\\?&‌​/=%]*)?$",
       required: false,
     },
