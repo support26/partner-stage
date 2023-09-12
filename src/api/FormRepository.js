@@ -151,42 +151,54 @@ class FormRepository {
     return resp;
   }
 
-  async uploadCasesfromXlxsFile(data) {
+  async uploadCasesfromXlxsFile(file) {
     let token = localStorage.getItem("token");
-    const resp = await Api.post(`${baseUrl}forms/uploadUserDataSheet`, data, {
-      header: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        console.error(error.response);
-        return error.response;
-      });
-    return resp;
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await Api.post(
+        `${baseUrl}forms/uploadUserDataSheet`,
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
+          },
+        }
+      );
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
-  async uploadVillageDataSheetXlxsFile(data) {
+  async uploadVillageDataSheetXlxsFile(file) {
     let token = localStorage.getItem("token");
-    const resp = await Api.post(
-      `${baseUrl}forms/uploadVillageDataSheet`,
-      data,
-      {
-        header: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    )
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        console.error(error.response);
-        return error.response;
-      });
-    return resp;
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await Api.post(
+        `${baseUrl}forms/uploadVillageDataSheet`,
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }
 

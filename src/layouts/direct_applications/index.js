@@ -213,13 +213,9 @@ const DirectApplications = () => {
   };
 
   const handleOpenCase = (e) => {
-    console.log("&&&&&&case", e.id);
-    setCaseButton(e);
     setModelCase(true);
   };
   const handleOpenGeography = (e) => {
-    console.log("&&&&&&Geography", e);
-    setGeogrphyButton();
     setModelGeography(true);
   };
 
@@ -449,7 +445,14 @@ const DirectApplications = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div style={{ float: "right", flex: 1, margin: "7px 10px 0px 0px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          margin: "7px 10px 0px 0px",
+        }}
+      >
         <Button
           onClick={handleOpenCase}
           style={{
@@ -458,10 +461,12 @@ const DirectApplications = () => {
             border: "none",
             borderRadius: "10px",
             color: "#fff",
+            width: "auto",
           }}
         >
           Cases Upload
         </Button>
+        <span style={{ width: "10px" }}></span>
         <Button
           onClick={handleOpenGeography}
           style={{
@@ -470,6 +475,7 @@ const DirectApplications = () => {
             border: "none",
             borderRadius: "10px",
             color: "#fff",
+            width: "auto",
           }}
         >
           Geography Upload
@@ -521,7 +527,7 @@ const DirectApplications = () => {
                 id="transition-modal-title"
                 style={{ textAlign: "center", marginTop: "0px" }}
               >
-                Geography assign
+                Cases Upload Section
               </h4>
               <div>
                 <CaseAndGeographyAssign name={passdata[1]} />
@@ -576,7 +582,7 @@ const DirectApplications = () => {
                 id="transition-modal-title"
                 style={{ textAlign: "center", marginTop: "0px" }}
               >
-                User Cases
+                Geography Upload Section
               </h4>
               <div>
                 <CaseAndGeographyAssign name={passdata[2]} />

@@ -66,16 +66,18 @@ export default function useForms() {
       }
       return responseData;
     },
-    UserCaseFileUpload: async () => {
-      let responseData = await FormRepository.uploadCasesfromXlxsFile();
+    UserCaseFileUpload: async (file) => {
+      let responseData = await FormRepository.uploadCasesfromXlxsFile(file);
       if ((responseData.status = 200)) {
         // console.log(responseData.data);
       }
       return responseData;
     },
 
-    VillageDataFileUpload: async () => {
-      let responseData = await FormRepository.uploadVillageDataSheetXlxsFile();
+    VillageDataFileUpload: async (file) => {
+      let responseData = await FormRepository.uploadVillageDataSheetXlxsFile(
+        file
+      );
       if ((responseData.status = 200)) {
         // console.log(responseData.data);
       }
