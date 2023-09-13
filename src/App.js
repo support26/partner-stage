@@ -17,7 +17,7 @@ import SignIn from "layouts/authentication/sign-in";
 // import ResetPassword from "layouts/authentication/reset-password/cover/index";
 // import AddUsers from "layouts/AddUsers";
 // import Notifications from "./layouts/notifications";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 //  React contexts
 import {
@@ -27,10 +27,13 @@ import {
 } from "context";
 
 import anaxee_logo from "assets/images/icons/Ellipse 1.png";
-const ResetPassword = React.lazy(() => import('./layouts/authentication/reset-password/cover/index'));
-const AddUsers = React.lazy(() => import('./layouts/AddUsers'));
-const Notifications = React.lazy(() => import('./layouts/notifications'));
-const Opportunities = React.lazy(() => import('./layouts/opportunities'));
+const ResetPassword = React.lazy(() =>
+  import("./layouts/authentication/reset-password/cover/index")
+);
+const AddUsers = React.lazy(() => import("./layouts/AddUsers"));
+const Notifications = React.lazy(() => import("./layouts/notifications"));
+const Opportunities = React.lazy(() => import("./layouts/opportunities"));
+const Cases = React.lazy(() => import("./layouts/cases"));
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -85,10 +88,8 @@ export default function App() {
             exact
             path={route.route}
             element={
-              <Suspense fallback={<Loader/>}>
-              {route.component}
-              </Suspense>
-              }
+              <Suspense fallback={<Loader />}>{route.component}</Suspense>
+            }
             key={route.key}
           />
         );
@@ -98,63 +99,89 @@ export default function App() {
 
   const roleId = localStorage.getItem("roleId"); // get role id from local storage
 
-   return (
+  return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       {/* {layout === "dashboard" && ( */}
-      {Cookies.get('token') ? (
+      {Cookies.get("token") ? (
         <>
-        <Suspense fallback={<Loader/>}>
-          <Sidenav
-            color={sidenavColor}
-            brand={anaxee_logo}
-            brandName=""
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
+          <Suspense fallback={<Loader />}>
+            <Sidenav
+              color={sidenavColor}
+              brand={anaxee_logo}
+              brandName=""
+              routes={routes}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            />
           </Suspense>
         </>
-      ) :
-      null
-      }
+      ) : null}
       <Routes>
-      <Route exact path="/" element={
-            <Suspense fallback={<Loader/>}>
+        <Route
+          exact
+          path="/"
+          element={
+            <Suspense fallback={<Loader />}>
               <SignIn />
             </Suspense>
-          } />
+          }
+        />
         {sessionStorage.getItem("token") && (
-          <Route path="/reset" element={
-            <Suspense fallback={<Loader/>}>
-              <ResetPassword />
-            </Suspense>
-          } />
+          <Route
+            path="/reset"
+            element={
+              <Suspense fallback={<Loader />}>
+                <ResetPassword />
+              </Suspense>
+            }
+          />
         )}
         <Route path="*" element={<Navigate to="/" />} />
         {/* change later it to 404 page */}
-        {Cookies.get('token') && roleId == 0 && <Route path="/users" element={
-            <Suspense fallback={<Loader/>}>
-              <AddUsers />
-             </Suspense>
-        } />}
-        {Cookies.get('token') && roleId == 0 && (
-          <Route path="/notifications" element={
-            <Suspense fallback={<Loader/>}>
-              <Notifications />
-            </Suspense>
-          } />
+        {Cookies.get("token") && roleId == 0 && (
+          <Route
+            path="/users"
+            element={
+              <Suspense fallback={<Loader />}>
+                <AddUsers />
+              </Suspense>
+            }
+          />
         )}
-        {Cookies.get('token') && roleId == 0 && (
-          <Route path="/opportunities" element={
-            <Suspense fallback={<Loader/>}>
-              <Opportunities />
-            </Suspense>
-          } />
+        {Cookies.get("token") && roleId == 0 && (
+          <Route
+            path="/notifications"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Notifications />
+              </Suspense>
+            }
+          />
         )}
-      
+        {Cookies.get("token") && roleId == 0 && (
+          <Route
+            path="/opportunities"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Opportunities />
+              </Suspense>
+            }
+          />
+        )}
+        {Cookies.get("token") && roleId == 0 && (
+          <Route
+            path="/cases"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Cases />
+              </Suspense>
+            }
+          />
+        )}
+
         {/* below line first check that token is present than show routes*/}
-        {Cookies.get('token') && getRoutes(routes)}
+        {Cookies.get("token") && getRoutes(routes)}
       </Routes>
     </ThemeProvider>
   );

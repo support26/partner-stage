@@ -7,12 +7,15 @@ import React from "react";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const Dashboard = React.lazy(() => import('./layouts/dashboard'));
-const Tables = React.lazy(() => import('./layouts/tables'));
-const Banner = React.lazy(() => import('./layouts/banner/index'));
-const Anouncement = React.lazy(() => import('./layouts/anouncement'));
-const DirectApplications = React.lazy(() => import('./layouts/direct_applications'));
-const Ticket = React.lazy(()=> import('./layouts/ticket'));
+const Dashboard = React.lazy(() => import("./layouts/dashboard"));
+const Tables = React.lazy(() => import("./layouts/tables"));
+const Banner = React.lazy(() => import("./layouts/banner/index"));
+const Anouncement = React.lazy(() => import("./layouts/anouncement"));
+const DirectApplications = React.lazy(() =>
+  import("./layouts/direct_applications")
+);
+const Ticket = React.lazy(() => import("./layouts/ticket"));
+const Cases = React.lazy(() => import("./layouts/cases"));
 
 const routes = [
   {
@@ -60,10 +63,17 @@ const routes = [
     name: "Tickets",
     key: "ticket",
     icon: <Icon fontSize="medium">confirmation_number</Icon>,
-    route :"/ticket",
-    component: <Ticket />
-  }
-  
+    route: "/ticket",
+    component: <Ticket />,
+  },
+  {
+    type: "collapse",
+    name: "Cases",
+    key: "cases",
+    icon: <Icon fontSize="medium">uploadFile</Icon>,
+    route: "/cases",
+    component: <Cases />,
+  },
 ];
 
 export default routes;

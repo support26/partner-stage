@@ -78,21 +78,24 @@ export default function useUsers() {
         // dispatch(errorMessage(responseData.data.message));
       }
     },
-// post forget notification
-  
-SendForgetNotification: async (email) => {
-    var responseData = await UsersRepository.sendForgetNotification(email);
-    return responseData;
-  },
+    // post forget notification
 
-  //enable disable partner app profile updation
-  EnableDisablePartnerAppProfileUpdation: async (id, data) => {
-    var responseData = await UsersRepository.enableOrDisablePartnerAppProfileUpdation(id,data);
-    if (responseData.status === 200) {
+    SendForgetNotification: async (email) => {
+      var responseData = await UsersRepository.sendForgetNotification(email);
       return responseData;
-    }
-    return responseData;
-  },
+    },
 
+    //enable disable partner app profile updation
+    EnableDisablePartnerAppProfileUpdation: async (id, data) => {
+      var responseData =
+        await UsersRepository.enableOrDisablePartnerAppProfileUpdation(
+          id,
+          data
+        );
+      if (responseData.status === 200) {
+        return responseData;
+      }
+      return responseData;
+    },
   };
 }
