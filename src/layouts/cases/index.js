@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import {
@@ -8,108 +8,81 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import useCases from "../../hooks/useCases";
+import AdminRepository from "../../api/AdminRepository";
+import Cookies from "js-cookie";
+import { Button } from "antd";
+import FormDataComponent from "./FromDataComponent";
+import Modal from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+const styleCustom = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "320px",
+  padding: "35px",
+  height: "170px",
+  borderRadius: "15px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  maxHeight: "170px",
+  maxWidth: "320px",
+};
 
 function Cases() {
   const { uploadCaseDataSheet, getAllCasesData } = useCases();
+
   const [pageSize, setPageSize] = useState(100);
   const [applyData, setApplyData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showFormData, setShowFormData] = useState(false);
+  const [selectedFormData, setSelectedFormData] = useState(null);
+  const [openModle, setModel] = useState(false);
+
+  const handleClose = () => setModel(false);
+  const handleOpen = (e) => {
+    setModel(true);
+  };
 
   const columns = [
     // { field: "id", headerName: "ID", width: 70 },
-    { field: "runner_name", headerName: "Name", width: 170 },
-    { field: "runner_number", headerName: "Number", width: 130 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "project_name", headerName: "Project", width: 270 },
-    { field: "tehsil", headerName: "Tehsil", width: 110 },
-    { field: "district", headerName: "District", width: 110 },
-    { field: "is_liked", headerName: "Like", width: 100 },
-    { field: "is_applied", headerName: "Apply", width: 100 },
-    // {
-    //   field: "zoom_meeting_status",
-    //   headerName: "Zoom Meeting",
-    //   width: 100,
-    //   renderCell: (params) => {
-    //     return (
-    //       <input
-    //         name="zoom_meeting_status"
-    //         disabled={disabled}
-    //         type="checkbox"
-    //         checked={params.row.zoom_meeting_status === "Yes" ? true : false}
-    //         onChange={(e) => onChangeStatus(e, params)}
-    //       />
-    //     );
-    //   },
-    // },
-    // {
-    //   field: "training_status",
-    //   headerName: "Training Status",
-    //   width: 100,
-    //   renderCell: (params) => {
-    //     return (
-    //       <input
-    //         name="training_status"
-    //         disabled={disabled}
-    //         type="checkbox"
-    //         checked={params.row.training_status === "Yes" ? true : false}
-    //         onChange={(e) => onChangeStatus(e, params)}
-    //       />
-    //     );
-    //   },
-    // },
-    // {
-    //   field: "role_id",
-    //   headerName: "Role ID",
-    //   width: 100,
-    //   renderCell: (params) => {
-    //     return (
-    //       <select
-    //         style={{
-    //           width: "70px",
-    //           height: "30px",
-    //           borderRadius: "5px",
-    //           border: "1px solid #33A2B5",
-    //           outline: "none",
-    //         }}
-    //         value={params.row.role_id ? params.row.role_id : ""}
-    //         onChange={(e) => onSelectList(e, params.id)}
-    //       >
-    //         <option value="">Select an option</option>
-    //         {showAllActiveRoles(params.row.project_id)}
-    //       </select>
-    //     );
-    //   },
-    // },
-    // {
-    //   field: "is_approved",
-    //   headerName: "Is Approved",
-    //   width: 100,
-    //   renderCell: (params) => {
-    //     return (
-    //       <input
-    //         name="is_approved"
-    //         disabled={disabled}
-    //         type="checkbox"
-    //         checked={params.row.is_approved === "Yes" ? true : false}
-    //         onChange={(e) => onChangeStatus(e, params)}
-    //       />
-    //     );
-    //   },
-    // },
-    // {
-    //   field: "applied_at",
-    //   headerName: "Applied At",
-    //   width: 180,
-    //   type: "date",
-    //   valueFormatter: (params) => {
-    //     // console.log(params)
-    //     return params.value
-    //       ? new Date(
-    //           new Date(params.value).getTime() - 19800000
-    //         ).toLocaleString()
-    //       : "";
-    //   },
-    // },
+    { field: "Case_Number", headerName: "Case Number", width: 100 },
+    { field: "Start_Date", headerName: "Start Date", width: 150 },
+    { field: "End_Date", headerName: "End Date", width: 150 },
+    { field: "Assign_To", headerName: "Assign To", width: 150 },
+    { field: "Project_Id", headerName: "Project Id", width: 100 },
+    { field: "Form_Name", headerName: "Form Name", width: 130 },
+    { field: "created_by", headerName: "Created By", width: 100 },
+    { field: "created_at", headerName: "Created At", width: 150 },
+    { field: "updated_by", headerName: "Updated By", width: 100 },
+    { field: "updated_at", headerName: "Updated At", width: 150 },
+    { field: "status", headerName: "Status", width: 130 },
+    {
+      field: "formData",
+      headerName: "View More",
+      width: 120,
+      renderCell: (params) => {
+        const { row } = params;
+
+        const handleViewMoreClick = () => {
+          handleOpen();
+          const parsedFormData = JSON.parse(row.formData);
+          setSelectedFormData(parsedFormData);
+          setShowFormData(true);
+        };
+
+        return (
+          <div>
+            <Button onClick={handleViewMoreClick}>View More</Button>
+          </div>
+        );
+      },
+    },
   ];
 
   function CustomToolbar() {
@@ -122,6 +95,34 @@ function Cases() {
       </GridToolbarContainer>
     );
   }
+
+  const allcases = async () => {
+    setLoading(true);
+    const cases = await getAllCasesData();
+    setApplyData(cases.data.data);
+    setLoading(false);
+    return cases;
+  };
+
+  const fetchCasesData = () => {
+    allcases();
+    AdminRepository.checkUserActive()
+      .then((res) => {
+        if (res.data.data.is_active === "N") {
+          window.location.href = "/";
+          localStorage.clear();
+          Cookies.remove("token");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchCasesData();
+  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -150,6 +151,64 @@ function Cases() {
           }}
         />
       </div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openModle}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModle}>
+          <Box sx={styleCustom}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+                Geography Upload Section
+              </h4>
+              {showFormData && (
+                <FormDataComponent
+                  formData={selectedFormData}
+                  onClose={() => {
+                    setShowFormData(false);
+                    setSelectedFormData(null);
+                  }}
+                />
+              )}
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
     </DashboardLayout>
   );
 }
