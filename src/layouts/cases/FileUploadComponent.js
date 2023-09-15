@@ -21,10 +21,9 @@ const FileUploadComponent = (passdata) => {
     try {
       const res = await uploadCaseDataSheet(selectedFile);
       console.log("File uploaded successfully:", res);
-      setSaveResponse(res);
+      setSaveResponse(res.response.message);
     } catch (error) {
       console.error("Upload error:", error);
-
       setSaveResponse(error.response.statusText);
     } finally {
       setIsLoading(false);
