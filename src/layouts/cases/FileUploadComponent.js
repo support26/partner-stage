@@ -1,53 +1,30 @@
-import useForms from "../../hooks/useForms";
+import useCases from "../../hooks/useCases";
 import React, { useState, useRef } from "react";
-import geographyMappingTemplate from "../../assets/xlsxFiles/geographyMappingTemplate.xlsx";
-import userMappingTemplate from "../../assets/xlsxFiles/userGroupingTemplate.xlsx";
 import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 
-const CaseAndGeographyAssign = (passdata) => {
-  const { UserCaseFileUpload, VillageDataFileUpload } = useForms();
+const FileUploadComponent = (passdata) => {
+  const { uploadCaseDataSheet } = useCases();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [saveResponse, setSaveResponse] = useState("");
-  const [isOpenLabel, setIsOpenLabel] = useState(false);
 
-  const downloadTemplate = () => {
-    if (passdata.name === "project") {
-      return userMappingTemplate;
-    } else if (passdata.name === "geography") {
-      return geographyMappingTemplate;
-    }
-    return null;
-  };
-
-  const handleDownload = () => {
-    const templateURL = downloadTemplate();
-    if (templateURL) {
-      window.location.href = templateURL;
-    }
-  };
-
-  const handleFileUpload = async (event) => {
+  const handleFileUpload = async () => {
     if (!selectedFile) {
       return;
     }
     setIsLoading(true);
-
     try {
-      if (passdata.name === "project") {
-        const res = await UserCaseFileUpload(selectedFile);
-        console.log("File uploaded successfully:", res.data.message);
-        setSaveResponse(res.data.message);
-      } else {
-        console.log("loading geography files xlxs");
-        const res = await VillageDataFileUpload(selectedFile);
-        setSaveResponse(res.data.message);
-      }
+      const res = await uploadCaseDataSheet(selectedFile);
+      console.log("File uploaded successfully:", res);
+      setSaveResponse(res);
     } catch (error) {
       console.error("Upload error:", error);
+
       setSaveResponse(error.response.statusText);
     } finally {
       setIsLoading(false);
@@ -68,13 +45,10 @@ const CaseAndGeographyAssign = (passdata) => {
     }
   };
 
-  const fileInputRef = useRef();
-
   const handleCloseButtonClick = () => {
-    setSaveResponse(null);
+    setSaveResponse("");
     setSelectedFile(null);
     setIsSaveButtonEnabled(false);
-    setIsOpenLabel(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -82,10 +56,14 @@ const CaseAndGeographyAssign = (passdata) => {
 
   const handleSaveButtonClick = () => {
     handleFileUpload();
+    setIsOpenDialog(true);
   };
+
   const handleOpenDialogBox = () => {
-    setIsOpenLabel(false);
+    setIsOpenDialog(false);
   };
+
+  const fileInputRef = useRef();
 
   return (
     <>
@@ -100,19 +78,6 @@ const CaseAndGeographyAssign = (passdata) => {
         }}
       >
         <Button
-          onClick={handleDownload}
-          style={{
-            backgroundColor: "#33a2b5",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "10px",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-        >
-          Download Template
-        </Button>
-        <Button
           onClick={() => fileInputRef.current.click()}
           style={{
             backgroundColor: "#33a2b5",
@@ -123,9 +88,11 @@ const CaseAndGeographyAssign = (passdata) => {
             cursor: "pointer",
             width: "auto",
           }}
+          startIcon={<CloudUploadIcon />}
         >
           Upload File
         </Button>
+
         <input
           type="file"
           accept=".xlsx" // Specify the allowed file types
@@ -165,6 +132,8 @@ const CaseAndGeographyAssign = (passdata) => {
                 type="text"
                 value={selectedFile.name}
               />
+              <span style={{ width: "10px" }}></span>
+
               <IconButton
                 edge="end"
                 aria-label="close"
@@ -206,11 +175,11 @@ const CaseAndGeographyAssign = (passdata) => {
           </div>
         )}
       </div>
-      <label open={isOpenLabel} onClose={handleOpenDialogBox}>
+      <label open={isOpenDialog} onClose={handleOpenDialogBox}>
         {saveResponse}
       </label>
     </>
   );
 };
 
-export default CaseAndGeographyAssign;
+export default FileUploadComponent;

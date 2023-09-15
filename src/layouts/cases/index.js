@@ -10,7 +10,6 @@ import {
 import useCases from "../../hooks/useCases";
 import AdminRepository from "../../api/AdminRepository";
 import Cookies from "js-cookie";
-import { Button } from "antd";
 import FormDataComponent from "./FromDataComponent";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
@@ -18,22 +17,47 @@ import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-const styleCustom = {
+import Button from "@mui/material/Button";
+import FileUploadComponent from "./FileUploadComponent";
+import casesAssginTemplate from "../../assets/xlsxFiles/OdkCaseAssign-Agroforestry-sheet.xlsx";
+
+const styleBox = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "320px",
-  padding: "35px",
-  height: "170px",
+  width: "520px",
+  maxWidth: "90%",
+  borderRadius: "25px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  maxHeight: "670px", // Initial maxHeight value
+  maxWidth: "320px",
+};
+
+const styleBox2 = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "520px",
+  maxWidth: "90%",
   borderRadius: "15px",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 3,
-  maxHeight: "170px",
-  maxWidth: "320px",
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  maxHeight: "100%", // Initial maxHeight value
+  maxWidth: "100%",
 };
-
 function Cases() {
   const { uploadCaseDataSheet, getAllCasesData } = useCases();
 
@@ -43,12 +67,17 @@ function Cases() {
   const [showFormData, setShowFormData] = useState(false);
   const [selectedFormData, setSelectedFormData] = useState(null);
   const [openModle, setModel] = useState(false);
+  const [openUploadFile, setUploadFile] = useState(false);
 
   const handleClose = () => setModel(false);
+  const handleClose1 = () => setUploadFile(false);
   const handleOpen = (e) => {
     setModel(true);
   };
 
+  const handleOpen1 = () => {
+    setUploadFile(true);
+  };
   const columns = [
     // { field: "id", headerName: "ID", width: 70 },
     { field: "Case_Number", headerName: "Case Number", width: 100 },
@@ -96,6 +125,10 @@ function Cases() {
     );
   }
 
+  const handleDownload = () => {
+    window.location.href = casesAssginTemplate;
+  };
+
   const allcases = async () => {
     setLoading(true);
     const cases = await getAllCasesData();
@@ -126,6 +159,59 @@ function Cases() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            margin: "7px 10px 0px 0px",
+          }}
+        >
+          <Button
+            onClick={handleOpen1}
+            style={{
+              backgroundColor: "#33a2b5",
+              padding: "7px 10px",
+              border: "none",
+              borderRadius: "10px",
+              color: "#fff",
+              width: "auto",
+            }}
+          >
+            Cases Upload
+          </Button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            margin: "7px 10px 0px 0px",
+          }}
+        >
+          <Button
+            onClick={handleDownload}
+            style={{
+              backgroundColor: "#33a2b5",
+              padding: "7px 10px",
+              border: "none",
+              borderRadius: "10px",
+              color: "#fff",
+              width: "auto",
+            }}
+          >
+            Download Template
+          </Button>
+        </div>
+      </div>
+
       <h3 style={{ margin: "5px" }}>Upload Cases</h3>
       <div style={{ height: 460, width: "100%", marginTop: "10px" }}>
         <DataGrid
@@ -151,6 +237,58 @@ function Cases() {
           }}
         />
       </div>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openUploadFile}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openUploadFile}>
+          <Box sx={styleBox}>
+            <div
+              style={{
+                position: "sticky",
+                top: "-25px",
+                zIndex: "1",
+                backgroundColor: "#fff",
+                padding: "0px 0px",
+                margin: "0px -7px",
+                borderRadius: "10px 10px 10px 10px",
+              }}
+            >
+              <div style={{ marginTop: "-6px" }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="close"
+                  style={{
+                    display: "block",
+                    float: "right",
+                    marginTop: "-5px",
+                    marginRight: "-10px",
+                  }}
+                  onClick={handleClose1}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+              <h4
+                id="transition-modal-title"
+                style={{ textAlign: "center", marginTop: "0px" }}
+              >
+                Upload file
+              </h4>
+              <FileUploadComponent />
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -162,7 +300,7 @@ function Cases() {
         }}
       >
         <Fade in={openModle}>
-          <Box sx={styleCustom}>
+          <Box sx={styleBox2}>
             <div
               style={{
                 position: "sticky",
@@ -194,7 +332,7 @@ function Cases() {
                 id="transition-modal-title"
                 style={{ textAlign: "center", marginTop: "0px" }}
               >
-                Geography Upload Section
+                FROM DETAILS
               </h4>
               {showFormData && (
                 <FormDataComponent

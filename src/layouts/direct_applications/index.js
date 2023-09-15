@@ -45,6 +45,25 @@ const styleCustom = {
   maxWidth: "320px",
 };
 
+const styleBox = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "520px",
+  maxWidth: "90%",
+  borderRadius: "15px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  maxHeight: "670px", // Initial maxHeight value
+  maxWidth: "320px",
+};
+
 const DirectApplications = () => {
   const { GetDirectApplicationList, GetCardClicks } = useAdmin();
   const {
@@ -71,7 +90,7 @@ const DirectApplications = () => {
   const [openModleGeography, setModelGeography] = useState(false);
   const [inputGeogrphy, setGeogrphyButton] = useState("");
   const [inputCasebutton, setCaseButton] = useState("");
-  const passdata = { 1: "case", 2: "geography" };
+  const passdata = { 1: "project", 2: "geography" };
   const directApplications = () => {
     setLoading(true);
     var getApplications = GetDirectApplicationList();
@@ -462,7 +481,7 @@ const DirectApplications = () => {
             width: "auto",
           }}
         >
-          Cases Upload
+          Project Assign
         </Button>
         <span style={{ width: "10px" }}></span>
         <Button
@@ -493,7 +512,7 @@ const DirectApplications = () => {
         }}
       >
         <Fade in={openModleCase}>
-          <Box sx={styleCustom}>
+          <Box sx={styleBox}>
             <div
               style={{
                 position: "sticky",
@@ -525,7 +544,7 @@ const DirectApplications = () => {
                 id="transition-modal-title"
                 style={{ textAlign: "center", marginTop: "0px" }}
               >
-                Cases Upload Section
+                Project Upload Section
               </h4>
               <div>
                 <CaseAndGeographyAssign name={passdata[1]} />
@@ -548,7 +567,7 @@ const DirectApplications = () => {
         }}
       >
         <Fade in={openModleGeography}>
-          <Box sx={styleCustom}>
+          <Box sx={styleBox}>
             <div
               style={{
                 position: "sticky",
