@@ -12,7 +12,7 @@
     "url": "git+https://github.com/creativetimofficial/material-dashboard-react.git"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=18.0.0",
     "npm": ">=6"
   },
   "dependencies": {
