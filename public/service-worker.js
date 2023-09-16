@@ -1,13 +1,18 @@
-self.addEventListener('push', function(e) {
-    const data = e.data.json();
-    console.log("Push received...", data);
-    self.registration.showNotification(
-        data.title,
-        {
-            body: data.body,
-        }
-    );
-})
+self.addEventListener('push', async function(e) {
+    try {
+        const data = await e.data.json();
+        console.log("Push received...", data);
+        self.registration.showNotification(
+            data.title,
+            {
+                body: data.body,
+            }
+        );
+    } catch (error) {
+        console.error("Error parsing JSON:", error);
+        // alert("Error parsing JSON:", error);
+    }
+});
 
 
 // const CACHE_NAME = 'pwa-cache-v1';
