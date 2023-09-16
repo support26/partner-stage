@@ -30,6 +30,7 @@ import anaxee_logo from "assets/images/icons/Ellipse 1.png";
 const ResetPassword = React.lazy(() =>
   import("./layouts/authentication/reset-password/cover/index")
 );
+const ContactUs = React.lazy(() => import('./layouts/contactUs'));
 const AddUsers = React.lazy(() => import("./layouts/AddUsers"));
 const Notifications = React.lazy(() => import("./layouts/notifications"));
 const Opportunities = React.lazy(() => import("./layouts/opportunities"));
@@ -127,6 +128,12 @@ export default function App() {
             </Suspense>
           }
         />
+        {/* Add contact us route */}
+        <Route path="/contact-us" element={
+            <Suspense fallback={<Loader/>}>
+              <ContactUs />
+            </Suspense>
+          } />
         {sessionStorage.getItem("token") && (
           <Route
             path="/reset"
