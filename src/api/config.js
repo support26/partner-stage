@@ -5,8 +5,8 @@ import axios from "axios";
 //export const mainUrl = `https://still-depths-36066.herokuapp.com`;
 
 // local testing
-export const mainUrl = `http://localhost:8001`;
-// export const mainUrl = `https://android-mapping-backend.el.r.appspot.com`;
+// export const mainUrl = `http://localhost:8001`;
+export const mainUrl = `https://android-mapping-backend.el.r.appspot.com`;
 const baseDomain = `${mainUrl}/`;
 
 // const baseDomain = 'http://127.0.0.1:8001/'; // API for products

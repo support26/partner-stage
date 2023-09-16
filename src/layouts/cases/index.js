@@ -19,7 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import FileUploadComponent from "./FileUploadComponent";
-import casesAssginTemplate from "../../assets/xlsxFiles/OdkCaseAssign-Agroforestry-sheet.xlsx";
+import casesAssginTemplate from "../../assets/xlsxFiles/CaseAssign-Agroforestry-sheet.xlsx";
 
 const styleBox = {
   position: "absolute",
