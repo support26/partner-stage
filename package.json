@@ -27,9 +27,6 @@
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/x-data-grid": "^5.12.3",
     "@reduxjs/toolkit": "^1.8.3",
-    "@testing-library/jest-dom": "5.16.2",
-    "@testing-library/react": "12.1.2",
-    "@testing-library/user-event": "13.5.0",
     "antd": "^5.1.2",
     "axios": "^0.27.2",
     "chart.js": "3.4.1",
@@ -98,14 +95,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "eslint": "8.8.0",
-    "eslint-config-airbnb": "19.0.4",
-    "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-jsx-a11y": "6.5.1",
-    "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.28.0",
-    "eslint-plugin-react-hooks": "4.3.0",
     "prettier": "2.5.1"
   }
 }

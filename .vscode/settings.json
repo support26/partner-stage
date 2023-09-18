@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a6aa54b3-b3fc-49ca-b156-55db491d17b6/resourceGroups/Support33-NomachineVM/providers/Microsoft.Web/sites/partner-app-stage",
+    "appService.deploySubpath": "."
+}

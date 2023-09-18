@@ -20,7 +20,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import MDPagination from "components/MDPagination";
+// import MDPagination from "components/MDPagination";
 
 //  React example components
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
@@ -73,17 +73,17 @@ function DataTable({
   // Set the entries per page value based on the select value
   const setEntriesPerPage = (value) => setPageSize(value);
 
-  // Render the paginations
-  const renderPagination = pageOptions.map((option) => (
-    <MDPagination
-      item
-      key={option}
-      onClick={() => gotoPage(Number(option))}
-      active={pageIndex === option}
-    >
-      {option + 1}
-    </MDPagination>
-  ));
+  // // Render the paginations
+  // const renderPagination = pageOptions.map((option) => (
+  //   <MDPagination
+  //     item
+  //     key={option}
+  //     onClick={() => gotoPage(Number(option))}
+  //     active={pageIndex === option}
+  //   >
+  //     {option + 1}
+  //   </MDPagination>
+  // ));
 
   // Handler for the input to set the pagination index
   const handleInputPagination = ({ target: { value } }) =>
@@ -221,7 +221,7 @@ function DataTable({
             </MDTypography>
           </MDBox>
         )}
-        {pageOptions.length > 1 && (
+        {/* {pageOptions.length > 1 && (
           <MDPagination
             variant={pagination.variant ? pagination.variant : "gradient"}
             color={pagination.color ? pagination.color : "info"}
@@ -248,7 +248,7 @@ function DataTable({
               </MDPagination>
             )}
           </MDPagination>
-        )}
+        )} */}
       </MDBox>
     </TableContainer>
   );
